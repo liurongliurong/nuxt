@@ -1,0 +1,91 @@
+@import './style.scss';
+body {
+  line-height: 1.5;
+  font-size: 14px;
+  font-family: "Microsoft Yahei";
+  color: $text;
+}
+body,div,aside,section,article,h1,h2,h3,h4,h5,h6,p,span,input,textarea,button,ul,li,a{
+  margin:0;
+  padding:0;
+  box-sizing: border-box
+}
+h1,h2,h3,h4,h5,h6{
+  font-weight:normal
+}
+ul, li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  color: $light_text;
+  font-style:normal;
+}
+i{
+  font-style: normal
+}
+input,textarea,button{
+  font-family: "Microsoft Yahei";
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-appearance: none;
+  outline: none;
+}
+input,select,textarea{
+  border: none;
+  background: none;
+  box-shadow: none;
+  -webkit-user-select: text;
+}
+input,textarea,select{
+  width:100%;
+}
+textarea {
+  resize: none;
+}
+button{
+  border:1px solid;
+  border-radius:5px;
+  cursor: pointer
+}
+button:focus,select:focus,input:focus,a:hover{
+  outline: 0;
+}
+img{
+  width:100%;
+  vertical-align: bottom;
+}
+table{
+  border-collapse: collapse
+}
+.body{
+  min-height: calc(100vh - 306px);
+}
+.user_box + .body{
+  min-height: calc(100vh - 386px)
+}
+input::-webkit-input-placeholder {
+  color:#bfbfbf;
+}
+// 币种
+  .icon_currency{
+    @include block(18)
+    &.ETC,&.LTC{
+      @include block(20)
+    }
+    &.BTC{
+      background: url('../assets/images/css_sprites.png') -160px -110px;
+    }
+    &.BCC{
+      background: url('../assets/images/css_sprites.png') -264px -168px;
+    }
+    &.ETH{
+      background: url('../assets/images/css_sprites.png') -280px -161px;
+    }
+    &.ETC{
+      background: url('../assets/images/css_sprites.png') -290px -125px;
+    }
+    &.LTC{
+      background: url('../assets/images/css_sprites.png') -210px -125px;
+    }
+  }
