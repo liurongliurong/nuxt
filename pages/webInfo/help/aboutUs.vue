@@ -63,7 +63,7 @@
     .summarize{
       height: 300px;
       margin-bottom: 30px;
-      background: url(~assets/images/aboutBg.png);
+      // background: url(~assets/images/aboutBg.png);
       color: #ffffff;
       padding: 40px 65px;
       h3{

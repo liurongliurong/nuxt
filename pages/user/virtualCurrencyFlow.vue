@@ -40,7 +40,7 @@
       </table>
       <Pager :len="len"></Pager>
       <div class="nodata" v-if="showImg">
-        <img :src="img" alt="">
+        <!-- <img :src="img" alt=""> -->
         <p>暂无列表信息</p>
       </div>
     </div>
@@ -67,7 +67,7 @@
         len: 0,
         now: 1,
         sort: [{title: '时间', option: ['asc', 'desc'], value: 0}],
-        img: require('@/assets/images/no_data.jpg'),
+        // img: require('@/assets/images/no_data.jpg'),
         showImg: false
       }
     },

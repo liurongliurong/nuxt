@@ -3,11 +3,14 @@
     <div class="item" v-for="n,k in nav">
       <div :class="'iconfont icon_'+k" @click="openPopup(n)"></div>
       <div class="popup" v-if="n==='qq'">
+        <!-- <span>QQ群</span>
+        <span>3567894561</span> -->
+        <!-- <img border="0" :src="img" alt="算力网官方用户群" title="算力网官方用户群"> -->
         <a class="qq" title="点击或扫描加入群" href="http://qm.qq.com/cgi-bin/qm/qr?k=WS2QITBH5tuDJbC5FmpEz1wx9Qi-nskJ"></a>
       </div>
       <div class="popup tel" v-if="n==='tel'">
         <span>0571-</span>
-        <span>28221076</span>
+        <span>28031736</span>
       </div>
       <div class="popup" v-if="n==='wechat'">
         <div class="wechat"></div>
@@ -23,7 +26,9 @@
     data () {
       return {
         nav: ['qq', 'tel', 'wechat', 'gotop'],
-        show: ''
+        show: '',
+        isTop: true,
+        timer: null
       }
     },
     mounted () {
@@ -34,13 +39,24 @@
         if (n !== 'gotop') {
           this.show = n
         } else {
-          window.scrollTo(0, 0)
+          var self = this
+          this.timer = setInterval(function () {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
+            var ispeed = 0
+            ispeed = Math.floor(-scrollTop / 3)
+            document.documentElement.scrollTop = document.body.scrollTop = scrollTop + ispeed
+            if (scrollTop === 0) {
+              clearInterval(self.timer)
+            }
+            self.isTop = false
+          }, 50)
         }
       },
       test (e) {
-        var ele = document.querySelector('.frame_header')
+        var ele = document.querySelector('.fixed_header')
+        var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
         if (!ele || !this.$refs.bar) return false
-        if (e.target.scrollingElement.scrollTop > 0) {
+        if (scrollTop > 0) {
           this.$refs.bar.style.display = 'block'
         } else {
           this.$refs.bar.style.display = 'none'
@@ -89,10 +105,10 @@
           content:'\e697'
         }
         &.icon_2:before{
-          content:'\e61d'
+          content:'\e61f'
         }
         &.icon_3:before{
-          content:'\e60c'
+          content:'\e621'
         }
       }
       .popup{
@@ -116,10 +132,10 @@
         }
         .qq{
           display: block;
-          background: url('../../assets/images/css_sprites.png') -110px -10px;
+          background: url('../../assets/images/css_sprites.png') -110px -264px;
         }
         .wechat{
-          background: url('../../assets/images/css_sprites.png') -10px -10px;
+          background: url('../../assets/images/css_sprites.png') -10px -264px;
         }
       }
       &:hover{

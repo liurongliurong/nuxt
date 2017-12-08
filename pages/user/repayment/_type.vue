@@ -42,7 +42,7 @@
         </tr>
       </table>
       <div class="nodata" v-if="showImg">
-        <img :src="img" alt="">
+        <!-- <img :src="img" alt=""> -->
         <p>暂无列表信息</p>
       </div>
       <Pager :len="len"></Pager>
@@ -64,7 +64,7 @@
       return {
         nav: [{'0': '进行中', '1': '已结束'}],
         data: [{product: '阿瓦隆001', fen: '10000元', shou: '15%', xian: '12个月', yi: '1/12期', time: '2017-09-21', id: '0', hash_type_name: 'BTC'}],
-        img: require('@/assets/images/no_data.jpg'),
+        // img: require('@/assets/images/no_data.jpg'),
         showImg: false,
         status: 1,
         len: 0

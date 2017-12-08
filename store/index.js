@@ -20,7 +20,10 @@ const state = {
     last_login_time: ''
   },
   hashType: [],
-  num: ''
+  num: '',
+  callUrl: '',
+  isMobile: false,
+  addressData: {}
 }
 
 const getters = {
@@ -36,7 +39,7 @@ const getters = {
     var tipInfo = ['正在审核', '认证成功']
     var tipInfo2 = ['正在审核', '重新绑卡']
     if (state.info.true_name) {
-      arr[1].status = state.info.true_name.status
+      arr[1].status = state.info.true_name.status === 1
       arr[1].opr = state.info.true_name.status > 1 ? tipInfo[state.info.true_name.status] + ' 请重新认证' : tipInfo[state.info.true_name.status]
       arr[1].setting = 0
     }

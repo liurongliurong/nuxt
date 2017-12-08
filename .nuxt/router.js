@@ -4,6 +4,8 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 const _2c9d49f4 = () => import('..\\pages\\index.vue' /* webpackChunkName: "pages\\index" */).then(m => m.default || m)
+const _2332880e = () => import('..\\pages\\index\\pc.vue' /* webpackChunkName: "pages\\index\\pc" */).then(m => m.default || m)
+const _15662828 = () => import('..\\pages\\index\\mobile.vue' /* webpackChunkName: "pages\\index\\mobile" */).then(m => m.default || m)
 const _cccfa554 = () => import('..\\pages\\webInfo.vue' /* webpackChunkName: "pages\\webInfo" */).then(m => m.default || m)
 const _12fe63f4 = () => import('..\\pages\\webInfo\\list.vue' /* webpackChunkName: "pages\\webInfo\\list" */).then(m => m.default || m)
 const _59c479d5 = () => import('..\\pages\\webInfo\\list\\_type.vue' /* webpackChunkName: "pages\\webInfo\\list\\_type" */).then(m => m.default || m)
@@ -12,15 +14,18 @@ const _c512895e = () => import('..\\pages\\webInfo\\help\\issues.vue' /* webpack
 const _6b7eddf8 = () => import('..\\pages\\webInfo\\help\\aboutUs.vue' /* webpackChunkName: "pages\\webInfo\\help\\aboutUs" */).then(m => m.default || m)
 const _4eae5d23 = () => import('..\\pages\\webInfo\\detail\\_id.vue' /* webpackChunkName: "pages\\webInfo\\detail\\_id" */).then(m => m.default || m)
 const _17fc5d6b = () => import('..\\pages\\notFound.vue' /* webpackChunkName: "pages\\notFound" */).then(m => m.default || m)
-const _add83714 = () => import('..\\pages\\computeTransfer.vue' /* webpackChunkName: "pages\\computeTransfer" */).then(m => m.default || m)
-const _510356b5 = () => import('..\\pages\\computeTransfer\\list\\_type.vue' /* webpackChunkName: "pages\\computeTransfer\\list\\_type" */).then(m => m.default || m)
-const _45ed3a03 = () => import('..\\pages\\computeTransfer\\detail\\_id.vue' /* webpackChunkName: "pages\\computeTransfer\\detail\\_id" */).then(m => m.default || m)
 const _b03a73d6 = () => import('..\\pages\\bdc.vue' /* webpackChunkName: "pages\\bdc" */).then(m => m.default || m)
 const _e01c7fb8 = () => import('..\\pages\\auth.vue' /* webpackChunkName: "pages\\auth" */).then(m => m.default || m)
 const _2b36c7cc = () => import('..\\pages\\auth\\regist.vue' /* webpackChunkName: "pages\\auth\\regist" */).then(m => m.default || m)
 const _183a86f5 = () => import('..\\pages\\auth\\login.vue' /* webpackChunkName: "pages\\auth\\login" */).then(m => m.default || m)
 const _6762bc65 = () => import('..\\pages\\auth\\passwordRetrieval.vue' /* webpackChunkName: "pages\\auth\\passwordRetrieval" */).then(m => m.default || m)
-const _2fe5ea7f = () => import('..\\pages\\cloudShop.vue' /* webpackChunkName: "pages\\cloudShop" */).then(m => m.default || m)
+const _3e79c8eb = () => import('..\\pages\\compute.vue' /* webpackChunkName: "pages\\compute" */).then(m => m.default || m)
+const _a79cee6e = () => import('..\\pages\\minerShop.vue' /* webpackChunkName: "pages\\minerShop" */).then(m => m.default || m)
+const _8ff978ce = () => import('..\\pages\\minerShop\\mining.vue' /* webpackChunkName: "pages\\minerShop\\mining" */).then(m => m.default || m)
+const _ad57c5b2 = () => import('..\\pages\\minerShop\\list.vue' /* webpackChunkName: "pages\\minerShop\\list" */).then(m => m.default || m)
+const _76c642d0 = () => import('..\\pages\\minerShop\\activity.vue' /* webpackChunkName: "pages\\minerShop\\activity" */).then(m => m.default || m)
+const _1057abef = () => import('..\\pages\\minerShop\\detail\\_type.vue' /* webpackChunkName: "pages\\minerShop\\detail\\_type" */).then(m => m.default || m)
+const _59b1c6c3 = () => import('..\\pages\\minerShop\\miner\\_type.vue' /* webpackChunkName: "pages\\minerShop\\miner\\_type" */).then(m => m.default || m)
 const _2ab104c7 = () => import('..\\pages\\user.vue' /* webpackChunkName: "pages\\user" */).then(m => m.default || m)
 const _06632e7e = () => import('..\\pages\\user\\incomeChart.vue' /* webpackChunkName: "pages\\user\\incomeChart" */).then(m => m.default || m)
 const _594942d3 = () => import('..\\pages\\user\\virtualCurrencyFlow.vue' /* webpackChunkName: "pages\\user\\virtualCurrencyFlow" */).then(m => m.default || m)
@@ -37,8 +42,6 @@ const _b3129f66 = () => import('..\\pages\\user\\repayment\\_type.vue' /* webpac
 const _2d02daca = () => import('..\\pages\\user\\order\\_status.vue' /* webpackChunkName: "pages\\user\\order\\_status" */).then(m => m.default || m)
 const _126007c9 = () => import('..\\pages\\user\\messageDetail\\_id.vue' /* webpackChunkName: "pages\\user\\messageDetail\\_id" */).then(m => m.default || m)
 const _5c992d3c = () => import('..\\pages\\user\\orderDetail\\_id.vue' /* webpackChunkName: "pages\\user\\orderDetail\\_id" */).then(m => m.default || m)
-const _22c02650 = () => import('..\\pages\\computeShop\\detail\\_id.vue' /* webpackChunkName: "pages\\computeShop\\detail\\_id" */).then(m => m.default || m)
-const _0c93ecec = () => import('..\\pages\\computeShop\\list\\_type.vue' /* webpackChunkName: "pages\\computeShop\\list\\_type" */).then(m => m.default || m)
 
 
 
@@ -77,7 +80,19 @@ export function createRouter () {
 		{
 			path: "/",
 			component: _2c9d49f4,
-			name: "index"
+			name: "index",
+			children: [
+				{
+					path: "pc",
+					component: _2332880e,
+					name: "index-pc"
+				},
+				{
+					path: "mobile",
+					component: _15662828,
+					name: "index-mobile"
+				}
+			]
 		},
 		{
 			path: "/webInfo",
@@ -126,23 +141,6 @@ export function createRouter () {
 			name: "notFound"
 		},
 		{
-			path: "/computeTransfer",
-			component: _add83714,
-			name: "computeTransfer",
-			children: [
-				{
-					path: "list/:type?",
-					component: _510356b5,
-					name: "computeTransfer-list-type"
-				},
-				{
-					path: "detail/:id?",
-					component: _45ed3a03,
-					name: "computeTransfer-detail-id"
-				}
-			]
-		},
-		{
 			path: "/bdc",
 			component: _b03a73d6,
 			name: "bdc"
@@ -170,9 +168,41 @@ export function createRouter () {
 			]
 		},
 		{
-			path: "/cloudShop",
-			component: _2fe5ea7f,
-			name: "cloudShop"
+			path: "/compute",
+			component: _3e79c8eb,
+			name: "compute"
+		},
+		{
+			path: "/minerShop",
+			component: _a79cee6e,
+			name: "minerShop",
+			children: [
+				{
+					path: "mining",
+					component: _8ff978ce,
+					name: "minerShop-mining"
+				},
+				{
+					path: "list",
+					component: _ad57c5b2,
+					name: "minerShop-list"
+				},
+				{
+					path: "activity",
+					component: _76c642d0,
+					name: "minerShop-activity"
+				},
+				{
+					path: "detail/:type?",
+					component: _1057abef,
+					name: "minerShop-detail-type"
+				},
+				{
+					path: "miner/:type?",
+					component: _59b1c6c3,
+					name: "minerShop-miner-type"
+				}
+			]
 		},
 		{
 			path: "/user",
@@ -255,16 +285,6 @@ export function createRouter () {
 					name: "user-orderDetail-id"
 				}
 			]
-		},
-		{
-			path: "/computeShop/detail/:id?",
-			component: _22c02650,
-			name: "computeShop-detail-id"
-		},
-		{
-			path: "/computeShop/list/:type?",
-			component: _0c93ecec,
-			name: "computeShop-list-type"
 		}
     ],
     fallback: false

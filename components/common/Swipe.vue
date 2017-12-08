@@ -1,25 +1,57 @@
 <template>
-  <section class="swiper" :class="[direction?'horizontal':'vertical',{'dragging':dragging}]" @touchstart="onTouchStart" ref="swiper-wrap">
-    <div class="swiper-wrap" :style="{'transform':'translate3d('+translateX+'px,'+translateY+'px,0','transition-duration':transitionDuration+'ms', width: width*4+'px'}" @transitionend="onTransitionEnd">
-      <div class="swiper_one" v-for="n,k in slideEls" @mousemove="onMouseover" :style="{width: width+'px'}">
-        <div class="swiper_box" v-if="currentPage===k" :style="{width: width+'px'}">
-          <template v-for="b in n">
-            <img :src="require('@/assets/images/'+(k===0?'4':k===5?'1':k)+'_'+b+'.png')" v-if="b===1">
-            <img :src="require('@/assets/images/'+(k===0?'4':k===5?'1':k)+'_'+b+'.png')" v-else :style="[{transform: 'translate3d('+offsetX+'px, '+offsetY+'px, 0px)'}]">
+  <section class="swiper" :class="[{'dragging':dragging}]" @touchstart="onTouchStart" ref="swiper-wrap">
+    <div class="swiper_wrap" :style="{'transform':'translate('+translateX+'px,0px','transition-duration':transitionDuration+'ms', width: (oneWidth||width)*slideEls.length+'px'}">
+      <template v-if="!data">
+        <div class="swiper_one" v-for="n,k in slideEls" @mousemove="onMouseover" :style="{width: width+'px'}">
+          <div class="swiper_box" :style="{width: width+'px'}">
+            <template v-if="currentPage===k">
+              <template v-for="b in n">
+                <img :src="require('@/assets/images/swiper/'+(k===0?'4':k===5?'1':k)+'_'+b+'.png')" v-if="b===1">
+                <img :src="require('@/assets/images/swiper/'+(k===0?'4':k===5?'1':k)+'_'+b+'.png')" v-else :style="[{transform: 'translate('+offsetX+'px, '+offsetY+'px)'}]">
+              </template>
+            </template>
+            <template v-else>
+              <img :src="require('@/assets/images/swiper/'+(k===0?'4':k===5?'1':k)+'_'+b+'.png')" v-for="b in n">
+            </template>
+            <router-link to="/minerShop/list" class="btn" v-if="k===5||k===1">即刻开始</router-link>
+            <router-link to="/bdc" class="btn" v-else-if="k===2">查看详情</router-link>
+            <router-link to="/user/computeProperty" class="btn" v-else-if="k===3">查看详情</router-link>
+            <router-link to="/minerShop/activity" class="btn" v-else="k===0||k===4">立即抢购</router-link>
+          </div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="swiper_one"  :style="{width:oneWidth+'px'}" v-for="n,k in slideEls">
+          <template v-if="n.name">
+            <div class="left">
+              <img :src="require('@/assets/images/header.png')" class="header"/>
+              <img :src="require('@/assets/images/color.png')" class="index"/> 
+              <h5>{{n.name}}</h5>
+              <p>{{n.time}}</p>
+            </div>
+            <div class="right">{{n.content}}</div>
           </template>
-          <router-link to="/cloudCompute/list/1/all" class="btn" v-if="k===5||k===1">即刻开始</router-link>
-          <router-link to="/bdc" class="btn" v-else-if="k===2">查看详情</router-link>
-          <router-link to="/user/computeProperty" class="btn" v-else-if="k===3">查看详情</router-link>
-          <router-link to="/cloudCompute/list/1/all" class="btn" v-else-if="k===0||k===4">查看详情</router-link>
+          <template v-else>
+            <router-link to="/minerShop/activity" v-if="k<=1">
+              <img :src="require('@/assets/images/swiper/mobile1.jpg')" alt="">
+            </router-link>
+            <router-link to="/bdc" v-else-if="k>=3">
+              <img :src="require('@/assets/images/swiper/mobile3.jpg')" alt="">
+            </router-link>
+            <router-link to="/mobile/personcenter" v-else>
+              <img :src="require('@/assets/images/swiper/mobile2.jpg')" alt="">
+            </router-link>
+          </template>
         </div>
-        <div class="swiper_box" v-else :style="{width: width+'px'}">
-          <img :src="require('@/assets/images/'+(k===0?'4':k===5?'1':k)+'_'+b+'.png')" v-for="b in n">
-        </div>
-      </div>
+      </template>
     </div>
     <div class="swiper-pagination" v-show="paginationVisiable">
-      <span class="swiper-pagination-bullet" :class="{'active':k+1===currentPage}" v-for="(slide,k) in banners" @click="paginationClickable && setPage(k+1)"></span>
+      <span class="swiper-pagination-bullet" :class="{'active':k+1===currentPage}" v-for="(slide,k) in (data||banners)" @click="setPage(k+1)"></span>
     </div>
+    <template v-if="button">
+      <div class="prev" @click="prev"><</div>
+      <div class="next" @click="next">></div>
+    </template>
   </section>
 </template>
 
@@ -27,20 +59,19 @@
   export default {
     name: 'swiper',
     props: {
-      direction: {
-        type: Number,
-        default: 1,
-        validator: (value) => {
-          return [1, 0].indexOf(value) > -1
-        }
+      button: {
+        type: Boolean,
+        default: false
+      },
+      data: {
+        type: Array
+      },
+      oneWidth: {
+        type: String
       },
       paginationVisiable: {
         type: Boolean,
         default: true
-      },
-      paginationClickable: {
-        type: Boolean,
-        default: false
       },
       loop: {
         type: Boolean,
@@ -48,7 +79,7 @@
       },
       speed: {
         type: Number,
-        default: 500
+        default: 1000
       },
       autoPlay: {
         type: Number,
@@ -58,20 +89,18 @@
     data () {
       return {
         banners: [1, 2, 2, 2],
+        bannersMobile: 5,
         slideEls: [],
         currentPage: 1,
-        lastPage: 1,
         delta: 0,
         dragging: false,
         transitioning: false,
         startPos: null,
         startTranslate: 0,
         translateX: 0,
-        translateY: 0,
         transitionDuration: 0,
         offset: 0,
         t: '',
-        initY: 50,
         offsetX: 0,
         offsetY: 0,
         width: 0
@@ -110,9 +139,7 @@
         this.dragging = true
         this.transitionDuration = 0
         document.addEventListener('touchmove', this.onTouchMove, false)
-        document.addEventListener('mousemove', this.onTouchMove, false)
         document.addEventListener('touchend', this.onTouchEnd, false)
-        document.addEventListener('mouseup', this.onTouchEnd, false)
         clearInterval(this.t)
         this.t = ''
       },
@@ -125,9 +152,9 @@
         this.transitionDuration = 0
         this.delta = 0
         if (this.currentPage <= 0) {
-          this.currentPage = this.banners.length
+          this.currentPage = this.data ? this.data.length : this.banners.length
         }
-        if (this.currentPage >= this.banners.length + 1) {
+        if (this.currentPage >= (this.data ? (this.data.length + 1) : (this.banners.length + 1))) {
           this.currentPage = 1
         }
         if (this.autoPlay) {
@@ -149,8 +176,6 @@
       onTouchEnd (e) {
         document.removeEventListener('touchmove', this.onTouchMove)
         document.removeEventListener('touchend', this.onTouchEnd)
-        document.removeEventListener('mousemove', this.onTouchMove)
-        document.removeEventListener('mouseup', this.onTouchEnd)
         if (this.delta === 0) return false
         this.dragging = false
         this.transitionDuration = this.speed
@@ -164,7 +189,6 @@
         }
       },
       setPage (page, e) {
-        this.lastPage = this.currentPage
         this.currentPage = page
         this.setTranslate()
         this.transitioning = false
@@ -172,7 +196,7 @@
       },
       next () {
         var page = this.currentPage
-        if (page < this.banners.length || this.loop) {
+        if ((page < (this.data ? this.data.length : this.banners.length)) || this.loop) {
           this.setPage((page + 1) > 5 ? 5 : (page + 1))
         } else {
           this.setPage(this.currentPage)
@@ -190,20 +214,19 @@
         if (!value) {
           value = this.currentPage * -this.offset
         }
-        var translateName = this.direction ? 'translateX' : 'translateY'
-        this[translateName] = value
+        this.translateX = value
+        setTimeout(this.onTransitionEnd, this.speed + 500)
       },
       getTouchPos (e) {
-        var key = this.direction ? 'pageX' : 'pageY'
-        return e.changedTouches ? e.changedTouches[0][key] : e[key]
+        return e.changedTouches ? e.changedTouches[0]['pageX'] : e['pageX']
       },
       onInit () {
         this.width = document.body.clientWidth || document.documentElement.clientWidth
         clearInterval(this.t)
-        this.offset = this.$refs['swiper-wrap'][this.direction ? 'offsetWidth' : 'offsetHeight']
+        this.offset = this.oneWidth || this.$refs['swiper-wrap']['offsetWidth']
         this.onTouchMove = this.onTouchMove.bind(this)
         this.onTouchEnd = this.onTouchEnd.bind(this)
-        var arr = this.banners
+        var arr = this.data || this.banners
         this.slideEls = [arr[arr.length - 1], ...arr, arr[0]]
         if (this.loop) {
           this.setTranslate()
@@ -219,150 +242,22 @@
 </script>
 
 <style type="text/css" lang="scss">
+  @import '../../assets/css/style.scss';
   .swiper {
     position: relative;
-    height: 520px;
     overflow: hidden;
-    .swiper-wrap {
-      display: flex;
-      height: 100%;
+    .swiper_wrap {
+      overflow: hidden;
       transition: all 0ms ease;
       .swiper_one{
-        height: 100%;
-        text-align: center;
-        .swiper_box{
-          position: relative;
-          height: 100%;
-          background: #0c1235 url('../../assets/images/banner.jpg');
-          img{
-            position: absolute;
-            transition: all .2s;
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
-            &:first-child{
-              left:calc(50% - 590px);
-            }
-            &:nth-child(2){
-              right:calc(50% - 590px);
-            }
-            @media screen and (max-width: 1178px) and (min-width: 340px){
-              object-fit:contain
-            }
-          }
-          a.btn{
-            position: absolute;
-            width:200px;
-            height:50px;
-            line-height: 50px;
-            text-align: center;
-            left:calc(50% - 590px);
-            top:330px;
-            color:#fff;
-            border:1px solid #fff;
-            border-radius:5px;
-            font-size: 18px;
-            &:hover{
-              background: #fff;
-              color:#1e396c
-            }
-          }
-          img:first-child,a.btn{
-            @media screen and (max-width: 1178px) and (min-width: 340px){
-              left:0;
-            }
-          }
-          img:nth-child(2){
-            @media screen and (max-width: 1178px) and (min-width: 340px){
-              right:0;
-            }
-          }
-        }
-        &:nth-child(6),&:nth-child(2){
-          img{
-            top:0;
-            width:1180px;
-            height:100%;
-            @media screen and (max-width: 1178px) and (min-width: 340px){
-              width:100%;
-            }
-          }
-          a.btn{
-            border-color:#327fff;
-            background: #327fff;
-            color:#fff;
-            &:hover{
-              border-color:#327fff;
-              background: #327fff;
-              color:#fff
-            }
-          }
-        }
-        &:nth-child(3) img:first-child{
-          width:563px;
-          top:calc(50% - 45px);
-          height:90px;
-        }
-        &:nth-child(3) img:nth-child(2){
-          top:calc(50% - 139.5px);
-          width:532px;
-          height:279px;
-        }
-        &:nth-child(4){
-          img:first-child{
-            width:626px;
-            top:calc(50% - 44px);
-            height:88px;
-          }
-        }
-        &:nth-child(4){
-          img:nth-child(2){
-            top:calc(50% - 137.5px);
-            width:404px;
-            height:275px;
-          }
-        }
-        &:nth-child(5),&:nth-child(1){
-          img:first-child{
-            width:493px;
-            top:calc(50% - 54.5px);
-            height:99px;
-          }
-        }
-        &:nth-child(5),&:nth-child(1){
-          img:nth-child(2){
-            top:calc(50% - 143.5px);
-            width:564px;
-            height:287px;
-          }
-        }
-      }
-    }
-    &.horizontal {
-      flex-direction: row;
-      .swiper-pagination .swiper-pagination-bullet{
-        margin: 0 3px;
-      }
-    }
-    &.vertical {
-      flex-direction: column;
-      .swiper-pagination {
-        right: 10px;
-        top: 50%;
-        transform: translate3d(0, -50%, 0);
-        .swiper-pagination-bullet{
-          margin: 6px 0;
-        }
-      }
-    }
-    &.vertical,&.horizontal{
-      .swiper-pagination {
-        bottom: 20px;
-        width: 100%;
-        text-align: center;
+        float: left;
       }
     }
     .swiper-pagination {
       position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
       .swiper-pagination-bullet {
         display: inline-block;
         width: 80px;
@@ -371,9 +266,23 @@
         opacity: .2;
         transition: all 4s ease;
         cursor: pointer;
+        margin: 0 3px;
         &.active {
           border-bottom: 2px solid #fff;
           opacity: 1;
+        }
+      }
+      @media screen and (max-width: $mobile) {
+        bottom: 2px;
+        .swiper-pagination-bullet{
+          width: 10px;
+          border-bottom: 10px solid #000000;
+          border-top:0;
+          border-radius:50%;
+          &.active {
+            border-bottom: 10px solid #fff;
+            opacity: 1;
+          }
         }
       }
     }

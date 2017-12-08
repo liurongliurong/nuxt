@@ -14,5 +14,6 @@ module.exports = {
   loading: {
     color: 'white',
     height: '2px'
-  }
+  },
+  plugins: ['~plugins/styleFrame']
 }

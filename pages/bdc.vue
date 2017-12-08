@@ -2,7 +2,6 @@
   <article class="bdc">
     <div class="bg-box">
       <div class="bg"></div>
-      <!-- <div class="mask"></div> -->
     </div>
     <div class="top-box-row">
       <div class="top-box">
@@ -86,7 +85,7 @@
           ff[data.n].focus()
           return false
         }
-        util.post('depositMessage', {sign: api.serialize({token: this.token, dep_name: encodeURIComponent(this.depName), dep_tel: this.depTel, dep_bdc: encodeURIComponent(this.depBdc), dep_type: encodeURIComponent(this.depType), dep_number: this.depNumber, code: this.code})}).then(function (res) {
+        util.post('depositMessage', {token: this.token, dep_name: encodeURIComponent(this.depName), dep_tel: this.depTel, dep_bdc: encodeURIComponent(this.depBdc), dep_type: encodeURIComponent(this.depType), dep_number: this.depNumber, code: this.code}).then(function (res) {
           if (!res.code) {
             self.success = true
           }
@@ -117,7 +116,7 @@
           return false
         }
         if (self.$refs['count_btn'].getAttribute('disabled') === 'true') return false
-        util.post('send_code', {sign: api.serialize({token: this.token, mobile: form.depTel.value})}).then(res => {
+        util.post('send_code', {token: this.token, mobile: form.depTel.value}).then(res => {
           this.tips = '短信验证码发送成功'
           self.conntDown()
           self.$refs['count_btn'].setAttribute('disabled', true)
@@ -139,11 +138,11 @@
       }
     },
     mounted () {
-      // let self = this
-      // util.post('bdcinfoList', {sign: 'token=0'}).then(function (data) {
-      //   self.list = data
-      //   self.depBdc = data[0].bdc_name
-      // })
+      let self = this
+      util.post('bdcinfoList', {token: '0'}).then(function (data) {
+        self.list = data
+        self.depBdc = data[0].bdc_name
+      })
     },
     computed: {
       ...mapState({

@@ -1,6 +1,7 @@
 // 常量
   // 长度
     $main_width:1180px;
+    $mobile:768px;
   // 颜色
     $white:#fff;
     $light_white:#cbcbcb;
@@ -9,19 +10,20 @@
     $light_text:#666;
     $light_black:#999;
     $black:#444;
-    $border:#e8e8e8;
-    $blue:#327fff;
+    $border:#e5e5e5;
+    $blue:#327FFF;
     $light_blue:#75b7f3;
     $blue_border:#b1c4e5;
     $red:#ea2c2c;
     $light_red:#e65c65;
-    $orange:#ff721f;
+    $orange:#FE5038;
     $green:#5cbe53;
     $green_border:#c2ee93;
     $green_bg:#f1ffe2;
     $fail:#f1624b;
     $fail_border:#fec6ad;
     $fail_bg:#ffedda;
+    $purple: #A53ECB;
 // 内外边距
   @mixin gap($value:5,$item:all,$type:padding) {
     @if $item == all {
@@ -43,6 +45,22 @@
     align-items: $v;
     flex-direction: $direction;
     flex-wrap: $wrap;
+    @if ($h == space-between) {
+      text-align: justify;
+      text-align-last:justify;
+      & > *{
+        text-align: left;
+        text-align-last:auto
+      }
+    }
+    & > *{
+      display: inline-block;
+      vertical-align:middle;
+    }
+    & *{
+      // text-align: auto;
+      // text-align-last:auto
+    }
   }
 // 全部
   @mixin all($w:100%,$h:100%){
@@ -162,6 +180,8 @@
       &:not(:nth-child(#{$v}n)){
         margin-right: $gap;
       }
+      display: inline-block;
+      vertical-align:middle;
     }
   }
 // 宽度
@@ -185,7 +205,7 @@
     overflow: hidden;
     background: $color;
     padding-top:$h;
-    .bg{
+    .bg,img{
       position: absolute;
       top: 0;
       left: calc(50% - #{$w/2}px);
@@ -221,6 +241,7 @@
       &:first-child{
         width:70px;
         left:20px;
+        @include mobile_hide
       }
       &:nth-child(2){
         top:10px;
@@ -228,7 +249,8 @@
         left:90px;
         @include gap(15,h)
         color:$red;
-        border-right:1px solid $border
+        border-right:1px solid $border;
+        @include mobile_hide
       }
       &:last-child{
         &:before{
@@ -250,13 +272,15 @@
         &:after{
           content:attr(tips)
         }
+        @include mobile_hide
       }
     }
     input,.sel,.select{
-      line-height:2;
+      height:50px;
+      line-height:32px;
       border: 1px solid $blue_border;
       border-radius: 5px;
-      flex:1;
+      width:100%;
       padding:8px;
       padding-left:140px;
       font-size: 16px;
@@ -303,6 +327,27 @@
           }
         }
       }
+      @media screen and (max-width: $mobile) {
+        padding-left:10px;
+        border-color:$border;
+        line-height: 25px;
+        height:43px;
+        font-size: 0.5rem;
+        &[data-status='invalid'],&[data-status='null'],&[data-status='error'],&[data-status='success']{
+          & ~ span{
+            display:none
+          }
+        }
+      }
+    }
+    .select{
+      @include flex(space-between)
+      select{
+        width:33%;
+        height:32px;
+        line-height: 32px;
+        border:none;
+      }
     }
     select{
       height:29px;
@@ -311,13 +356,23 @@
     canvas,.btn{
       @include position(5,auto,5,5)
       width:90px;
-      cursor: pointer
+      cursor: pointer;
+      @media screen and (max-width: $mobile) {
+        height:34px;
+        line-height: 34px
+      }
     }
     .btn{
       text-align: center;
       @include button($blue)
       font-size: 14px;
-      line-height: 38px
+      line-height: 38px;
+      @media screen and (max-width: $mobile) {
+        // background: #ececec;
+        // border-color:#ececec;
+        // color:$light_text;
+        line-height: 34px
+      }
     }
     &.addon{
       input{
@@ -372,6 +427,9 @@
           left:10px
         }
       }
+      @media screen and (max-width: $mobile) {
+        margin-bottom:15px;
+      }
     }
     label input{
       @include checkbox(18,0)
@@ -382,6 +440,9 @@
       @include button($blue)
       line-height:2.6;
       @include gap(20,v,margin)
+    }
+    @media screen and (max-width: $mobile) {
+      width:100%
     }
   }
 // good_table
@@ -448,7 +509,8 @@
 // icon_close
   @mixin close{
     color: $white;
-    @include position(-30,auto,auto,10)
+    @include position(16.5,auto,auto,16.5)
+    z-index: 10;
     .icon{
       @include block(20,50%)
       background: $white;
@@ -473,11 +535,15 @@
 // mask
   @mixin mask{
     @include position
-    @include flex(center)
     background: rgba(0,0,0,.5);
     z-index: 10;
     .form_box{
-      position: relative;
+      position: absolute;
+      top:50%;
+      left:50%;
+      width:680px;
+      margin-left:-340px;
+      margin-top:-323px;
       background: $white;
       .close{
         @include close
@@ -491,7 +557,7 @@
 // menu
   @mixin menu{
     &:not(.address_item){
-      @include flex
+      @include flex(space-between)
       padding:15px;
       border:1px solid #e5e5e5;
     }
@@ -532,25 +598,24 @@
       .item:not(:first-child){
         .val{
           text-align: left;
-          padding-left:167px;
-          flex:1
+          padding-left:19%;
+          width:80%
         }
       }
     }
     .icon{
       @include block(18,50%)
-      margin-right:10px
     }
     .con_title{
-      width: 140px;
+      width: 13%;
       font-size: 16px;
       font-weight: bold;
     }
     .desc{
-      flex:1
+      width:38%;
     }
     .val{
-      width: 200px;
+      width: 22%;
       color: $light_text;
       text-align: center;
       span{
@@ -558,7 +623,7 @@
       }
     }
     .opr{
-      width: 150px;
+      width: 17%;
       text-align: right;
       color: $blue;
       cursor: pointer;
@@ -611,18 +676,6 @@
       }
     }
   }
-// time_icon
-  @mixin time{
-    img{
-      width:12px
-    }
-    span{
-      flex:1;
-      padding-left:10px;
-      color: $light_dark;
-      font-size: 12px;
-    }
-  }
 // item
   @mixin item($value:10,$type:solid){
     &:not(:first-child){
@@ -663,13 +716,12 @@
   @mixin main($w:$main_width){
     width:$w;
     @include center
-    @media screen and (max-width: 1178px) and (min-width: 340px){
+    @media screen and (max-width: 1178px) and (min-width: 768px){
       width:100%;
       @include gap(20,h)
     }
-    @media screen and (max-width: 340px){
+    @media screen and (max-width: 768px){
       width:100%;
-      @include gap(15,h)
     }
   }
 // table
@@ -682,10 +734,10 @@
   }
 // detail_box
   @mixin detail_data{
-    @include flex
+    @include flex(space-between)
     .item{
-      flex:1;
-      padding-left:40px;
+      padding-left:30px;
+      padding-right:30px;
       span{
         color:$light_black;
         &.currency{
@@ -708,10 +760,10 @@
     width:185px;
     a{
       display: block;
-      text-align: center;
       border-radius:5px
     }
     button,a{
+      text-align: center;
       width:100%;
       line-height: 2.5;
       & + button,& + a{
@@ -736,48 +788,38 @@
       td{
         line-height: 55px;
       }
-      thead{
-        tr{
-          background: #f7f8fa;
-          border-top:1px solid $border;
-          th{
-            font-size: 12px;
-            color: $light_text;
-            line-height: 48px;
-          }
+      tr:first-child{
+        background: #f7f8fa;
+        border-top:1px solid $border;
+        th{
+          font-size: 12px;
+          color: $light_text;
+          line-height: 48px;
         }
       }
-      tbody{
-        tr{
-          border-bottom:1px solid $border
-        }
+      tr:not(:first-child){
+        border-bottom:1px solid $border
       }
     }
     @include nodata
   }
-// 提示
-  .web_tips{
-    @include position
-    position: fixed;
-    top:auto;
-    line-height:50px;
-    text-align: center;
-    background: $blue;
-    color:$white;
-    transition:all .5s;
-    opacity:0;
-    height: 0;
-    z-index: 10
-  }
 // process
   @mixin process{
     padding:25px 30px;
-    @include flex
+    @include flex(space-between)
     .item{
       &:not(:last-child){
-        flex:1;
+        position: relative;
+        width:calc(33% - 33px);
+        .line{
+          display: inline-block;
+          margin:0 15px;
+          width:calc(100% - 130px);
+          height: 1px;
+          background: $border;
+          vertical-align: middle;
+        }
       }
-      @include flex
       color:$blue;
       i{
         position: relative;
@@ -785,6 +827,7 @@
         border: 1px solid $blue;
         text-align: center;
         margin-right:5px;
+        vertical-align: bottom;
         &:empty:before{
           content:'';
           @include right(8,5,$blue)
@@ -807,12 +850,6 @@
             color:$light_black
           }
         }
-      }
-      .line{
-        margin:0 15px;
-        flex:1;
-        height: 1px;
-        background: $border;
       }
     }
   }
@@ -874,8 +911,11 @@
       text-align: center;
       min-height:300px;
       margin-top:20px;
-      img{
-        width:234px
+      .nodata_img{
+        display: inline-block;
+        width: 234px;
+        height: 215px;
+        // background: url('../../assets/images/css_sprites.png') -335px -10px;
       }
       p{
         color:$light_black;
@@ -924,4 +964,242 @@
         }
       }
     }
+  }
+// number_input
+  @mixin number_box{
+    @include flex(space-between)
+    span{
+      width:10%;
+      text-align: center;
+      background: $border;
+      font-size: 18px;
+      font-weight: bold;
+      color: #c5c5c5;
+      cursor: pointer;
+      user-select:none;
+      &:last-child{
+        color: $orange;
+      }
+    }
+    input{
+      width:75%
+    }
+  }
+// accept_label
+  @mixin accept_label{
+    color: #666;
+    input{
+      @include checkbox(18,5px)
+      &:checked{
+        background: $orange;
+        border-color: $orange;
+      }
+      & ~ span.select_accept{
+        opacity: 0;
+        color: #ff721f;
+        font-size: 12px;
+      }
+      &[data-status='invalid'] ~ span.select_accept{
+        opacity: 1;
+      }
+    }
+  }
+// mobile hide
+  @mixin mobile_hide{
+    @media screen and (max-width: $mobile) {
+      display: none;
+    }
+  }
+// mobile show
+  @mixin mobile_show{
+    display: none;
+    @media screen and (max-width: $mobile) {
+      display: block;
+    }
+  }
+// mobile data
+  @mixin mobile_data{
+    padding:0 15px;
+    border-top:1px solid $border;
+    border-bottom:1px solid $border;
+    h3{
+      margin-bottom:0;
+      border-bottom:1px solid $border;
+      line-height: 40px;
+      .icon_currency{
+        display: none;
+      }
+      .sell_type{
+        width:45px;
+        border-radius:5px;
+        background: #ff721f;
+        color:$white;
+        &.active{
+          background: $blue;
+          color:$white;
+        }
+      }
+    }
+    .info_box{
+      display: none;
+    }
+    .mobile_info_box{
+      display: block;
+      color:$light_black;
+      line-height: 2;
+      padding:5px 0 10px 0;
+      @include flex(space-between)
+      .mobile_info{
+        width:75%;
+        h4{
+          span{
+            margin-left:10px;
+            color:#ffb386;
+            b{
+              font-weight: normal;
+              font-size: 24px;
+              color:$orange;
+            }
+          }
+        }
+        .mobile_text{
+          @include flex(space-between)
+          .mobile_text_item{
+            b{
+              font-weight: normal;
+              color:$text;
+              margin:0 4px;
+            }
+          }
+        }
+      }
+      .sell_progress{
+        width:70px;
+        height:70px;
+        line-height: 70px;
+        text-align: center;
+        border-radius:50%;
+        border:2px solid $border;
+        color:$orange;
+        // background-image: linear-gradient(0deg, #fff 50%, transparent 50%, transparent), linear-gradient(45deg, #fff 50%, #ff721f 50%, #ff721f);
+      }
+    }
+  }
+// mobile_popup
+  @mixin popup{
+    width:100%;
+    bottom:0 !important;
+    overflow:scroll;
+    height:80%;
+    .close{
+      @include close
+      top:5px;
+      right:12px;
+    }
+    .form{
+      box-sizing:border-box;
+      margin-top:1rem;
+      @include form(v)
+    }
+    .agreement,.form{
+      padding:15px;
+      overflow:auto;
+    }
+    .agreement{
+      height:calc(90vh - 30px);
+    }
+  }
+// data_title
+  @mixin data_title{
+    @include flex(space-between)
+    @include gap(15,v,margin);
+    @include main
+    position: relative;
+    span:nth-child(1){
+      font-size: 24px;
+      font-weight: bold;
+    }
+    span:nth-child(2){
+      width:452px;
+      height:27px;
+      margin-left:20px;
+      font-size: 14px;
+      background: linear-gradient(to right, #b28850, #cfa972);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b28850', endColorstr='#cfa972',GradientType=1 );
+      color:$white;
+      padding:3px 10px
+    }
+    a{
+      font-size: 16px;
+      color:#999;
+      &:hover{
+        color:$blue
+      }
+    }
+  }
+// address_data
+  @mixin address_data{
+    margin:20px 0 40px 0;
+    overflow: hidden;
+    color:$light_text;
+    .item{
+      position: relative;
+      border: 1px solid transparent;
+      padding: 0 25px;
+      background: #EFF6FE;
+      cursor: pointer;
+      padding-left:90px;
+      padding-right:80px;
+      & + .item{
+        margin-top:10px;
+      }
+      @include flex(space-between)
+      span{
+        padding: 10px 0;
+      }
+      &.active{
+        border-color:$blue;
+        span:first-child:before{
+          content:'\e641';
+        }
+        span:first-child:after{
+          content:'寄送至';
+        }
+      }
+      span:first-child:before,span:first-child:after{
+        @include position(10,35,auto,auto)
+        color:$blue
+      }
+      span:first-child:before{
+        font-family:"iconfont" !important;
+        left:15px;
+        font-size: 18px;
+      }
+      .set_default{
+        color:$blue;
+        cursor: pointer;
+      }
+    }
+    .address_btn{
+      display: inline-block;
+      border:1px solid $border;
+      padding:3px 10px;
+      margin-top:15px;
+      margin-left:90px;
+      cursor: pointer;
+      color:$text;
+      background: linear-gradient(to bottom, #F9F9F9 20%, #D9D9D9);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F9F9F9', endColorstr='#D9D9D9',GradientType=0 );
+      &:before{
+        content:'+';
+        color:#00BDB6;
+        margin-right:3px;
+        font-weight: bold;
+      }
+    }
+  }
+// process_color
+  @mixin process_color{
+    background: linear-gradient(to right, #337eff 20%, #c72abc);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#337eff', endColorstr='#c72abc',GradientType=1 );
   }

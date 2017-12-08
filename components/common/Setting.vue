@@ -75,8 +75,7 @@
         mobile: state => state.info.mobile,
         true_name: state => state.info.true_name,
         bank_card: state => state.info.bank_card,
-        address: state => state.info.address,
-        hashType: state => state.hashType
+        address: state => state.info.address
       }),
       ...mapGetters([
         'menu'

@@ -1,15 +1,19 @@
+require('es6-promise').polyfill()
 import axios from 'axios'
 import qs from 'qs'
-import func from './function'
+import util from './function'
 
 let api = axios.create({
-  baseURL: 'http://suanli.baoquan.com/background/api',
-  // baseURL: 'http://192.168.3.45/background/api/',
+  // baseURL: 'http://www.suanli.local/background/api',
+  baseURL: 'http://192.168.3.45/background/api/',
   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
   responseType: 'json'
 })
 // 修改返回数据格式
 api.defaults.transformResponse = (res) => {
+  if (typeof res === 'string') {
+    res = JSON.parse(res)
+  }
   if (res.code === '1000') {
     return res.msg
   } else if (res.code === '600001') {
@@ -27,15 +31,30 @@ api.defaults.validateStatus = (status) => {
 }
 
 api.interceptors.response.use(res => {
-  if (res.status) {
+  // console.log(res)
+  // if (res.status) {
+  //   return res.data
+  // }
+  // return res
+  // console.log(res)
+  if (res.status >= 200 && res.status < 300) {
     return res.data
   }
-  return res
+  return Promise.reject(res)
+}, error => {
+  return Promise.reject({message: '网络异常，请刷新重试', err: error})
 })
 
 api.interceptors.request.use(config => {
   if (config.data) {
-    config.data = qs.stringify({sign: btoa(func.serialize(config.data))})
+    if (config.data['sign']) {
+      if (window.btoa) {
+        config.data['sign'] = window.btoa(config.data['sign'])
+      } else {
+        config.data['sign'] = util.btoa(config.data['sign'])
+      }
+    }
+    config.data = qs.stringify(config.data)
   }
   return config
 }, error => {

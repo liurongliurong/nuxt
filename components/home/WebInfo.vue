@@ -8,25 +8,24 @@
           <router-link to="/webInfo/list/website">查看更多 ></router-link>
         </h3>
         <div class="list">
-          <router-link :to="'/webInfo/detail/'+a.id" class="item" v-for="a,k in $parent.activity" :key="k">
+          <router-link :to="'/webInfo/detail/'+a.id" class="item" v-for="a,k in activity" :key="k">
             <span class="icon"></span>
             <span class="line"></span>
-            <span class="text">{{a.title}}</span>
+            <span class="text" style="width:72%;">{{a.title}}</span>
             <span class="date">{{a.dateline}}</span>
           </router-link>
         </div>
-      </div>
-      <div class="box">
+      </div><div class="box">
         <h3>
           <span class="icon"></span>
           <span class="text">产品公告</span>
           <router-link to="/webInfo/list/product">查看更多 ></router-link>
         </h3>
         <div class="list">
-          <router-link :to="'/webInfo/detail/'+a.id" class="item" v-for="a,k in $parent.notice" :key="k">
+          <router-link :to="'/webInfo/detail/'+a.id" class="item" v-for="a,k in notice" :key="k">
             <span class="icon"></span>
             <span class="line"></span>
-            <span class="text">{{a.title}}</span>
+            <span class="text" style="width:72%;">{{a.title}}</span>
             <span class="date">{{a.dateline}}</span>
           </router-link>
         </div>
@@ -35,6 +34,33 @@
   </div>
 </template>
 
+<script>
+  import util from '../../util'
+  export default {
+    name: 'chart',
+    data () {
+      return {
+        activity: [],
+        notice: []
+      }
+    },
+    mounted () {
+      var self = this
+      util.post('/homeDynamic', {sign: 'token=0'}).then(function (data) {
+        console.log(data)
+        self.activity = data
+      }).catch(res => {
+        console.log(res)
+      })
+      util.post('/homeAnnouncoment', {sign: 'token=0'}).then(function (data) {
+        self.notice = data
+      }).catch(res => {
+        console.log(res)
+      })
+    }
+  }
+</script>
+
 <style type="text/css" lang="scss">
   @import '../../assets/css/style.scss';
   .web_info_box{
@@ -42,10 +68,10 @@
     border-bottom:1px solid $border;
     margin-bottom:60px;
     .main{
-      @include flex(flex-start,stretch)
+      @include flex(space-between,stretch)
       @include main
       .box{
-        flex:1;
+        width:50%;
         padding-bottom:5px;
         &:first-child{
           padding-right:60px;
@@ -94,7 +120,7 @@
               z-index: -1;
             }
             .text{
-              flex:1;
+              width:75%;
               padding-left:14px;
             }
             .date{

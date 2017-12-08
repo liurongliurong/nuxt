@@ -24,6 +24,9 @@
       MyFoot
     },
     mounted () {
+      if (api.checkEquipment()) {
+        this.$store.commit('SET_EQUIPMENT', true)
+      }
       if (this.token === 0) {
         this.$store.dispatch('getInfo')
       }

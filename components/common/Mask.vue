@@ -1,16 +1,17 @@
 <template>
-  <section class="mask">
+  <section class="mask_con">
     <div class="form_box">
       <div class="close" @click="$parent.closeEdit()">
-        <span class="icon"  style="position: absolute;top: 45px;right: 20px;"></span>
+        <span class="icon"></span>
       </div>
       <h2>{{title}}</h2>
-      <form :class="['form form_content', {card_form: $parent.edit==='card'}]" @submit.prevent="$parent.submit" novalidate>
+      <form :class="['form form_content', {card_form: $parent.edit==='card'}]" @submit.prevent="$parent.submit" novalidate v-if="!contract">
         <FormField :form="form"></FormField>
-        <p v-if="$parent.fee&&$parent.edit!=='GetIncome'">手续费：{{$parent.total_price*$parent.fee|format}}元<span class="fee">({{$parent.fee*100+'%'}})</span></p>
-        <p v-if="$parent.fee&&$parent.edit==='GetIncome'">手续费：{{$parent.total_price*$parent.fee|format(8)}}btc<span class="fee">({{$parent.fee*100+'%'}})</span></p>
+        <p v-if="$parent.fee&&$parent.edit!=='GetIncome'">手续费：{{$parent.total_price * $parent.fee|format}}元<span class="fee">({{$parent.fee*100+'%'}})</span></p>
+        <p v-if="$parent.fee&&$parent.edit==='GetIncome'">手续费：0.0002btc</p>
         <button name="btn">确认提交</button>
       </form>
+      <div class="contract" v-html="contract" v-else></div>
     </div>
   </section>
 </template>
@@ -28,6 +29,9 @@
       },
       title: {
         type: String
+      },
+      contract: {
+        type: String
       }
     },
     filters: {
@@ -38,30 +42,16 @@
 
 <style type="text/css" lang="scss">
   @import '../../assets/css/style.scss';
-  .mask{
+  .mask_con{
     @include mask
     .form_box{
       .form_content{
         padding:40px 130px;
         @include form(v)
-        .input{
-          .select{
-            @include flex
-            select{
-              flex:1;
-              height:32px;
-              line-height: 32px;
-              border:none;
-              & + select{
-                margin-left:3px
-              }
-            }
-          }
-        }
         &.card_form .input{
           span{
             &:first-child {
-              width: 115px;
+              width: 120px;
               text-align: right;
             }
             &:nth-child(2) {
@@ -77,6 +67,14 @@
           color: $light_black;
           margin-left:5px
         }
+      }
+    }
+    .contract{
+      padding:30px;
+      height:680px;
+      overflow:auto;
+      p, p > *{
+        white-space:wrap !important;
       }
     }
   }

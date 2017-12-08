@@ -1,313 +1,144 @@
 <template>
-  <article class="home">
-    <Swiper :pagination-visible="true" :loop="true" :paginationClickable="true" :autoPlay="3000"></Swiper>
-    <!-- <Chart></Chart> -->
-    <div class="ad">
-      <div class="main">
-        <h1>{{ad.title}}</h1>
-        <p>{{ad.desc}}</p>
-        <div class="list">
-          <div class="item" v-for="a,k in ad.items">
-            <span :class="['iconfont', 'icon'+k]"></span>
-            <h3>{{a.title}}</h3>
-            <div class="line"></div>
-            <p v-html="a.desc"></p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <MyData></MyData>
-    <div class="wq">
-      <img :src="wqImg" alt="" class="pre">
-      <div class="text">
-        <img src="../assets/images/server.png" style="width:800px;display:block;margin:0 auto;"/>
-        <router-link to="/cloudCompute/list/1/all">即刻体验</router-link>
-      </div>
-    </div>
-    <WebInfo></WebInfo>
-    <div class="partner">
-      <div class="box">
-        <h3>战略合作伙伴</h3>
-        <div class="list">
-          <div class="item" v-for="i in 7" v-if="i!==2">
-            <div :class="'img img'+i"></div>
-            <div :class="'img_hover img_hover'+i"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <SideBar></SideBar>
-  </article>
+  <MobileHome v-if="isMobile"></MobileHome>
+  <PcHome v-else></PcHome>
 </template>
 
 <script>
-  import util from '@/util'
   import api from '@/util/function'
+  import MobileHome from './index/mobile'
+  import PcHome from './index/pc'
   import { mapState } from 'vuex'
-  import Swiper from '@/components/common/Swipe'
-  import Chart from '@/components/home/Chart'
-  import MyData from '@/components/home/DataList'
-  import WebInfo from '@/components/home/WebInfo'
-  import SideBar from '@/components/home/SideBar'
   export default {
     components: {
-      Swiper, Chart, MyData, WebInfo, SideBar
+      MobileHome, PcHome
     },
-    data () {
-      return {
-        ad: {title: '全球首个算力产业链综合服务平台', desc: '算力网是中国信息化推进联盟区块链实验室的推进项目，为区块链算力产业链提供全系列服务', items: [{title: '项目合规', desc: '所有项目出具法律意见书<br>并公开法律意见书'}, {title: '用电合规', desc: '项目为政府招商引资项目<br>全部国网供电，电力稳定持久'}, {title: '透明收益', desc: '全流程产业链对接，信息透明<br>避免踩坑'}, {title: '全程存证', desc: '对接保全网区块链电子凭证技术<br>实现全部在线协议的合规有效'}, {title: '算力管家', desc: '为用户投资的每一份算力<br>提供贴心的远程管家服务'}]},
-        wqImg: require('@/assets/images/ad.jpg'),
-        dataList: [],
-        activity: [],
-        notice: []
+    methods: {
+      goMobile () {
+        if (api.checkEquipment()) {
+          this.$store.commit('SET_EQUIPMENT', true)
+        } else {
+          this.$store.commit('SET_EQUIPMENT', false)
+        }
       }
     },
     mounted () {
-      var self = this
-      util.post('product_top_list', {token: this.token}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.dataList = res
-        })
-      })
-      util.post('/webDynamic', {token: this.token}).then(function (data) {
-        self.activity = data
-      })
-      util.post('/webAnnouncoment', {token: this.token}).then(function (data) {
-        self.notice = data
-      })
+      window.addEventListener('resize', this.goMobile, false)
     },
     computed: {
       ...mapState({
-        token: state => state.info.token
+        isMobile: state => state.isMobile
       })
     }
   }
 </script>
 
 <style type="text/css" lang="scss">
-  @import '../assets/css/style.scss';
-  @import '../assets/fonts/iconfont.css';
-  .ad{
-    background:#f7f8fa;
-    border-bottom:1px solid $border;
-    margin-bottom:45px;
-    .main{
-      @include gap(20,v)
-      @include main
-      height:293px;
-      line-height: 2;
-      h1,p{
-        text-align: center
-      }
-      h1{
-        font-size: 30px
-      }
-      p{
-        font-size: 16px
-      }
-      .list{
-        @include flex
-        border:1px solid $border;
-        border-bottom:0;
-        margin-top:30px;
-        .item{
-          position: relative;
-          height: 150px;
-          flex:1;
-          padding:20px;
-          padding-right:18px;
-          &:not(:last-child){
-            border-right:1px solid $border;
-          }
-          h3{
-            font-size: 20px;
-          }
-          .line{
-            width:45px;
-            border-bottom:2px solid $blue;
-            margin-top:5px;
-            margin-bottom:7px;
-          }
-          p{
+  @import '~assets/css/style.scss';
+  .home{
+    &:not(.mobile_page){
+      .swiper{
+        .swiper_wrap{
+          .swiper_one{
             position: relative;
-            text-align: left;
-            line-height: 1.5;
-            font-size: 14px;
-            color:$light_text;
-            z-index: 2;
-          }
-          span{
-            position: absolute;
-            top:calc(50% - 35px);
-            right:20px;
-            @include block(70)
-            &:before{
-              font-size: 70px;
-              color:#e6e6e6
+            height: 520px;
+            background: linear-gradient(to bottom, #0D1B36 10%, #264683);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0D1B36', endColorstr='#264683',GradientType=0 );
+            img{
+              position: absolute;
+              transition: all .2s;
+              transform-style: preserve-3d;
+              backface-visibility: hidden;
+              &:first-child{
+                left:calc(50% - 590px);
+              }
+              &:nth-child(2){
+                right:calc(50% - 590px);
+              }
+              @media screen and (max-width: 1178px) and (min-width: 340px){
+                object-fit:contain
+              }
             }
-          }
-          .icon0:before{
-            content: "\e60a"
-          }
-          .icon1:before{
-            content: "\e60b"
-          }
-          .icon2:before{
-            content: "\e606"
-          }
-          .icon3:before{
-            content: "\e604"
-          }
-          .icon4:before{
-            content: "\e608"
-          }
-          &:hover{
-            background: $white;
-            h3{
-              color:$blue
+            a.btn{
+              position: absolute;
+              width:200px;
+              height:50px;
+              line-height: 50px;
+              text-align: center;
+              left:calc(50% - 590px);
+              top:330px;
+              color:#fff;
+              border:1px solid #fff;
+              border-radius:5px;
+              font-size: 18px;
+              &:hover{
+                background: #fff;
+                color:#1e396c
+              }
             }
-          }
-        }
-      }
-    }
-  }
-  .wq{
-    position: relative;
-    height:315px;
-    margin-bottom:60px;
-    overflow: hidden;
-    @include flex(flex-start,center)
-    .pre{
-      @include position
-      height:100%;
-      object-fit:cover;
-      z-index: -1;
-      transition:2s;
-    }
-    &:hover .pre{
-      transform:scale(1.1); 
-    }
-    .text{
-      @include main
-      text-align: center;
-      h2{
-        font-size: 30px;
-        margin-bottom:20px;
-        color:$white
-      }
-      p{
-        font-size: 16px;
-        color:#d7d8d9
-      }
-      a{
-        display: inline-block;
-        padding:10px 50px;
-        border-radius:5px;
-        @include button($blue)
-        margin-top:30px;
-        &:hover{
-          background:#166cfb;
-          border:1px solid #166cfb;
-        }
-      }
-    }
-  }
-  .partner{
-    .box{
-      @include main
-      text-align: center;
-      margin-bottom:60px;
-      h3{
-        font-size: 24px;
-        margin-bottom:30px
-      }
-      .list{
-        @include row(6,0)
-        border-left:1px solid $border;
-        border-top:1px solid $border;
-        .item{
-          height:80px;
-          border-right:1px solid $border;
-          border-bottom:1px solid $border;
-          @include flex(center)
-          &:hover .date{
-           color:#ff721f;
-          }
-          .img,&:hover .img_hover{
-            display: none;
-          }
-          .img_hover,&:hover .img{
-            display: block;
-          }
-          .img1,.img_hover1{
-            height: 49px;
-            width: 150px;
-          }
-          .img1{
-            background: url('../assets/images/partner.png') -10px -216px;
-          }
-          .img_hover1{
-            background: url('../assets/images/partner.png') -180px -216px;
-          }
-          // .img2,.img_hover2{
-          //   height: 50px;
-          //   width: 180px;
-          // }
-          // .img2{
-          //   background: url('../assets/images/partner.png') -360px -117px;
-          // }
-          // .img_hover2{
-          //   background: url('../assets/images/partner.png') -0px -171px;
-          // }
-          .img3,.img_hover3{
-            height: 49px;
-            width: 150px;
-          }
-          .img3{
-            background: url('../assets/images/partner.png') -180px -10px;
-          }
-          .img_hover3{
-            background: url('../assets/images/partner.png') -180px -79px;
-          }
-          .img4,.img_hover4{
-            height: 46px;
-            width: 150px;
-          }
-          .img4{
-            background: url('../assets/images/partner.png') -10px -150px;
-          }
-          .img_hover4{
-            background: url('../assets/images/partner.png') -180px -150px;
-          }
-          .img5,.img_hover5{
-            height: 32px;
-            width: 150px;
-          }
-          .img5{
-            background: url('../assets/images/partner.png') -10px -281px;
-          }
-          .img_hover5{
-            background: url('../assets/images/partner.png') -180px -281px;
-          }
-          .img6,.img_hover6{
-            height: 50px;
-            width: 150px;
-          }
-          .img6{
-            background: url('../assets/images/partner.png') -10px -10px;
-          }
-          .img_hover6{
-            background: url('../assets/images/partner.png') -10px -80px;
-          }
-          .img7,.img_hover7{
-            height: 20px;
-            width: 150px;
-          }
-          .img7{
-            background: url('../assets/images/partner.png') -350px -10px;
-          }
-          .img_hover7{
-            background: url('../assets/images/partner.png') -350px -50px;
+            img:first-child,a.btn{
+              @media screen and (max-width: 1178px) and (min-width: 340px){
+                left:0;
+              }
+            }
+            img:nth-child(2){
+              @media screen and (max-width: 1178px) and (min-width: 340px){
+                right:0;
+              }
+            }
+            &:nth-child(6),&:nth-child(2){
+              img{
+                top:0;
+                left:calc(50% - 590px);
+                width:1180px;
+                height:100%;
+                object-fit:cover;
+                @media screen and (max-width: 1178px) and (min-width: 340px){
+                  width:100%;
+                }
+              }
+              a.btn{
+                left:calc(50% - 590px);
+                @include button($blue)
+              }
+            }
+            &:nth-child(3) img:first-child{
+              width:563px;
+              top:calc(50% - 45px);
+              height:90px;
+            }
+            &:nth-child(3) img:nth-child(2){
+              top:calc(50% - 139.5px);
+              width:532px;
+              height:279px;
+            }
+            &:nth-child(4){
+              img:first-child{
+                width:626px;
+                top:calc(50% - 44px);
+                height:88px;
+              }
+            }
+            &:nth-child(4){
+              img:nth-child(2){
+                top:calc(50% - 137.5px);
+                width:404px;
+                height:275px;
+              }
+            }
+            &:nth-child(5),&:nth-child(1){
+              img:first-child{
+                width:493px;
+                top:calc(50% - 44.5px);
+                height:99px;
+              }
+            }
+            &:nth-child(5),&:nth-child(1){
+              img:nth-child(2){
+                top:calc(50% - 143.5px);
+                width:564px;
+                height:287px;
+              }
+            }
           }
         }
       }

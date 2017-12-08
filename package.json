@@ -1,12 +1,17 @@
 {
   "name": "mynuxt",
   "scripts": {
-    "dev": "nuxt"
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
   },
   "dependencies": {
     "axios": "^0.17.0",
     "echarts": "^3.7.2",
+    "element-ui": "^2.0.7",
     "js-md5": "^0.7.2",
+    "mint-ui": "^2.2.12",
     "nuxt": "^1.0.0-rc11",
     "qs": "^6.5.1",
     "vue-baidu-map": "^0.18.4"
