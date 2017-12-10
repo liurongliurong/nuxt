@@ -34,7 +34,9 @@
         content1: '',
         show: '',
         str: {4: '预热中', 5: '可售', 7: '已售馨'},
-        rate: 6
+        rate: 6,
+        proType: '',
+        proId: ''
       }
     },
     methods: {
@@ -60,24 +62,24 @@
       getBuyInfo () {
         var url = ''
         var data = {token: this.token, num: this.number}
-        if (this.$route.params.type === '1') {
+        if (this.proType === '1') {
           url = 'buy_miner'
-          data = Object.assign({miner_id: this.$route.params.id}, data)
+          data = Object.assign({miner_id: this.proId}, data)
         } else {
           url = 'productOrder'
-          data = Object.assign({product_id: this.$route.params.id}, data)
+          data = Object.assign({product_id: this.proId}, data)
         }
         var self = this
         util.post(url, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.next = 1
             self.balance = res.balance
-            if (self.$route.params.type === '2') {
+            if (self.proType === '2') {
               self.content = res.part_content
             } else {
               self.content = res.content
             }
-            if (self.$route.params.type !== '1') {
+            if (self.proType !== '1') {
               self.content1 = res.content1
             }
           })
@@ -108,15 +110,17 @@
       }
     },
     mounted () {
+      this.proType = this.$route.params.id.split('&')[1]
+      this.proId = this.$route.params.id.split('&')[0]
       var self = this
       var url = ''
       var data = {token: this.token}
-      if (this.$route.params.type === '1') {
+      if (this.proType === '1') {
         url = 'miner_detail'
-        data = Object.assign({miner_id: this.$route.params.id}, data)
+        data = Object.assign({miner_id: this.proId}, data)
       } else {
         url = 'productDetail'
-        data = Object.assign({product_id: this.$route.params.id}, data)
+        data = Object.assign({product_id: this.proId}, data)
       }
       util.post(url, {sign: api.serialize(data)}).then(function (res) {
         api.checkAjax(self, res, () => {
@@ -124,7 +128,7 @@
           self.leftNum = self.initNum
           self.leftStatus = self.leftNum === 0
           self.detail = Object.assign(self.detail, res)
-          if (self.$route.params.type !== '1') {
+          if (self.proType !== '1') {
             self.detail = Object.assign(self.detail, res.has_product_miner_base)
             self.detail.hashType = res.hashtype.name
           } else {

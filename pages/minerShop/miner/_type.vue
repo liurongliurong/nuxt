@@ -1,6 +1,6 @@
 <template>
   <section class="compute_shop">
-    <Sort :sort="sort"></Sort>
+    <Sort :sort="sort" :sortNav="$route.params.type==='1'?sortNav:sortNav2" :sortType="sortType"></Sort>
     <MinerList v-if="$route.params.type==='1'"></MinerList>
     <CloudMinerList page="minerShop" v-else></CloudMinerList>
     <Pager :len="len"></Pager>
@@ -23,7 +23,10 @@
     },
     data () {
       return {
-        sort: [{title: '价格', option: ['price_asc', 'price_desc'], value: 0}, {title: '算力', option: ['base_asc', 'base_desc'], value: 0}, {title: '出售总数', option: ['num_asc', 'num_desc'], value: 0}],
+        sort: [{title: '价格', option: 'price_desc'}, {title: '算力', option: 'base_desc'}, {title: '出售总数', option: 'num_desc'}],
+        sortNav: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热中'}, {code: 1, title: '热销中'}, {code: 2, title: '已售罄'}]}],
+        sortNav2: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热中'}, {code: 5, title: '热销中'}, {code: 7, title: '已售罄'}]}],
+        sortType: {title: '商品列表', options: ['矿机', '云矿机']},
         cloudMinerDate: [],
         minerData: [],
         len: 0,
@@ -34,12 +37,11 @@
     },
     methods: {
       fetchData (sort) {
-        var params = this.$route.params.type
         var self = this
         var obj = {token: this.token, page: this.now, product_type: '1'}
         var url = ''
-        if (sort) {
-          obj = Object.assign({sort: sort}, obj)
+        if (sort >= 0 && this.sort[sort] && this.sort[sort].option) {
+          obj = Object.assign({sort: this.sort[sort].option}, obj)
         }
         if (this.status) {
           obj = Object.assign({status: this.status}, obj)

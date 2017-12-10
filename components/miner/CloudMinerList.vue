@@ -79,11 +79,11 @@
     methods: {
       goPay (id, selltype, name) {
         if (selltype === 2) {
-          this.$router.push({path: '/' + this.page + '/detail/' + id + '/0'})
+          this.$router.push({path: '/' + this.page + '/detail/' + id + '&0'})
         } else if (this.$parent.active === 0) {
-          this.$router.push({path: '/' + this.page + '/detail/' + id + '/1'})
+          this.$router.push({path: '/' + this.page + '/detail/' + id + '&1'})
         } else {
-          this.$router.push({path: '/' + this.page + '/detail/' + id + '/2'})
+          this.$router.push({path: '/' + this.page + '/detail/' + id + '&2'})
         }
       }
     }

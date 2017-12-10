@@ -1,52 +1,42 @@
 <template>
   <div :class="['sort',{one_sort:page}]">
-    <div class="box" v-if="!page&&!isMobile">
-      <div class="sort_title">
-        <h1>项目列表</h1>
-        <div class="input_box">
-          <input type="text">
-          <span class="input_btn iconfont">&#xe63e;</span>
+    <template v-if="!page">
+      <div class="box" v-if="!isMobile">
+        <div class="sort_title" v-if="!page">
+          <h1>项目列表</h1>
+          <div class="input_box">
+            <input type="text">
+            <span class="input_btn iconfont">&#xe63e;</span>
+          </div>
+        </div>
+        <div class="sort_body" v-if="sortNav||sortType">
+          <div class="item" v-if="sortType">
+            <span>{{sortType.title}}</span>
+            <a :class="{active:$route.params.type==(+k+1)}" href="javascript:;" @click="setType((+k+1))" v-for="s,k in sortType.options">{{s}}</a>
+          </div>
+          <div class="item" v-for="s,i in sortNav" v-if="sortNav">
+            <span>{{s.title}}</span>
+            <a href="javascript:;" :class="{active:$parent.status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
+          </div>
+        </div>
+        <div class="sort_allitems">
+          <span class="sort_allitems_title">排序方式</span>
+          <div :class="['item', 'next', {active1: !sort[edit]}]" @click="setSort()">综合排序</div>
+          <div :class="['item', {active: edit==k}, {up: edit!=k},{active1: sort[edit]}]" v-for="s,k in sort" @click="setSort(k)">{{s.title}}<span class="iconfont">&#xe611;</span></div>
         </div>
       </div>
-      <div class="sort_body">
-        <div class="item">
-          <span>商品列表</span>
-          <a :class="{active:$route.params.type==='1'}" href="javascript:;" @click="setType(1)">矿机</a>
-          <a :class="{active:$route.params.type==='2'}" href="javascript:;" @click="setType(2)">云矿机</a>
-        </div>
-        <div class="item">
-          <span>商品状态</span>
-          <template v-if="$route.params.type==='1'">
-            <a href="javascript:;" :class="{active:$parent.status==n.code}" v-for="n,k in nav" @click="setStatus(n.code)">{{n.title}}</a>
-          </template>
-          <template v-if="$route.params.type==='2'">
-            <a href="javascript:;" :class="{active:$parent.status==n.code}" v-for="n,k in nav2" @click="setStatus(n.code)">{{n.title}}</a>
-          </template>
+      <div class="mobile_sort" v-else-if="isMobile">
+        <!-- <div class="type_img" v-if="sortType">
+          <div class="item" @click="setType((+k+1))" v-for="s,k in sortType.options">{{s}}</div>
+        </div> -->
+        <div class="mobile_sort_items" v-for="s,i in sortNav" v-if="sortNav">
+          <a class="item" href="javascript:;" :class="{active:$parent.status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
         </div>
       </div>
-      <div class="sort_allitems">
-        <span class="sort_allitems_title">排序方式</span>
-        <div :class="['item', 'next', {active1: activeOne==true}]" @click="setSort('all')">综合排序</div>
-        <div :class="['item', {active: edit==k}, {up: !s.value},{active1: activeOne==false}]" v-for="s,k in sort" @click="setSort(k)">{{s.title}}<span class="iconfont">&#xe611;</span></div>
-      </div>
-    </div>
-    <div class="mobile_sort" v-else-if="!page&&isMobile">
-      <!-- <div class="type_img">
-        <div class="item" @click="setType(1)">矿机</div>
-        <div class="item" @click="setType(2)">云矿机</div>
-      </div> -->
-      <div class="mobile_sort_items">
-        <template v-if="$route.params.type==='1'">
-          <a class="item" href="javascript:;" :class="{active:$parent.status==n.code}" v-for="n,k in nav" @click="setStatus(n.code)">{{n.title}}</a>
-        </template>
-        <template v-if="$route.params.type==='2'">
-          <a class="item" href="javascript:;" :class="{active:$parent.status==n.code}" v-for="n,k in nav2" @click="setStatus(n.code)">{{n.title}}</a>
-        </template>
-      </div>
-    </div>
+    </template>
     <div class="sort_items" v-else>
-      <div :class="['item', 'next', {active1: activeOne==true}]" @click="setSort('all')">默认</div>
-      <div :class="['item', {active: edit==k}, {up: !s.value},{active1: activeOne==false}]" v-for="s,k in sort" @click="setSort(k)">{{s.title}}<span class="iconfont">&#xe611;</span></div>
+      <div :class="['item', 'next', {active1: !sort[edit]}]" @click="setSort()">默认</div>
+      <div :class="['item', {active: edit==k}, {up: edit!=k},{active1: sort[edit]}]" v-for="s,k in sort" @click="setSort(k)">{{s.title}}<span class="iconfont">&#xe611;</span></div>
     </div>
   </div>
 </template>
@@ -60,38 +50,28 @@
       },
       page: {
         type: String
+      },
+      sortNav: {
+        type: Array
+      },
+      sortType: {
+        type: Object
       }
     },
     data () {
       return {
-        nav: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热中'}, {code: 1, title: '热销中'}, {code: 2, title: '已售罄'}],
-        nav2: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热中'}, {code: 5, title: '热销中'}, {code: 7, title: '已售罄'}],
-        edit: -1,
-        activeOne: true
+        edit: -1
       }
     },
     methods: {
       setSort (n) {
-        this.activeOne = false
-        this.edit = n
-        var obj = this.sort[n]
-        var str = ''
-        for (let ele of this.sort) {
-          if (obj !== ele) {
-            ele.value = 0
-          }
-        }
-        if (obj) {
-          obj.value = +(!obj.value)
-          str = obj.option[obj.value]
+        if (this.edit === n) {
+          this.edit = -1
         } else {
-          this.activeOne = true
+          this.edit = (n >= 0) ? n : -1
         }
-        if (this.$parent.getList) {
-          this.$parent.getList(n)
-        } else {
-          this.$parent.$parent.getList(n)
-        }
+        n = (this.edit !== -1) ? n : ''
+        this.$parent.getList(n)
       },
       setStatus (n) {
         this.$parent.status = n

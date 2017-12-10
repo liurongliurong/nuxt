@@ -5,12 +5,12 @@
         <div class="box">
           <router-link to="/minerShop/list">矿机商城</router-link>
           <span>></span>
-          <router-link to="/minerShop/miner/1" v-if="$route.params.type==='1'">矿机</router-link>
+          <router-link to="/minerShop/miner/1" v-if="$parent.proType==='1'">矿机</router-link>
           <router-link to="/minerShop/miner/2" v-else>云矿机</router-link>
           <span>></span>
           <em>{{$parent.detail.name}}</em>
         </div>
-        <div class="items miner" v-if="$route.params.type==='1'">
+        <div class="items miner" v-if="$parent.proType==='1'">
           <div class="miner_type">
             <div class="iconfont">&#xe603;</div>
             <span>矿机</span>
@@ -41,7 +41,7 @@
             <button class="btn" disabled v-else-if="$parent.detail.status===3">产品撤销</button>
           </div>
         </div>
-        <div class="items cloud_miner" v-if="$route.params.type!=='1'">
+        <div class="items cloud_miner" v-if="$parent.proType!=='1'">
           <div class="miner_type" style="background:#327fff;">
             <div class="iconfont">&#xe610;</div>
             <span>云矿机</span>
@@ -51,7 +51,7 @@
               {{$parent.detail.product_name}}
               <span>{{$parent.str[$parent.detail.status]}}</span>
             </h4>
-            <p class="white" v-if="$route.params.type==='2'">可使用算力白条</p>
+            <p class="white" v-if="$parent.proType==='2'">可使用算力白条</p>
             <div class="product_data">
               <template v-for="d,k in proData" v-if="k!=='product_name'">
                 <div class="item">
@@ -84,12 +84,12 @@
             <div class="price_text1">需支付：<span class="money">{{$parent.totalPrice|format}}元</span></div>
             <button class="btn" disabled v-if="$parent.leftStatus" style="background:#c3bbba;">已售罄</button>
             <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" v-else @click="checkPay($event, false)">立即支付</button>
-            <button class="btn loan_btn" @click="checkPay($event, true)" v-if="$route.params.type==='2'&&!$parent.leftStatus">分期购买</button>
+            <button class="btn loan_btn" @click="checkPay($event, true)" v-if="$parent.proType==='2'&&!$parent.leftStatus">分期购买</button>
           </div>
         </div>
       </div>
       <div class="product_info">
-        <template v-if="$route.params.type!=='1'">
+        <template v-if="$parent.proType!=='1'">
           <div class="info_ul">
             <div :class="['info_li',{'active': contentShow===k}]" v-for="n,k in infolists" @click="tabs(k)">{{n.title}}</div>
           </div>
@@ -142,10 +142,10 @@
           <span class="name_box">{{$parent.detail.name}}</span>
         </h4>
         <div class="mobile_price">
-          <div class="type_name">{{$route.params.type==='1'?'矿机':'云矿机'}}</div>
+          <div class="type_name">{{$parent.proType==='1'?'矿机':'云矿机'}}</div>
           <div>算力价：<span class="price">￥{{$parent.detail.one_amount_value}}</span></div>
         </div>
-        <div class="buy_tips" v-if="$route.params.type==='1'">{{$parent.detail.DeliveryTime}}</div>
+        <div class="buy_tips" v-if="$parent.proType==='1'">{{$parent.detail.DeliveryTime}}</div>
         <div class="progress_info">
           <div class="progress_box">
             <div class="box" :style="{width:((1-$parent.leftNum/$parent.detail.amount)*100).toFixed(1)+'%'}"></div>
@@ -153,7 +153,7 @@
           <div class="progress_text">剩余{{$parent.leftNum}}台</div>
         </div>
         <div class="base_info">
-          <template v-for="n,k in $route.params.type==='1'?mobileNav1:mobileNav2">
+          <template v-for="n,k in $parent.proType==='1'?mobileNav1:mobileNav2">
             <div class="item">
               <div class="item_data">{{$parent.detail[k]}}{{n.unit}}</div>
               <div class="item_text">{{n.title}}</div>
@@ -162,8 +162,8 @@
           </template>
         </div>
       </div>
-      <div class="mobile_product_info">
-        <template v-if="$route.params.type!=='1'">
+      <template v-if="$parent.proType!=='1'">
+        <div class="mobile_product_info">
           <div class="info_ulmobile">
             <div :class="['info_limobile',{'active': contentShow===k}]" v-for="n,k in infolists" @click="tabs(k)">{{n.title}}</div>
           </div>
@@ -175,8 +175,14 @@
               </div>
             </template>
           </div>
-        </template>
-        <template v-else>
+        </div>
+        <div class="mobile_btn">
+          <mt-button type="default" size="large" disabled v-if="$parent.leftStatus">已售罄</mt-button>
+          <mt-button type="primary" size="large" @click="openMask" v-else>立即支付</mt-button>
+        </div>
+      </template>
+      <template v-else>
+        <div class="mobile_product_info">
           <div class="info_ulmobile">
             <div :class="['info_limobile',{'active': contentShow===m}]" v-for="d,m in infolist" @click="tabs(m,d.name)">{{d.title}}</div>
           </div>
@@ -203,12 +209,13 @@
               </div>
             </div>
           </div>
-        </template>
-      </div>
-      <div class="mobile_btn">
-        <mt-button type="default" size="large" disabled v-if="$parent.leftStatus">已售罄</mt-button>
-        <mt-button type="primary" size="large" @click="openMask" v-else>立即支付</mt-button>
-      </div>
+        </div>
+        <div class="mobile_btn">
+          <mt-button type="primary" size="large" @click="openMask" v-if="$parent.detail.status===1">立即支付</mt-button>
+          <mt-button type="default" size="large" disabled v-else-if="$parent.detail.status===2">已售罄</mt-button>
+          <mt-button type="default" size="large" disabled v-else-if="$parent.detail.status===3">已售罄</mt-button>
+        </div>
+      </template>
       <mt-popup position="bottom" v-model="sheetVisible">
         <div class="buy_box">
           <div class="img_text">
