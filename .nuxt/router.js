@@ -3,73 +3,73 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const _2c9d49f4 = () => import('..\\pages\\index.vue' /* webpackChunkName: "pages\\index" */).then(m => m.default || m)
-const _2332880e = () => import('..\\pages\\index\\pc.vue' /* webpackChunkName: "pages\\index\\pc" */).then(m => m.default || m)
-const _15662828 = () => import('..\\pages\\index\\mobile.vue' /* webpackChunkName: "pages\\index\\mobile" */).then(m => m.default || m)
-const _cccfa554 = () => import('..\\pages\\webInfo.vue' /* webpackChunkName: "pages\\webInfo" */).then(m => m.default || m)
-const _65887ee0 = () => import('..\\pages\\webInfo\\issues.vue' /* webpackChunkName: "pages\\webInfo\\issues" */).then(m => m.default || m)
-const _d9c798b6 = () => import('..\\pages\\webInfo\\aboutUs.vue' /* webpackChunkName: "pages\\webInfo\\aboutUs" */).then(m => m.default || m)
-const _73266afe = () => import('..\\pages\\webInfo\\issuesDetail.vue' /* webpackChunkName: "pages\\webInfo\\issuesDetail" */).then(m => m.default || m)
-const _59c479d5 = () => import('..\\pages\\webInfo\\list\\_type.vue' /* webpackChunkName: "pages\\webInfo\\list\\_type" */).then(m => m.default || m)
-const _4eae5d23 = () => import('..\\pages\\webInfo\\detail\\_id.vue' /* webpackChunkName: "pages\\webInfo\\detail\\_id" */).then(m => m.default || m)
-const _e01c7fb8 = () => import('..\\pages\\auth.vue' /* webpackChunkName: "pages\\auth" */).then(m => m.default || m)
-const _2b36c7cc = () => import('..\\pages\\auth\\regist.vue' /* webpackChunkName: "pages\\auth\\regist" */).then(m => m.default || m)
-const _183a86f5 = () => import('..\\pages\\auth\\login.vue' /* webpackChunkName: "pages\\auth\\login" */).then(m => m.default || m)
-const _6762bc65 = () => import('..\\pages\\auth\\passwordRetrieval.vue' /* webpackChunkName: "pages\\auth\\passwordRetrieval" */).then(m => m.default || m)
-const _2ab104c7 = () => import('..\\pages\\user.vue' /* webpackChunkName: "pages\\user" */).then(m => m.default || m)
-const _06632e7e = () => import('..\\pages\\user\\incomeChart.vue' /* webpackChunkName: "pages\\user\\incomeChart" */).then(m => m.default || m)
-const _594942d3 = () => import('..\\pages\\user\\virtualCurrencyFlow.vue' /* webpackChunkName: "pages\\user\\virtualCurrencyFlow" */).then(m => m.default || m)
-const _af1abed2 = () => import('..\\pages\\user\\moneyFlow.vue' /* webpackChunkName: "pages\\user\\moneyFlow" */).then(m => m.default || m)
-const _30dad576 = () => import('..\\pages\\user\\account.vue' /* webpackChunkName: "pages\\user\\account" */).then(m => m.default || m)
-const _6441d2bc = () => import('..\\pages\\user\\password.vue' /* webpackChunkName: "pages\\user\\password" */).then(m => m.default || m)
-const _4e1ad416 = () => import('..\\pages\\user\\computeProperty.vue' /* webpackChunkName: "pages\\user\\computeProperty" */).then(m => m.default || m)
-const _0ed1b8a2 = () => import('..\\pages\\user\\accountEvaluate.vue' /* webpackChunkName: "pages\\user\\accountEvaluate" */).then(m => m.default || m)
-const _69b2e000 = () => import('..\\pages\\user\\lpCenter.vue' /* webpackChunkName: "pages\\user\\lpCenter" */).then(m => m.default || m)
-const _6da06360 = () => import('..\\pages\\user\\message.vue' /* webpackChunkName: "pages\\user\\message" */).then(m => m.default || m)
-const _2beef4ae = () => import('..\\pages\\user\\recharge.vue' /* webpackChunkName: "pages\\user\\recharge" */).then(m => m.default || m)
-const _32227e1d = () => import('..\\pages\\user\\repaymentDetail\\_id.vue' /* webpackChunkName: "pages\\user\\repaymentDetail\\_id" */).then(m => m.default || m)
-const _b3129f66 = () => import('..\\pages\\user\\repayment\\_type.vue' /* webpackChunkName: "pages\\user\\repayment\\_type" */).then(m => m.default || m)
-const _2d02daca = () => import('..\\pages\\user\\order\\_status.vue' /* webpackChunkName: "pages\\user\\order\\_status" */).then(m => m.default || m)
-const _126007c9 = () => import('..\\pages\\user\\messageDetail\\_id.vue' /* webpackChunkName: "pages\\user\\messageDetail\\_id" */).then(m => m.default || m)
-const _5c992d3c = () => import('..\\pages\\user\\orderDetail\\_id.vue' /* webpackChunkName: "pages\\user\\orderDetail\\_id" */).then(m => m.default || m)
-const _035d3a12 = () => import('..\\pages\\transaction.vue' /* webpackChunkName: "pages\\transaction" */).then(m => m.default || m)
-const _3e79c8eb = () => import('..\\pages\\compute.vue' /* webpackChunkName: "pages\\compute" */).then(m => m.default || m)
-const _4b607394 = () => import('..\\pages\\quickNews.vue' /* webpackChunkName: "pages\\quickNews" */).then(m => m.default || m)
-const _a79cee6e = () => import('..\\pages\\minerShop.vue' /* webpackChunkName: "pages\\minerShop" */).then(m => m.default || m)
-const _8ff978ce = () => import('..\\pages\\minerShop\\mining.vue' /* webpackChunkName: "pages\\minerShop\\mining" */).then(m => m.default || m)
-const _ad57c5b2 = () => import('..\\pages\\minerShop\\list.vue' /* webpackChunkName: "pages\\minerShop\\list" */).then(m => m.default || m)
-const _76c642d0 = () => import('..\\pages\\minerShop\\activity.vue' /* webpackChunkName: "pages\\minerShop\\activity" */).then(m => m.default || m)
-const _4a027490 = () => import('..\\pages\\minerShop\\detail\\_id.vue' /* webpackChunkName: "pages\\minerShop\\detail\\_id" */).then(m => m.default || m)
-const _59b1c6c3 = () => import('..\\pages\\minerShop\\miner\\_type.vue' /* webpackChunkName: "pages\\minerShop\\miner\\_type" */).then(m => m.default || m)
-const _355e70e3 = () => import('..\\pages\\computeChart.vue' /* webpackChunkName: "pages\\computeChart" */).then(m => m.default || m)
-const _17fc5d6b = () => import('..\\pages\\notFound.vue' /* webpackChunkName: "pages\\notFound" */).then(m => m.default || m)
-const _4131e40d = () => import('..\\pages\\currency.vue' /* webpackChunkName: "pages\\currency" */).then(m => m.default || m)
-const _b03a73d6 = () => import('..\\pages\\bdc.vue' /* webpackChunkName: "pages\\bdc" */).then(m => m.default || m)
-const _5cff1437 = () => import('..\\pages\\bdc\\mobile.vue' /* webpackChunkName: "pages\\bdc\\mobile" */).then(m => m.default || m)
-const _5c7f30bc = () => import('..\\pages\\industryInformation.vue' /* webpackChunkName: "pages\\industryInformation" */).then(m => m.default || m)
-const _64ba9d97 = () => import('..\\pages\\mobile\\bdcForm.vue' /* webpackChunkName: "pages\\mobile\\bdcForm" */).then(m => m.default || m)
-const _e5b86724 = () => import('..\\pages\\equipmentEvaluate\\pc.vue' /* webpackChunkName: "pages\\equipmentEvaluate\\pc" */).then(m => m.default || m)
-const _de49b508 = () => import('..\\pages\\computeNews\\list.vue' /* webpackChunkName: "pages\\computeNews\\list" */).then(m => m.default || m)
-const _5cd015f0 = () => import('..\\pages\\mobile\\personcenter.vue' /* webpackChunkName: "pages\\mobile\\personcenter" */).then(m => m.default || m)
-const _597b31aa = () => import('..\\pages\\manufacturer\\list.vue' /* webpackChunkName: "pages\\manufacturer\\list" */).then(m => m.default || m)
-const _91e48822 = () => import('..\\pages\\manufacturer\\mobile.vue' /* webpackChunkName: "pages\\manufacturer\\mobile" */).then(m => m.default || m)
-const _0943f8d4 = () => import('..\\pages\\mobile\\advice.vue' /* webpackChunkName: "pages\\mobile\\advice" */).then(m => m.default || m)
-const _275db57e = () => import('..\\pages\\mobile\\information.vue' /* webpackChunkName: "pages\\mobile\\information" */).then(m => m.default || m)
-const _a7f56980 = () => import('..\\pages\\manufacturer\\pc.vue' /* webpackChunkName: "pages\\manufacturer\\pc" */).then(m => m.default || m)
-const _3d1e4370 = () => import('..\\pages\\digitalCurrency\\pc.vue' /* webpackChunkName: "pages\\digitalCurrency\\pc" */).then(m => m.default || m)
-const _fe520002 = () => import('..\\pages\\equipments\\list.vue' /* webpackChunkName: "pages\\equipments\\list" */).then(m => m.default || m)
-const _fc03d94a = () => import('..\\pages\\digitalCurrency\\list.vue' /* webpackChunkName: "pages\\digitalCurrency\\list" */).then(m => m.default || m)
-const _eab8771a = () => import('..\\pages\\mobile\\property.vue' /* webpackChunkName: "pages\\mobile\\property" */).then(m => m.default || m)
-const _231b8b72 = () => import('..\\pages\\mobile\\anuFacturermobile.vue' /* webpackChunkName: "pages\\mobile\\anuFacturermobile" */).then(m => m.default || m)
-const _1b71a514 = () => import('..\\pages\\mobile\\notice.vue' /* webpackChunkName: "pages\\mobile\\notice" */).then(m => m.default || m)
-const _b4e1c7c2 = () => import('..\\pages\\digitalCurrency\\mobile.vue' /* webpackChunkName: "pages\\digitalCurrency\\mobile" */).then(m => m.default || m)
-const _14e813c6 = () => import('..\\pages\\equipmentEvaluate\\mobile.vue' /* webpackChunkName: "pages\\equipmentEvaluate\\mobile" */).then(m => m.default || m)
-const _798c52df = () => import('..\\pages\\mobile\\help.vue' /* webpackChunkName: "pages\\mobile\\help" */).then(m => m.default || m)
-const _3275564e = () => import('..\\pages\\equipmentEvaluate\\list.vue' /* webpackChunkName: "pages\\equipmentEvaluate\\list" */).then(m => m.default || m)
-const _98735aca = () => import('..\\pages\\computeNews\\detail\\_id.vue' /* webpackChunkName: "pages\\computeNews\\detail\\_id" */).then(m => m.default || m)
-const _52b2dec4 = () => import('..\\pages\\equipmentEvaluate\\detail\\_id.vue' /* webpackChunkName: "pages\\equipmentEvaluate\\detail\\_id" */).then(m => m.default || m)
-const _6849a290 = () => import('..\\pages\\equipments\\detail\\_id.vue' /* webpackChunkName: "pages\\equipments\\detail\\_id" */).then(m => m.default || m)
-const _6ed19e0c = () => import('..\\pages\\manufacturer\\detail\\_id.vue' /* webpackChunkName: "pages\\manufacturer\\detail\\_id" */).then(m => m.default || m)
+const _2e0797a6 = () => import('..\\pages\\index.vue' /* webpackChunkName: "pages\\index" */).then(m => m.default || m)
+const _6e0da899 = () => import('..\\pages\\index\\pc.vue' /* webpackChunkName: "pages\\index\\pc" */).then(m => m.default || m)
+const _5885c4c8 = () => import('..\\pages\\index\\mobile.vue' /* webpackChunkName: "pages\\index\\mobile" */).then(m => m.default || m)
+const _2151c1f6 = () => import('..\\pages\\webInfo.vue' /* webpackChunkName: "pages\\webInfo" */).then(m => m.default || m)
+const _723295a0 = () => import('..\\pages\\webInfo\\issues.vue' /* webpackChunkName: "pages\\webInfo\\issues" */).then(m => m.default || m)
+const _626059f6 = () => import('..\\pages\\webInfo\\aboutUs.vue' /* webpackChunkName: "pages\\webInfo\\aboutUs" */).then(m => m.default || m)
+const _4e1471be = () => import('..\\pages\\webInfo\\issuesDetail.vue' /* webpackChunkName: "pages\\webInfo\\issuesDetail" */).then(m => m.default || m)
+const _49d96935 = () => import('..\\pages\\webInfo\\list\\_type.vue' /* webpackChunkName: "pages\\webInfo\\list\\_type" */).then(m => m.default || m)
+const _3ec34c83 = () => import('..\\pages\\webInfo\\detail\\_id.vue' /* webpackChunkName: "pages\\webInfo\\detail\\_id" */).then(m => m.default || m)
+const _3f916f84 = () => import('..\\pages\\auth.vue' /* webpackChunkName: "pages\\auth" */).then(m => m.default || m)
+const _26e2290c = () => import('..\\pages\\auth\\regist.vue' /* webpackChunkName: "pages\\auth\\regist" */).then(m => m.default || m)
+const _49d8cb95 = () => import('..\\pages\\auth\\login.vue' /* webpackChunkName: "pages\\auth\\login" */).then(m => m.default || m)
+const _08c1ddf6 = () => import('..\\pages\\auth\\passwordRetrieval.vue' /* webpackChunkName: "pages\\auth\\passwordRetrieval" */).then(m => m.default || m)
+const _4b5e97b2 = () => import('..\\pages\\user.vue' /* webpackChunkName: "pages\\user" */).then(m => m.default || m)
+const _41237b1e = () => import('..\\pages\\user\\incomeChart.vue' /* webpackChunkName: "pages\\user\\incomeChart" */).then(m => m.default || m)
+const _607a211a = () => import('..\\pages\\user\\virtualCurrencyFlow.vue' /* webpackChunkName: "pages\\user\\virtualCurrencyFlow" */).then(m => m.default || m)
+const _bbc4d592 = () => import('..\\pages\\user\\moneyFlow.vue' /* webpackChunkName: "pages\\user\\moneyFlow" */).then(m => m.default || m)
+const _73fa7216 = () => import('..\\pages\\user\\account.vue' /* webpackChunkName: "pages\\user\\account" */).then(m => m.default || m)
+const _2299e3fc = () => import('..\\pages\\user\\password.vue' /* webpackChunkName: "pages\\user\\password" */).then(m => m.default || m)
+const _2908dad6 = () => import('..\\pages\\user\\computeProperty.vue' /* webpackChunkName: "pages\\user\\computeProperty" */).then(m => m.default || m)
+const _0b20204f = () => import('..\\pages\\user\\accountEvaluate.vue' /* webpackChunkName: "pages\\user\\accountEvaluate" */).then(m => m.default || m)
+const _280af140 = () => import('..\\pages\\user\\lpCenter.vue' /* webpackChunkName: "pages\\user\\lpCenter" */).then(m => m.default || m)
+const _0c4f6af0 = () => import('..\\pages\\user\\message.vue' /* webpackChunkName: "pages\\user\\message" */).then(m => m.default || m)
+const _4cc2ec0e = () => import('..\\pages\\user\\recharge.vue' /* webpackChunkName: "pages\\user\\recharge" */).then(m => m.default || m)
+const _ea433506 = () => import('..\\pages\\user\\repaymentDetail\\_id.vue' /* webpackChunkName: "pages\\user\\repaymentDetail\\_id" */).then(m => m.default || m)
+const _35e570a6 = () => import('..\\pages\\user\\repayment\\_type.vue' /* webpackChunkName: "pages\\user\\repayment\\_type" */).then(m => m.default || m)
+const _1d17ca2a = () => import('..\\pages\\user\\order\\_status.vue' /* webpackChunkName: "pages\\user\\order\\_status" */).then(m => m.default || m)
+const _05ae4729 = () => import('..\\pages\\user\\messageDetail\\_id.vue' /* webpackChunkName: "pages\\user\\messageDetail\\_id" */).then(m => m.default || m)
+const _104a00c2 = () => import('..\\pages\\user\\orderDetail\\_id.vue' /* webpackChunkName: "pages\\user\\orderDetail\\_id" */).then(m => m.default || m)
+const _34fb7eb2 = () => import('..\\pages\\transaction.vue' /* webpackChunkName: "pages\\transaction" */).then(m => m.default || m)
+const _739944ea = () => import('..\\pages\\compute.vue' /* webpackChunkName: "pages\\compute" */).then(m => m.default || m)
+const _69f13f98 = () => import('..\\pages\\quickNews.vue' /* webpackChunkName: "pages\\quickNews" */).then(m => m.default || m)
+const _2bd87569 = () => import('..\\pages\\minerShop.vue' /* webpackChunkName: "pages\\minerShop" */).then(m => m.default || m)
+const _1a78df8e = () => import('..\\pages\\minerShop\\mining.vue' /* webpackChunkName: "pages\\minerShop\\mining" */).then(m => m.default || m)
+const _ba01dc72 = () => import('..\\pages\\minerShop\\list.vue' /* webpackChunkName: "pages\\minerShop\\list" */).then(m => m.default || m)
+const _507c8338 = () => import('..\\pages\\minerShop\\activity.vue' /* webpackChunkName: "pages\\minerShop\\activity" */).then(m => m.default || m)
+const _eecde820 = () => import('..\\pages\\minerShop\\detail\\_id.vue' /* webpackChunkName: "pages\\minerShop\\detail\\_id" */).then(m => m.default || m)
+const _2423c93a = () => import('..\\pages\\minerShop\\miner\\_type.vue' /* webpackChunkName: "pages\\minerShop\\miner\\_type" */).then(m => m.default || m)
+const _3788c043 = () => import('..\\pages\\computeChart.vue' /* webpackChunkName: "pages\\computeChart" */).then(m => m.default || m)
+const _f115466a = () => import('..\\pages\\notFound.vue' /* webpackChunkName: "pages\\notFound" */).then(m => m.default || m)
+const _9eaa3926 = () => import('..\\pages\\currency.vue' /* webpackChunkName: "pages\\currency" */).then(m => m.default || m)
+const _1040aa96 = () => import('..\\pages\\bdc.vue' /* webpackChunkName: "pages\\bdc" */).then(m => m.default || m)
+const _e2c54e52 = () => import('..\\pages\\bdc\\mobile.vue' /* webpackChunkName: "pages\\bdc\\mobile" */).then(m => m.default || m)
+const _5da00c42 = () => import('..\\pages\\industryInformation.vue' /* webpackChunkName: "pages\\industryInformation" */).then(m => m.default || m)
+const _5e659237 = () => import('..\\pages\\mobile\\bdcForm.vue' /* webpackChunkName: "pages\\mobile\\bdcForm" */).then(m => m.default || m)
+const _c0a66de4 = () => import('..\\pages\\equipmentEvaluate\\pc.vue' /* webpackChunkName: "pages\\equipmentEvaluate\\pc" */).then(m => m.default || m)
+const _68c91bc8 = () => import('..\\pages\\computeNews\\list.vue' /* webpackChunkName: "pages\\computeNews\\list" */).then(m => m.default || m)
+const _7ca63730 = () => import('..\\pages\\mobile\\personcenter.vue' /* webpackChunkName: "pages\\mobile\\personcenter" */).then(m => m.default || m)
+const _1ee8a2ea = () => import('..\\pages\\manufacturer\\list.vue' /* webpackChunkName: "pages\\manufacturer\\list" */).then(m => m.default || m)
+const _b1baa962 = () => import('..\\pages\\manufacturer\\mobile.vue' /* webpackChunkName: "pages\\manufacturer\\mobile" */).then(m => m.default || m)
+const _1c31faf6 = () => import('..\\pages\\mobile\\advice.vue' /* webpackChunkName: "pages\\mobile\\advice" */).then(m => m.default || m)
+const _99854bc4 = () => import('..\\pages\\mobile\\information.vue' /* webpackChunkName: "pages\\mobile\\information" */).then(m => m.default || m)
+const _308e2ac0 = () => import('..\\pages\\manufacturer\\pc.vue' /* webpackChunkName: "pages\\manufacturer\\pc" */).then(m => m.default || m)
+const _6e042fe0 = () => import('..\\pages\\digitalCurrency\\pc.vue' /* webpackChunkName: "pages\\digitalCurrency\\pc" */).then(m => m.default || m)
+const _86eac142 = () => import('..\\pages\\equipments\\list.vue' /* webpackChunkName: "pages\\equipments\\list" */).then(m => m.default || m)
+const _d6f1e00a = () => import('..\\pages\\digitalCurrency\\list.vue' /* webpackChunkName: "pages\\digitalCurrency\\list" */).then(m => m.default || m)
+const _7351385a = () => import('..\\pages\\mobile\\property.vue' /* webpackChunkName: "pages\\mobile\\property" */).then(m => m.default || m)
+const _ccd58fdc = () => import('..\\pages\\mobile\\anuFacturermobile.vue' /* webpackChunkName: "pages\\mobile\\anuFacturermobile" */).then(m => m.default || m)
+const _131b24d6 = () => import('..\\pages\\mobile\\notice.vue' /* webpackChunkName: "pages\\mobile\\notice" */).then(m => m.default || m)
+const _39cb70bf = () => import('..\\pages\\digitalCurrency\\mobile.vue' /* webpackChunkName: "pages\\digitalCurrency\\mobile" */).then(m => m.default || m)
+const _6c05a2bd = () => import('..\\pages\\equipmentEvaluate\\mobile.vue' /* webpackChunkName: "pages\\equipmentEvaluate\\mobile" */).then(m => m.default || m)
+const _7bb6a23f = () => import('..\\pages\\mobile\\help.vue' /* webpackChunkName: "pages\\mobile\\help" */).then(m => m.default || m)
+const _7b01a979 = () => import('..\\pages\\equipmentEvaluate\\list.vue' /* webpackChunkName: "pages\\equipmentEvaluate\\list" */).then(m => m.default || m)
+const _b1d6dc0a = () => import('..\\pages\\computeNews\\detail\\_id.vue' /* webpackChunkName: "pages\\computeNews\\detail\\_id" */).then(m => m.default || m)
+const _165fc7fe = () => import('..\\pages\\equipmentEvaluate\\detail\\_id.vue' /* webpackChunkName: "pages\\equipmentEvaluate\\detail\\_id" */).then(m => m.default || m)
+const _60178358 = () => import('..\\pages\\equipments\\detail\\_id.vue' /* webpackChunkName: "pages\\equipments\\detail\\_id" */).then(m => m.default || m)
+const _35696aa8 = () => import('..\\pages\\manufacturer\\detail\\_id.vue' /* webpackChunkName: "pages\\manufacturer\\detail\\_id" */).then(m => m.default || m)
 
 
 
@@ -107,349 +107,349 @@ export function createRouter () {
     routes: [
 		{
 			path: "/",
-			component: _2c9d49f4,
+			component: _2e0797a6,
 			name: "index",
 			children: [
 				{
 					path: "pc",
-					component: _2332880e,
+					component: _6e0da899,
 					name: "index-pc"
 				},
 				{
 					path: "mobile",
-					component: _15662828,
+					component: _5885c4c8,
 					name: "index-mobile"
 				}
 			]
 		},
 		{
 			path: "/webInfo",
-			component: _cccfa554,
+			component: _2151c1f6,
 			name: "webInfo",
 			children: [
 				{
 					path: "issues",
-					component: _65887ee0,
+					component: _723295a0,
 					name: "webInfo-issues"
 				},
 				{
 					path: "aboutUs",
-					component: _d9c798b6,
+					component: _626059f6,
 					name: "webInfo-aboutUs"
 				},
 				{
 					path: "issuesDetail",
-					component: _73266afe,
+					component: _4e1471be,
 					name: "webInfo-issuesDetail"
 				},
 				{
 					path: "list/:type?",
-					component: _59c479d5,
+					component: _49d96935,
 					name: "webInfo-list-type"
 				},
 				{
 					path: "detail/:id?",
-					component: _4eae5d23,
+					component: _3ec34c83,
 					name: "webInfo-detail-id"
 				}
 			]
 		},
 		{
 			path: "/auth",
-			component: _e01c7fb8,
+			component: _3f916f84,
 			name: "auth",
 			children: [
 				{
 					path: "regist",
-					component: _2b36c7cc,
+					component: _26e2290c,
 					name: "auth-regist"
 				},
 				{
 					path: "login",
-					component: _183a86f5,
+					component: _49d8cb95,
 					name: "auth-login"
 				},
 				{
 					path: "passwordRetrieval",
-					component: _6762bc65,
+					component: _08c1ddf6,
 					name: "auth-passwordRetrieval"
 				}
 			]
 		},
 		{
 			path: "/user",
-			component: _2ab104c7,
+			component: _4b5e97b2,
 			name: "user",
 			children: [
 				{
 					path: "incomeChart",
-					component: _06632e7e,
+					component: _41237b1e,
 					name: "user-incomeChart"
 				},
 				{
 					path: "virtualCurrencyFlow",
-					component: _594942d3,
+					component: _607a211a,
 					name: "user-virtualCurrencyFlow"
 				},
 				{
 					path: "moneyFlow",
-					component: _af1abed2,
+					component: _bbc4d592,
 					name: "user-moneyFlow"
 				},
 				{
 					path: "account",
-					component: _30dad576,
+					component: _73fa7216,
 					name: "user-account"
 				},
 				{
 					path: "password",
-					component: _6441d2bc,
+					component: _2299e3fc,
 					name: "user-password"
 				},
 				{
 					path: "computeProperty",
-					component: _4e1ad416,
+					component: _2908dad6,
 					name: "user-computeProperty"
 				},
 				{
 					path: "accountEvaluate",
-					component: _0ed1b8a2,
+					component: _0b20204f,
 					name: "user-accountEvaluate"
 				},
 				{
 					path: "lpCenter",
-					component: _69b2e000,
+					component: _280af140,
 					name: "user-lpCenter"
 				},
 				{
 					path: "message",
-					component: _6da06360,
+					component: _0c4f6af0,
 					name: "user-message"
 				},
 				{
 					path: "recharge",
-					component: _2beef4ae,
+					component: _4cc2ec0e,
 					name: "user-recharge"
 				},
 				{
 					path: "repaymentDetail/:id?",
-					component: _32227e1d,
+					component: _ea433506,
 					name: "user-repaymentDetail-id"
 				},
 				{
 					path: "repayment/:type?",
-					component: _b3129f66,
+					component: _35e570a6,
 					name: "user-repayment-type"
 				},
 				{
 					path: "order/:status?",
-					component: _2d02daca,
+					component: _1d17ca2a,
 					name: "user-order-status"
 				},
 				{
 					path: "messageDetail/:id?",
-					component: _126007c9,
+					component: _05ae4729,
 					name: "user-messageDetail-id"
 				},
 				{
 					path: "orderDetail/:id?",
-					component: _5c992d3c,
+					component: _104a00c2,
 					name: "user-orderDetail-id"
 				}
 			]
 		},
 		{
 			path: "/transaction",
-			component: _035d3a12,
+			component: _34fb7eb2,
 			name: "transaction"
 		},
 		{
 			path: "/compute",
-			component: _3e79c8eb,
+			component: _739944ea,
 			name: "compute"
 		},
 		{
 			path: "/quickNews",
-			component: _4b607394,
+			component: _69f13f98,
 			name: "quickNews"
 		},
 		{
 			path: "/minerShop",
-			component: _a79cee6e,
+			component: _2bd87569,
 			name: "minerShop",
 			children: [
 				{
 					path: "mining",
-					component: _8ff978ce,
+					component: _1a78df8e,
 					name: "minerShop-mining"
 				},
 				{
 					path: "list",
-					component: _ad57c5b2,
+					component: _ba01dc72,
 					name: "minerShop-list"
 				},
 				{
 					path: "activity",
-					component: _76c642d0,
+					component: _507c8338,
 					name: "minerShop-activity"
 				},
 				{
 					path: "detail/:id?",
-					component: _4a027490,
+					component: _eecde820,
 					name: "minerShop-detail-id"
 				},
 				{
 					path: "miner/:type?",
-					component: _59b1c6c3,
+					component: _2423c93a,
 					name: "minerShop-miner-type"
 				}
 			]
 		},
 		{
 			path: "/computeChart",
-			component: _355e70e3,
+			component: _3788c043,
 			name: "computeChart"
 		},
 		{
 			path: "/notFound",
-			component: _17fc5d6b,
+			component: _f115466a,
 			name: "notFound"
 		},
 		{
 			path: "/currency",
-			component: _4131e40d,
+			component: _9eaa3926,
 			name: "currency"
 		},
 		{
 			path: "/bdc",
-			component: _b03a73d6,
+			component: _1040aa96,
 			name: "bdc",
 			children: [
 				{
 					path: "mobile",
-					component: _5cff1437,
+					component: _e2c54e52,
 					name: "bdc-mobile"
 				}
 			]
 		},
 		{
 			path: "/industryInformation",
-			component: _5c7f30bc,
+			component: _5da00c42,
 			name: "industryInformation"
 		},
 		{
 			path: "/mobile/bdcForm",
-			component: _64ba9d97,
+			component: _5e659237,
 			name: "mobile-bdcForm"
 		},
 		{
 			path: "/equipmentEvaluate/pc",
-			component: _e5b86724,
+			component: _c0a66de4,
 			name: "equipmentEvaluate-pc"
 		},
 		{
 			path: "/computeNews/list",
-			component: _de49b508,
+			component: _68c91bc8,
 			name: "computeNews-list"
 		},
 		{
 			path: "/mobile/personcenter",
-			component: _5cd015f0,
+			component: _7ca63730,
 			name: "mobile-personcenter"
 		},
 		{
 			path: "/manufacturer/list",
-			component: _597b31aa,
+			component: _1ee8a2ea,
 			name: "manufacturer-list"
 		},
 		{
 			path: "/manufacturer/mobile",
-			component: _91e48822,
+			component: _b1baa962,
 			name: "manufacturer-mobile"
 		},
 		{
 			path: "/mobile/advice",
-			component: _0943f8d4,
+			component: _1c31faf6,
 			name: "mobile-advice"
 		},
 		{
 			path: "/mobile/information",
-			component: _275db57e,
+			component: _99854bc4,
 			name: "mobile-information"
 		},
 		{
 			path: "/manufacturer/pc",
-			component: _a7f56980,
+			component: _308e2ac0,
 			name: "manufacturer-pc"
 		},
 		{
 			path: "/digitalCurrency/pc",
-			component: _3d1e4370,
+			component: _6e042fe0,
 			name: "digitalCurrency-pc"
 		},
 		{
 			path: "/equipments/list",
-			component: _fe520002,
+			component: _86eac142,
 			name: "equipments-list"
 		},
 		{
 			path: "/digitalCurrency/list",
-			component: _fc03d94a,
+			component: _d6f1e00a,
 			name: "digitalCurrency-list"
 		},
 		{
 			path: "/mobile/property",
-			component: _eab8771a,
+			component: _7351385a,
 			name: "mobile-property"
 		},
 		{
 			path: "/mobile/anuFacturermobile",
-			component: _231b8b72,
+			component: _ccd58fdc,
 			name: "mobile-anuFacturermobile"
 		},
 		{
 			path: "/mobile/notice",
-			component: _1b71a514,
+			component: _131b24d6,
 			name: "mobile-notice"
 		},
 		{
 			path: "/digitalCurrency/mobile",
-			component: _b4e1c7c2,
+			component: _39cb70bf,
 			name: "digitalCurrency-mobile"
 		},
 		{
 			path: "/equipmentEvaluate/mobile",
-			component: _14e813c6,
+			component: _6c05a2bd,
 			name: "equipmentEvaluate-mobile"
 		},
 		{
 			path: "/mobile/help",
-			component: _798c52df,
+			component: _7bb6a23f,
 			name: "mobile-help"
 		},
 		{
 			path: "/equipmentEvaluate/list",
-			component: _3275564e,
+			component: _7b01a979,
 			name: "equipmentEvaluate-list"
 		},
 		{
 			path: "/computeNews/detail/:id?",
-			component: _98735aca,
+			component: _b1d6dc0a,
 			name: "computeNews-detail-id"
 		},
 		{
 			path: "/equipmentEvaluate/detail/:id?",
-			component: _52b2dec4,
+			component: _165fc7fe,
 			name: "equipmentEvaluate-detail-id"
 		},
 		{
 			path: "/equipments/detail/:id?",
-			component: _6849a290,
+			component: _60178358,
 			name: "equipments-detail-id"
 		},
 		{
 			path: "/manufacturer/detail/:id?",
-			component: _6ed19e0c,
+			component: _35696aa8,
 			name: "manufacturer-detail-id"
 		}
     ],

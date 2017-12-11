@@ -152,7 +152,7 @@ async function createApp (ssrContext) {
   return {
     app,
     router,
-     store 
+    store 
   }
 }
 
