@@ -139,7 +139,7 @@
           & + a{
             margin-left:30px
           }
-          &:hover,&.router-link-active{
+          &:hover,&.nuxt-link-active{
             border-color:#7e92a8
           }
         }
@@ -170,7 +170,7 @@
               vertical-align: sub;
               margin-left:5px
             }
-            .router-link-active{
+            .nuxt-link-active{
               background: #327fff;
               color:white;
             }

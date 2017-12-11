@@ -192,7 +192,7 @@
             &:hover{
               background: #f5f8ff;
             }
-            &.router-link-active,&.active{
+            &.nuxt-link-active,&.active{
               position: relative;
               background: #f5f8ff;
               border-left-color:$blue;

@@ -9,7 +9,7 @@
       <div class="currency_header">suanLi&nbsp;之家 <span>全面聚合算力产业信息</span></div>
       <div class="currency_content">
         <div class="leftnav">
-          <div :class="['leftnav_ol', {'active': active === k}]" v-for="n, k in leftnav" :key="k">
+          <div :class="['leftnav_ol']" v-for="n, k in leftnav" :key="k">
             <router-link :to="n.path">
               <span :class="['icon', 'iconfont', n.big]"></span>
               <i>{{n.title}}</i>
@@ -44,7 +44,7 @@
     data () {
       return {
         active: '',
-        computationallist: [{title: '算力资讯', path: '/industryInformation'}, {title: '设备之家', path: '/equipments/list'}, {title: '交易信息', path: '/transaction'}, {title: '挖矿币种', path: '/currency'}],
+        computationallist: [{title: '算力资讯', path: '/industryInformation'}, {title: '设备之家', path: '/computeNews/list'}, {title: '交易信息', path: '/transaction'}, {title: '挖矿币种', path: '/currency'}],
         leftnav: [{big: 'icon-zixun', title: '资讯', path: '/computeNews/list'}, {big: 'icon-zixun1', title: '快报', path: '/quickNews'}, {big: 'icon-zhizaohangye', title: '厂商', path: '/manufacturer/list'}, {big: 'icon-kuangji', title: '测评', path: '/equipmentEvaluate/list'}, {big: 'icon-bowuguan', title: '博物馆', path: '/equipments/list'}, {big: 'icon-bitebi', title: '历史曲线', path: '/computeChart'}],
         navcompute: [{title: '快讯', path: '/quickNews'}, {title: '资讯', path: '/computeNews/list'}, {title: '测评', path: '/equipmentEvaluate/list'}, {title: '币种', path: '/digitalCurrency/list'}, {title: '厂商', path: '/manufacturer/list'}]
       }
@@ -89,13 +89,13 @@
             box-sizing: border-box;
             border-top: 2px solid #327fff;
           }
-                    &.active{
-                        color:#327fff;
+          &.active{
+            color:#327fff;
             height: 50px;
             box-sizing: border-box;
             border-top: 2px solid #327fff;
-                    }
-          &.router-link-active{
+          }
+          &.nuxt-link-active{
             color:#327fff;
             height: 50px;
             box-sizing: border-box;
@@ -163,7 +163,7 @@
                       color:white;
                     }
                   }
-                        &.active{
+                  &.active{
                     background: #327fff;
                     span{
                       color:white;
@@ -172,7 +172,7 @@
                       color:white;
                     }
                   }
-                        .router-link-active{
+                        .nuxt-link-active{
                             background: #327fff;
                     span{
                       color:white;
@@ -243,7 +243,7 @@
                 color:#fe5039;
           }
         }
-        &.router-link-active{
+        &.nuxt-link-active{
             em{
                 display:inline-block;
                 border-bottom:2px solid #fe5039;

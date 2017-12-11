@@ -2,7 +2,7 @@
   <div class="transaction">
     <div class="compute_news_nav">
       <div class="compute_news_box">
-        <router-link :to="n.path" v-for="n, k in computationallist" :key="k">{{n.title}}</router-link>
+        <router-link :to="n.path" v-for="n, k in computationallist" :class="{'active': k === 2}" :key="k">{{n.title}}</router-link>
       </div>
     </div>
     <div class="transaction_all">
@@ -151,6 +151,12 @@
             box-sizing: border-box;
             border-top: 2px solid #327fff;
           }
+          &.active{
+            color:#327fff;
+            height: 50px;
+            box-sizing: border-box;
+            border-top: 2px solid #327fff;
+          }
         }
       }
     }
@@ -264,11 +270,15 @@
               button{
                   width: 266px;
                   height: 38px;
-                  background: #fe5039;
                   font-size: 16px;
-                  color: white;
-                  border:0;
+                  color: #fe5039;
+                  border:1px solid #fe5039;
                   margin-top: 18px;
+                  background:white;
+                  &:hover{
+                    background: #fe5039;
+                    color: white;
+                  }
               }
           }
           &:hover{

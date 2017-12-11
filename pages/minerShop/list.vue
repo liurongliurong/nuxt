@@ -6,9 +6,9 @@
     <div class="miner_pics">
       <div class="miner_pic pic1">
         <img :src="require('@/assets/images/miner_shop/bdc.jpg')" alt="">
-        <div class="btn">
-          <router-link to="/bdc">前往申请</router-link>
-          <router-link to="/minerShop/mining">了解挖矿</router-link>
+        <div class="small">
+          <router-link to="/bdc">前往申请机位</router-link>
+          <router-link to="/minerShop/mining">两分钟带你了解如何挖矿</router-link>
         </div>
       </div>
       <div class="miner_pic pic2">
@@ -19,20 +19,14 @@
         </div>
       </div>
       <div class="miner_pic pic3">
-        <img :src="require('@/assets/images/miner_shop/miner.jpg')" alt="">
-        <div class="text">
-          <span>矿机</span>
-          <span>品牌矿机，质量保证</span>
-        </div>
-        <router-link to="/minerShop/miner/1" class="btn">即刻前往>></router-link>
+        <router-link to="/minerShop/miner/1">
+          <img :src="require('@/assets/images/miner_shop/miner.jpg')" alt="">
+        </router-link>
       </div>
       <div class="miner_pic pic4">
-        <img :src="require('@/assets/images/miner_shop/cloud_miner.jpg')" alt="">
-        <div class="text">
-          <span>云矿机</span>
-          <span>专人维护，无忧挖矿</span>
-        </div>
-        <router-link to="/minerShop/miner/2" class="btn">即刻前往>></router-link>
+        <router-link to="/minerShop/miner/2">
+          <img :src="require('@/assets/images/miner_shop/cloud_miner.jpg')" alt="">
+        </router-link>
       </div>
     </div>
     <MinerList>
@@ -142,16 +136,18 @@
 
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
-  .miner_shop{
+ .miner_shop{
     .bg_box{
-      @include bg(1920,650px,#070a0f)
+      @include bg(1920,466px,#070a0f)
+      background:none;
       .bg{
-        background:url(~assets/images/miner_shop/miner_list.jpg) no-repeat;
+        background:url(../../assets/images/miner_shop/miner_list.jpg) no-repeat;
+        height: 498px;
       }
       @include mobile_hide
     }
     .miner_pics{
-      @include position(130)
+      @include position(90)
       left: calc(50% - 590px);
       right: calc(50% - 590px);
       bottom:auto;
@@ -179,20 +175,32 @@
           cursor: pointer;
         }
         &.pic1{
-          height:594px;
-          .btn{
-            text-align: center;
+          height: 455px;
+          .small{
+            position: absolute;
+            top:200px;
             a{
-              padding:0 20px;
-              color:#eee;
-              &:first-child{
-                padding-right:0;
-                &:after{
-                  color:#999;
-                  margin-left:30px;
-                  content:'/'
-                }
-              }
+              display:block;
+            }
+            :nth-child(1){
+              width: 242px;
+              height: 62px;
+              background: linear-gradient(to right, #fb2056 20%, #d80127);
+              filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fb2056', endColorstr='#d80127',GradientType=1 );
+              text-align: center;
+              color: white;
+              line-height: 62px;
+              font-size: 18px;
+              font-weight: 800;
+              top: 90px;
+              left: 64px;
+              position: relative;
+            }
+            :nth-child(2){
+              color:white;
+              position: relative;
+              left: 113px;
+              top:124px;
             }
           }
         }
@@ -203,12 +211,12 @@
           .swipe_pager{
             @include position(auto,auto,15,30)
             .item{
-              @include block(16)
-              border:1px solid $orange;
+              @include block(10)
+              border:2px solid white;
               border-radius:50%;
               cursor: pointer;
               &:hover,&.active{
-                background: $orange;
+                border:2px solid $orange;
               }
               & + .item{
                 margin-left:10px
@@ -303,6 +311,7 @@
     .millsList{
       padding-top: 80px;
       @include mobile_hide
+      margin-top:0 !important;
     }
     .product_list{
       .box h2{
