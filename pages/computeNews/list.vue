@@ -1,32 +1,18 @@
 <template>
-  <div class="museum_right">
-    <h1 style="position:relative;">矿机测评<span class="icon iconfont icon-jiantou" style="transform:rotate(90deg);position:absolute;top:3px;"></span></h1>
-    <div class="museum_lists" v-for="n, k in list" :key="k">
-      <router-link :to="'/equipmentEvaluate/detail/' + n.id">
-        <span class="label">BitCoin</span>
-        <img :src="n.image"/>
-        <div class="museum_content">
-          <p class="resume">{{n.title}}:{{n.resume}}</p>
-          <p class="time">{{n.dateline}}</p>
-        </div>
-      </router-link>
-    </div>
-    <div class="nodata" v-if="showImg">
-        <div class="nodata_img"></div>
-        <p>暂无列表信息</p>
-    </div>
-    <Pager :len="len" style="padding-top:0;"></Pager>
-  </div>
+  <pageFrame isComponent="true">
+    <WebInfoList class="currency_right"></WebInfoList>
+  </pageFrame>
 </template>
 
 <script>
   import util from '@/util/index'
   import api from '@/util/function'
   import { mapState } from 'vuex'
-  import Pager from '@/components/common/Pager'
+  import pageFrame from '@/components/computeNews/pageFrame'
+  import WebInfoList from '@/components/info/list'
   export default {
     components: {
-      Pager
+      pageFrame, WebInfoList
     },
     data () {
       return {
@@ -56,24 +42,24 @@
     },
     computed: {
       ...mapState({
-        token: state => state.info.token
+        isMobile: state => state.isMobile
       })
     }
   }
 </script>
 
-<style lang="scss" scoped>
-.nodata{
-  width: 234px;
-  height: 275px;
-  position: absolute;
-  left: 50%;
-  margin-top: 100px;
-  margin-left: -67px;
-  p{
-    text-align: center;
+<style lang="scss">
+  .nodata{
+    width: 234px;
+    height: 275px;
+    position: absolute;
+    left: 50%;
+    margin-top: 100px;
+    margin-left: -67px;
+    p{
+      text-align: center;
+    }
   }
-}
   .nodata_img{
     display: inline-block;
     width: 234px;

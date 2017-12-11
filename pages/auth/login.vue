@@ -13,17 +13,22 @@
       <FormField :form="form"></FormField>
       <button name="btn">登录</button>
       <div class="go_regist">
-        <span>还没有账号？</span>
-        <router-link to="/auth/regist">免费注册</router-link>
+        <router-link class="link_btn" to="/auth/passwordRetrieval">忘记密码</router-link>
+        <div class="regist_link">
+          <span>还没有账号？</span>
+          <router-link to="/auth/regist">免费注册</router-link>
+        </div>
       </div>
     </form>
   </div>
 </template>
 
 <script>
+  import { Toast } from 'mint-ui'
   import util from '@/util/index'
   import api from '@/util/function'
   import FormField from '@/components/common/FormField'
+  import { mapState } from 'vuex'
   export default {
     name: 'login',
     components: {
@@ -37,22 +42,41 @@
     methods: {
       login () {
         var form = document.querySelector('.form')
-        var data = api.checkFrom(form)
+        var data = api.checkFrom(form, this, api.checkEquipment())
         if (!data) return false
         var self = this
         form.btn.setAttribute('disabled', true)
-        util.post('login', Object.assign(data, {token: 0})).then(res => {
+        util.post('login', {sign: api.serialize(Object.assign(data, {token: 0}))}).then(res => {
           api.checkAjax(self, res, () => {
             self.$store.commit('SET_TOKEN', Object.assign(res, {mobile: data.mobile}))
-            util.post('getAll', res).then(function (data) {
+            util.post('getAll', {sign: api.serialize(res)}).then(function (data) {
               self.$store.commit('SET_INFO', data)
             })
             api.tips('欢迎来到算力网！', () => {
-              self.$router.push({path: '/'})
+              if (self.callUrl) {
+                location.href = self.callUrl
+                self.$store.commit('SET_URL', '')
+              } else {
+                self.$router.push({path: '/'})
+              }
             })
           }, form.btn)
+        }).catch(res => {
+          api.tips('您的网络情况不太好，请稍后再尝试')
+        })
+      },
+      myToast (str) {
+        Toast({
+          message: str,
+          position: 'middle',
+          duration: 3000
         })
       }
+    },
+    computed: {
+      ...mapState({
+        callUrl: state => state.callUrl
+      })
     }
   }
 </script>
@@ -64,6 +88,7 @@
     @include flex(space-between)
     color:$white;
     .info{
+      width:58%;
       line-height:2;
       h1{
         font-size: 46px;
@@ -74,6 +99,7 @@
       h3{
         font-size: 18px;
       }
+      @include mobile_hide
     }
     .form{
       color:$light_text;
@@ -81,16 +107,26 @@
       padding:35px;
       @include form(v)
       h3{
-        @include flex(space-between,flex-end)
+        overflow:hidden;
         span{
           font-size: 24px;
         }
-        margin-bottom:35px
+        a{
+          margin-top:8px;
+          float: right;
+        }
+        margin-bottom:35px;
+        @include mobile_hide
       }
       .go_regist{
         border-top:1px dashed $border;
         padding-top:15px;
-        text-align: center;
+        .link_btn{
+          @include mobile_show
+        }
+        .regist_link{
+          text-align: center;
+        }
         a{
           color:$blue
         }
@@ -112,5 +148,21 @@
         margin-top:0
       }
     }
+    @media screen and (max-width: $mobile) {
+      .form .go_regist{
+        border-top:0;
+        padding-top:0;
+        @include flex(space-between)
+        &,a{
+          font-size: 14px;
+        }
+      }
+      .form .input input{
+        padding-left:15px;
+      }
+    }
+  }
+  .auth.login_block .copyright{
+    color:#999;
   }
 </style>

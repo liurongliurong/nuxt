@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="password_found_block">
     <form class="password form" action="" @submit.prevent="submit(1)" novalidate v-if="!next">
       <h2>找回密码</h2>
       <FormField :form="form"></FormField>
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+  import { Toast } from 'mint-ui'
   import util from '@/util/index'
   import api from '@/util/function'
   import { mapState } from 'vuex'
@@ -42,11 +43,11 @@
     methods: {
       submit (n) {
         var form = document.querySelector('.form')
-        var data = api.checkFrom(form)
+        var data = api.checkFrom(form, this, api.checkEquipment())
         if (!data) return false
         var self = this
         if (n === 1) {
-          util.post('valid_code', Object.assign(data, {token: this.token})).then(res => {
+          util.post('valid_code', {sign: api.serialize(Object.assign(data, {token: this.token}))}).then(res => {
             api.checkAjax(self, res, () => {
               self.mobile = data.mobile
               self.code_id = res.id
@@ -56,7 +57,7 @@
           })
         } else {
           form.btn.setAttribute('disabled', true)
-          util.post('forgitPwd', Object.assign(data, {token: this.token, valid_code: this.valid_code, code_id: this.code_id, mobile: this.mobile})).then(res => {
+          util.post('forgitPwd', {sign: api.serialize(Object.assign(data, {token: this.token, valid_code: this.valid_code, code_id: this.code_id, mobile: this.mobile}))}).then(res => {
             api.checkAjax(self, res, () => {
               api.tips('重置密码成功', () => {
                 self.$router.push({name: 'login'})
@@ -69,6 +70,13 @@
         var ele = e.target
         var form = document.querySelector('.form')
         api.checkFiled(ele, form)
+      },
+      myToast (str) {
+        Toast({
+          message: str,
+          position: 'middle',
+          duration: 3000
+        })
       }
     },
     computed: {
@@ -81,7 +89,21 @@
 
 <style type="text/css" lang="scss">
   @import '../../assets/css/style.scss';
-  form.password,form.next_form{
-    @include form
+  .password_found_block{
+    width:420px;
+    margin:0 auto;
+    padding-top:35px;
+    form.password,form.next_form{
+      @include form
+      h2{
+        margin-top:0;
+        @include mobile_hide
+      }
+    }
+    @media screen and (max-width: $mobile) {
+      width:100%;
+      padding:30px 15px;
+      background: #fff;
+    }
   }
 </style>

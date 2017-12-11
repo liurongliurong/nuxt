@@ -33,7 +33,7 @@
     </div>
     <div class="mobileminer" v-else>
       <div class="millsList_mobile" v-for="n,k in $parent.minerData">
-        <router-link :to="'/minerShop/detail/'+ n.id +'/1'">
+        <router-link :to="'/minerShop/detail/'+ n.id +'&1'">
           <div class="null">
             <img :src="n.minerPicture"/>
           </div>

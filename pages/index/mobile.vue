@@ -11,7 +11,7 @@
     <div class="home_compute_news">
       <h3 class="home_title">算力资讯</h3>
       <div class="compute_items">
-        <router-link to="/quickNews/list">
+        <router-link to="/quickNews">
           <div class="item" v-for="n,k in newsNav">
             <div class="text">
               <p>{{n.title}}</p>
@@ -53,7 +53,7 @@
     },
     data () {
       return {
-        nav: [{title: '矿机商城', desc: '无忧购买矿机', url: '/minerShop/miner/1'}, {title: 'BDC托管', desc: '多个BDC中心', url: '/bdc'}, {title: '产业资讯', desc: '掌握产业动态', url: '/quickNews/list'}, {title: '算力转让', desc: '掌握产业动态', url: '/mobile/information'}],
+        nav: [{title: '矿机商城', desc: '无忧购买矿机', url: '/minerShop/miner/1'}, {title: 'BDC托管', desc: '多个BDC中心', url: '/bdc'}, {title: '产业资讯', desc: '掌握产业动态', url: '/quickNews'}, {title: '算力转让', desc: '掌握产业动态', url: '/mobile/information'}],
         data: [1, 1, 1],
         newsNav: [{title: '热点快讯·不止于此', desc: '开启算力新篇章'}, {title: '实时交易信息', desc: '前往了解更多'}, {title: '挖矿币种资料', desc: '前往了解更多'}]
       }

@@ -53,40 +53,15 @@
         headerClass: ''
       }
     },
-    mounted () {
-      this.updateClass()
-      window.addEventListener('scroll', this.test, false)
-      if (this.token === 0) {
-        this.$store.dispatch('getInfo')
-      }
-      var self = this
-      util.post('getAll', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.$store.commit('SET_INFO', res)
-        })
-      }).catch(res => {
-        console.log(res)
-      })
-      util.post('getCurrencys', {sign: api.serialize({token: this.token})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.$store.commit('SET_HASH_TYPE', res)
-        })
-      }).catch(res => {
-        console.log(res)
-      })
-    },
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
-        mobile: state => state.info.mobile,
-        true_name: state => state.info.true_name,
-        isMobile: state => state.isMobile
+        mobile: state => state.info.mobile
       })
     },
     methods: {
       logout () {
-        this.$router.push({name: 'home'})
+        this.$router.push({path: '/'})
         this.$store.commit('LOGOUT')
       },
       test (e) {
@@ -116,6 +91,10 @@
           this.headerClass += 'fixed_header' + ' '
         }
       }
+    },
+    mounted () {
+      this.updateClass()
+      window.addEventListener('scroll', this.test, false)
     },
     filters: {
       format: api.telReadable

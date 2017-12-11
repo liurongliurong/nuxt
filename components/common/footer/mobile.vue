@@ -3,10 +3,10 @@
     <div class="mobile_box">
       <mt-tabbar :fixed="true" selected="1">
         <div v-for="item in footList" class="mint-tab-item">
-          <router-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
+          <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
             <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
             <span class="name">{{item.name}}</span>
-          </router-link>
+          </nuxt-link>
         </div>
       </mt-tabbar>
     </div>
@@ -18,9 +18,9 @@
     data () {
       return {
         footList: [
-          {name: '首页', icon: 'icon-shouye', activeIcon: 'icon-shouyetianchong', linkName: 'home'},
-          {name: '算力资产', icon: 'icon-qingdan', activeIcon: 'icon-qingdantianchong', linkName: 'mproperty'},
-          {name: '个人中心', icon: 'icon-yonghu', activeIcon: 'icon-yonghutianchong', linkName: 'mpersoncenter'}
+          {name: '首页', icon: 'icon-shouye', activeIcon: 'icon-shouyetianchong', linkName: 'index'},
+          {name: '算力资产', icon: 'icon-qingdan', activeIcon: 'icon-qingdantianchong', linkName: 'mobile-property'},
+          {name: '个人中心', icon: 'icon-yonghu', activeIcon: 'icon-yonghutianchong', linkName: 'mobile-personcenter'}
         ],
         showRouter: ['/auth', '/bdc']
       }
