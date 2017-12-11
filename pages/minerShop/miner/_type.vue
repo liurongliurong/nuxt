@@ -85,7 +85,6 @@
 
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
-  // @import '~assets/fonts/iconfont.css';
   .compute_shop{
     background: #f7f8fa;
     .pager{

@@ -23,7 +23,7 @@
         <aside class="con">
           <router-link :class="['item', {active:$route.path.includes(n.name)}]" :to="n.path" v-for="n,k in nav" :key="k">{{n.title}}</router-link>
         </aside>
-        <router-view class="content"></router-view>
+        <nuxt-child class="content"></nuxt-child>
       </div>
     </section>
   </article>
@@ -69,14 +69,13 @@
 </script>
 
 <style type="text/css" lang="scss">
-  @import '../assets/css/style.scss';
-  @import '../assets/fonts/iconfont.css';
+  @import '~assets/css/style.scss';
   .user{
     overflow:hidden;
     .info{
       width: 100%;
       height: 140px;
-      background: #1d2433 url('../assets/images/user_bg.jpg') repeat-x 50%;
+      background: #1d2433 url('~assets/images/user_bg.jpg') repeat-x 50%;
       .box{
         @include main
         @include flex(space-between)

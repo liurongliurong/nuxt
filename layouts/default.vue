@@ -66,4 +66,5 @@
 
 <style type="text/css" lang="scss">
   @import '../assets/css/public.scss';
+  @import '../assets/fonts/iconfont.css';
 </style>

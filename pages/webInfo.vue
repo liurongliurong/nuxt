@@ -38,8 +38,7 @@
 </script>
 
 <style type="text/css" lang="scss">
-  @import '../assets/css/style.scss';
-  @import '../assets/fonts/iconfont.css';
+  @import '~assets/css/style.scss';
   .web_info{
     width: 100%;
     background: #f7f8fa;

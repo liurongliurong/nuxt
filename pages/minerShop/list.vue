@@ -132,13 +132,12 @@
 </script>
 
 <style type="text/css" lang="scss">
-  @import '../../assets/css/style.scss';
-  @import '../../assets/fonts/iconfont.css';
+  @import '~assets/css/style.scss';
   .miner_shop{
     .bg_box{
       @include bg(1920,650px,#070a0f)
       .bg{
-        background:url(../../assets/images/miner_shop/miner_list.jpg) no-repeat;
+        background:url(~assets/images/miner_shop/miner_list.jpg) no-repeat;
       }
       @include mobile_hide
     }
