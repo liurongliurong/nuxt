@@ -98,7 +98,6 @@
 
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
-  // @import '~assets/fonts/iconfont.css';
   .home{
     .home_title{
       .main{
