@@ -65,7 +65,7 @@
       allclick (i) {
         this.show = i
         if (this.token === 0) {
-          this.$router.push({name: 'login'})
+          this.$router.push({name: 'auth-login'})
           return false
         }
       }

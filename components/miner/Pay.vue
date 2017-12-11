@@ -258,16 +258,16 @@
           if (!(this.bank_card && this.bank_card.status === 1)) {
             api.tips('请先绑定银行卡', () => {
               if (this.isMobile) {
-                this.$router.push({name: 'madministration'})
+                this.$router.push({name: 'mobile-administration'})
               } else {
-                this.$router.push({name: 'account'})
+                this.$router.push({name: 'user-account'})
               }
             })
             return false
           }
           if (!this.trade_password) {
             api.tips('请先设置交易密码', () => {
-              this.$router.push({name: 'password'})
+              this.$router.push({name: 'user-password'})
             })
             return false
           }

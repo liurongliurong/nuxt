@@ -35,10 +35,13 @@
           var ele = this.$refs['question' + i][0]
           if ((form['question' + i].value) !== '') {
             scoreArr.push(form['question' + i].value)
-            ele.classList.remove('active')
+            ele.className = 'question'
           } else {
             form['question' + i][0].focus()
-            ele.classList.add('active')
+            ele.className = 'question active'
+            setTimeout(() => {
+              ele.className = 'question'
+            }, 2000)
             return false
           }
         }
@@ -60,13 +63,13 @@
         console.log(rickType)
         var self = this
         var sendData = {token: this.token, user_id: this.user_id}
-        util.post('risk_score', Object.assign({user_risk_score: score, risk_type: encodeURIComponent(rickType)}, sendData)).then(function (res) {
+        util.post('risk_score', {sign: api.serialize(Object.assign({user_risk_score: score, risk_type: encodeURIComponent(rickType)}, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             util.post('show_risk_score', {sign: api.serialize(sendData)}).then(function (data) {
               if (data && !data.code) {
                 self.$store.commit('SET_INFO', {risk: data})
                 api.tips('测评成功', () => {
-                  self.$router.push({name: 'lpCenter'})
+                  self.$router.push({name: 'user-lpCenter'})
                 })
               }
             })
@@ -84,8 +87,10 @@
 </script>
 
 <style type="text/css" lang="scss">
-  @import '../../assets/css/style.scss';
+  @import '~assets/css/style.scss';
   .account_evaluate{
+    padding:40px 0;
+    @include article
     .box_content{
       aside{
         margin-bottom:15px;

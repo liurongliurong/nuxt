@@ -5,44 +5,60 @@
         <span class="text_title">还款管理</span>
       </div>
       <nav>
-        <router-link :to="'/user/repayment/'+(+k+1)" v-for="n,k in nav[0]" :key="k">{{n}}</router-link>
+        <router-link :to="'/user/repayment/'+ k" v-for="n,k in nav[0]" :key="k">{{n}}</router-link>
       </nav>
     </div>
     <div class="order_box">
-      <table>
-        <tr>
-          <th>算力服务器</th>
-          <template v-if="$route.params.type==='1'">
-            <th>分期金额</th>
-            <th>手续费率</th>
-            <th>分期期限</th>
-            <th>已还期数</th>
-            <th>分期时间</th>
-          </template>
-          <template v-else>
-            <th>分期时间</th>
-          </template>
-          <th>操作</th>
-        </tr>
-        <tr v-for="d,k in data">
-          <td>{{d.product}}<i :class="'icon_currency '+d.hash_type_name"></i></td>
-          <template v-if="$route.params.type==='1'">
-            <td>{{d.fen}}</td>
-            <td>{{d.shou}}</td>
-            <td>{{d.xian}}</td>
-            <td>{{d.yi}}</td>
-            <td>{{d.time}}</td>
-          </template>
-          <template v-else>
-            <td>{{d.time}}</td>
-          </template>
-          <td>
-            <router-link :to="'/user/repaymentDetail/'+d.id" class="blue">查看详情</router-link>
-          </td>
-        </tr>
+      <table style="margin-top:0;">
+        <thead>
+          <tr>
+            <th>算力服务器</th>
+            <template v-if="$route.params.status==='0'">
+              <th>分期金额</th>
+              <th>手续费率</th>
+              <th>分期期限</th>
+              <th>已还期数</th>
+              <th>分期时间</th>
+            </template>
+            <template v-else>
+              <th>分期金额</th>
+              <th>手续费率</th>
+              <th>分期期限</th>
+              <th>已还期数</th>
+              <th>分期时间</th>
+            </template>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="d,k in item">
+            <template v-if="status==='0'">
+              <td>{{d.product_name}}<i :class="'icon_currency '+d.product_hash_type"></i></td>
+              <td>{{d.loan_money}}</td>
+              <td>{{d.fee_value * 100}}%</td>
+              <td>{{d.loan_deadline}}</td>
+              <td>{{d.complete_number}}</td>
+              <td>{{d.loan_start_time}}</td>
+              <td>
+                <router-link :to="'/user/repaymentDetail/'+d.id" class="blue">查看详情</router-link>
+              </td>
+            </template>
+            <template v-if="status==='1'">
+              <td>{{d.product_name}}<i :class="'icon_currency '+d.hash_type_name"></i></td>
+              <td>{{d.loan_money}}</td>
+              <td>{{d.fee_value}}%</td>
+              <td>{{d.loan_deadline}}</td>
+              <td>{{d.complete_number}}</td>
+              <td>{{d.loan_start_time}}</td>
+              <td>
+                <router-link :to="'/user/repaymentDetail/'+d.id" class="blue">查看详情</router-link>
+              </td>
+            </template>
+          </tr>
+        </tbody>
       </table>
       <div class="nodata" v-if="showImg">
-        <!-- <img :src="img" alt=""> -->
+        <div class="nodata_img"></div>
         <p>暂无列表信息</p>
       </div>
       <Pager :len="len"></Pager>
@@ -51,11 +67,10 @@
 </template>
 
 <script>
-  // import util from '@/util'
-  // import api from '@/util/function'
-  // import { mapState } from 'vuex'
+  import util from '@/util'
+  import api from '@/util/function'
+  import { mapState } from 'vuex'
   import Pager from '@/components/common/Pager'
-  // import md5 from 'js-md5'
   export default {
     components: {
       Pager
@@ -63,12 +78,42 @@
     data () {
       return {
         nav: [{'0': '进行中', '1': '已结束'}],
-        data: [{product: '阿瓦隆001', fen: '10000元', shou: '15%', xian: '12个月', yi: '1/12期', time: '2017-09-21', id: '0', hash_type_name: 'BTC'}],
-        // img: require('@/assets/images/no_data.jpg'),
+        item: '',
         showImg: false,
-        status: 1,
-        len: 0
+        status: 0,
+        len: 0,
+        now: 1
       }
+    },
+    methods: {
+      items () {
+        var self = this
+        this.item = []
+        this.status = this.$route.params.type
+        util.post('getLoanList', {sign: api.serialize({token: this.token, user_id: this.user_id, status: this.status, page: this.now})}).then(function (res) {
+          api.checkAjax(self, res, () => {
+            self.item = res
+            self.showImg = !res.length
+            if (self.now > 1) return false
+            self.len = Math.ceil(res.length / 15)
+          })
+        })
+      }
+    },
+    mounted () {
+      this.items()
+    },
+    watch: {
+      '$route': 'items'
+    },
+    computed: {
+      ...mapState({
+        token: state => state.info.token,
+        user_id: state => state.info.user_id
+      })
+    },
+    filters: {
+      format: api.decimal
     }
   }
 </script>
@@ -148,7 +193,11 @@
                 }
               }
               a{
-                display: inline-block;
+                display: block;
+                margin: 0 auto;
+                width: 88px;
+                height: 36px !important;
+                padding:0;
                 @include button($blue,border)
                 border-radius: 5px;
                 .btn:not(:disabled){

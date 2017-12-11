@@ -94,9 +94,9 @@
           api.tips('请先实名认证', () => {
             // this.$router.push({name: 'madministration'})
             if (api.checkEquipment) {
-              this.$router.push({name: 'madministration'})
+              this.$router.push({name: 'mobile-administration'})
             } else {
-              this.$router.push({name: 'account'})
+              this.$router.push({name: 'auth-account'})
             }
           })
           return false
@@ -104,15 +104,15 @@
         if (!(this.bank_card && this.bank_card.status === 1)) {
           api.tips('请先绑定银行卡', () => {
             if (api.checkEquipment) {
-              this.$router.push({name: 'madministration'})
+              this.$router.push({name: 'mobile-administration'})
             } else {
-              this.$router.push({name: 'account'})
+              this.$router.push({name: 'auth-account'})
             }
           })
           return false
         }
         if (k === 1) {
-          this.$router.push({name: 'mrecharge'})
+          this.$router.push({name: 'mobile-recharge'})
           return false
         }
         if (k === 2) {

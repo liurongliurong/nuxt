@@ -12,7 +12,7 @@
       </div>
     </div>
     <template v-if="show===2">
-      <h2>LP中心<button @click="open">添加基金</button><span class="scode_info">风险测评：{{scodeInfo.risk.user_risk_score+'分('+scodeInfo.risk.risk_type+')'}}</span></h2>
+      <h2>合伙人中心<button @click="open">添加基金</button><span class="scode_info">风险测评：{{scodeInfo.risk.user_risk_score+'分('+scodeInfo.risk.risk_type+')'}}</span></h2>
       <template v-if="s.fund_invest_id" v-for="s,k in scodeInfo.list">
         <h3>{{s.fund_invest_id===1?'BDC基金':'算力基金'}}</h3>
         <div class="detail_table">
@@ -83,7 +83,7 @@
         var data = api.checkFrom(form)
         var self = this
         if (!data) return false
-        util.post('ScodeVerify', {token: this.token, user_id: this.user_id, s_code: form.scode.value}).then(function (res) {
+        util.post('ScodeVerify', {sign: api.serialize({token: this.token, user_id: this.user_id, s_code: form.scode.value})}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.edit = false
             document.body.style.overflow = 'auto'
@@ -119,22 +119,22 @@
         }
         if (!(this.true_name && this.true_name.status === 1)) {
           api.tips('请先实名认证', () => {
-            this.$router.push({name: 'auth-account'})
+            this.$router.push({name: 'user-account'})
           })
           return false
         }
-        if (!(this.bank_card && this.bank_card.status === 2)) {
+        if (!(this.bank_card && this.bank_card.status === 1)) {
           api.tips('请先绑定银行卡', () => {
-            this.$router.push({name: 'auth-account'})
+            this.$router.push({name: 'user-account'})
           })
           return false
         }
         var self = this
         var sCodeData = {token: this.token, user_id: this.user_id, s_code: ele.value}
-        util.post('ScodeVerify', sCodeData).then(function (res) {
+        util.post('ScodeVerify', {sign: api.serialize(sCodeData)}).then(function (res) {
           api.checkAjax(self, res, () => {
             if (self.risk && self.risk.user_risk_score < 0) {
-              self.$router.push({name: 'auth-accountEvaluate'})
+              self.$router.push({name: 'user-accountEvaluate'})
             } else {
               self.show = 3
               self.content = res.content
@@ -145,7 +145,7 @@
       },
       agree () {
         var self = this
-        util.post('sign_contract', Object.assign({token: this.token, user_id: this.user_id}, self.contract)).then(function (res) {
+        util.post('sign_contract', {sign: api.serialize(Object.assign({token: this.token, user_id: this.user_id}, self.contract))}).then(function (res) {
           api.checkAjax(self, res, () => {
             api.tips(res)
             self.show = 2
@@ -163,7 +163,7 @@
     },
     mounted () {
       var self = this
-      util.post('scode_info', {token: self.token}).then(function (res) {
+      util.post('scode_info', {sign: 'token=' + self.token}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.no = res.s_code
           self.scodeInfo = res
@@ -172,12 +172,12 @@
             return false
           }
           if (res.s_code && res.risk && res.risk.user_risk_score < 0) {
-            self.$router.push({name: 'accountEvaluate'})
+            self.$router.push({name: 'user-accountEvaluate'})
             return false
           }
           if (res.s_code && res.risk && res.risk.user_risk_score > 0 && !res.list[res.s_code].is_contract) {
             var sCodeData = {token: self.token, user_id: self.user_id, s_code: res.s_code}
-            util.post('show_contract', sCodeData).then(function (r) {
+            util.post('show_contract', {sign: api.serialize(sCodeData)}).then(function (r) {
               api.checkAjax(self, r, () => {
                 self.show = 3
                 self.content = r.content
@@ -204,7 +204,7 @@
 </script>
 
 <style type="text/css" lang="scss">
-  @import '../../assets/css/style.scss';
+  @import '~assets/css/style.scss';
   .lp_center{
     padding:0 15px;
     h2{

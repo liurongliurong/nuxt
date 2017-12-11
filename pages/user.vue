@@ -7,8 +7,8 @@
           <div class="line"></div>
           <div class="icons">
             <span class="iconfont active"></span>
-            <span :class="['iconfont', {active: true_name&&true_name.status===1}]"></span>
-            <span :class="['iconfont', {active: bank_card&&bank_card.status===1}]"></span>
+            <span :class="['iconfont', {active: true_name}]"></span>
+            <span :class="['iconfont', {active: bank_card}]"></span>
             <span>上次登录时间：{{new Date(last_login_time*1000)|date}}</span>
           </div>
         </div>
@@ -20,10 +20,9 @@
     </div>
     <section class="main">
       <div class="box">
-        <aside class="con">
+        <aside class="con" v-if="!$route.path.includes('accountEvaluate')">
           <router-link :class="['item', {active:$route.path.includes(n.name)}]" :to="n.path" v-for="n,k in nav" :key="k">{{n.title}}</router-link>
-        </aside>
-        <nuxt-child class="content"></nuxt-child>
+        </aside><router-view class="main_content"></router-view>
       </div>
     </section>
   </article>
@@ -31,16 +30,27 @@
 
 <script>
   import { mapState } from 'vuex'
-  import api from '@/util/function'
+  import util from '@/util'
+  import api from '../util/function'
   export default {
     data () {
       return {
-        nav: [{name: 'computeProperty', title: '算力资产', path: '/user/computeProperty'}, {name: 'account', title: '账户管理', path: '/user/account'}, {name: 'password', title: '密码管理', path: '/user/password'}, {name: 'order', title: '订单管理', path: '/user/order/0'}, {name: 'virtualCurrencyFlow', title: '币流水', path: '/user/virtualCurrencyFlow'}, {name: 'moneyFlow', title: '资金流水', path: '/user/moneyFlow'}, {name: 'lp', title: 'LP中心', path: '/user/lpCenter'}, {name: 'message', title: '消息中心', path: '/user/message'}]
-        // , {name: 'repayment', title: '还款管理', path: '/user/repayment/1'}
+        nav: [{name: 'computeProperty', title: '算力资产', path: '/user/computeProperty'}, {name: 'account', title: '账户管理', path: '/user/account'}, {name: 'password', title: '密码管理', path: '/user/password'}, {name: 'order', title: '订单管理', path: '/user/order/0'}, {name: 'address', title: '地址管理', path: '/user/address'}, {name: 'virtualCurrencyFlow', title: '币流水', path: '/user/virtualCurrencyFlow'}, {name: 'moneyFlow', title: '资金流水', path: '/user/moneyFlow'}, {name: 'lp', title: '合伙人中心', path: '/user/lpCenter'}, {name: 'message', title: '消息中心', path: '/user/message'}, {name: 'repayment', title: '还款管理', path: '/user/repayment/0'}, {name: 'calculator', title: '挖矿计算器', path: '/user/Calculator'}],
+        now: 1
       }
+    },
+    mounted () {
+      var self = this
+      util.post('MessageList', {sign: api.serialize({token: this.token, user_id: this.user_id, page: this.now})}).then(function (res) {
+        api.checkAjax(self, res, () => {
+          self.$store.commit('SET_INFO', {unread_num: res.unread_num})
+        })
+      })
     },
     computed: {
       ...mapState({
+        token: state => state.info.token,
+        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
         unread_num: state => state.info.unread_num,
         true_name: state => state.info.true_name,
@@ -77,17 +87,23 @@
       height: 140px;
       background: #1d2433 url('~assets/images/user_bg.jpg') repeat-x 50%;
       .box{
+        line-height: 140px;
         @include main
         @include flex(space-between)
         height:100%;
+        .welcome,.message{
+          line-height: 1.5;
+        }
         .welcome{
-          flex:1;
+          width:90%;
           h2{
             color:$white
           }
           .line{
+            width:100%;
             height: 1px;
             background: linear-gradient(to right, #5c6474 40%, transparent 80%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5c6474', endColorstr='#fff',GradientType=1 );
             margin:15px 0
           }
           .icons{
@@ -106,7 +122,7 @@
                   background: #4d83dd;
                 }
                 &:before{
-                  content:'\e694'
+                  content:'\e601'
                 }
               }
               &:nth-child(2){
@@ -157,6 +173,9 @@
       .box{
         @include flex(flex-start,stretch)
         @include main
+        & > *{
+          vertical-align:top;
+        }
         .con{
           width:210px;
           background: $white;
@@ -189,7 +208,7 @@
             }
           }
         }
-        .content{
+        .main_content{
           background: $white;
           width:leave(235);
           min-height: 600px;

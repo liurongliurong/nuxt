@@ -200,7 +200,7 @@
         // }
         if (!this.token) {
           this.$store.commit('SET_URL', this.$route.path)
-          this.$router.push({name: 'login'})
+          this.$router.push({name: 'auth-login'})
           this.$store.commit('LOGOUT')
           return false
         }
@@ -350,7 +350,7 @@
           // self.content = res.content + '<hr>' + res.content1
           self.content = res.content
         }, '', () => {
-          self.$router.push({name: 'home'})
+          self.$router.push({name: 'index'})
         })
       })
     }

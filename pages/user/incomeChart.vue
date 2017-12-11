@@ -16,7 +16,7 @@
   import 'echarts/lib/chart/line'
   import 'echarts/lib/component/tooltip'
   import 'echarts/lib/component/title'
-  import 'echarts/lib/component/legend'
+  // import 'echarts/lib/component/legend'
   export default {
     data () {
       return {
@@ -38,11 +38,11 @@
           tooltip: {
             trigger: 'axis'
           },
-          legend: {
-            right: 10,
-            data: ['获得收益'],
-            top: 20
-          },
+          // legend: {
+          //   right: 10,
+          //   data: ['获得收益'],
+          //   top: 20
+          // },
           title: {
             text: '',
             top: 20
@@ -50,7 +50,7 @@
           grid: {
             show: true,
             borderColor: '#eee',
-            left: '15%',
+            left: '20%',
             top: '20%'
           },
           xAxis: {
@@ -106,11 +106,12 @@
       }
     },
     mounted () {
+      // this.drawLine()
       var self = this
-      util.post('showIncome', {token: this.token, user_id: this.user_id, product_hash_type: 1}).then(function (res) {
+      util.post('showIncome', {sign: api.serialize({token: this.token, user_id: this.user_id, product_hash_type: 1})}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.date = res.time
-          self.val = res.data
+          self.val = res.income
           self.drawLine()
         })
       })
@@ -125,11 +126,12 @@
 </script>
 
 <style type="text/css" lang="scss">
-  @import '../../assets/css/style.scss';
+  @import '~assets/css/style.scss';
   .income_chart{
     padding:0 15px;
     h2{
       padding:0 15px !important;
+      @include mobile_hide
     }
     .myChart{
       width:100%;
@@ -137,6 +139,7 @@
     }
     .chart_btn{
       text-align: center;
+      @include mobile_hide
       .back{
         width:100px;
         display: inline-block;
@@ -145,6 +148,8 @@
         margin-top: 20px;
       }
     }
-      
+    @media screen and (max-width: $mobile) {
+      padding:0;
+    }
   }
 </style>
