@@ -6,13 +6,17 @@
       <div class="data">
         <div class="item">
           <p>总资金</p>
-          <span class="currency">{{(+moneyData.freeze_account+moneyData.balance_account)|currency}}</span>
+          <span class="currency">{{priceall|currency}}</span>
           <span class="">元</span>
         </div>
         <div class="line"></div>
         <template v-for="d,k in moneyNav">
           <div class="item">
-            <p>{{d}}</p>
+            <div class="frozeeData">
+              <span>{{d}}</span>
+              <span class="problem" v-if="k==='freeze_account'">?</span>
+              <div class="frozee_tips" v-if="k==='freeze_account'">暂时不能使用的资金</div>
+            </div>
             <span class="currency">{{moneyData[k]|currency}}</span>
             <span class="">元</span>
           </div>
@@ -52,17 +56,11 @@
     <h3>算力资产</h3>
     <div class="detail_table">
       <div class="item" v-for="d,k in computeProperty">
-        <div class="item_title">{{d[0]}}</div>
-        <div class="item_value" v-if="k==='total_hash'">{{dataProperty[k]|format}}{{d[1]}}</div>
-        <div class="item_value" v-else>{{dataProperty[k]}}{{d[1]}}</div>
-      </div>
-      <div class="item" v-if="7%2">
-        <div class="item_title"></div>
-        <div class="item_value"></div>
+        <div class="item_title">{{d[0]}}</div><div class="item_value" v-if="k==='total_hash'">{{dataProperty[k]|format}}{{d[1]}}</div><div class="item_value" v-else>{{dataProperty[k]}}{{d[1]}}</div>
       </div>
     </div>
     <template v-if="scode">
-      <h4>算力产业基金</h4>
+      <h4>基金资产</h4>
       <div class="detail_table fund_table">
         <div class="item" v-for="d,k in computeFund">
           <div class="item_title">{{d[0]}}</div>
@@ -75,9 +73,9 @@
       </div>
     </template>
     <div class="fund_btn">
-      <router-link to="/user/order/0/1">出售云矿机</router-link>
-      <router-link to="/user/order/1/1">出租算力</router-link>
-      <router-link to="/user/order/0/1">查看订单</router-link>
+      <router-link to="/user/calculator">挖矿计算器</router-link>
+      <router-link to="/user/order/0">出售云矿机</router-link>
+      <router-link to="/user/order/0">查看订单</router-link>
     </div>
     <MyMask :form="form[edit]" :title="editText" v-if="edit"></MyMask>
   </section>
@@ -96,11 +94,13 @@
     data () {
       return {
         nowEdit: 0,
+        priceall: '',
         moneyNav: {freeze_account: '冻结资金', balance_account: '账户余额'},
         moneyData: {freeze_account: 0, balance_account: 0},
         computeNav: {today_hash: '今日收益', balance_account: '账户余额', total_hash: '累积已获得收益'},
         computeData: {today_hash: 0, balance_account: 0, total_hash: 0},
-        computeProperty: {total_miner: ['已购入矿机', '台'], total_hash: ['算力总和', 'T'], buy_transfer_hash: ['已租赁算力', 'T'], selled_miner: ['已出售矿机', '台'], selling_miner: ['出售中云矿机', '台'], selled_hash: ['已出租云矿机', '台'], selling_hash: ['出租中云矿机', '台']},
+        computeProperty: {total_miner: ['已购入云矿机', '台'], total_hash: ['算力总和', 'T'], selled_miner: ['已出售云矿机', '台'], selling_miner: ['出售中云矿机', '台']},
+        // , selled_hash: ['已出租云矿机', '台'], selling_hash: ['出租中云矿机', '台']
         dataProperty: {total_miner: 0, total_hash: 0, buy_transfer_hash: 0, selled_miner: 0, selling_miner: 0, selled_hash: 0, selling_hash: 0},
         computeFund: {total_miner: ['云矿机', '台'], total_hash: ['云算力总和', 'T'], selled_miner: ['已出租云算力', 'T'], selling_miner: ['出租中云算力', 'T']},
         dataFund: {total_miner: 0, total_hash: 0, selled_miner: 0, selling_miner: 0},
@@ -125,39 +125,43 @@
           })
           return false
         }
-        if (!(this.bank_card && this.bank_card.status === 1)) {
-          api.tips('请先绑定银行卡', () => {
-            this.$router.push({name: 'user-account'})
-          })
-          return false
-        }
-        if (str === 'recharge') {
-          this.$router.push({name: 'user-recharge'})
-        }
-        if (str === 'GetIncome' && !this.address.length) {
-          api.tips('请先绑定算力地址', () => {
-            this.$router.push({name: 'user-account'})
-          })
-          return false
-        }
-        if (str === 'Withdrawals' && +this.moneyData.balance_account <= 0) {
-          api.tips('您的账户余额不足，不能提现')
-          return false
-        } else if (str === 'GetIncome' && +this.computeData.balance_account <= 0) {
-          api.tips('您的账户余额不足，不能提取收益')
-          return false
-        }
         var requestUrl = ''
         var data = {}
-        if (str === 'Withdrawals') {
-          requestUrl = 'showWithdraw'
-          data = {token: this.token, user_id: this.user_id}
-        } else if (str === 'GetIncome') {
+        if (str === 'recharge') {
+          this.$router.push({name: 'user-recharge'})
+          return false
+        }
+        if (str === 'GetIncome') {
+          if (!this.address.length) {
+            api.tips('请先绑定算力地址', () => {
+              this.$router.push({name: 'user-account'})
+            })
+            return false
+          }
+          if (+this.computeData.balance_account <= 0) {
+            api.tips('您的账户余额不足，不能提取收益')
+            return false
+          }
           requestUrl = 'showWithdrawCoin'
           data = {token: this.token, user_id: this.user_id, product_hash_type: this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id}
+          this.product_hash_type = this.hashType[this.nowEdit].name.toUpperCase()
+        }
+        if (str === 'Withdrawals') {
+          if (!(this.bank_card && this.bank_card.status === 1)) {
+            api.tips('请先绑定银行卡', () => {
+              this.$router.push({name: 'user-account'})
+            })
+            return false
+          }
+          if (+this.moneyData.balance_account <= 0) {
+            api.tips('您的账户余额不足，不能提现')
+            return false
+          }
+          requestUrl = 'showWithdraw'
+          data = {token: this.token, user_id: this.user_id}
         }
         var self = this
-        util.post(requestUrl, data).then(function (res) {
+        util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             window.scroll(0, 0)
             document.body.style.overflow = 'hidden'
@@ -169,7 +173,6 @@
             } else if (str === 'GetIncome') {
               self.fee = res.withdraw_coin_fee
               self.amount = res.coin_account
-              self.product_hash_type = self.hashType[self.nowEdit].name.toLowerCase()
             }
           })
         })
@@ -185,17 +188,17 @@
       getList () {
         var self = this
         var sendData = {token: this.token, user_id: this.user_id, product_hash_type: (this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id) || '1'}
-        util.post('myHashAccount', sendData).then(function (res) {
+        util.post('myHashAccount', {sign: api.serialize(sendData)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.computeData = res
           })
         })
-        util.post('hashAsset', sendData).then(function (res) {
+        util.post('hashAsset', {sign: api.serialize(sendData)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.dataProperty = res
           })
         })
-        util.post('hashFund', sendData).then(function (res) {
+        util.post('hashFund', {sign: api.serialize(sendData)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.dataFund = res
           })
@@ -207,7 +210,6 @@
         var url = ''
         var sendData = {token: this.token, user_id: this.user_id}
         var tipsStr = ''
-        data.trade_password = md5(data.trade_password)
         switch (this.edit) {
           case 'Withdrawals':
             url = 'withdraw'
@@ -219,9 +221,10 @@
             break
         }
         if (!data) return false
+        data.trade_password = md5(data.trade_password)
         form.btn.setAttribute('disabled', true)
         var self = this
-        util.post(url, Object.assign(data, sendData)).then(function (res) {
+        util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.closeEdit()
             api.tips(tipsStr)
@@ -238,9 +241,10 @@
     },
     mounted () {
       var self = this
-      util.post('myAccount', {token: this.token, user_id: this.user_id}).then(function (res) {
+      util.post('myAccount', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.moneyData = res
+          self.priceall = +self.moneyData.freeze_account + (+self.moneyData.balance_account)
         })
       })
       this.getList()
@@ -264,7 +268,7 @@
 </script>
 
 <style type="text/css" lang="scss">
-  @import '../../assets/css/style.scss';
+  @import '~assets/css/style.scss';
   .compute_property{
     padding:0 15px;
     h2{
@@ -272,11 +276,46 @@
     }
     .compute_box{
       @include gap(25,v)
-      @include flex
+      @include flex(space-between)
       margin-bottom:10px;
       .data{
-        flex:1;
+        width:79%;
         @include detail_data
+        .item{
+          width:32%;
+          padding-right: 15px;
+        }
+        .frozeeData{
+          position: relative;
+          span{
+            color:$text;
+            &.problem{
+              display: inline-block;
+              width:18px;
+              text-align: center;
+              line-height: 16px;
+              cursor: pointer;
+              border:1px solid $text;
+              border-radius:50%;
+              font-size: 12px;
+              margin-left:5px;
+              &:hover + .frozee_tips{
+                display: block;
+              }
+            }
+          }
+          .frozee_tips{
+            font-size: 12px;
+            height:20px;
+            line-height: 20px;
+            color:$light_text;
+            width:130px;
+            @include position(0,88)
+            padding:0 10px;
+            background: $border;
+            display: none;
+          }
+        }
       }
       .btn{
         @include detail_btn
@@ -345,11 +384,11 @@
       }
     }
     .fund_btn{
-      text-align: right;
+      text-align: right !important;
       padding:0 15px 30px 15px;
       a{
         display: inline-block;
-        text-align: center;
+        text-align: center !important;
         width:85px;
         border-radius:5px;
         line-height: 2;

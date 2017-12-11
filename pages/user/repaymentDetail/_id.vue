@@ -5,53 +5,236 @@
     <div class="data">
      <ul>
        <li>
-         <h4>{{moneydata.title}}</h4>
+         <h4>{{moneydata.product_name}}</h4>
          <p>算力服务器</p>
        </li>
        <li>
-         <h4>{{moneydata.money}} <span>元</span></h4>
+         <h4>{{moneydata.loan_money}} <span>元</span></h4>
          <p>分期金额</p>
        </li>
        <li>
-         <h4>{{moneydata.lv}} <span>%</span></h4>
+         <h4>{{moneydata.fee_value*100}} <span>%</span></h4>
          <p>手续费率</p>
        </li>
        <li style="border-right:0;">
-         <h4>{{moneydata.year}} <span> 年 </span>{{moneydata.month}}<span> 月 </span>{{moneydata.day}}<span> 日 </span></h4>
+         <h4>{{moneydata.loan_start_time}}</h4>
          <p>分期时间</p>
        </li>
      </ul>
-     <ol>
-       <li v-for="n,k in monrynav">
-         {{n[0]}} : <span>{{n[1]}}</span>
+     <!-- <ol>
+       <li>
+         分期期限 ： <span>{{moneydata.rate_time}}个月</span>
        </li>
-       <li><router-link to="javascript:;" style="color:#327fff;">查看计算公式</router-link></li>
-     </ol>
-     <div class="table">
-       <div class="item" v-for="n,k in data">
-         <div class="title">{{n[0]}}</div>
-         <div class="value">{{n[1]}}</div>
-       </div>
-     </div>
+       <li>
+         逾期时间 ： <span>{{moneydata.overdue_day}}天</span>
+       </li>
+       <li>
+         逾期罚息 ： <span>{{moneydata.overdue_interest}}元</span>
+       </li>
+       <li><a to="javascript:;" style="color:#327fff;cursor: pointer;" @click="showpay(true)">查看计算公式</a></li>
+     </ol> -->
+     <table border="1">
+       <thead>
+         <tr>
+           <th>期数</th>
+           <th>还款日期</th>
+           <th>分期余额</th>
+           <th>手续费</th>
+           <th>本期还款额</th>
+           <th>状态</th>
+           <th>还款类型</th>
+           <th>操作</th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr v-for="n,k in item">
+           <td>{{n.repayment_number}}</td>
+           <td>{{n.repayment_time}}</td>
+           <td>{{n.repayment_balance}}</td>
+           <td>{{n.repayment_charge}}</td>
+           <td>{{n.repayment_money}}</td>
+           <template v-if="n.status == '0' && n.repayment_method == '0'">
+             <td class="green">已还款</td>
+             <td class="gay">算力收益</td>
+           </template>
+           <template v-else-if="n.status == '0' && n.repayment_method == '1'">
+             <td class="green">已还款</td>
+             <td class="gay">资金账户</td>
+           </template>
+           <template v-else>
+             <td class="red">未还款</td>
+             <td class="gay">算力收益 / 资金账户</td>
+           </template>
+           <template v-if="n.status == '0'">
+             <td><button disabled="disabled" class="no" style="background:none;color:gray;">已还款</button></td>
+           </template>
+           <template v-else-if="n.status == '2'">
+             <td><button disabled="disabled" class="no" style="background:none;color:gray;width:120px;">还不到还款日期</button></td>
+           </template>
+           <template v-else>
+             <td><button class="yes" @click="showButton(true, n.id)">去还款</button></td>
+           </template>
+         </tr>
+       </tbody>
+     </table>
     </div>
-    <router-link to="javascript:;" class="submit">提前还款</router-link>
-    <div class="button">
-      <h4>确认还款<span>x</span></h4>
+    <div class="button" v-show="show">
+      <div class="opaction">
+        <form class="form" action="" @submit.prevent="submit" novalidate>
+            <h4>确认还款<span @click="showButton(false)"><img :src="close" style="width:12px;height:12px;position:relative;top:-6px;"/></span></h4>
+            <div class="one">
+              <label>还款方式</label>
+              <select @change="onChange">
+                <option v-for="n,k in sort" :value="k">{{n.type}}</option>
+              </select>
+            </div>
+            <div class="one">
+              <label>账户余额</label>
+              <input type="text" placeholder="0.0024562 btc" class="total" :value="banlance" onfocus="this.blur()"/>
+            </div>
+            <div class="one">
+              <label>还款总额</label>
+              <input type="text" placeholder="0.0024562 btc" class="total" :value="total" onfocus="this.blur()"/>
+            </div>
+            <div class="one">
+              <label>交易密码</label>
+              <input type="password" placeholder="请输入交易密码" class="passwordone"/>
+            </div>
+            <p class="block1" style="color:red;font-size:12px;padding-left:160px;padding-top:10px;display:none;">请输入交易密码</p>
+            <button name="btn">提交</button>
+        </form>
+      </div>
+    </div>
+    <div class="design_formulas" v-show = "showpa">
+       <div class="opaction">
+         <h4>分期业务计算<span @click="showpay(false)">x</span></h4>
+         <p>利息=贷款额*手续费率</p>
+         <p>贷款总额=利息+贷款额</p>
+         <p>每期需还款=贷款额/期数</p>
+         <p>贷款余额=贷款总额-期数*每期需还款</p>
+         <p>手续费=利息/期数</p>
+         <p>本期还款额=每期需还款+手续费 ||   本期还款额=贷款总额/期数</p>
+       </div>
     </div>
   </section>
 </template>
 
 <script>
-  // import util from '@/util'
-  // import api from '@/util/function'
-  // import { mapState } from 'vuex'
+  import util from '@/util'
+  import api from '@/util/function'
+  import { mapState } from 'vuex'
+  import md5 from 'js-md5'
   export default {
     data () {
       return {
-        data: {type: ['算力类型', 'BTC'], num: ['购买数量', '100 * 1台 = 10台'], time: ['购买日期', '2017-09-12 18:00'], money: ['购买金额', '10 * 9000.00元 = 90000.00元'], shou: ['收益方式', '每日结算，次日发放'], all: ['总算力', '90T'], fu: ['服务器类型', '阿瓦隆'], address: ['所在区域', '']},
-        moneydata: {title: '阿瓦隆1号矿机', money: '10000.00', lv: '15', year: '2017', month: '06', day: '22'},
-        monrynav: {'0': ['分期期限', '12个月'], '1': ['预期时间', '20天'], '2': ['逾期罚息', '0.00']}
+        detail: {},
+        item: {},
+        moneydata: {},
+        show: '',
+        showpa: '',
+        status: '',
+        repayment_method: 0,
+        close: require('@/assets/images/close1.jpg'),
+        total: '',
+        banlance: '',
+        password: '',
+        mode: '',
+        repayment_id: '',
+        sort: [{type: '算力收益', unit: 'btc'}, {type: '资金用户', unit: '元'}],
+        showbutton: false
       }
+    },
+    methods: {
+      showButton (type, id) {
+        this.repayment_id = id
+        this.show = type
+        document.getElementsByClassName('passwordone')[0].value = ''
+        this.select()
+      },
+      select () {
+        var self = this
+        this.model = document.querySelector('select').value
+        console.log(this.model)
+        util.post('showRepayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repayment_id, product_hash_type: 1, mode: this.model})}).then(function (res) {
+          api.checkAjax(self, res, () => {
+            var ff = document.querySelector('.form')
+            if (self.model === '0') {
+              if (res.user_coin_value < res.coin_repayment) {
+                self.banlance = res.user_coin_value + ' btc'
+                self.total = '您的币余额不足'
+                ff.btn.setAttribute('disabled', true)
+                // return false
+              } else {
+                self.banlance = res.user_coin_value + ' btc'
+                self.total = res.coin_repayment + ' btc'
+                ff.btn.removeAttribute('disabled')
+              }
+            } else {
+              if (res.user_balance < res.repayment) {
+                self.banlance = res.user_balance + ' 元'
+                self.total = '您的账户余额不足'
+                ff.btn.setAttribute('disabled', true)
+                // return false
+              } else {
+                self.banlance = res.user_balance + ' 元'
+                self.total = res.repayment + ' 元'
+                ff.btn.removeAttribute('disabled')
+              }
+            }
+          })
+        })
+      },
+      showpay (type) {
+        this.showpa = type
+      },
+      items () {
+        var self = this
+        util.post('getLoanListDetail', {sign: api.serialize({token: this.token, user_id: this.user_id, loan_id: this.$route.params.id})}).then(function (res) {
+          api.checkAjax(self, res, () => {
+            self.moneydata = res
+            self.item = res.list
+          })
+        })
+      },
+      submit () {
+        var ff = document.querySelector('.form')
+        var data = api.checkFrom(ff)
+        if (!data) return false
+        ff.btn.setAttribute('disabled', true)
+        this.password = document.getElementsByClassName('passwordone')[0].value
+        this.model = document.querySelector('select').value
+        console.log(this.model)
+        var self = this
+        if (!this.password) {
+          document.querySelector('.block1').style = 'display:block;color:red;font-size:12px;padding-left:160px;padding-top:10px;'
+          return false
+        } else {
+          document.querySelector('.block1').style = 'display:none;color:red;font-size:12px;padding-left:160px;padding-top:10px;'
+        }
+        util.post('repayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repayment_id, product_hash_type: 1, mode: this.model, trade_password: md5(this.password)})}).then(function (res) {
+          api.checkAjax(self, res, () => {
+            api.tips('提交成功', () => {
+              self.show = false
+              window.location.reload()
+            })
+          }, ff.btn)
+        })
+      },
+      onChange () {
+        this.select()
+      }
+    },
+    mounted () {
+      this.items()
+    },
+    computed: {
+      ...mapState({
+        token: state => state.info.token,
+        user_id: state => state.info.user_id
+      })
+    },
+    filters: {
+      format: api.decimal
     }
   }
 </script>
@@ -142,19 +325,150 @@
         }
       }
     }
-    .submit{
-      width: 86px;
-      height: 34px;
-      background: #327fff;
-      font-size:12px;
-      text-align:center;
-      float:right;
-      margin-top: 23px;
-      color: white;
-      line-height: 34px;
-      margin-bottom: 125px;
-      border-radius: 5px;
-      margin-right:10px;
+    .button{
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      background:rgba(0,0,0,.2);
+      top:0;
+      left:0;
+      z-index:999;
     }
+    .button .opaction{
+      width: 476px;
+      height: 450px;
+      background: white;
+      position: absolute;
+      left: 50%;
+      top:50%;
+      margin-left:-238px;
+      margin-top:-190px;
+      h4{
+        width: 100%;
+        margin-top: 29px;
+        font-size: 18px;
+        text-align: center;
+        span{
+          position: absolute;
+          right: 0;
+          margin-right: 42px;
+          cursor: pointer;
+          font-family: cursive;
+        }
+      }
+      .one{
+        width: 100%;
+        padding:0 70px;
+        box-sizing: border-box;
+        margin-top: 42px;
+        label{
+          display:inline-block;
+          width: 70px;
+          font-size: 16px;
+          line-height: 28px;
+          height: 28px;
+        }
+        input{
+          width: 250px;
+          height: 28px;
+          border:1px solid #dcd7d7;
+          margin-left: 10px;
+          padding-left: 22px;
+          box-sizing: border-box;
+        }
+        select{
+          width: 250px;
+          height: 28px;
+          border:1px solid #dcd7d7;
+          margin-left: 10px;
+          padding-left: 22px;
+          box-sizing: border-box;
+        }
+      }
+      button{
+        width: 180px;
+        height: 28px;
+        background: $blue;
+        border:0;
+        margin-top: 45px;
+        margin-left: 147px;
+        color: white;
+        border-radius: 0;
+        &:hover{
+          background: #2470ef;
+        }
+      }
+    }
+    .design_formulas{
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      background:rgba(0,0,0,.2);
+      top:0;
+      left:0;
+      .opaction{
+        width: 476px;
+        height: 380px;
+        background: white;
+        position: absolute;
+        left: 50%;
+        top:50%;
+        margin-left:-238px;
+        margin-top:-190px;
+        h4{
+          width: 100%;
+          margin-top: 29px;
+          font-size: 18px;
+          text-align: center;
+          span{
+            position: absolute;
+            right: 0;
+            margin-right: 42px;
+            cursor: pointer;
+            font-family: cursive;
+          }
+        }
+        p{
+          width: 100%;
+          text-align: center;
+          font-size: 14px;
+          color: black;
+          margin-top: 20px;
+        }
+      }
+    }
+  }
+  table{
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    thead tr{
+      height: 40px;
+      background: #f0f7fd;
+    }
+    tbody tr{
+      height: 30px;
+      text-align: center;
+      .green{
+        color: #009944;
+      }
+      .red{
+        color: #fe5039;
+      }
+      .gay{
+        color: rgb(50, 127, 255);
+      }
+      button{
+        width: 60px;
+        height: 30px;
+        border:0;
+        background: #327fff;
+        color: white;
+        margin:5px 0;
+      }
+    }
+  }
+  .web_tips{
+    z-index: 99999;
   }
 </style>

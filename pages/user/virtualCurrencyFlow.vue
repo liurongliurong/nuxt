@@ -16,7 +16,7 @@
           <div class="item">
             <p>{{d}}</p>
             <div>
-              <span class="currency">{{data[k]}}</span>
+              <span class="currency">{{data[k].toFixed(8)}}</span>
               <span class="">{{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}</span>
             </div>
           </div>
@@ -40,7 +40,7 @@
       </table>
       <Pager :len="len"></Pager>
       <div class="nodata" v-if="showImg">
-        <!-- <img :src="img" alt=""> -->
+        <div class="nodata_img"></div>
         <p>暂无列表信息</p>
       </div>
     </div>
@@ -62,12 +62,11 @@
         nowEdit: 0,
         dataNav: {total_income: '累积已获得BTC', total_electric_fee: '累计支付电费'},
         data: {total_income: 0, total_electric_fee: 0},
-        nav: {product_name: '算力服务器', paid_time: '购买时间', hold_amound: '总算力', paid_amound: '获得BTC', electric_fee: '支付电费', status: '状态'},
+        nav: {product_name: '算力服务器', payable_time: '收益时间', paid_time: '派发时间', hold_amount: '总算力', paid_amount: '获得BTC', electric_fee: '支付电费', status: '状态'},
         list: [],
         len: 0,
         now: 1,
-        sort: [{title: '时间', option: ['asc', 'desc'], value: 0}],
-        // img: require('@/assets/images/no_data.jpg'),
+        sort: [{title: '时间', option: 'desc'}],
         showImg: false
       }
     },
@@ -77,12 +76,12 @@
         this.list = []
         var sendData = {}
         var data = {token: this.token, user_id: this.user_id, product_hash_type: this.nowEdit + 1, page: this.now}
-        if (!sort) {
-          sendData = {sort: ''}
+        if (sort >= 0 && this.sort[sort] && this.sort[sort].option) {
+          sendData = {sort: this.sort[sort].option}
         } else {
-          sendData = {sort}
+          sendData = {sort: ''}
         }
-        util.post('userCoinList', Object.assign(data, sendData)).then(function (res) {
+        util.post('userCoinList', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.list = res.value_list
             self.showImg = !res.value_list.length
@@ -101,7 +100,7 @@
     },
     mounted () {
       var self = this
-      util.post('userCoin', {token: this.token, user_id: this.user_id, product_hash_type: '1'}).then(function (res) {
+      util.post('userCoin', {sign: api.serialize({token: this.token, user_id: this.user_id, product_hash_type: '1'})}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.data = res
         })
@@ -133,6 +132,9 @@
       .data{
         width:70%;
         @include detail_data
+        .item{
+          width:48%;
+        }
         .item:first-child{
           span.currency{
             color:$blue

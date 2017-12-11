@@ -22,7 +22,7 @@
     },
     mounted () {
       var self = this
-      util.post('Messagecontent', {token: this.token, user_id: this.user_id, message_id: this.$route.params.id}).then(function (res) {
+      util.post('Messagecontent', {sign: api.serialize({token: this.token, user_id: this.user_id, message_id: this.$route.params.id})}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.data = res
         })

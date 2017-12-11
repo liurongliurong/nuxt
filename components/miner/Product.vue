@@ -292,15 +292,15 @@
           return false
         }
         if (this.token === 0) {
-          this.$router.push({name: 'login'})
+          this.$router.push({name: 'auth-login'})
           return false
         }
         if (!(this.true_name && this.true_name.status === 1)) {
           api.tips('请先实名认证', () => {
             if (this.isMobile) {
-              this.$router.push({name: 'madministration'})
+              this.$router.push({name: 'mobile-administration'})
             } else {
-              this.$router.push({name: 'account'})
+              this.$router.push({name: 'user-account'})
             }
           })
           return false

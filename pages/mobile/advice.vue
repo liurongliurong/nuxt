@@ -32,7 +32,7 @@ export default {
           api.checkAjax(self, res, () => {
             self.myToast('提交成功 ！')
             setTimeout(() => {
-              self.$router.push({name: 'mpersoncenter'})
+              self.$router.push({name: 'mobile-personcenter'})
             }, 3000)
           })
         })

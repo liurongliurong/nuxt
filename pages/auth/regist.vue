@@ -187,7 +187,7 @@
         util.post('/register', {sign: api.serialize(Object.assign(data, {token: 0}))}).then(res => {
           api.checkAjax(self, res, () => {
             api.tips('恭喜您注册成功！', () => {
-              self.$router.push({name: 'login'})
+              self.$router.push({name: 'auth-login'})
             })
           }, form.btn)
         })
