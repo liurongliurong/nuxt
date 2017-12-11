@@ -175,7 +175,7 @@
           cursor: pointer;
         }
         &.pic1{
-          height: 455px;
+          height: 475px;
           .small{
             position: absolute;
             top:200px;
@@ -192,7 +192,7 @@
               line-height: 62px;
               font-size: 18px;
               font-weight: 800;
-              top: 90px;
+              top: 110px;
               left: 64px;
               position: relative;
             }
@@ -200,13 +200,13 @@
               color:white;
               position: relative;
               left: 113px;
-              top:124px;
+              top:142px;
             }
           }
         }
         &.pic2{
           position: relative;
-          width:710px;
+          width:804px;
           height:298px;
           .swipe_pager{
             @include position(auto,auto,15,30)
@@ -243,7 +243,7 @@
           margin-left:10px;
         }
         &.pic3,&.pic4{
-          width:350px;
+          width:397px;
           margin-top:10px;
           .btn{
             left:75px;
@@ -309,7 +309,7 @@
       }
     }
     .millsList{
-      padding-top: 80px;
+      padding-top: 120px;
       @include mobile_hide
       margin-top:0 !important;
     }
