@@ -14,11 +14,7 @@
   import MyHead from '../components/common/Header'
   import MyFoot from '../components/common/Footer'
   export default {
-    data () {
-      return {
-        partner: []
-      }
-    },
+    scrollToTop: true,
     components: {
       MyHead,
       MyFoot

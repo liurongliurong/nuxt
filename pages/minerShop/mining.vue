@@ -228,7 +228,7 @@
 }
 .opacity{
     width: 100%;
-    background: url(../../assets/images/wk8.png);
+    background: url(../../assets/images/wk8.jpg);
     height: 654px;
     background-size: 100% 100%;
     text-align: center;
