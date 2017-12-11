@@ -32,6 +32,15 @@
         museum: []
       }
     },
+    head () {
+      return {
+        title: '比特币矿机-设备博物馆-算力网',
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: '比特币矿机,矿机设备,矿机历史' },
+          { hid: 'description', name: 'description', content: '算力网（www.suanli.com）历代矿机展示，介绍最早矿机公司生产出的比特币矿机，如蝴蝶矿机，蚂蚁矿机，阿瓦隆矿机，烤猫矿机等' }
+        ]
+      }
+    },
     methods: {
       getList () {
         var self = this

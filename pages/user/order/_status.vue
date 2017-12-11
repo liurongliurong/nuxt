@@ -24,7 +24,7 @@
           </div>
         </div>
         <nav>
-          <a :class="{active: status===(+k+1)}" href="javascript:;"@click="getList(+k+1)" v-for="n,k in nav[nowEdit]">{{n}}</a>
+          <a :class="{active: status===(+k+1)}" href="javascript:;" @click="getList(+k+1)" v-for="n,k in nav[nowEdit]">{{n}}</a>
         </nav>
       </div>
       <div class="order_box">
@@ -125,14 +125,14 @@
           <div class="hash active" @click="hashcli" v-else>{{title[nowEdit]}}<span class="active"></span></div>
           <div class="other_hash" v-show="showtype">
             <div class="hash_center" v-if="scode">
-              <router-link class="item" :to="'/mobile/order/'+k+'/1'" v-for="n,k in title2" :key="k"><span>{{n}}</span><span class="yes">√</span></router-link>
+              <router-link class="item" :to="'/mobile/order/'+k" v-for="n,k in title2" :key="k"><span>{{n}}</span><span class="yes">√</span></router-link>
             </div>
             <div class="hash_center" v-else>
-              <router-link class="item" :to="'/mobile/order/'+k+'/1'" v-for="n,k in title" :key="k"><span>{{n}}</span><span class="yes">√</span></router-link>
+              <router-link class="item" :to="'/mobile/order/'+k" v-for="n,k in title" :key="k"><span>{{n}}</span><span class="yes">√</span></router-link>
             </div>
           </div>
         </div>
-        <router-link class="one" :to="'/mobile/order/'+nowEdit+'/'+(+k+1)" :key="k" v-for="n,k in nav[nowEdit]">{{n}}</router-link>
+        <a :class="['one', {active: status===(+k+1)}]" href="javascript:;" @click="getList(+k+1)" v-for="n,k in nav[nowEdit]">{{n}}</a>
       </div>
       <div class="listall">
         <div class="item" v-for="d,k in data">

@@ -44,6 +44,15 @@
         times: []
       }
     },
+    head () {
+      return {
+        title: '比特币新闻-资讯快报-算力网',
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: '币圈资讯' },
+          { hid: 'description', name: 'description', content: '算力网（www.suanli.com）资讯栏目，为您提供及时的算力新闻，比特币资讯快报，比特币行情，掌握一手比特币透明资讯。' }
+        ]
+      }
+    },
     methods: {
       getList () {
         var self = this

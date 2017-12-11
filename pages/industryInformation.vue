@@ -207,6 +207,15 @@
         miners: [{big: require('@/assets/images/information5.png'), title: '资深矿工-设备之家', route: '前往了解 >', path: '/equipments/list'}, {big: require('@/assets/images/information2.png'), title: '新手矿工-数字货币', route: '前往了解 >', path: '/digitalCurrency/list'}, {big: require('@/assets/images/information3.png'), title: '平台交易最新资讯', route: '前往了解 >', path: '/transaction'}]
       }
     },
+    head () {
+      return {
+        title: '比特币新闻-最新行业动态-算力网',
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: '比特币新闻,算力新闻,比特币行情' },
+          { hid: 'description', name: 'description', content: '算力网产业资讯版块，聚集了最新的比特币新闻，实时为您提供行业动态，资讯快报，二手矿机交易信息，矿机测评等行业发展各类资讯。' }
+        ]
+      }
+    },
     methods: {
       hoverwhite (k) {
         this.show = k

@@ -84,6 +84,15 @@
         timer: ''
       }
     },
+    head () {
+      return {
+        title: '比特币云矿机-价格最低云矿机产品大全－算力网',
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: '比特币矿机,二手矿机,矿机期货' },
+          { hid: 'description', name: 'description', content: '算力网云矿机商城，汇集目前主流比特币云矿机产品，包括阿瓦隆7云矿机，S9云矿机以及E9矿机云算力产品，为比特币挖矿爱好者提供比特币云矿机购买服务' }
+        ]
+      }
+    },
     methods: {
       fetchData () {
         var self = this

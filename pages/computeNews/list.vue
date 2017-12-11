@@ -22,6 +22,15 @@
         list: []
       }
     },
+    head () {
+      return {
+        title: '算力新闻_比特币资讯－算力网',
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: '算力新闻,比特币资讯,比特币新闻' },
+          { hid: 'description', name: 'description', content: '算力网（www.suanli.com)产业新闻栏目，为你提供各种算力产业资讯，比特币新闻，行业动态，关注算力网，开启你的挖矿之旅' }
+        ]
+      }
+    },
     methods: {
       getList () {
         var self = this

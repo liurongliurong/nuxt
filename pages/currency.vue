@@ -62,6 +62,15 @@ export default {
       // , {title: '电场矿场', path: '/computational/electric'}
     }
   },
+  head () {
+      return {
+        title: '比特币-数字货币-算力网',
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: '数字货币,比特币,莱特币,以太币,数字货币查询' },
+          { hid: 'description', name: 'description', content: '算力网（www.suanli.com）列举了常见的数字货币，如比特币，莱特币，以太币等主流币种，以及各类代币如DASH、ZCash、EOS等。' }
+        ]
+      }
+    },
   mounted () {
     var self = this
     util.post('showCoinInfo', {sign: api.serialize({token: 0})}).then(function (res) {

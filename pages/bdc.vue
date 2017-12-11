@@ -118,6 +118,15 @@
         str: '验证码'
       }
     },
+    head () {
+      return {
+        title: '比特币矿机托管-国电输出,持久稳定,电力便宜-算力网',
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: '矿机托管,比特币矿机托管' },
+          { hid: 'description', name: 'description', content: '算力网矿机托管服务，承接各种比特币矿机托管业务，20万千瓦国家电网，持久稳定，专业挖矿技术24小时维护，保障用户挖矿收益' }
+        ]
+      }
+    },
     methods: {
       submit () {
         let self = this

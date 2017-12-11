@@ -59,11 +59,11 @@
   import { Toast } from 'mint-ui'
   import { mapState } from 'vuex'
   import FormField from '@/components/common/FormField'
-  import IncomeChart from '@/pages/user/IncomeChart'
+  import IncomeChart from '@/pages/user/incomeChart'
   import md5 from 'js-md5'
   export default {
     components: {
-      FormField
+      FormField, IncomeChart
     },
     data () {
       return {

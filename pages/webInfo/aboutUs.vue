@@ -53,6 +53,15 @@
         zoom: 16
       }
     },
+    head () {
+      return {
+        title: '关于我们-算力网',
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: '算力新闻,比特币资讯,比特币新闻' },
+          { hid: 'description', name: 'description', content: '算力网（www.suanLi.com）是由浙江数秦科技有限公司开发的云算力租赁及云矿机托管一站式服务平台，公司成立于2017年，由浙江数秦科技有限公司及多家上市公司、独立基金共同打造，并由浙江数秦科技有限公司独立运营，目前算力网以矿机托管，云矿机出售，云算力租赁为主营业务。算力网支持各大主流比特币矿机，例如A7，S9，E9等，连接全球最大比特币矿机生产商、矿池等资源，让用户通过网络即可实现远程挖矿，体验科技的同时享受算力产生的比特币。' }
+        ]
+      }
+    },
     methods: {
       handler ({BMap, map}) {
         console.log(BMap, map)

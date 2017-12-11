@@ -25,6 +25,15 @@
         list: []
       }
     },
+    head () {
+      return {
+        title: '比特币矿机-型号-矿机测评-算力网',
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: '性能测试,能力测评,矿机配置,矿机教程,矿机组装史' },
+          { hid: 'description', name: 'description', content: '算力网（www.suanli.com）针对各类型矿机进行能力测评，为您选择矿机，矿机配置，矿机组装等提供参考资料。等' }
+        ]
+      }
+    },
     methods: {
       getList () {
         var self = this

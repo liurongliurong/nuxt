@@ -61,6 +61,15 @@
         show: -1
       }
     },
+    head () {
+      return {
+        title: '比特币矿机二手交易信息-算力网',
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: '二手矿机,二手信息,二手交易,比特币矿机' },
+          { hid: 'description', name: 'description', content: '算力网（www.suanli.com）二手矿机撮合交易，各类二手比特币矿机，买卖信息聚集地，如阿瓦隆矿机，蚂蚁矿机，翼比特矿机等。' }
+        ]
+      }
+    },
     methods: {
       allclick (i) {
         this.show = i

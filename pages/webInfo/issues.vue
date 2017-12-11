@@ -23,6 +23,15 @@
         list: []
       }
     },
+    head () {
+      return {
+        title: '比特币挖矿问题—如何比特币挖矿算力网',
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: '比特币挖矿问题' },
+          { hid: 'description', name: 'description', content: '算力网挖矿问题大全，最细致的问题详情，最全面的问题解答，所有比特币挖矿爱好者的答疑天堂，经验丰富的矿工随时等你咨询。' }
+        ]
+      }
+    },
     methods: {
       fetchData (id, k) {
         var eles = document.querySelector('.issues_lists').children
