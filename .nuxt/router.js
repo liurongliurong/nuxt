@@ -45,7 +45,6 @@ const _355e70e3 = () => import('..\\pages\\computeChart.vue' /* webpackChunkName
 const _17fc5d6b = () => import('..\\pages\\notFound.vue' /* webpackChunkName: "pages\\notFound" */).then(m => m.default || m)
 const _4131e40d = () => import('..\\pages\\currency.vue' /* webpackChunkName: "pages\\currency" */).then(m => m.default || m)
 const _b03a73d6 = () => import('..\\pages\\bdc.vue' /* webpackChunkName: "pages\\bdc" */).then(m => m.default || m)
-const _5cff1437 = () => import('..\\pages\\bdc\\mobile.vue' /* webpackChunkName: "pages\\bdc\\mobile" */).then(m => m.default || m)
 const _5c7f30bc = () => import('..\\pages\\industryInformation.vue' /* webpackChunkName: "pages\\industryInformation" */).then(m => m.default || m)
 const _64ba9d97 = () => import('..\\pages\\mobile\\bdcForm.vue' /* webpackChunkName: "pages\\mobile\\bdcForm" */).then(m => m.default || m)
 const _e5b86724 = () => import('..\\pages\\equipmentEvaluate\\pc.vue' /* webpackChunkName: "pages\\equipmentEvaluate\\pc" */).then(m => m.default || m)
@@ -323,14 +322,7 @@ export function createRouter () {
 		{
 			path: "/bdc",
 			component: _b03a73d6,
-			name: "bdc",
-			children: [
-				{
-					path: "mobile",
-					component: _5cff1437,
-					name: "bdc-mobile"
-				}
-			]
+			name: "bdc"
 		},
 		{
 			path: "/industryInformation",

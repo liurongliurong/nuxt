@@ -174,7 +174,7 @@
     mounted () {
       var data = localStorage.getItem('info')
       if (!data) {
-        this.$router.replace({ name: 'login' })
+        this.$router.replace({ name: 'auth-login' })
         return false
       }
       this.getList()

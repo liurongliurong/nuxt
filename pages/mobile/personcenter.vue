@@ -85,7 +85,7 @@
     },
     methods: {
       logout () {
-        this.$router.push({name: 'home'})
+        this.$router.push({name: 'index'})
         this.$store.commit('LOGOUT')
       },
       openMask (k) {
@@ -172,7 +172,7 @@
     mounted () {
       var data = localStorage.getItem('info')
       if (!data) {
-        this.$router.replace({ name: 'login' })
+        this.$router.replace({ name: 'auth-login' })
         return false
       }
       var self = this

@@ -3,10 +3,14 @@
     <div class="bg_box">
       <div class="bg"></div>
     </div>
+    <div class="mobile_logo">
+      <router-link to="/"></router-link>
+    </div>
     <div class="box">
       <router-view></router-view>
     </div>
-    <p class="copyright">Copyright © 2013-2017 Zhejiang Shuqin Technology Co., Ltd. All Rights Reserved. 算力网 版权所有</p>
+    <div class="regist_mobile" v-if="$route.path.includes('passwordRetrieval')||$route.path.includes('regist')">已有账号？<router-link to="/auth/login">立即登录</router-link></div>
+    <p class="copyright">算力网 版权所有 Copyright © 2013-2017<br>Zhejiang Shuqin Technology Co., Ltd. All Rights Reserved. </p>
   </section>
 </template>
 
@@ -23,7 +27,7 @@
 </script>
 
 <style type="text/css" lang="scss">
-  @import '../assets/css/style.scss';
+  @import '~assets/css/style.scss';
   .auth{
     position: relative;
     .bg_box{
@@ -32,7 +36,19 @@
       z-index: -1;
       color:$light_text;
       .bg{
-        background:url(../assets/images/auth_bg.jpg) no-repeat;
+        background:url(~assets/images/auth_bg.jpg) no-repeat;
+      }
+      @include mobile_hide
+    }
+    .mobile_logo{
+      @include mobile_show
+      text-align: center;
+      padding-top:30px;
+      a{
+        display: inline-block;
+        width:140px;
+        height:29px;
+        background:url(~assets/images/css_sprites.png) -170px -364px;
       }
     }
     &:not(.login_block){
@@ -42,10 +58,19 @@
           height:100%
         }
       }
+      @media screen and (max-width: $mobile) {
+        min-height:100vh;
+      }
     }
     .box{
-      @include flex(center,flex-start)
       @include main
+    }
+    .regist_mobile{
+      text-align: center;
+      @include mobile_show
+      a{
+        color:$blue
+      }
     }
     .copyright{
       text-align: center;
@@ -58,7 +83,7 @@
         background: #181a1c;
         padding-top:calc(100vh - 1px);
         .bg{
-          background:url(../assets/images/login_bg.jpg) no-repeat;
+          background:url(~assets/images/login_bg.jpg) no-repeat;
           height:calc(100vh - 1px)
         }
       }
@@ -79,6 +104,26 @@
       padding:40px 0;
       .bg_box,.copyright{
         display: none;
+      }
+    }
+    @media screen and (max-width: $mobile) {
+      background: #f4f4f4;
+      .box{
+        padding:15px;
+        .form button{
+          line-height: 2;
+          margin-top:30px;
+        }
+      }
+      &.login_block .box{
+        padding:15px;
+        .form{
+          padding:30px 15px;
+        }
+      }
+      .copyright{
+        font-size: 12px;
+        color:$light_text
       }
     }
   }
