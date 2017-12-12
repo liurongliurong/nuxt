@@ -10,7 +10,7 @@
       </label>
       <button name="btn">注册</button>
     </form>
-    <mt-popup position="bottom" v-model="show" :closeOnClickModal="false">
+    <div class="popup" v-if="show" :closeOnClickModal="false">
       <div class="close" @click="closeEdit()">
         <span class="icon"></span>
       </div>
@@ -153,12 +153,13 @@
           <div class="btn"><a href="javascript:;" @click="userAgreement">返回</a></div> 
         </div>
       </div>
-    </mt-popup>
+    </div>
+    <div class="popup_mask" @click="show=!show" v-if="show"></div>
   </div>
 </template>
 
 <script>
-  import { Toast } from 'mint-ui'
+  import { mapState } from 'vuex'
   import util from '@/util/index'
   import api from '@/util/function'
   import FormField from '@/components/common/FormField'
@@ -186,7 +187,7 @@
         var self = this
         util.post('/register', {sign: api.serialize(Object.assign(data, {token: 0}))}).then(res => {
           api.checkAjax(self, res, () => {
-            api.tips('恭喜您注册成功！', () => {
+            api.tips('恭喜您注册成功！', self.isMobile, () => {
               self.$router.push({name: 'auth-login'})
             })
           }, form.btn)
@@ -196,16 +197,14 @@
         this.$parent.agree = !this.$parent.agree
         this.show = !this.show
       },
-      myToast (str) {
-        Toast({
-          message: str,
-          position: 'middle',
-          duration: 3000
-        })
-      },
       closeEdit () {
         this.show = false
       }
+    },
+    computed: {
+      ...mapState({
+        isMobile: state => state.isMobile
+      })
     }
   }
 </script>
@@ -235,11 +234,7 @@
         }
       }
     }
-    .mint-popup{
-      background: #fff;
-      @include popup
-      width:60vw;
-      height:90vh;
+    .popup{
       .agreement{
         height:calc(90vh - 30px);
         h2{
@@ -269,9 +264,7 @@
       width:100%;
       padding:30px 15px;
       background: #fff;
-      .mint-popup{
-        width:100vw;
-        height:80vh;
+      .popup{
         .agreement{
           height:calc(80vh - 30px);
           .box_content{

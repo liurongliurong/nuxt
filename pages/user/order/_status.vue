@@ -171,7 +171,6 @@
 </template>
 
 <script>
-  import { Toast } from 'mint-ui'
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
@@ -283,7 +282,7 @@
         var self = this
         util.post(requestUrl, {sign: api.serialize({token: this.token, user_id: this.user_id, order_id: id})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips('操作成功', () => {
+            api.tips('操作成功', self.isMobile, () => {
               self.fetchData()
             })
           })
@@ -321,7 +320,7 @@
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.closeEdit()
-            api.tips(tipsStr, () => {
+            api.tips(tipsStr, self.isMobile, () => {
               self.fetchData()
             })
           })
@@ -354,7 +353,7 @@
         util.post('miner_contract', {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             if (!res.miner_res) {
-              api.tips('暂无协议')
+              api.tips('暂无协议', self.isMobile)
             } else {
               self.show = true
               self.contract = res.miner_res.content
@@ -364,7 +363,7 @@
       },
       getBaoquan (id) {
         if (api.checkWechat()) {
-          this.myToast('请在浏览器里打开')
+          api.tips('请在浏览器里打开', 1)
         }
         var data = {token: this.token, order_id: id, security_hash_type: 3, user_id: this.user_id}
         var self = this
@@ -380,20 +379,14 @@
       },
       hashcli () {
         this.showtype = !this.showtype
-      },
-      myToast (str) {
-        Toast({
-          message: str,
-          position: 'middle',
-          duration: 3000
-        })
       }
     },
     computed: {
       ...mapState({
         token: state => state.info.token,
         user_id: state => state.info.user_id,
-        scode: state => state.info.scode
+        scode: state => state.info.scode,
+        isMobile: state => state.isMobile
       })
     },
     watch: {

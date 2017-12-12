@@ -174,7 +174,7 @@ api.clearForm = (form) => {
 api.errorTip = (ele, str, ismobile, obj) => {
   ele.focus()
   if (ismobile) {
-    obj.myToast(str)
+    api.tips(str, 1)
   }
 }
 api.checkFiled = (ele, form) => {
@@ -207,14 +207,17 @@ api.setTips = (ele, str) => {
     ele.setAttribute('data-status', '')
   }, 2000)
 }
-api.tips = (str, callback) => {
-  var ele = document.querySelector('.web_tips') || document.getElementsByClassName('web_tips')[0]
+api.tips = (str, isMobile, callback) => {
+  if (isMobile) {
+    var ele = document.querySelector('.toast') || document.getElementsByClassName('toast')[0]
+  } else {
+    var ele = document.querySelector('.web_tips') || document.getElementsByClassName('web_tips')[0]
+  }
   ele.innerHTML = str
-  ele.style.height = '50px'
   ele.style.opacity = 1
   setTimeout(() => {
     ele.style.opacity = 0
-    ele.style.height = 0
+    ele.innerHTML = ''
     if (callback) {
       callback()
     }
@@ -222,21 +225,21 @@ api.tips = (str, callback) => {
 }
 api.checkAjax = (obj, res, callback, btn, failback) => {
   if (res === 'repeatLogin') {
-    api.tips('您的账号在别处登录', () => {
+    api.tips('您的账号在别处登录', obj.isMobile, () => {
       obj.$router.push({name: 'login'})
       obj.$store.commit('LOGOUT')
     })
     return false
   }
   if (res === 'overtime') {
-    api.tips('账户登录超时，请重新登录', () => {
+    api.tips('账户登录超时，请重新登录', obj.isMobile, () => {
       obj.$router.push({name: 'login'})
       obj.$store.commit('LOGOUT')
     })
     return false
   }
   if (res && res.code) {
-    api.tips(res.msg, () => {
+    api.tips(res.msg, obj.isMobile, () => {
       if (btn) {
         btn.removeAttribute('disabled')
       }

@@ -117,7 +117,7 @@
       </div>
     </div>
     <MyMask :form="form[nowForm]" :title="title" :contract="contract" v-if="edit"></MyMask>
-    <mt-popup position="bottom" v-model="mobileEdit" :closeOnClickModal="false">
+    <div class="popup" v-if="mobileEdit">
       <div class="close" @click="closeEdit(1)">
         <span class="icon"></span>
       </div>
@@ -126,12 +126,12 @@
         <FormField :form="form[nowForm]"></FormField>
         <button name="btn">提交</button>
       </form>
-    </mt-popup>
+    </div>
+    <div class="popup_mask" v-if="mobileEdit"></div>
   </div>
 </template>
 
 <script>
-  import { Toast } from 'mint-ui'
   import util from '@/util'
   import api from '@/util/function'
   import MyMask from '@/components/common/Mask'
@@ -167,7 +167,7 @@
       changeNum (n) {
         // var maxNum = +this.data.amount - (+this.data.sell_amount)
         // if (this.data.num < 1) {
-        //   api.tips('您已超过购买限制')
+        //   api.tips('您已超过购买限制', this.isMobile)
         //   return false
         // }
         // this.number = n < 1 ? 1 : n > this.data.num ? this.data.num : n > maxNum ? maxNum : n
@@ -195,7 +195,7 @@
       gobuy (mobile) {
         this.isMobile = mobile
         // if (this.data.num < 1) {
-        //   api.tips('您已超过购买限制')
+        //   api.tips('您已超过购买限制', this.isMobile)
         //   return false
         // }
         if (!this.token) {
@@ -250,11 +250,11 @@
       },
       check (ele, str) {
         // if (this.data.num < 1) {
-        //   api.tips('您已超过购买限制')
+        //   api.tips('您已超过购买限制', this.isMobile)
         //   return false
         // }
         if (this.isMobile) {
-          this.myToast(str)
+          api.tips(str, 1)
         } else {
           this.tips = str
           ele.setAttribute('data-status', 'invalid')
@@ -270,7 +270,7 @@
         var sendData = {token: this.token, user_id: this.user_id}
         if (this.nowForm === 'address') {
           this.addressData = data
-          this.prompt('收货地址已提交，点击“立即支付”完成购买')
+          api.tips('收货地址已提交，点击“立即支付”完成购买', this.isMobile)
           this.closeEdit(this.isMobile)
         } else {
           var val = 'true_name'
@@ -279,11 +279,11 @@
           var self = this
           util.post('user_truename', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
             api.checkAjax(self, res, () => {
-              self.prompt(tipsStr)
+              api.tips(tipsStr, self.isMobile)
               self.$store.commit('SET_INFO', {[val]: {status: 0}})
               setTimeout(() => {
                 self.requestData('show_user_truename', sendData, val, () => {
-                  self.prompt(tipsStr2)
+                  api.tips(tipsStr2, self.isMobile)
                   self.openContract(3, self.isMobile)
                 })
               }, 7000)
@@ -305,13 +305,6 @@
           })
         })
       },
-      prompt (str) {
-        if (this.isMobile) {
-          this.myToast(str)
-        } else {
-          api.tips(str)
-        }
-      },
       openMask (mobile, n) {
         window.scroll(0, 0)
         if (mobile) {
@@ -319,13 +312,6 @@
         } else {
           this.edit = n
         }
-      },
-      myToast (str) {
-        Toast({
-          message: str,
-          position: 'middle',
-          duration: 3000
-        })
       },
       setAssept (e) {
         this.accept = e.target.checked
@@ -336,12 +322,13 @@
         token: state => state.info.token,
         user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
-        true_name: state => state.info.true_name
+        true_name: state => state.info.true_name,
+        isMobile: state => state.isMobile
       })
     },
     mounted () {
       if (api.checkWechat()) {
-        this.myToast('请在浏览器里打开')
+        api.tips('请在浏览器里打开', 1)
       }
       var self = this
       util.post('showMiner', {sign: api.serialize({token: this.token})}).then(function (res) {
@@ -737,9 +724,6 @@
         padding:0 28px;
         border-bottom: 1px solid $border;
       }
-    }
-    .mint-popup{
-      @include popup
     }
   }
   hr{

@@ -68,7 +68,7 @@
             util.post('show_risk_score', {sign: api.serialize(sendData)}).then(function (data) {
               if (data && !data.code) {
                 self.$store.commit('SET_INFO', {risk: data})
-                api.tips('测评成功', () => {
+                api.tips('测评成功', self.isMobile, () => {
                   self.$router.push({name: 'user-lpCenter'})
                 })
               }
@@ -80,7 +80,8 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id
+        user_id: state => state.info.user_id,
+        isMobile: state => state.isMobile
       })
     }
   }

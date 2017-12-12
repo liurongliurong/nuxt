@@ -7,7 +7,6 @@
 </template>
 
 <script>
-  import { Toast } from 'mint-ui'
   import util from '@/util'
   import api from '@/util/function'
   import Pay from '@/components/miner/Pay'
@@ -35,7 +34,7 @@
         show: '',
         str: {4: '预热中', 5: '可售', 7: '已售馨'},
         rate: 6,
-        proType: '',
+        proType: '1',
         proId: ''
       }
     },
@@ -49,11 +48,7 @@
               this.buyStatus = 0
             }, 2000)
           } else {
-            Toast({
-              message: '请输入或添加至少1台矿机',
-              position: 'middle',
-              duration: 3000
-            })
+            api.tips('请输入或添加至少1台矿机', 1)
           }
           return false
         }
@@ -115,6 +110,7 @@
       var self = this
       var url = ''
       var data = {token: this.token}
+      console.log(this.proType)
       if (this.proType === '1') {
         url = 'miner_detail'
         data = Object.assign({miner_id: this.proId}, data)

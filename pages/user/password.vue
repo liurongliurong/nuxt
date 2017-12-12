@@ -60,7 +60,7 @@
             if (icon) {
               self.$store.commit('SET_INFO', {trade_password: 1})
             } else {
-              api.tips(tipStr, () => {
+              api.tips(tipStr, self.isMobile, () => {
                 self.$router.push({name: 'auth-login'})
                 self.$store.commit('LOGOUT')
               })
@@ -77,7 +77,8 @@
       ...mapState({
         token: state => state.info.token,
         user_id: state => state.info.user_id,
-        mobile: state => state.info.mobile
+        mobile: state => state.info.mobile,
+        isMobile: state => state.isMobile
       })
     }
   }

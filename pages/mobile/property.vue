@@ -37,7 +37,7 @@
         <span>算力收益图表</span>
       </li>
     </ul>
-    <mt-popup position="bottom" v-model="showModal" :closeOnClickModal="false">
+    <div class="popup" v-if="showModal">
       <div class="close" @click="closeEdit()">
         <span class="icon"></span>
       </div>
@@ -49,14 +49,14 @@
       <div class="popup_chart" v-if="edit===2">
         <IncomeChart></IncomeChart>
       </div>
-    </mt-popup>
+    </div>
+    <div class="popup_mask" v-if="showModal"></div>
   </section>
 </template>
 
 <script>
   import util from '@/util'
   import api from '@/util/function'
-  import { Toast } from 'mint-ui'
   import { mapState } from 'vuex'
   import FormField from '@/components/common/FormField'
   import IncomeChart from '@/pages/user/incomeChart'
@@ -108,15 +108,15 @@
         this.total_price = 0
         this.edit = k
         if (!(this.true_name && this.true_name.status === 1)) {
-          this.myToast('请先实名认证')
+          api.tips('请先实名认证', 1)
           return false
         }
         if (!(this.bank_card && this.bank_card.status === 1)) {
-          this.myToast('请先绑定银行卡')
+          api.tips('请先绑定银行卡', 1)
           return false
         }
         if (+this.computeData.balance_account <= 0 && this.edit !== 2) {
-          this.myToast('您的账户余额不足，不能提取收益')
+          api.tips('您的账户余额不足，不能提取收益', 1)
           return false
         }
         this.showModal = true
@@ -149,7 +149,7 @@
         util.post('withdrawCoin', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.showModal = false
-            self.myToast('提币成功')
+            api.tips('提币成功', 1)
           }, form.btn)
         })
       },
@@ -159,13 +159,6 @@
           e.target.value = this.amount
         }
         this.total_price = e.target.value
-      },
-      myToast (str) {
-        Toast({
-          message: str,
-          position: 'middle',
-          duration: 3000
-        })
       },
       closeEdit () {
         this.showModal = false
@@ -301,14 +294,11 @@
           }
         }
     }
-    .mint-popup{
-      @include popup
-    }
   }
   .tips_info span{
     font-size: 12px;
   }
-  .mpropery .mint-popup .form .input .tips_info{
+  .mpropery .popup .form .input .tips_info{
     top:3px;
   }
 </style>

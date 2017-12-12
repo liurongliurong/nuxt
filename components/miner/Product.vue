@@ -177,8 +177,8 @@
           </div>
         </div>
         <div class="mobile_btn">
-          <mt-button type="default" size="large" disabled v-if="$parent.leftStatus">已售罄</mt-button>
-          <mt-button type="primary" size="large" @click="openMask" v-else>立即支付</mt-button>
+          <button disabled v-if="$parent.leftStatus">已售罄</button>
+          <button @click="openMask" v-else>立即支付</button>
         </div>
       </template>
       <template v-else>
@@ -211,12 +211,12 @@
           </div>
         </div>
         <div class="mobile_btn">
-          <mt-button type="primary" size="large" @click="openMask" v-if="$parent.detail.status===1">立即支付</mt-button>
-          <mt-button type="default" size="large" disabled v-else-if="$parent.detail.status===2">已售罄</mt-button>
-          <mt-button type="default" size="large" disabled v-else-if="$parent.detail.status===3">已售罄</mt-button>
+          <button @click="openMask" v-if="$parent.detail.status===1">立即支付</button>
+          <button disabled v-else-if="$parent.detail.status===2">已售罄</button>
+          <button disabled v-else-if="$parent.detail.status===3">已售罄</button>
         </div>
       </template>
-      <mt-popup position="bottom" v-model="sheetVisible">
+      <div class="popup" v-if="sheetVisible">
         <div class="buy_box">
           <div class="img_text">
             <div class="img">
@@ -245,11 +245,12 @@
             <div class="item">{{$parent.totalPrice|format}}元</div>
           </div>
           <div class="mobile_btn">
-            <mt-button type="default" size="large" disabled v-if="$parent.leftStatus">已售罄</mt-button>
-            <mt-button type="primary" size="large" @click="checkPay($event, false)" v-else>立即支付</mt-button>
+            <button disabled v-if="$parent.leftStatus">已售罄</button>
+            <button @click="checkPay($event, false)" v-else>立即支付</button>
           </div>
         </div>
-      </mt-popup>
+      </div>
+      <div class="popup_mask" @click="sheetVisible=!sheetVisible" v-if="sheetVisible"></div>
     </div>
   </section>
 </template>
@@ -318,7 +319,6 @@
     },
     mounted () {
       this.tabs(0)
-      console.log(document.getElementsByClassName('product')[0].style.height)
     },
     filters: {
       format: api.decimal
@@ -1056,12 +1056,21 @@
       }
       .mobile_btn{
         text-align: center;
-        // border-top:1px solid $border;
-        .mint-button--primary {
+        button {
+          width:100%;
+          border:0;
           background-color: $orange;
+          color:#fff;
+          line-height: 3;
+          &:disabled{
+            background: $border;
+          }
+          & + button{
+            margin-top:10px;
+          }
         }
       }
-      .mint-popup{
+      .popup{
         .buy_box{
           width:100vw;
           padding:0 15px;

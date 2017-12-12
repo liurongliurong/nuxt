@@ -32,7 +32,7 @@
             </div>
           </div>
       </div>
-      <mt-popup position="bottom" v-model="showModal" :closeOnClickModal="false">
+      <div class="popup" position="bottom" v-if="showModal">
         <div class="close" @click="closeEdit(1)">
           <span class="icon"></span>
         </div>
@@ -40,13 +40,13 @@
           <FormField :form="form[edit]"></FormField>
           <button name="btn">提交</button>
         </form>
-      </mt-popup>
+      </div>
+      <div class="popup_mask" v-if="showModal"></div>
     </div>
   </section>
 </template>
 
 <script>
-  import { Toast } from 'mint-ui'
   import api from '@/util/function'
   import util from '@/util'
   import card from '@/util/card'
@@ -130,12 +130,12 @@
         var self = this
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
-            self.formTips(tipsStr)
+            api.tips(tipsStr, self.isMobile)
             if (self.edit === 'auth' || self.edit === 'card') {
               self.$store.commit('SET_INFO', {[val]: {status: 0}})
               setTimeout(() => {
                 self.requestData(callbackUrl, sendData, val, () => {
-                  self.formTips(tipsStr2)
+                  api.tips(tipsStr, self.isMobile)
                 })
               }, 7000)
             } else if (self.edit === 'address') {
@@ -196,20 +196,6 @@
             this.form[this.edit][0].type = 'select'
             this.form[this.edit][0].edit = 0
           }
-        }
-      },
-      myToast (str) {
-        Toast({
-          message: str,
-          position: 'middle',
-          duration: 3000
-        })
-      },
-      formTips (str) {
-        if (this.isMobile) {
-          this.myToast(str)
-        } else {
-          api.tips(str)
         }
       }
     },
@@ -286,9 +272,6 @@
         & + .list{
           margin-top: .5rem;
         }
-      }
-      .mint-popup{
-        @include popup
       }
     }
   }

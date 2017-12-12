@@ -1085,30 +1085,6 @@
       }
     }
   }
-// mobile_popup
-  @mixin popup{
-    width:100%;
-    bottom:0 !important;
-    overflow:scroll;
-    height:80%;
-    .close{
-      @include close
-      top:5px;
-      right:12px;
-    }
-    .form{
-      box-sizing:border-box;
-      margin-top:1rem;
-      @include form(v)
-    }
-    .agreement,.form{
-      padding:15px;
-      overflow:auto;
-    }
-    .agreement{
-      height:calc(90vh - 30px);
-    }
-  }
 // data_title
   @mixin data_title{
     @include flex(space-between)
