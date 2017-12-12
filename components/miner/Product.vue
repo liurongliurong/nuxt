@@ -396,7 +396,7 @@
         margin-right: 20px;
         img{
           width: 100%;
-          height: auto;
+          height: 323px;
         }
       }
       .miner_right{
@@ -776,6 +776,7 @@
         background: #DDDFEB;
         .content_item{
           padding-top:20px;
+          min-height:300px;
           h2{
             font-weight: bold;
             margin-bottom:20px;
@@ -837,6 +838,7 @@
             &.params_img{
               @include position(480,auto,auto,50)
               width:40%;
+              height:300px;
               right:30px !important;
             }
           }

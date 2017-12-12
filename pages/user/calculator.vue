@@ -175,7 +175,6 @@
     },
     mounted () {
       var self = this
-      console.log(self.value3[0])
       // console.log(self.value3[1].split(' ')[3] + '/' + self.value3[1].split(' ')[2] + '/' + self.value3[1].split(' ')[4])
       util.post('showDifficulty', {sign: api.serialize({token: 0})}).then(function (res) {
         api.checkAjax(self, res, () => {

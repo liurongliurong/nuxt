@@ -143,6 +143,9 @@
       .bg{
         background:url(../../assets/images/miner_shop/miner_list.jpg) no-repeat;
         height: 498px;
+        width:100%;
+        background-size: 100% 100% !important;
+        left:0;
       }
       @include mobile_hide
     }
@@ -309,7 +312,7 @@
       }
     }
     .millsList{
-      padding-top: 120px;
+      padding-top: 30px;
       @include mobile_hide
       margin-top:0 !important;
     }
