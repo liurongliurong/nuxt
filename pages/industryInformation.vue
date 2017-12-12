@@ -166,7 +166,7 @@
     data () {
       return {
         scroll: [],
-        autool: [{title: '蒙古矿场', text: '国家电网合规用电', button: '即将开放'}, {title: '山西矿场', text: '国家电网合规用电', button: '即将开放'}, {title: '辽宁矿场', text: '国家电网合规用电', button: '即将开放'}],
+        autool: [{title: '内蒙矿场', text: '国家电网合规用电', button: '即将开放'}, {title: '山西矿场', text: '国家电网合规用电', button: '即将开放'}, {title: '辽宁矿场', text: '国家电网合规用电', button: '即将开放'}],
         tr: [{title: '币种'}, {title: '价格(元)'}, {title: '流通市值（亿/美元）'}, {title: '全网算力'}, {title: '单位挖矿产出'}],
         td: [],
         sheol1: [],

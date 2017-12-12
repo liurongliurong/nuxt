@@ -9,27 +9,27 @@
       <p class="con">CPU挖矿时代，比特币创始人中本聪用他电脑CPU挖出第一个创世区块。而现在，比特币挖矿已进入ASIC和大规模集群时代</p>
       <ul>
           <li>
-              <img src="../../assets/images/wk1.png"/>
+              <img src="../../assets/images/wk1.jpg"/>
               <h4>CPU</h4>
               <p>20MHash/s</p>
           </li>
           <li>
-              <img src="../../assets/images/wk2.png"/>
+              <img src="../../assets/images/wk2.jpg"/>
               <h4>CPU</h4>
               <p>400MHash/s</p>
           </li>
           <li>
-              <img src="../../assets/images/wk3.png"/>
+              <img src="../../assets/images/wk3.jpg"/>
               <h4>FPGA</h4>
               <p>25GHash/s</p>
           </li>
           <li>
-              <img src="../../assets/images/wk4.png"/>
+              <img src="../../assets/images/wk4.jpg"/>
               <h4>ASIC</h4>
               <p>3.5THash/s</p>
           </li>
           <li>
-              <img src="../../assets/images/wk5.png"/>
+              <img src="../../assets/images/wk5.jpg"/>
               <h4>大规模集群</h4>
               <p>3.5THash/s*X</p>
           </li>
@@ -37,7 +37,7 @@
     </div>
     <div class="blue">
        <div class="big">
-           <img src="../../assets/images/wk6.png"/>
+           <img src="../../assets/images/wk6.jpg"/>
             <div class="right">
                 <h1>挖矿原理</h1>
                 <p class="title p_content">算力就是产出比特币的能力，就是计算机每秒产生hash碰撞的能力。也就是说，我们手里的矿机每秒能做多少次hash碰撞，就是算力。</p>
@@ -54,7 +54,7 @@
                 <p class="text p_content">各种设备的功能:<br/>1. 矿机，在此以嘉楠耘智目前最新的矿机A7为例，A7内有88颗芯片，单台算力在7.3T/s以上。<br/>2. 树莓派（控制器），挖矿只需要做简单高效的数值计算，矿机运作的程序就写在小巧的树莓派里。每个树莓派约可以控制约60台矿机<br/>3. AUC，转换器，而每个AUC也可以串联多台矿机。<br/>4. 电源，通电。</p>
                 <p class="con p_content">把所有这些设备连接好，接通电源，修改树莓派IP网段和路由器IP网段一致，并设置矿工，然后连接矿池就可以开始挖矿啦！ </p>
             </div>
-           <img src="../../assets/images/wk7.png"/>
+           <img src="../../assets/images/wk7.jpg"/>
        </div>
     </div>
     <div class="opacity">
@@ -68,7 +68,7 @@
     </div>
     <div class="blue">
        <div class="big">
-           <img src="../../assets/images/wk10.png"/>
+           <img src="../../assets/images/wk10.jpg"/>
             <div class="right">
                 <h1>矿池</h1>
                 <p class="title p_content">如今挖矿的必备工具是矿池，矿池的作用是集合大量矿机算力，增大你得到比特币的几率，同时将你未来能得到的比特币提前平均分配到你的账户里。</p>
@@ -84,12 +84,12 @@
                 <p class="title p_content">在现实情况下，挖矿矿机常常供不应求，同时，矿机发货需要很长的等待期。矿机安装、调试、维护等流程非常复杂，需要耗费大量的精力，矿工们还要忍受矿机的噪音和热量。对矿工来说，最大的成本还不是这些，是挖矿所消耗的高昂的电费，中小矿工的盈利空间越来越小甚至为负。</p>
                 <p class="con p_content">而云算力服务可以很好地解决中小矿工和一般用户参与挖矿门槛高赚钱难的痛点。现在比特币挖矿已经进入了大规模集群挖矿的时代了，一些商家在电费低廉的地区（如西藏四川内蒙等地）大规模建设矿场，他们拥有更低的机器价格和低廉的电费，还可以通过机房结构的设计和当地的地理及气温优势来实现良好的散热通风，降低机器消耗的能量。而云算力服务平台打通矿场和矿池等基础资源，通过算力租赁的形式在网上向用户远程出租算力，让用户通过网络即可实现远程挖矿，并将算力产生的比特币打入用户的账户中。 </p>
             </div>
-           <img src="../../assets/images/wk11.png"/>
+           <img src="../../assets/images/wk11.jpg"/>
        </div>
     </div>
     <div class="blue">
        <div class="big">
-           <img src="../../assets/images/wk12.png"/>
+           <img src="../../assets/images/wk12.jpg"/>
             <div class="right">
                 <h1>挖矿回报</h1>
                 <p class="title p_content">如果你是一枚矿工，挖矿回报可以通过以下公式来计算:<br/>挖矿回报 ＝ 产生的比特币 * 币价 － 矿机成本 － 电费 － 维护费及人工成本 － 矿场折旧费等。</p>
@@ -105,7 +105,7 @@
                 <p class="text p_content">2. 比特币币价和计算难度不稳定，导致所获BTC也不稳定。</p>
                 <p class="con p_content">注：矿工们还需面对断电、机器维护等风险。 </p>
             </div>
-           <img src="../../assets/images/wk13.png"/>
+           <img src="../../assets/images/wk13.jpg"/>
        </div>
     </div>
   </div>
@@ -228,7 +228,7 @@
 }
 .opacity{
     width: 100%;
-    background: url(../../assets/images/wk8.png);
+    background: url(../../assets/images/wk8.jpg);
     height: 654px;
     background-size: 100% 100%;
     text-align: center;

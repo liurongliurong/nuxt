@@ -75,11 +75,14 @@
         <span class="biao block7">请输入单台矿机价格</span>
       </div> -->
       <div class="fromone">
-        <label>开始时间和结束时间</label>
-        <el-date-picker v-model="value3" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-        </el-date-picker> 
+        <label>开始时间</label>
+        <input type="datetime-local" :value="timedays" class="cover el-range-input" name="timestart"/>
       </div>
-      <button class="button" @click="submit">计算</button>
+      <div class="fromone">
+        <label>结束时间</label>
+        <input type="datetime-local" :value="timedays1" class="cover el-range-input" name="timeend" :min="timedays"/>
+      </div>
+      <button class="button" name="btn">计算</button>
      </form> 
      <h2>预期利润概览</h2>
      <div class="total">
@@ -140,7 +143,6 @@
         typebi: '¥',
         difficulty: '',
         totallist: [{title: '总利润', prev: '¥'}, {title: '总收入', prev: '¥'}, {title: '总电费', prev: '¥'}, {title: '总矿机成本', prev: '¥'}, {title: '每T价格', prev: '¥'}, {title: '投资回报率', next: '%'}, {title: '当前每日收入', prev: '¥'}, {title: '当前每日电费', prev: '¥'}, {title: '当前每日利润', prev: '¥'}],
-        value3: [new Date(), new Date(new Date().getTime() + 24 * 60 * 60 * 1000)],
         option: [{name: 'CNY - ¥'}, {name: 'USD - $'}],
         timeall: ''
       }
@@ -159,12 +161,16 @@
         var d2 = new Date(time1)
         this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
       },
-      submit () {
-        var time = document.getElementsByClassName('el-range-input')[0].value
-        var time1 = document.getElementsByClassName('el-range-input')[1].value
-        var d1 = new Date(time)
-        var d2 = new Date(time1)
+      submit (e) {
+        var form = e.target
+        var start = form.timestart.value
+        var end = form.timeend.value
+        var d1 = new Date(start)
+        var d2 = new Date(end)
+        console.log(d1, d2)
         this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
+        start = this.timedays()
+        end = this.timedays1()
       }
     },
     mounted () {
@@ -183,6 +189,54 @@
       var d2 = new Date(time1)
       this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
       console.log(this.message8)
+    },
+    computed: {
+      timedays: function () {
+        var date = new Date()
+        var year = date.getFullYear()
+        var month = date.getMonth() + 1
+        month = (month.length === 1) && ('0' + month) || month
+        var day = date.getDate()
+        day = (day.length === 1) && ('0' + day) || day
+        var hour = date.getHours()
+        hour = (hour.length === 1) && ('0' + hour) || hour
+        var minute = date.getMinutes()
+        if (minute.length === 1) {
+          minute = '0' + minute
+        } else {
+          minute = '' + minute
+        }
+        var second = date.getSeconds()
+        if (second.length === 1) {
+          second = '0' + second
+        } else {
+          second = '' + second
+        }
+        return year + '-' + month + '-' + day + 'T' + hour + ':' + minute
+      },
+      timedays1: function () {
+        var date = new Date()
+        var year = date.getFullYear()
+        var month = date.getMonth() + 1
+        month = (month.length === 1) && ('0' + month) || month
+        var day = date.getDate() + 1
+        day = (day.length === 1) && ('0' + day) || day
+        var hour = date.getHours()
+        hour = (hour.length === 1) && ('0' + hour) || hour
+        var minute = date.getMinutes()
+        if (minute.length === 1) {
+          minute = '0' + minute
+        } else {
+          minute = '' + minute
+        }
+        var second = date.getSeconds()
+        if (second.length === 1) {
+          second = '0' + second
+        } else {
+          second = '' + second
+        }
+        return year + '-' + month + '-' + day + 'T' + hour + ':' + minute
+      }
     }
   }
 </script>
