@@ -1,7 +1,7 @@
 <template>
   <div class="mining">
     <div class="bigbg">
-        <video src="../../assets/images/wakuang.mp4" controls="" loop="" muted=""  autoplay="autoplay" poster=""></video>
+        <video src="/wakuang.mp4" controls="" loop="" muted=""  autoplay="autoplay" poster=""></video>
     </div>
     <div class="side">
       <h1>比特币挖矿的五个时代</h1>
