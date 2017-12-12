@@ -21,18 +21,6 @@
          <p>分期时间</p>
        </li>
      </ul>
-     <!-- <ol>
-       <li>
-         分期期限 ： <span>{{moneydata.rate_time}}个月</span>
-       </li>
-       <li>
-         逾期时间 ： <span>{{moneydata.overdue_day}}天</span>
-       </li>
-       <li>
-         逾期罚息 ： <span>{{moneydata.overdue_interest}}元</span>
-       </li>
-       <li><a to="javascript:;" style="color:#327fff;cursor: pointer;" @click="showpay(true)">查看计算公式</a></li>
-     </ol> -->
      <table border="1">
        <thead>
          <tr>
@@ -81,7 +69,7 @@
     <div class="button" v-show="show">
       <div class="opaction">
         <form class="form" action="" @submit.prevent="submit" novalidate>
-            <h4>确认还款<span @click="showButton(false)"><img :src="close" style="width:12px;height:12px;position:relative;top:-6px;"/></span></h4>
+            <h4>确认还款<span @click="showButton(false)"></span></h4>
             <div class="one">
               <label>还款方式</label>
               <select @change="onChange">
@@ -134,7 +122,6 @@
         showpa: '',
         status: '',
         repayment_method: 0,
-        close: require('@/assets/images/close1.jpg'),
         total: '',
         banlance: '',
         password: '',
@@ -350,6 +337,7 @@
         font-size: 18px;
         text-align: center;
         span{
+          @include close()
           position: absolute;
           right: 0;
           margin-right: 42px;

@@ -26,11 +26,11 @@
         </div>
         <div class="transaction_right">
           <div class="mobile" v-if="show === k">
-            <span><img src="~assets/images/dian.png"/></span>
+            <span class="icon iconfont icon-dianhua1"></span>
             {{n.mobile}}
           </div>
           <div class="mobile" v-else>
-            <span><img src="~assets/images/dian.png"/></span>
+            <span class="icon iconfont icon-dianhua1"></span>
             {{n.mobile|format}}
           </div>
           <button @click="allclick(k)">点击查看完整号码</button>
@@ -259,12 +259,12 @@
                     background: #fe5039;
                     border-right:1px solid #dcdcdc;
                     float: left;
-                    img{
-                      width: 24px;
-                      height: 24px;
-                      position: relative;
-                      top: -8px;
-                    }
+                    line-height:46px;
+                  }
+                  .icon-dianhua1:before{
+                    color:white;
+                    font-size:24px;
+                    font-weight: 100;
                   }
               }
               button{
