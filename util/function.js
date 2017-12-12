@@ -226,14 +226,14 @@ api.tips = (str, isMobile, callback) => {
 api.checkAjax = (obj, res, callback, btn, failback) => {
   if (res === 'repeatLogin') {
     api.tips('您的账号在别处登录', obj.isMobile, () => {
-      obj.$router.push({name: 'login'})
+      obj.$router.push({name: 'auth-login'})
       obj.$store.commit('LOGOUT')
     })
     return false
   }
   if (res === 'overtime') {
     api.tips('账户登录超时，请重新登录', obj.isMobile, () => {
-      obj.$router.push({name: 'login'})
+      obj.$router.push({name: 'auth-login'})
       obj.$store.commit('LOGOUT')
     })
     return false

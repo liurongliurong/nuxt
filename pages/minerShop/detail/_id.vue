@@ -33,9 +33,7 @@
         content1: '',
         show: '',
         str: {4: '预热中', 5: '可售', 7: '已售馨'},
-        rate: 6,
-        proType: '1',
-        proId: ''
+        rate: 6
       }
     },
     methods: {
@@ -64,6 +62,7 @@
           url = 'productOrder'
           data = Object.assign({product_id: this.proId}, data)
         }
+        console.log(this.proType, this.proId)
         var self = this
         util.post(url, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
@@ -104,13 +103,13 @@
         this.leftNum = leftAmount < 0 ? 0 : leftAmount
       }
     },
+    asyncData ({ params }) {
+      return {proType: params.id.split('&')[1], proId: params.id.split('&')[0]}
+    },
     mounted () {
-      this.proType = this.$route.params.id.split('&')[1]
-      this.proId = this.$route.params.id.split('&')[0]
       var self = this
       var url = ''
       var data = {token: this.token}
-      console.log(this.proType)
       if (this.proType === '1') {
         url = 'miner_detail'
         data = Object.assign({miner_id: this.proId}, data)
@@ -118,6 +117,7 @@
         url = 'productDetail'
         data = Object.assign({product_id: this.proId}, data)
       }
+      console.log(self.proType)
       util.post(url, {sign: api.serialize(data)}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.initNum = res.amount - res.buyed_amount
@@ -126,10 +126,11 @@
           self.detail = Object.assign(self.detail, res)
           if (self.proType !== '1') {
             self.detail = Object.assign(self.detail, res.has_product_miner_base)
-            self.detail.hashType = res.hashtype.name
+            self.detail.hashType = (res.hashtype && res.hashtype.name) || ''
           } else {
+            console.log(self.proType)
             self.detail.name = res.name
-            self.detail.weight = res.miner_list.weight
+            self.detail.weight = (res.miner_list && res.miner_list.weight) || ''
           }
         })
       })
