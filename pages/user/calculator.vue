@@ -74,11 +74,11 @@
         <input type="text" value="message7" class="cover" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" onblur="this.value=this.value.replace(/[^\d\.]/g,'')" id="input7" v-model="message7"/>
         <span class="biao block7">请输入单台矿机价格</span>
       </div> -->
-      <div class="fromone">
-        <label>开始时间和结束时间</label>
-        <el-date-picker v-model="value3" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-        </el-date-picker> 
-      </div>
+      <!-- <div class="fromone">
+        <label>开始时间和结束时间</label> -->
+        <!-- <el-date-picker v-model="value3" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+        </el-date-picker> --> 
+      <!-- </div> -->
       <button class="button" @click="submit">计算</button>
      </form> 
      <h2>预期利润概览</h2>
@@ -168,21 +168,21 @@
       }
     },
     mounted () {
-      var self = this
-      util.post('showDifficulty', {sign: api.serialize({token: 0})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.difficulty = (res.difficulty.replace(/,/g, '') * 7.158 * 0.001 / 1000000).toFixed(0)
-          self.message8 = ((1000 / self.difficulty * 7.158 * 0.001) * 1800).toFixed(5)
-        })
-      }).catch(res => {
-        console.log(res)
-      })
-      var time = document.getElementsByClassName('el-range-input')[0].value
-      var time1 = document.getElementsByClassName('el-range-input')[1].value
-      var d1 = new Date(time)
-      var d2 = new Date(time1)
-      this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
-      console.log(this.message8)
+      // var self = this
+      // util.post('showDifficulty', {sign: api.serialize({token: 0})}).then(function (res) {
+      //   api.checkAjax(self, res, () => {
+      //     self.difficulty = (res.difficulty.replace(/,/g, '') * 7.158 * 0.001 / 1000000).toFixed(0)
+      //     self.message8 = ((1000 / self.difficulty * 7.158 * 0.001) * 1800).toFixed(5)
+      //   })
+      // }).catch(res => {
+      //   console.log(res)
+      // })
+      // var time = document.getElementsByClassName('el-range-input')[0].value
+      // var time1 = document.getElementsByClassName('el-range-input')[1].value
+      // var d1 = new Date(time)
+      // var d2 = new Date(time1)
+      // this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
+      // console.log(this.message8)
     }
   }
 </script>

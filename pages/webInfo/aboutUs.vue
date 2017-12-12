@@ -10,12 +10,20 @@
     </div>
     <div class="site">
       <h3>公司地址</h3>
-      <baidu-map class="mapImg" :center="center" :zoom="zoom" @ready="handler" :scroll-wheel-zoom="false">
+      <!-- <baidu-map class="mapImg" :center="center" :zoom="zoom" :scroll-wheel-zoom="false">
         <bm-marker :position="center"  :markerStyle="{width:'20px'}" :dragging="false">
            <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
            <bm-label content="<h4>杭州总部</h4><h5>地址 ： 浙江省杭州市学院路77号黄龙国际中心G座-907</h5> <h6>咨询电话 ： 0571-28031736</h6><h1><span></span></h1>" :labelStyle="{border:'0px', color: '#666666',whiteSpace:'normal', fontSize : '12px',padding: '0px',boxSizing:'border-box',width:'250px',wordBreak:'break-all !important',lineHeight:'24px'}" :offset="{width: -498, height: -130}"/>
         </bm-marker>
-      </baidu-map>
+      </baidu-map> -->
+      <div class="baidu_map">
+        <div class="map_img"></div>
+        <div class="map_marker">
+          <h4>杭州总部</h4>
+          <h5>地址 ： 浙江省杭州市学院路77号黄龙国际中心G座-907</h5>
+          <h6>咨询电话 ： 0571-28031736</h6>
+        </div>
+      </div>
     </div>
     <div class="site">
       <h3>客服电话</h3>
@@ -38,11 +46,6 @@
 </template>
 
 <script>
-  import Vue from 'vue'
-  import BaiduMap from 'vue-baidu-map'
-  Vue.use(BaiduMap, {
-    ak: 'GKTGV62UVGc1FZb4wUBdWG8w'
-  })
   export default {
     name: 'aboutUs',
     data () {
@@ -62,10 +65,13 @@
         ]
       }
     },
-    methods: {
-      handler ({BMap, map}) {
-        console.log(BMap, map)
-      }
+    mounted () {
+      var map = new BMap.Map(document.querySelector('.map_img'))
+      map.centerAndZoom(new BMap.Point(120.13255, 30.281902), 17)
+      var myIcon = new BMap.Icon('/marker.png',new BMap.Size(30, 30), {
+        anchor: new BMap.Size(10, 25)
+      })
+      map.addOverlay(new BMap.Marker(new BMap.Point(120.13255, 30.281902), {icon: myIcon}))
     }
   }
 </script>
@@ -110,66 +116,57 @@
           }
         }
       }
-      .mapImg{
-        width:100%;
-        height:470px;
-        .anchorBL{
-          display: none;
-        }
-        h4{
+      .baidu_map{
+        position: relative;
+        .map_img{
           width:100%;
-          height:40px;
-          background: #3d81f2;
-          color:white;
-          font-size:18px;
-          line-height:40px;
-          box-sizing: border-box;
-          padding-left:27px;
-          position: relative;
+          height:470px;
+          .anchorBL{
+            display: none;
+          }
         }
-        h5{
-           padding:30px 27px;
-           box-sizing:border-box;
-           font-size: 14px;
-        }
-        h6{
-          padding-left:27px;
-          font-size: 14px;
-          padding-top:0;
-          box-sizing:border-box;
-          line-height:0;
-          padding-bottom: 50px;
-        }
-        h4:after{
-          content:'>';
-          font-size:18px;
-          color:white;
-          font-family: "宋体" !important;
-          font-weight:800;
-          width:18px;
-          height:18px;
+        .map_marker{
           position: absolute;
-          transform:rotate(90deg);
-          margin-left:118px;
-          margin-top:15px;
-        }
-        h1{
-          width:25px;
-          height:25px;
-          border-radius:100%;
-          border:1px solid #218cff;
-          text-align:center;
-          margin-left: 496px;
-          margin-top:-50px;
-          line-height:40px;
-          span{
-            width:10px;
-            height:10px;
-            margin:0 auto;
-            margin-top:6px;
-            display:block;
-            border-radius:100%;
-            background:#218cff;
+          top:60px;
+          left:30px;
+          width:250px;
+          background: #fff;
+          h4{
+            width:100%;
+            height:40px;
+            background: #3d81f2;
+            color:white;
+            font-size:18px;
+            line-height:40px;
+            box-sizing: border-box;
+            padding-left:27px;
+            position: relative;
+          }
+          h5{
+             padding:30px 27px;
+             box-sizing:border-box;
+             font-size: 14px;
+          }
+          h6{
+            padding-left:27px;
+            font-size: 14px;
+            padding-top:0;
+            box-sizing:border-box;
+            line-height:0;
+            padding-bottom: 50px;
+          }
+          h4:after{
+            content:'>';
+            font-size:18px;
+            color:white;
+            font-family: "宋体" !important;
+            font-weight:800;
+            width:18px;
+            height:18px;
+            position: absolute;
+            transform:rotate(90deg);
+            margin-left:118px;
+            margin-top:15px;
           }
         }
       }

@@ -3,7 +3,8 @@
     <MyHead></MyHead>
     <nuxt class="body"/>
     <MyFoot></MyFoot>
-    <div class="web_tips"></div>
+    <div class="web_tips" v-if="!isMobile"></div>
+    <div class="toast" v-else></div>
   </article>
 </template>
 
@@ -25,6 +26,19 @@
         meta: [
           { hid: 'keywords', name: 'keywords', content: '算力网,比特币,算力挖矿,矿机托管,比特币挖矿' },
           { hid: 'description', name: 'description', content: '算力网（www.suanli.com）是比特币挖矿一站式服务平台，拥有专业的挖矿及运营团队，目前拥有矿机托管，矿场投资，算力出售，算力转让等业务，切实为比特币挖矿爱好者提供一站式贴心服务。' }
+        ],
+        link: [
+          {
+            type: 'image/x-icon',
+            rel: 'shortcut icon',
+            href: '/logo_icon.png'
+          }
+        ],
+        script:[
+          {
+            type: 'text/javascript',
+            src: 'https://api.map.baidu.com/api?v=2.0&ak=GKTGV62UVGc1FZb4wUBdWG8w' 
+          }
         ]
       }
     },
@@ -60,7 +74,8 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id
+        user_id: state => state.info.user_id,
+        isMobile: state => state.isMobile
       })
     }
   }
