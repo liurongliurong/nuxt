@@ -335,12 +335,12 @@
 </script>
 
 <style type="text/css" lang="scss">
-  @import '../../assets/css/style.scss';
+  @import '~assets/css/style.scss';
   .product{
     background: #f7f8fa;
     padding-bottom: 50px;
     .top_nav{
-      background-image: url('../../assets/images/miner.png');
+      background-image: url('~assets/images/miner.png');
       width: 100%;
       height: 352px;
       background-size: 100% 100%;

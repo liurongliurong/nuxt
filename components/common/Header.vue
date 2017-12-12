@@ -1,12 +1,6 @@
 <template>
-  <div>
-    <section v-if="!isMobile">
-      <PcHeader></PcHeader>
-    </section>
-    <section v-else>
-      <MobileHeader></MobileHeader>
-    </section>
-  </div>
+  <PcHeader v-if="!isMobile"></PcHeader>
+  <MobileHeader v-else></MobileHeader>
 </template>
 
 <script>

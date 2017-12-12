@@ -60,7 +60,7 @@
   <div class="mobile_bdc" v-else>
     <div class="introduce">
       <div class="background">
-        <img :src="require('@/assets/images/mobile/bdc.png')">
+        <img :src="require('@/assets/images/mobile/bdc.jpg')">
       </div>
       <div class="content">
         <p class="title">{{article.title}}</p>

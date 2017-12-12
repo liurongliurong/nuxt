@@ -24,7 +24,7 @@
         <div class="swiper_one"  :style="{width:oneWidth+'px'}" v-for="n,k in slideEls">
           <template v-if="n.name">
             <div class="left">
-              <img :src="require('@/assets/images/header.png')" class="header"/>
+              <!-- <img :src="require('@/assets/images/header.png')" class="header"/> -->
               <img :src="require('@/assets/images/color.png')" class="index"/> 
               <h5>{{n.name}}</h5>
               <p>{{n.time}}</p>
