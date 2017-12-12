@@ -24,7 +24,6 @@
 </template>
 
 <script>
-  import { Toast } from 'mint-ui'
   import util from '@/util/index'
   import api from '@/util/function'
   import FormField from '@/components/common/FormField'
@@ -52,7 +51,7 @@
             util.post('getAll', {sign: api.serialize(res)}).then(function (data) {
               self.$store.commit('SET_INFO', data)
             })
-            api.tips('欢迎来到算力网！', () => {
+            api.tips('欢迎来到算力网！', self.isMobile, () => {
               if (self.callUrl) {
                 location.href = self.callUrl
                 self.$store.commit('SET_URL', '')
@@ -62,20 +61,14 @@
             })
           }, form.btn)
         }).catch(res => {
-          api.tips('您的网络情况不太好，请稍后再尝试')
-        })
-      },
-      myToast (str) {
-        Toast({
-          message: str,
-          position: 'middle',
-          duration: 3000
+          api.tips('您的网络情况不太好，请稍后再尝试', self.isMobile)
         })
       }
     },
     computed: {
       ...mapState({
-        callUrl: state => state.callUrl
+        callUrl: state => state.callUrl,
+        isMobile: state => state.isMobile
       })
     }
   }

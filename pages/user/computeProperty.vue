@@ -120,7 +120,7 @@
       openMask (str, title) {
         this.total_price = 0
         if (!(this.true_name && this.true_name.status === 1)) {
-          api.tips('请先实名认证', () => {
+          api.tips('请先实名认证', this.isMobile, () => {
             this.$router.push({name: 'user-account'})
           })
           return false
@@ -133,13 +133,13 @@
         }
         if (str === 'GetIncome') {
           if (!this.address.length) {
-            api.tips('请先绑定算力地址', () => {
+            api.tips('请先绑定算力地址', this.isMobile, () => {
               this.$router.push({name: 'user-account'})
             })
             return false
           }
           if (+this.computeData.balance_account <= 0) {
-            api.tips('您的账户余额不足，不能提取收益')
+            api.tips('您的账户余额不足，不能提取收益', this.isMobile)
             return false
           }
           requestUrl = 'showWithdrawCoin'
@@ -148,13 +148,13 @@
         }
         if (str === 'Withdrawals') {
           if (!(this.bank_card && this.bank_card.status === 1)) {
-            api.tips('请先绑定银行卡', () => {
+            api.tips('请先绑定银行卡', this.isMobile, () => {
               this.$router.push({name: 'user-account'})
             })
             return false
           }
           if (+this.moneyData.balance_account <= 0) {
-            api.tips('您的账户余额不足，不能提现')
+            api.tips('您的账户余额不足，不能提现', this.isMobile)
             return false
           }
           requestUrl = 'showWithdraw'
@@ -227,7 +227,7 @@
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.closeEdit()
-            api.tips(tipsStr)
+            api.tips(tipsStr, this.isMobile)
           }, form.btn)
         })
       },
@@ -261,7 +261,8 @@
         bank_card: state => state.info.bank_card,
         address: state => state.info.address,
         hashType: state => state.hashType,
-        scode: state => state.info.scode
+        scode: state => state.info.scode,
+        isMobile: state => state.isMobile
       })
     }
   }

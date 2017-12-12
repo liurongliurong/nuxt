@@ -104,7 +104,6 @@
 
 <script>
   import api from '@/util/function'
-  import { Toast } from 'mint-ui'
   import MyData from '@/components/home/dataList'
   import Swiper from '@/components/common/Swipe'
   import WebInfo from '@/components/home/WebInfo'
@@ -142,11 +141,7 @@
         if (k !== 3) {
           this.$router.push({path: url})
         } else {
-          Toast({
-            message: '即将开放，敬请期待',
-            position: 'middle',
-            duration: 3000
-          })
+          api.tips('即将开放，敬请期待', 1)
         }
       },
       setData (n) {

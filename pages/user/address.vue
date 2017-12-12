@@ -38,7 +38,7 @@
       <p>暂无列表信息</p>
     </div>
     <MyMask :form="address" :val="addressData" v-if="show"></MyMask>
-    <mt-popup position="bottom" v-model="mobileEdit" :closeOnClickModal="false">
+    <div class="popup" v-if="mobileEdit">
       <div class="close" @click="closeEdit">
         <span class="icon"></span>
       </div>
@@ -46,7 +46,8 @@
         <AddressInput :form="address" :val="addressData"></AddressInput>
         <button name="btn">确认提交</button>
       </form>
-    </mt-popup>
+    </div>
+    <div class="popup_mask" @click="mobileEdit=!mobileEdit" v-if="mobileEdit"></div>
   </section>
 </template>
 
@@ -75,7 +76,7 @@
         var self = this
         util.post('setDefault', {sign: api.serialize({token: this.token, post_id: id})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips('设置成功')
+            api.tips('设置成功', self.isMobile)
             self.fetchData()
           })
         })
@@ -102,7 +103,7 @@
         util.post(url, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.fetchData()
-            api.tips(strTips)
+            api.tips(strTips, self.isMobile)
             self.closeEdit(self.isMobile)
           }, form.btn)
         })
@@ -114,14 +115,14 @@
         var self = this
         util.post('deleteAddress', {sign: api.serialize({token: this.token, post_id: id})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips('删除成功')
+            api.tips('删除成功', self.isMobile)
             self.fetchData()
           })
         })
       },
       openMask (k) {
         if (this.data.length >= 15) {
-          api.tips('您的地址条数已达到上限，请删除后再添加')
+          api.tips('您的地址条数已达到上限，请删除后再添加', this.isMobile)
           return false
         }
         this.addressData = {}
@@ -256,9 +257,6 @@
         }
       }
       @include mobile_show
-    }
-    .mint-popup{
-      @include popup
     }
     @include nodata
   }

@@ -167,12 +167,12 @@
             <span @click="openMask(1)">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机{{page === 'minerShop'? '销售':'转让'}}协议》</a><template v-if="$parent.proType!=='1'">、<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
             <span class="select_accept">{{tips}}</span>
           </label> 
-          <mt-button type="primary" size="large" name="btn">确认支付</mt-button>
+          <button name="btn">确认支付</button>
         </div>
       </form>
     </div>
     <MyMask :form="address" :title="title" :contract="contract" :val="addressForm" v-if="edit&&!isMobile"></MyMask>
-    <mt-popup position="bottom" v-model="mobileEdit" :closeOnClickModal="false" v-if="isMobile">
+    <div class="popup" v-if="isMobile&&mobileEdit">
       <div class="close" @click="closeMask">
         <span class="icon"></span>
       </div>
@@ -192,12 +192,12 @@
           </div>
         </div>
       </div>
-    </mt-popup>
+    </div>
+    <div class="popup_mask" @click="mobileEdit=!mobileEdit" v-if="isMobile&&mobileEdit"></div>
   </section>
 </template>
 
 <script>
-  import { Toast } from 'mint-ui'
   import util from '@/util/index'
   import api from '@/util/function'
   import { mapState } from 'vuex'
@@ -256,7 +256,7 @@
             return false
           }
           if (!(this.bank_card && this.bank_card.status === 1)) {
-            api.tips('请先绑定银行卡', () => {
+            api.tips('请先绑定银行卡', this.isMobile, () => {
               if (this.isMobile) {
                 this.$router.push({name: 'mobile-administration'})
               } else {
@@ -266,7 +266,7 @@
             return false
           }
           if (!this.trade_password) {
-            api.tips('请先设置交易密码', () => {
+            api.tips('请先设置交易密码', this.isMobile, () => {
               this.$router.push({name: 'user-password'})
             })
             return false
@@ -276,7 +276,7 @@
             return false
           } else if (!api.check('^[0-9]{6}$', ff[0].value)) {
             if (this.isMobile) {
-              this.myToast('请输入6位数字')
+              api.tips('请输入6位数字', 1)
             }
             return false
           }
@@ -375,11 +375,7 @@
             // if (this.$parent.proType === '1') {
             //   this.$parent.next = 2
             // } else {}
-            Toast({
-              message: str,
-              position: 'middle',
-              duration: 3000
-            })
+            api.tips(str, 1)
             setTimeout(() => {
               this.$router.push({path: url})
             }, 3000)
@@ -391,7 +387,7 @@
             // if (this.$parent.proType === '1') {
             //   this.$parent.next = 2
             // } else {}
-            api.tips(str, () => {
+            api.tips(str, this.isMobile, () => {
               this.$router.push({path: url})
             })
           }
@@ -399,7 +395,7 @@
       },
       alipay (url, data) {
         if (api.checkWechat()) {
-          this.myToast('请在浏览器里打开')
+          api.tips('请在浏览器里打开', 1)
           return false
         }
         var self = this
@@ -430,7 +426,7 @@
         util.post('addAddress', {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.getAddress()
-            self.prompt('添加成功')
+            api.tips('添加成功', self.isMobile)
             self.closeMask()
           }, form.btn)
         })
@@ -466,7 +462,7 @@
         var self = this
         util.post('setDefault', {sign: api.serialize({token: this.$parent.token, post_id: id})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            self.prompt('设置成功')
+            api.tips('设置成功', self.isMobile)
             self.getAddress()
           })
         })
@@ -480,24 +476,10 @@
       },
       tip (str, ele) {
         if (this.isMobile) {
-          this.myToast(str)
+          api.tips(str, 1)
         } else {
           this.check(ele, str)
         }
-      },
-      prompt (str) {
-        if (this.isMobile) {
-          this.myToast(str)
-        } else {
-          api.tips(str)
-        }
-      },
-      myToast (str) {
-        Toast({
-          message: str,
-          position: 'middle',
-          duration: 3000
-        })
       },
       fixTop (e) {
         var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
@@ -945,7 +927,11 @@
       .mobile_btn{
         padding:15px;
         button{
+          width:100%;
           margin:10px 0;
+          border:0;
+          color:#fff;
+          line-height: 3;
           background: $orange;
           label{
             color:$white;
@@ -964,8 +950,7 @@
         border-bottom: 1px solid $border;
       }
     }
-    .mint-popup{
-      @include popup
+    .popup{
       .mobile_pay_type{
         padding:15px 0;
         color: $text;

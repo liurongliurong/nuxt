@@ -19,7 +19,6 @@
 </template>
 
 <script>
-  import { Toast } from 'mint-ui'
   import util from '@/util/index'
   import api from '@/util/function'
   import { mapState } from 'vuex'
@@ -59,7 +58,7 @@
           form.btn.setAttribute('disabled', true)
           util.post('forgitPwd', {sign: api.serialize(Object.assign(data, {token: this.token, valid_code: this.valid_code, code_id: this.code_id, mobile: this.mobile}))}).then(res => {
             api.checkAjax(self, res, () => {
-              api.tips('重置密码成功', () => {
+              api.tips('重置密码成功', self.isMobile, () => {
                 self.$router.push({name: 'auth-login'})
               })
             }, form.btn)
@@ -70,18 +69,12 @@
         var ele = e.target
         var form = document.querySelector('.form')
         api.checkFiled(ele, form)
-      },
-      myToast (str) {
-        Toast({
-          message: str,
-          position: 'middle',
-          duration: 3000
-        })
       }
     },
     computed: {
       ...mapState({
-        token: state => state.info.token
+        token: state => state.info.token,
+        isMobile: state => state.isMobile
       })
     }
   }

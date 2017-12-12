@@ -87,7 +87,7 @@
         util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             if (res === '暂无协议') {
-              api.tips(res)
+              api.tips(res, self.isMobile)
             } else {
               self.show = true
               self.contract = res
@@ -126,7 +126,8 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id
+        user_id: state => state.info.user_id,
+        isMobile: state => state.isMobile
       })
     }
   }

@@ -9,7 +9,6 @@
   </section>
 </template>
 <script>
-import { Toast } from 'mint-ui'
 import util from '@/util'
 import api from '@/util/function'
 import { mapState } from 'vuex'
@@ -30,20 +29,13 @@ export default {
         document.getElementById('block').style = 'display:none'
         util.post('collectAdvice', {sign: api.serialize({token: this.token, user_id: this.user_id, content: encodeURIComponent(contenthtml)})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            self.myToast('提交成功 ！')
+            api.tips('提交成功 ！', 1)
             setTimeout(() => {
               self.$router.push({name: 'mobile-personcenter'})
             }, 3000)
           })
         })
       }
-    },
-    myToast (str) {
-      Toast({
-        message: str,
-        position: 'middle',
-        duration: 2000
-      })
     }
   },
   computed: {

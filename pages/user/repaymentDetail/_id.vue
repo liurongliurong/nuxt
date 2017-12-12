@@ -200,7 +200,7 @@
         }
         util.post('repayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repayment_id, product_hash_type: 1, mode: this.model, trade_password: md5(this.password)})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips('提交成功', () => {
+            api.tips('提交成功', self.isMobile, () => {
               self.show = false
               window.location.reload()
             })
@@ -217,7 +217,8 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id
+        user_id: state => state.info.user_id,
+        isMobile: state => state.isMobile
       })
     },
     filters: {

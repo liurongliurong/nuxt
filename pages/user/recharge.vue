@@ -31,7 +31,6 @@
 </template>
 
 <script>
-  import { Toast } from 'mint-ui'
   import util from '@/util'
   import api from '@/util/function'
   import FormField from '@/components/common/FormField'
@@ -57,7 +56,7 @@
     methods: {
       submit () {
         if (!this.rechargeNo && !(this.bank_card && this.bank_card.status === 1)) {
-          api.tips('请先绑定银行卡', () => {
+          api.tips('请先绑定银行卡', this.isMobile, () => {
             if (this.isMobile) {
               this.$router.push({name: 'mobile-administration'})
             } else {
@@ -97,7 +96,7 @@
             api.checkAjax(self, res, () => {
               form.amount.value = ''
               form.request_id.value = ''
-              api.tips('提交成功，请等待工作人员确认', () => {
+              api.tips('提交成功，请等待工作人员确认', self.isMobile, () => {
                 form.btn.removeAttribute('disabled')
               })
             }, form.btn)
@@ -106,13 +105,6 @@
       },
       changeType (n) {
         this.rechargeNo = n
-      },
-      myToast (str) {
-        Toast({
-          message: str,
-          position: 'middle',
-          duration: 3000
-        })
       }
     },
     computed: {

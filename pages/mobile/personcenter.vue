@@ -32,7 +32,7 @@
     </div>
     <button @click="logout">退出</button>
     <div class="null"></div>
-    <mt-popup position="bottom" v-model="showModal" :closeOnClickModal="false">
+    <div class="popup" v-if="showModal">
       <div class="close" @click="closeEdit()">
         <span class="icon"></span>
       </div>
@@ -41,12 +41,12 @@
         <p>手续费：{{total_price * fee|decimal}}元<span class="fee">({{fee*100+'%'}})</span></p>
         <button name="btn">提交</button>
       </form>
-    </mt-popup>
+    </div>
+    <div class="popup_mask" v-if="showModal"></div>
   </div>
 </template>
 
 <script>
-  import { Toast } from 'mint-ui'
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
@@ -76,7 +76,8 @@
         user_id: state => state.info.user_id,
         token: state => state.info.token,
         true_name: state => state.info.true_name,
-        bank_card: state => state.info.bank_card
+        bank_card: state => state.info.bank_card,
+        isMobile: state => state.isMobile
       })
     },
     filters: {
@@ -91,7 +92,7 @@
       openMask (k) {
         this.total_price = 0
         if (!(this.true_name && this.true_name.status === 1)) {
-          api.tips('请先实名认证', () => {
+          api.tips('请先实名认证', this.isMobile, () => {
             // this.$router.push({name: 'madministration'})
             if (api.checkEquipment) {
               this.$router.push({name: 'mobile-administration'})
@@ -102,7 +103,7 @@
           return false
         }
         if (!(this.bank_card && this.bank_card.status === 1)) {
-          api.tips('请先绑定银行卡', () => {
+          api.tips('请先绑定银行卡', this.isMobile, () => {
             if (api.checkEquipment) {
               this.$router.push({name: 'mobile-administration'})
             } else {
@@ -117,7 +118,7 @@
         }
         if (k === 2) {
           if (+this.balance_account <= 0) {
-            api.tips('您的账户余额不足，不能提现')
+            api.tips('您的账户余额不足，不能提现', this.isMobile)
             return false
           }
           this.showModal = true
@@ -150,7 +151,7 @@
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.closeEdit()
-            self.myToast(tipsStr)
+            api.tips(tipsStr, 1)
           }, form.btn)
         })
       },
@@ -160,13 +161,6 @@
           e.target.value = this.amount
         }
         this.total_price = e.target.value
-      },
-      myToast (str) {
-        Toast({
-          message: str,
-          position: 'middle',
-          duration: 3000
-        })
       }
     },
     mounted () {
@@ -331,9 +325,6 @@
       height: 2rem;
       background:#f4f4f4;
       margin-bottom: 35px;
-    }
-    .mint-popup{
-      @include popup
     }
   }
 </style>
