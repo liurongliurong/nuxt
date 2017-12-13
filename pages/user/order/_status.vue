@@ -220,6 +220,7 @@
           this.data = []
           this.showtype = false
           this.nowEdit = +this.$route.params.status
+          console.log(this.nowEdit)
           if (this.nowEdit === 3) {
             this.status = 1
           }
