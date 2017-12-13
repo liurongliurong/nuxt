@@ -18,6 +18,9 @@
             <template v-else-if="n.status===1">
               <span>【出售】</span>
             </template>
+            <template v-else-if="n.status===5">
+              <span style="color:#999;">【售罄】</span>
+            </template>
             {{n.title}}
           </h2>
           <p class="text" v-html="n.content ? n.content : '暂无简介'"></p>
@@ -26,14 +29,17 @@
         </div>
         <div class="transaction_right">
           <div class="mobile" v-if="show === k">
-            <span class="icon iconfont icon-dianhua1"></span>
+            <span class="icon iconfont icon-dianhua1" style="background:#999;" v-if="n.status===5"></span>
+            <span class="icon iconfont icon-dianhua1" v-else></span>
             {{n.mobile}}
           </div>
           <div class="mobile" v-else>
-            <span class="icon iconfont icon-dianhua1"></span>
+            <span class="icon iconfont icon-dianhua1" style="background:#999;" v-if="n.status===5"></span>
+            <span class="icon iconfont icon-dianhua1" v-else></span>
             {{n.mobile|format}}
           </div>
-          <button @click="allclick(k)">点击查看完整号码</button>
+          <button @click="allclick(k)" v-if="n.status===5" style="background:#999;color:white;border:0;" disabled>点击查看完整号码</button>
+          <button @click="allclick(k)" v-else>点击查看完整号码</button>
         </div>
       </div>
       <Pager :len="len"  style="padding-top:0;"></Pager>
