@@ -66,7 +66,9 @@
         nav: {},
         info3: {},
         show: false,
-        contract: ''
+        contract: '',
+        orderType: '',
+        orderId: ''
       }
     },
     methods: {
@@ -109,6 +111,8 @@
       getData () {
         if (this.token !== 0) {
           var self = this
+          this.orderType = +this.$route.params.id.split('&')[0]
+          this.orderId = +this.$route.params.id.split('&')[1]
           this.nav = this.orderType !== '1' ? this.type : this.computeType
           this.info3 = this.orderType !== '1' ? this.info : this.info2
           var requestUrl = this.orderType !== '1' ? 'showOrderDetail' : 'getTransferRecord'
@@ -124,9 +128,6 @@
           }, 5)
         }
       }
-    },
-    asyncData ({ params }) {
-      return {orderType: params.id.split('&')[0], orderId: params.id.split('&')[1]}
     },
     mounted () {
       this.getData()

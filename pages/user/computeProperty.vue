@@ -157,6 +157,12 @@
             api.tips('您的账户余额不足，不能提现', this.isMobile)
             return false
           }
+          if (!this.trade_password) {
+            api.tips('请先设置交易密码', this.isMobile, () => {
+              this.$router.push({name: 'user-password'})
+            })
+            return false
+          }
           requestUrl = 'showWithdraw'
           data = {token: this.token, user_id: this.user_id}
         }
@@ -269,6 +275,7 @@
         true_name: state => state.info.true_name,
         bank_card: state => state.info.bank_card,
         address: state => state.info.address,
+        trade_password: state => state.info.address,
         hashType: state => state.hashType,
         scode: state => state.info.scode,
         isMobile: state => state.isMobile
