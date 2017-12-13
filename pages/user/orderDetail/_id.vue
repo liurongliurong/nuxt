@@ -1,10 +1,10 @@
 <template>
   <section class="detail">
     <template v-if="!show">
-      <h2>订单详情</h2>
-      <h3>运行状况</h3>
+      <h2>订单详情{{orderType}}</h2>
+      <h3>运行状况{{orderId}}</h3>
       <div class="detail_box">
-        <div class="process" v-if="orderType != '1'">
+        <div class="process" v-if="orderType !== 1">
           <div :class="['item', {active: k===processStatus}]" v-for="p,k in processText">
             <i><template v-if="k>=processStatus">{{k+1}}</template></i>
             <span>{{p}}</span>
@@ -12,7 +12,7 @@
           </div>
         </div>
         <div class="detailinfo">
-          <template v-for="i,k in info3">
+          <template v-for="i,k in (orderType !== 1 ? info : info2)">
             <div class="item">
               <p>{{i}}</p>
               <div class="profit"><span>{{data[k]||'0.00000000'}}</span>Btc</div>
@@ -24,11 +24,11 @@
       <h3>基本信息</h3>
       <div class="detail_box">
         <div class="detail_table">
-          <div class="item" v-for="d,k in nav">
+          <div class="item" v-for="d,k in (orderType !== 1 ? type : computeType)">
             <div class="item_title">{{d[0]}}</div>
             <div class="item_value">{{data[k]}}{{d[1]}}</div>
           </div>
-          <div class="item" v-if="Object.keys(nav).length%2">
+          <div class="item" v-if="Object.keys((orderType !== 1 ? type : computeType)).length%2">
             <div class="item_title"></div>
             <div class="item_value"></div>
           </div>
@@ -63,12 +63,8 @@
         data: {},
         type: {hash_type: ['算力类型', ''], product_name: ['矿机名称', ''], buy_amount: ['购买数量', '台'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], income_type: ['收益方式', ''], total_hash: ['总算力', 'T']},
         computeType: {type_name: ['代币类型', ''], buy_amount: ['购买数量', 'T'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], manner: ['发币方式', '']},
-        nav: {},
-        info3: {},
         show: false,
-        contract: '',
-        orderType: '',
-        orderId: ''
+        contract: ''
       }
     },
     methods: {
@@ -111,15 +107,12 @@
       getData () {
         if (this.token !== 0) {
           var self = this
-          this.orderType = +this.$route.params.id.split('&')[0]
-          this.orderId = +this.$route.params.id.split('&')[1]
-          this.nav = this.orderType !== '1' ? this.type : this.computeType
-          this.info3 = this.orderType !== '1' ? this.info : this.info2
-          var requestUrl = this.orderType !== '1' ? 'showOrderDetail' : 'getTransferRecord'
-          var data = this.orderType !== '1' ? {token: this.token, order_id: this.orderId} : {token: this.token, orderid: this.orderId}
+          var requestUrl = this.orderType !== 1 ? 'showOrderDetail' : 'getTransferRecord'
+          var data = this.orderType !== 1 ? {token: this.token, order_id: this.orderId} : {token: this.token, orderid: this.orderId}
           util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res
+              console.log(self.data)
             })
           })
         } else {
@@ -131,6 +124,9 @@
     },
     mounted () {
       this.getData()
+    },
+    asyncData ({ params }) {
+      return {orderType: +params.id.split('&')[0], orderId: +params.id.split('&')[1]}
     },
     computed: {
       ...mapState({

@@ -32,78 +32,78 @@
           <thead>
             <tr>
              <th>算力服务器</th>
-              <th v-if="nowEdit==0||status==1||status==4">总算力</th>
-              <template v-if="nowEdit==0&&(status==2||status==3)">
+              <th v-if="nowEdit===0||status==1||status==4">总算力</th>
+              <template v-if="nowEdit===0&&(status==2||status==3)">
                 <th>出售数量</th>
                 <th>出售金额</th>
                 <th>出售时间</th>
               </template>
-              <template v-if="nowEdit!=0&&(status==2||status==3)">
+              <template v-if="nowEdit!==0&&(status==2||status==3)">
                 <th>转让金额</th>
                 <th>转让数量</th>
                 <th>转让单价</th>
                 <th>转让时间</th>
               </template>
               <template v-if="status==1||status==4">
-                <th v-if="nowEdit!=1">购买数量</th>
+                <th v-if="nowEdit!==1">购买数量</th>
                 <th>购买金额</th>
                 <th>购买时间</th>
               </template>
-              <template v-if="nowEdit==0&&status==1">
+              <template v-if="nowEdit===0&&status==1">
                 <th>剩余可出售</th>
               </template>
-              <template v-if="nowEdit==2&&status==1&&!(nowEdit==2&&status==1)">
+              <template v-if="nowEdit===2&&status==1&&!(nowEdit===2&&status==1)">
                 <th>剩余可出租</th>
               </template>
-              <th v-if="status!=3&&!(nowEdit==2&&status==1)">操作</th>
+              <th v-if="status!=3&&!(nowEdit===2&&status==1)">操作</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="d,k in data" :class="{active: nowEdit==0&&status==1}">
-              <td v-if="nowEdit==3">{{d.miner&&d.miner.name}}</i></td>
+            <tr v-for="d,k in data" :class="{active: nowEdit===0&&status==1}">
+              <td v-if="nowEdit===3">{{d.miner&&d.miner.name}}</i></td>
               <td v-else>{{d.product_name}}<i :class="'icon_currency '+d.hash_type_name"></i></td>
-              <td v-if="nowEdit!=3&&(nowEdit==0||status==1||status==4)">{{d.total_hash|format}}T</td>
-              <td v-if="nowEdit==3">{{((d.miner&&(+d.miner.hash))*+d.buy_amount)|format}}T</td>
-              <template v-if="nowEdit==0&&(status==2||status==3)">
+              <td v-if="nowEdit!==3&&(nowEdit===0||status==1||status==4)">{{d.total_hash|format}}T</td>
+              <td v-if="nowEdit===3">{{((d.miner&&(+d.miner.hash))*+d.buy_amount)|format}}T</td>
+              <template v-if="nowEdit===0&&(status==2||status==3)">
                 <td>{{d.selling_amount}}台</td>
                 <td>{{d.total_price}}元</td>
               </template>
-              <template v-if="(nowEdit!=0)&&(status==2||status==3)">
+              <template v-if="(nowEdit!==0)&&(status==2||status==3)">
                 <td>{{d.total_price}}元</td>
                 <td>{{d.transfer_amount|format}}T</td>
                 <td>{{d.transfer_price}}元</td>
               </template>
               <template v-if="status==1||status==4">
-                <td v-if="nowEdit!=1">{{d.buy_amount}}台</td>
-                <td v-if="nowEdit!=3">{{d.total_price}}元</td>
+                <td v-if="nowEdit!==1">{{d.buy_amount}}台</td>
+                <td v-if="nowEdit!==3">{{d.total_price}}元</td>
                 <td v-else>{{d.pay_value}}元</td>
               </template>
-              <td v-if="nowEdit==1&&(status==2||status==3)">{{d.transfer_time}}天</td>
+              <td v-if="nowEdit===1&&(status==2||status==3)">{{d.transfer_time}}天</td>
               <td v-else>{{d.create_time||d.created_time}}</td>
-              <template v-if="nowEdit==0&&status==1">
+              <template v-if="nowEdit===0&&status==1">
                 <td>{{d.remain_miner}}台</td>
               </template>
-              <template v-if="nowEdit==2&&status==1&&!(nowEdit==2&&status==1)">
+              <template v-if="nowEdit===2&&status==1&&!(nowEdit===2&&status==1)">
                 <td>{{d.remain_hash|format}}T</td>
               </template>
-              <td v-if="status!=3&&!(nowEdit==2&&status==1)">
-                <template v-if="nowEdit==0&&status==1&&!d.is_loan">
+              <td v-if="status!=3&&!(nowEdit===2&&status==1)">
+                <template v-if="nowEdit===0&&status==1&&!d.is_loan">
                   <button class="sold" @click="openMask('sold', '出售云矿机', d.id)" v-if="d.remain_miner&&d.status===8">出售云矿机</button>
                 </template>
-                <template v-if="nowEdit==0&&status==2">
+                <template v-if="nowEdit===0&&status==2">
                   <button @click="quit('sold', d.id)">撤销出售</button>
                 </template>
-                <template v-if="nowEdit==1&&status==1">
+                <template v-if="nowEdit===1&&status==1">
                   <button @click="openMask('againRent', '转租算力', d.id)" :disabled="!d.remain_hash">转租算力</button>
                 </template>
-                <template v-if="(nowEdit==1||nowEdit==2)&&status==2">
+                <template v-if="(nowEdit===1||nowEdit==2)&&status==2">
                   <button @click="quit('rent', d.id)">撤销出租</button>
                 </template>
-                <template v-if="nowEdit==2&&status==0">
+                <template v-if="nowEdit===2&&status==0">
                   <button @click="openMask('rent', '出租算力', d.id)" :disabled="!d.remain_hash">出租算力</button>
                 </template>
-                <router-link :to="'/user/orderDetail/'+nowEdit+'&'+d.id"  v-if="nowEdit!=3&&nowEdit!=2&&status!=2&&status!=3">查看详情</router-link>
-                <template v-if="nowEdit==3">
+                <router-link :to="'/user/orderDetail/'+nowEdit+'&'+d.id"  v-if="nowEdit!==3&&nowEdit!==2&&status!=2&&status!=3">查看详情</router-link>
+                <template v-if="nowEdit===3">
                   <button class="sold" @click="getContract(d.id)">查看协议</button>
                   <button class="sold" @click="getBaoquan(d.id)">查看保全</button>
                 </template>
@@ -213,14 +213,19 @@
         nowEdit: 0
       }
     },
+    asyncData ({ params }) {
+      return {nowEdit: +params.status}
+    },
     methods: {
       fetchData () {
+        this.nowEdit = +this.$route.params.status
+        this.getData()
+      },
+      getData () {
         if (this.token !== 0) {
           var self = this
           this.data = []
           this.showtype = false
-          this.nowEdit = +this.$route.params.status
-          console.log(this.nowEdit)
           if (this.nowEdit === 3) {
             this.status = 1
           }
@@ -234,7 +239,7 @@
           })
         } else {
           setTimeout(() => {
-            this.fetchData()
+            this.getData()
           }, 5)
         }
       },
