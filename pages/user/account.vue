@@ -135,7 +135,7 @@
               self.$store.commit('SET_INFO', {[val]: {status: 0}})
               setTimeout(() => {
                 self.requestData(callbackUrl, sendData, val, () => {
-                  api.tips(tipsStr, self.isMobile)
+                  api.tips(tipsStr2, self.isMobile)
                 })
               }, 7000)
             } else if (self.edit === 'address') {

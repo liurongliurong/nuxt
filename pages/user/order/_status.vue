@@ -60,10 +60,10 @@
           </thead>
           <tbody>
             <tr v-for="d,k in data" :class="{active: nowEdit==0&&status==1}">
-              <td v-if="nowEdit==3">{{d.miner.name}}</i></td>
+              <td v-if="nowEdit==3">{{d.miner&&d.miner.name}}</i></td>
               <td v-else>{{d.product_name}}<i :class="'icon_currency '+d.hash_type_name"></i></td>
               <td v-if="nowEdit!=3&&(nowEdit==0||status==1||status==4)">{{d.total_hash|format}}T</td>
-              <td v-if="nowEdit==3">{{(+d.miner.hash*+d.buy_amount)|format}}T</td>
+              <td v-if="nowEdit==3">{{((d.miner&&(+d.miner.hash))*+d.buy_amount)|format}}T</td>
               <template v-if="nowEdit==0&&(status==2||status==3)">
                 <td>{{d.selling_amount}}台</td>
                 <td>{{d.total_price}}元</td>
@@ -146,7 +146,7 @@
             </div>
             <div class="listone" style="border-left:1px solid #ddd;border-right:1px solid #ddd;">
               <h4 v-if="nowEdit!=3&&(nowEdit==0||status==1||status==4)">{{d.total_hash|format}}<em> T</em></h4>
-              <h4 v-if="nowEdit==3"><em>{{+d.buy_amount * (+d.miner.hash)}} T</em></h4>
+              <h4 v-if="nowEdit==3"><em>{{+d.buy_amount * (d.miner&&(+d.miner.hash))}} T</em></h4>
               <p>总算力</p>
             </div>
             <div class="listone">
@@ -187,7 +187,6 @@
         title2: {0: '云矿机', 2: '基金', 3: '矿机'},
         nav: [{'0': '已购买', '1': '出售中', '2': '已出售', '3': '已结束'}, {'0': '已租赁', '1': '出租中', '2': '已出租', '3': '已结束'}, {'0': '持有', '3': '已结束'}, {'0': '已购买'}],
         data: [],
-        nowEdit: 0,
         status: 1,
         edit: '',
         form: {
@@ -210,7 +209,8 @@
         fee: 0,
         showImg: false,
         show: false,
-        showtype: false
+        showtype: false,
+        nowEdit: 0
       }
     },
     methods: {
@@ -218,9 +218,12 @@
         if (this.token !== 0) {
           var self = this
           this.data = []
-          this.nowEdit = this.$route.params.status
           this.showtype = false
-          util.post('fundOrder', {sign: api.serialize({token: this.token, user_id: this.user_id, type: this.$route.params.status, status: this.status, page: this.now})}).then(function (res) {
+          this.nowEdit = +this.$route.params.status
+          if (this.nowEdit === 3) {
+            this.status = 1
+          }
+          util.post('fundOrder', {sign: api.serialize({token: this.token, user_id: this.user_id, type: this.nowEdit, status: this.status, page: this.now})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res.list
               self.showImg = !res.total_num

@@ -1,5 +1,5 @@
 <template>
-  <article class="home" v-if="!isMobile">
+  <article class="home" v-if="isMobile===0">
     <Swiper :pagination-visible="true" :loop="true" :autoPlay="5000"></Swiper>
     <MyData></MyData>
     <div class="wq">
@@ -59,7 +59,7 @@
     </div>
     <SideBar></SideBar>
   </article>
-  <article class="mobile_home" v-else>
+  <article class="mobile_home" v-else-if="isMobile===1">
     <Swiper :pagination-visible="true" :loop="true" :autoPlay="5000" :data="data"></Swiper>
     <div class="nav_box">
       <div class="item" v-for="n,k in nav" :key="k" @click="goPage(n.url, k)">
@@ -132,9 +132,9 @@
     methods: {
       goMobile () {
         if (api.checkEquipment()) {
-          this.$store.commit('SET_EQUIPMENT', true)
+          this.$store.commit('SET_EQUIPMENT', 1)
         } else {
-          this.$store.commit('SET_EQUIPMENT', false)
+          this.$store.commit('SET_EQUIPMENT', 0)
         }
       },
       goPage (url, k) {

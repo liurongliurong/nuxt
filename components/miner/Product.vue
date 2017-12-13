@@ -1,6 +1,6 @@
 <template>
   <section class="product">
-    <template v-if="!isMobile">
+    <template v-if="isMobile===0">
       <div class="top_nav">
         <div class="box">
           <router-link to="/minerShop/list">矿机商城</router-link>
@@ -51,7 +51,7 @@
               {{$parent.detail.product_name}}
               <span>{{$parent.str[$parent.detail.status]}}</span>
             </h4>
-            <p class="white" v-if="$parent.proType==='2'">可使用算力白条</p>
+            <p class="white" v-if="$parent.proType==='2'">可使用算力分期</p>
             <div class="product_data">
               <template v-for="d,k in proData" v-if="k!=='product_name'">
                 <div class="item">
@@ -132,7 +132,7 @@
         </template>
       </div>
     </template>
-    <div class="mobile_box" v-else>
+    <div class="mobile_box" v-else-if="isMobile===1">
       <div class="img">
         <img :src="$parent.detail.product_img||$parent.detail.minerPicture" alt="">
       </div>
@@ -214,6 +214,7 @@
           <button @click="openMask" v-if="$parent.detail.status===1">立即支付</button>
           <button disabled v-else-if="$parent.detail.status===2">已售罄</button>
           <button disabled v-else-if="$parent.detail.status===3">已售罄</button>
+          <button disabled v-else>暂不能购买</button>
         </div>
       </template>
       <div class="popup" v-if="sheetVisible">
@@ -857,7 +858,7 @@
           width: 80%;
         }
       }
-      .first_box,.product_desc,.mobile_btn{
+      .first_box,.product_desc{
         background: #fff;
         padding: 15px;
       }
@@ -1057,7 +1058,14 @@
         }
       }
       .mobile_btn{
+        position: fixed;
+        bottom:0;
+        left:0;
+        width:100%;
         text-align: center;
+        border-top:1px solid $border;
+        padding:9px 15px;
+        background: #fff;
         button {
           width:100%;
           border:0;
@@ -1128,6 +1136,10 @@
             &.last{
               padding-bottom:20px;
             }
+          }
+          .mobile_btn{
+            position: relative;
+            border:0
           }
         }
       }

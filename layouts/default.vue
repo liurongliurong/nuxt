@@ -54,7 +54,9 @@
         document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
       })
       if (api.checkEquipment()) {
-        this.$store.commit('SET_EQUIPMENT', true)
+        this.$store.commit('SET_EQUIPMENT', 1)
+      } else {
+        this.$store.commit('SET_EQUIPMENT', 0)
       }
       if (this.token === 0) {
         this.$store.dispatch('getInfo')
