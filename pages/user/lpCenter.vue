@@ -196,14 +196,6 @@
         }
       }
     },
-    async nuxtServerInit ({ dispatch, commit }, { req, res }) {
-      if (req.cookies && req.cookies.token) {
-        commit('LOGOUT', req.cookies.token)
-      }
-    },
-    SET_USER (state, token) {
-      state.token = token
-    },
     mounted () {
       this.getData()
     },
