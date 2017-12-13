@@ -32,7 +32,7 @@
         </thead>
         <tbody>
           <tr v-for="d,k in item">
-            <template v-if="status==='0'">
+            <template v-if="status===0">
               <td>{{d.product_name}}<i :class="'icon_currency '+d.product_hash_type"></i></td>
               <td>{{d.loan_money}}</td>
               <td>{{d.fee_value * 100}}%</td>
@@ -43,7 +43,7 @@
                 <router-link :to="'/user/repaymentDetail/'+d.id" class="blue">查看详情</router-link>
               </td>
             </template>
-            <template v-if="status==='1'">
+            <template v-if="status===1">
               <td>{{d.product_name}}<i :class="'icon_currency '+d.hash_type_name"></i></td>
               <td>{{d.loan_money}}</td>
               <td>{{d.fee_value}}%</td>
@@ -78,7 +78,7 @@
     data () {
       return {
         nav: [{'0': '进行中', '1': '已结束'}],
-        item: [],
+        item: '',
         showImg: false,
         status: 0,
         len: 0,
