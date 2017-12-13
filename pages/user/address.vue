@@ -146,12 +146,18 @@
         }
       },
       fetchData () {
-        var self = this
-        util.post('showAddress', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.data = res
+        if (this.token !== 0) {
+          var self = this
+          util.post('showAddress', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.data = res
+            })
           })
-        })
+        } else {
+          setTimeout(() => {
+            this.fetchData()
+          }, 5)
+        }
       },
       getList () {
         this.fetchData()

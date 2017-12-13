@@ -163,6 +163,21 @@
       },
       onChange (e) {
         this.total_price = e.target.value
+      },
+      getData () {
+        if (this.token !== 0) {
+          var self = this
+          util.post('userCapital', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.data = res
+            })
+          })
+          this.getList()
+        } else {
+          setTimeout(() => {
+            this.getData()
+          }, 5)
+        }
       }
     },
     filters: {
@@ -172,13 +187,7 @@
       '$route': 'getList'
     },
     mounted () {
-      var self = this
-      util.post('userCapital', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.data = res
-        })
-      })
-      this.getList()
+      this.getData()
     },
     computed: {
       ...mapState({

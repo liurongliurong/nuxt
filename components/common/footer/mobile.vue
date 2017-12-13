@@ -1,14 +1,10 @@
 <template>
-  <footer class="footer" v-if="!showRouter.includes($route.path)" :disabled="$route.name==='notFound'">
-    <div class="mobile_box">
-      <mt-tabbar :fixed="true" selected="1">
-        <div v-for="item in footList" class="mint-tab-item">
-          <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
-            <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
-            <span class="name">{{item.name}}</span>
-          </nuxt-link>
-        </div>
-      </mt-tabbar>
+  <footer class="footer mobile_tabbar" v-if="!showRouter.includes($route.path)" :disabled="$route.name==='notFound'">
+    <div class="mobile_tab_item" v-for="item in footList">
+      <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
+        <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i><br>
+        <span class="name">{{item.name}}</span>
+      </nuxt-link>
     </div>
   </footer>
 </template>
@@ -30,39 +26,36 @@
 
 <style type="text/css" lang="scss">
   @import '../../../assets/css/style.scss';
-  .footer{
-    .mobile_box{
-      width:100%;
-      .mint-tab-item{
-        padding: 0 !important;
-
-        .item {
-          @include flex(center, center, column);
-          height: 50px;
-
-          .name {
-            color: #666;
-            font-size: 11px;
-          }
-
-          .iconfont {
-            font-size: 20px;
-            position: relative;
-            top: 7px;
-          }
+  .footer.mobile_tabbar{
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    z-index: 1;
+    background:white;
+    border-top:1px solid $border;
+    padding: 5px 0;
+    @include flex
+    .mobile_tab_item{
+      width:33.33%;
+      text-align: center;
+      .item{
+        height: 50px;
+        .name{
+          color: #666;
+          font-size: 11px;
         }
-
-        .active {
+        .iconfont{
+          font-size: 20px;
+          position: relative;
+          top: 7px;
+        }
+        &.active{
           color: #327fff;
-
-          .name {
+          .name{
             color: #327fff;
           }
         }
-      }
-      .mint-tabbar{
-        background:white;
-        border-top:1px solid $border
       }
     }
   }

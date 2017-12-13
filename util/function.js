@@ -52,7 +52,6 @@ api.telReadable = (tel) => {
 }
 api.cardReadable = (tel) => {
   if (tel) {
-    console.log(tel)
     return tel.replace(/(\d{4})\d{8,13}(\d{4})/, '$1****$2')
   }
 }

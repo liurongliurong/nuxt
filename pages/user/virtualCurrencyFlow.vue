@@ -93,19 +93,28 @@
       setList (n) {
         this.nowEdit = n
         this.getList()
+      },
+      getData () {
+        if (this.token !== 0) {
+          var self = this
+          util.post('userCoin', {sign: api.serialize({token: this.token, user_id: this.user_id, product_hash_type: '1'})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.data = res
+            })
+          })
+          this.getList()
+        } else {
+          setTimeout(() => {
+            this.getData()
+          }, 5)
+        }
       }
     },
     watch: {
       '$route': 'getList'
     },
     mounted () {
-      var self = this
-      util.post('userCoin', {sign: api.serialize({token: this.token, user_id: this.user_id, product_hash_type: '1'})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.data = res
-        })
-      })
-      this.getList()
+      this.getData()
     },
     computed: {
       ...mapState({

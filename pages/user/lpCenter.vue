@@ -59,7 +59,6 @@
     </div>
   </section>
 </template>
-
 <script>
   import api from '@/util/function'
   import util from '@/util'
@@ -159,47 +158,10 @@
             }
           })
         })
-      }
-    },
-    async nuxtServerInit ({ dispatch, commit }, { req, res }) {
-      if (req.cookies && req.cookies.token) {
-        commit('LOGOUT', req.cookies.token)
-      }
-    },
-    SET_USER (state, token) {
-      state.token = token
-    },
-    mounted () {
-      var self = this
-      if (self.token !== 0) {
-        util.post('scode_info', {sign: 'token=' + self.token}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.no = res.s_code
-            self.scodeInfo = res
-            if (!res.list) {
-              self.show = 1
-              return false
-            }
-            if (res.s_code && res.risk && res.risk.user_risk_score < 0) {
-              self.$router.push({name: 'user-accountEvaluate'})
-              return false
-            }
-            if (res.s_code && res.risk && res.risk.user_risk_score > 0 && !res.list[res.s_code].is_contract) {
-              var sCodeData = {token: self.token, user_id: self.user_id, s_code: res.s_code}
-              util.post('show_contract', {sign: api.serialize(sCodeData)}).then(function (r) {
-                api.checkAjax(self, r, () => {
-                  self.show = 3
-                  self.content = r.content
-                  self.contract = {contract_id: r.id, funds_id: r.funds_id, s_code: r.s_code}
-                })
-              })
-              return false
-            }
-            self.show = 2
-          })
-        })
-      } else {
-        setTimeout(function () {
+      },
+      getData () {
+        if (this.token !== 0) {
+          var self = this
           util.post('scode_info', {sign: 'token=' + self.token}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.no = res.s_code
@@ -226,8 +188,15 @@
               self.show = 2
             })
           })
-        }, 5)
+        } else {
+          setTimeout(() => {
+            this.getData()
+          }, 5)
+        }
       }
+    },
+    mounted () {
+      this.getData()
     },
     computed: {
       ...mapState({
@@ -242,7 +211,6 @@
     }
   }
 </script>
-
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .lp_center{

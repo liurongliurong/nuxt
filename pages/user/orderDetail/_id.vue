@@ -66,9 +66,7 @@
         nav: {},
         info3: {},
         show: false,
-        contract: '',
-        orderType: '',
-        orderId: ''
+        contract: ''
       }
     },
     methods: {
@@ -107,21 +105,31 @@
       },
       back () {
         this.show = false
+      },
+      getData () {
+        if (this.token !== 0) {
+          var self = this
+          this.nav = this.orderType !== '1' ? this.type : this.computeType
+          this.info3 = this.orderType !== '1' ? this.info : this.info2
+          var requestUrl = this.orderType !== '1' ? 'showOrderDetail' : 'getTransferRecord'
+          var data = this.orderType !== '1' ? {token: this.token, order_id: this.orderId} : {token: this.token, orderid: this.orderId}
+          util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.data = res
+            })
+          })
+        } else {
+          setTimeout(() => {
+            this.getData()
+          }, 5)
+        }
       }
     },
+    asyncData ({ params }) {
+      return {orderType: params.id.split('&')[0], orderId: params.id.split('&')[1]}
+    },
     mounted () {
-      this.orderType = this.$route.params.id.split('&')[0]
-      this.orderId = this.$route.params.id.split('&')[1]
-      var self = this
-      this.nav = this.orderType !== '1' ? this.type : this.computeType
-      this.info3 = this.orderType !== '1' ? this.info : this.info2
-      var requestUrl = this.orderType !== '1' ? 'showOrderDetail' : 'getTransferRecord'
-      var data = this.orderType !== '1' ? {token: this.token, order_id: this.orderId} : {token: this.token, orderid: this.orderId}
-      util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.data = res
-        })
-      })
+      this.getData()
     },
     computed: {
       ...mapState({

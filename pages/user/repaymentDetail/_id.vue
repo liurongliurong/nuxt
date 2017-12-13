@@ -175,13 +175,19 @@
         this.showpa = type
       },
       items () {
-        var self = this
-        util.post('getLoanListDetail', {sign: api.serialize({token: this.token, user_id: this.user_id, loan_id: this.$route.params.id})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.moneydata = res
-            self.item = res.list
+        if (this.token !== 0) {
+          var self = this
+          util.post('getLoanListDetail', {sign: api.serialize({token: this.token, user_id: this.user_id, loan_id: this.$route.params.id})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.moneydata = res
+              self.item = res.list
+            })
           })
-        })
+        } else {
+          setTimeout(() => {
+            this.items()
+          }, 5)
+        }
       },
       submit () {
         var ff = document.querySelector('.form')

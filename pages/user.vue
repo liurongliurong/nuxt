@@ -39,14 +39,6 @@
         now: 1
       }
     },
-    mounted () {
-      var self = this
-      util.post('MessageList', {sign: api.serialize({token: this.token, user_id: this.user_id, page: this.now})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.$store.commit('SET_INFO', {unread_num: res.unread_num})
-        })
-      })
-    },
     computed: {
       ...mapState({
         token: state => state.info.token,
