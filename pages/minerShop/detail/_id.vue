@@ -117,7 +117,6 @@
         url = 'productDetail'
         data = Object.assign({product_id: this.proId}, data)
       }
-      console.log(self.proType)
       util.post(url, {sign: api.serialize(data)}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.initNum = res.amount - res.buyed_amount
