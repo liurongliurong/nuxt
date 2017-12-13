@@ -38,7 +38,11 @@
             <img :src="n.minerPicture"/>
           </div>
           <h6>{{n.name}}</h6>
-          <mt-progress :value="(n.buyed_amount/n.amount * 100)" :bar-height="5"></mt-progress>
+          <div class="progress_info1">
+            <div class="progress_box1">
+              <div class="box1" :style="{width:((n.buyed_amount/n.amount)*100).toFixed(1)+'%'}"></div>
+              </div>
+          </div>
           <p>算力价： <b>¥{{n.one_amount_value}}</b> <span>{{n.hash}}T</span></p>
         </router-link>
       </div>
@@ -265,23 +269,20 @@
             font-size: .6rem;
             padding-top: .2rem;
           }
-          .mt-progress{
-            height:5px;
-            margin-bottom: 0.5rem;
-          }
-          .mt-progress-content{
-           border-radius: 5px;
-           overflow: hidden;
-           height: 5px;
-           margin-top: .3rem;
-          }
-          .mt-progress-runway{
-            border-radius: 5px;
-           overflow: hidden;
-          }
-          .mt-progress-progress{
-            background: linear-gradient(to right, #337eff 20%, #c72abc);
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#337eff', endColorstr='#c72abc',GradientType=1 );
+          .progress_info1{
+            position: relative;
+            padding:6px 0;
+            .progress_box1{
+              position: relative;
+              overflow:hidden;
+              border-radius:5px;
+              height:5px;
+              background: $border;
+              .box1{
+                @include position
+                @include process_color
+              }
+            }
           }
           p{
             font-size: 0.4rem;
