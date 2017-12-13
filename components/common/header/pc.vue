@@ -42,7 +42,6 @@
   import { mapState } from 'vuex'
   import MobileHeader from './mobile'
   import PcHeader from './pc'
-
   export default {
     name: 'header',
     data () {
@@ -69,10 +68,10 @@
         if (!ele) return false
         var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
         if (scrollTop > 0 || this.showNav) {
-          ele.className = 'fixed_header bg_opacity'
+          ele.className = 'pc_header fixed_header bg_opacity'
           this.scroll = true
         } else {
-          ele.className = 'fixed_header'
+          ele.className = 'pc_header fixed_header'
           this.scroll = false
         }
       },
@@ -111,7 +110,7 @@
 
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
-  header{
+  .pc_header{
     .box{
       @include main
       @include flex(space-between)

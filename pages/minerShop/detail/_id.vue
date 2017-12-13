@@ -101,42 +101,44 @@
         this.totalHash = this.detail.hash * this.number
         var leftAmount = this.initNum - this.number
         this.leftNum = leftAmount < 0 ? 0 : leftAmount
+      },
+      getData () {
+        var self = this
+        var url = ''
+        var data = {token: this.token}
+        if (this.proType === '1') {
+          url = 'miner_detail'
+          data = Object.assign({miner_id: this.proId}, data)
+        } else {
+          url = 'productDetail'
+          data = Object.assign({product_id: this.proId}, data)
+        }
+        util.post(url, {sign: api.serialize(data)}).then(function (res) {
+          api.checkAjax(self, res, () => {
+            self.initNum = res.amount - res.buyed_amount
+            self.leftNum = self.initNum
+            self.leftStatus = self.leftNum === 0
+            self.detail = Object.assign(self.detail, res)
+            if (self.proType !== '1') {
+              self.detail = Object.assign(self.detail, res.has_product_miner_base)
+              self.detail.hashType = (res.hashtype && res.hashtype.name) || ''
+            } else {
+              self.detail.name = res.name
+              self.detail.weight = (res.miner_list && res.miner_list.weight) || ''
+            }
+          })
+        })
+        if (this.addressObj.id) {
+          this.number = this.addressObj.num
+          this.getBuyInfo()
+        }
       }
     },
     asyncData ({ params }) {
       return {proType: params.id.split('&')[1], proId: params.id.split('&')[0]}
     },
     mounted () {
-      var self = this
-      var url = ''
-      var data = {token: this.token}
-      if (this.proType === '1') {
-        url = 'miner_detail'
-        data = Object.assign({miner_id: this.proId}, data)
-      } else {
-        url = 'productDetail'
-        data = Object.assign({product_id: this.proId}, data)
-      }
-      util.post(url, {sign: api.serialize(data)}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.initNum = res.amount - res.buyed_amount
-          self.leftNum = self.initNum
-          self.leftStatus = self.leftNum === 0
-          self.detail = Object.assign(self.detail, res)
-          if (self.proType !== '1') {
-            self.detail = Object.assign(self.detail, res.has_product_miner_base)
-            self.detail.hashType = (res.hashtype && res.hashtype.name) || ''
-          } else {
-            console.log(self.proType)
-            self.detail.name = res.name
-            self.detail.weight = (res.miner_list && res.miner_list.weight) || ''
-          }
-        })
-      })
-      if (this.addressObj.id) {
-        this.number = this.addressObj.num
-        this.getBuyInfo()
-      }
+      this.getData()
     },
     computed: {
       ...mapState({

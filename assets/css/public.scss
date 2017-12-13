@@ -68,9 +68,6 @@ table{
   min-height: calc(100vh - 386px)
 }
 @media screen and (max-width: $mobile) {
-  #app > header{
-    display: none;
-  }
   .body{
     min-height: 100vh;
     padding-bottom:61px;

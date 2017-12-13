@@ -1,6 +1,6 @@
 <template>
-  <PcHeader v-if="!isMobile"></PcHeader>
-  <MobileHeader v-else></MobileHeader>
+  <PcHeader class="pc_header" v-if="isMobile===0"></PcHeader>
+  <MobileHeader class="mobile_header" v-else-if="isMobile===1"></MobileHeader>
 </template>
 
 <script>
