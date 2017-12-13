@@ -28,6 +28,9 @@
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import pageFrame from '@/components/computeNews/pageFrame'
+  import Vue from 'vue'
+  import { InfiniteScroll } from 'mint-ui'
+  Vue.use(InfiniteScroll)
   export default {
     components: {
       pageFrame

@@ -855,7 +855,6 @@
         background: white;
         img{
           width: 80%;
-          height:6.5rem;
         }
       }
       .first_box,.product_desc,.mobile_btn{

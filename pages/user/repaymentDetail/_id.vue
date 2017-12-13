@@ -69,7 +69,7 @@
     <div class="button" v-show="show">
       <div class="opaction">
         <form class="form" action="" @submit.prevent="submit" novalidate>
-            <h4>确认还款<span @click="showButton(false)"></span></h4>
+            <h4>确认还款<span @click="showButton(false)"><em class="one"></em><em class="two"></em></span></h4>
             <div class="one">
               <label>还款方式</label>
               <select @change="onChange">
@@ -342,14 +342,26 @@
         margin-top: 29px;
         font-size: 18px;
         text-align: center;
-        span{
-          @include close()
-          position: absolute;
-          right: 0;
-          margin-right: 42px;
-          cursor: pointer;
-          font-family: cursive;
-        }
+        // span{
+        //   position: absolute;
+        //   right: 0;
+        //   margin-right: 42px;
+        //   cursor: pointer;
+        //   display:block;
+        //   width:30px;
+        //   height: 30px;
+        //   background:red;
+        //   font-family: cursive;
+        //   .one{
+        //     display: block;
+        //     position: absolute;
+        //     left:0;
+        //     top:0;
+        //     width:30px;
+        //     height:1px;
+        //     background: black;
+        //   }
+        // }
       }
       .one{
         width: 100%;

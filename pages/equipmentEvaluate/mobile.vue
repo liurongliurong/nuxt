@@ -26,6 +26,9 @@
   import util from '@/util/index'
   import api from '@/util/function'
   import { mapState } from 'vuex'
+  import Vue from 'vue'
+  import { InfiniteScroll } from 'mint-ui'
+  Vue.use(InfiniteScroll)
   export default {
     data () {
       return {

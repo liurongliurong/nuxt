@@ -78,7 +78,7 @@
     data () {
       return {
         nav: [{'0': '进行中', '1': '已结束'}],
-        item: '',
+        item: [],
         showImg: false,
         status: 0,
         len: 0,
