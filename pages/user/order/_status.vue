@@ -259,27 +259,53 @@
           data = {order_id: id}
         }
         var self = this
-        util.post(requestUrl, {sign: api.serialize(Object.assign({token: this.token, user_id: this.user_id}, data))}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            window.scroll(0, 0)
-            document.body.style.overflow = 'hidden'
-            self.editText = title
-            self.edit = str
-            if (str === 'sold') {
-              self.one_amount_value = res.one_amount_value
-              self.amount = res.show_miner
-              self.fee = res.sell_miner_fee
-            } else if (str === 'againRent') {
-              self.amount = res.show_hash
-              self.transfer_time = res.rent_time - res.have_use_time
-              self.fee = res.rent_fee
-              self.have_use_time = res.have_use_time
-            } else {
-              self.amount = res.show_hash
-              self.fee = res.rent_fee
-            }
+        if (this.token !== 0) {
+          util.post(requestUrl, {sign: api.serialize(Object.assign({token: this.token, user_id: this.user_id}, data))}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              window.scroll(0, 0)
+              document.body.style.overflow = 'hidden'
+              self.editText = title
+              self.edit = str
+              if (str === 'sold') {
+                self.one_amount_value = res.one_amount_value
+                self.amount = res.show_miner
+                self.fee = res.sell_miner_fee
+              } else if (str === 'againRent') {
+                self.amount = res.show_hash
+                self.transfer_time = res.rent_time - res.have_use_time
+                self.fee = res.rent_fee
+                self.have_use_time = res.have_use_time
+              } else {
+                self.amount = res.show_hash
+                self.fee = res.rent_fee
+              }
+            })
           })
-        })
+        } else {
+          setTimeout(() => {
+            util.post(requestUrl, {sign: api.serialize(Object.assign({token: this.token, user_id: this.user_id}, data))}).then(function (res) {
+              api.checkAjax(self, res, () => {
+                window.scroll(0, 0)
+                document.body.style.overflow = 'hidden'
+                self.editText = title
+                self.edit = str
+                if (str === 'sold') {
+                  self.one_amount_value = res.one_amount_value
+                  self.amount = res.show_miner
+                  self.fee = res.sell_miner_fee
+                } else if (str === 'againRent') {
+                  self.amount = res.show_hash
+                  self.transfer_time = res.rent_time - res.have_use_time
+                  self.fee = res.rent_fee
+                  self.have_use_time = res.have_use_time
+                } else {
+                  self.amount = res.show_hash
+                  self.fee = res.rent_fee
+                }
+              })
+            })
+          }, 5)
+        }
       },
       quit (str, id) {
         var requestUrl = ''
