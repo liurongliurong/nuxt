@@ -215,18 +215,24 @@
     },
     methods: {
       fetchData () {
-        var self = this
-        this.data = []
-        this.nowEdit = this.$route.params.status
-        this.showtype = false
-        util.post('fundOrder', {sign: api.serialize({token: this.token, user_id: this.user_id, type: this.$route.params.status, status: this.status, page: this.now})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.data = res.list
-            self.showImg = !res.total_num
-            if (self.now > 1) return false
-            self.len = Math.ceil(res.total_num / 15)
+        if (this.token !== 0) {
+          var self = this
+          this.data = []
+          this.nowEdit = this.$route.params.status
+          this.showtype = false
+          util.post('fundOrder', {sign: api.serialize({token: this.token, user_id: this.user_id, type: this.$route.params.status, status: this.status, page: this.now})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.data = res.list
+              self.showImg = !res.total_num
+              if (self.now > 1) return false
+              self.len = Math.ceil(res.total_num / 15)
+            })
           })
-        })
+        } else {
+          setTimeout(() => {
+            this.fetchData()
+          }, 5)
+        }
       },
       getList (sort) {
         this.status = sort || 1

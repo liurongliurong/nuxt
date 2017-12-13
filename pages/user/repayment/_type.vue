@@ -87,17 +87,23 @@
     },
     methods: {
       items () {
-        var self = this
-        this.item = []
-        this.status = this.$route.params.type
-        util.post('getLoanList', {sign: api.serialize({token: this.token, user_id: this.user_id, status: this.status, page: this.now})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.item = res
-            self.showImg = !res.length
-            if (self.now > 1) return false
-            self.len = Math.ceil(res.length / 15)
+        if (this.token !== 0) {
+          var self = this
+          this.item = []
+          this.status = this.$route.params.type
+          util.post('getLoanList', {sign: api.serialize({token: this.token, user_id: this.user_id, status: this.status, page: this.now})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.item = res
+              self.showImg = !res.length
+              if (self.now > 1) return false
+              self.len = Math.ceil(res.length / 15)
+            })
           })
-        })
+        } else {
+          setTimeout(() => {
+            this.items()
+          }, 5)
+        }
       }
     },
     mounted () {

@@ -20,13 +20,24 @@
         data: {}
       }
     },
+    methods: {
+      getData () {
+        if (this.token !== 0) {
+          var self = this
+          util.post('Messagecontent', {sign: api.serialize({token: this.token, user_id: this.user_id, message_id: this.$route.params.id})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.data = res
+            })
+          })
+        } else {
+          setTimeout(() => {
+            this.getData()
+          }, 5)
+        }
+      }
+    },
     mounted () {
-      var self = this
-      util.post('Messagecontent', {sign: api.serialize({token: this.token, user_id: this.user_id, message_id: this.$route.params.id})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.data = res
-        })
-      })
+      this.getData()
     },
     computed: {
       ...mapState({

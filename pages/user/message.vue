@@ -65,16 +65,22 @@
         })
       },
       fetchData () {
-        var self = this
-        util.post('MessageList', {sign: api.serialize({token: this.token, user_id: this.user_id, page: this.now})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.$store.commit('SET_INFO', {unread_num: res.unread_num})
-            self.data = res.list
-            self.show = !res.list.length
-            if (self.now > 1) return false
-            self.len = Math.ceil(res.total_num / 15)
+        if (this.token !== 0) {
+          var self = this
+          util.post('MessageList', {sign: api.serialize({token: this.token, user_id: this.user_id, page: this.now})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.$store.commit('SET_INFO', {unread_num: res.unread_num})
+              self.data = res.list
+              self.show = !res.list.length
+              if (self.now > 1) return false
+              self.len = Math.ceil(res.total_num / 15)
+            })
           })
-        })
+        } else {
+          setTimeout(() => {
+            this.fetchData()
+          }, 5)
+        }
       },
       getList () {
         this.fetchData()

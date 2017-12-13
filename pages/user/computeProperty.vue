@@ -237,17 +237,26 @@
           e.target.value = this.amount
         }
         this.total_price = e.target.value
+      },
+      getData () {
+        if (this.token !== 0) {
+          var self = this
+          util.post('myAccount', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.moneyData = res
+              self.priceall = +self.moneyData.freeze_account + (+self.moneyData.balance_account)
+            })
+          })
+          this.getList()
+        } else {
+          setTimeout(() => {
+            this.getData()
+          }, 5)
+        }
       }
     },
     mounted () {
-      var self = this
-      util.post('myAccount', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.moneyData = res
-          self.priceall = +self.moneyData.freeze_account + (+self.moneyData.balance_account)
-        })
-      })
-      this.getList()
+      this.getData()
     },
     filters: {
       currency: api.currency,
