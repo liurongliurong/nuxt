@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer pc_box" v-if="!isMobile">
+  <footer class="footer pc_box1" v-if="!isMobile">
     <div class="box">
       <div class="box_foot">
         <aside>
@@ -44,16 +44,15 @@
       </div>
     </div>
   </footer>
-  <footer class="footer mobile_tabbar" v-else-if="isMobile&&!$route.path.includes('minerShop/detail')">
+  <footer class="mobile_tabbar" v-else-if="isMobile&&!$route.path.includes('minerShop/detail')" style="bottom:0 !important;">
     <div class="mobile_tab_item" v-for="item in footList">
       <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
-        <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i><br>
+        <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
         <span class="name">{{item.name}}</span>
       </nuxt-link>
     </div>
   </footer>
 </template>
-
 <script>
   import util from '@/util'
   import { mapState } from 'vuex'
@@ -93,10 +92,9 @@
     }
   }
 </script>
-
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
-  .footer.pc_box{
+  .pc_box1{
     background: $black;
     color: $light_text;
     padding-bottom:40px;
@@ -244,25 +242,22 @@
     }
     @include mobile_hide
   }
-  .footer.mobile_tabbar{
-    right: 0;
-    bottom: 0;
+  .mobile_tabbar{
+    position: fixed;
     left: 0;
-    position: fixed !important;
-    z-index:9999;
-    overflow: auto;
+    right:0;
     width:100%;
-    height:1.9rem !important;
-    background:red;
+    height: 1.4rem !important;
+    z-index: 9999;
+    background:white;
     border-top:1px solid $border;
-    padding: 0px 0;
-    display: flex;
-    justify-content: space-between;
+    padding: 5px 0;
     .mobile_tab_item{
       width:33.33%;
       text-align: center;
+      float: left;
       .item{
-        height: 50px;
+        // height: 1.9rem;
         .name{
           color: #666;
           font-size: 11px;
@@ -270,7 +265,8 @@
         .iconfont{
           font-size: 20px;
           position: relative;
-          top: 7px;
+          display:block;
+          height:20px;
         }
         &.active{
           color: #327fff;
