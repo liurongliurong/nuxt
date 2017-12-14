@@ -300,14 +300,14 @@
           return false
         }
         if (!(this.true_name && this.true_name.status === 1)) {
-          // api.tips('请先实名认证', () => {
-          // })
-          // return false
-          if (this.isMobile) {
-            this.$router.push({name: 'mobile-administration'})
-          } else {
-            this.$router.push({name: 'user-account'})
-          }
+          api.tips('请先实名认证', this.isMobile, () => {
+            if (this.isMobile) {
+              this.$router.push({name: 'mobile-administration'})
+            } else {
+              this.$router.push({name: 'user-account'})
+            }
+          })
+          return false
         }
         this.$parent.goPay(e, sh)
       },
