@@ -1,7 +1,6 @@
 <template>
   <section class="message_detail">
-    <h2>消息中心</h2>
-    <h3>通知消息</h3>
+    <h2>消息详情</h2>
     <div class="data">
       <div class="title">{{data.title}}</div>
       <div class="time">{{data.created_at}}</div>
@@ -17,14 +16,15 @@
   export default {
     data () {
       return {
-        data: {}
+        data: {},
+        messageId: ''
       }
     },
     methods: {
       getData () {
-        if (this.token !== 0) {
+        if (this.token !== 0 && this.messageId) {
           var self = this
-          util.post('Messagecontent', {sign: api.serialize({token: this.token, user_id: this.user_id, message_id: this.$route.params.id})}).then(function (res) {
+          util.post('Messagecontent', {sign: api.serialize({token: this.token, user_id: this.user_id, message_id: this.messageId})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res
             })
@@ -37,6 +37,13 @@
       }
     },
     mounted () {
+      var p = localStorage.getItem('info')
+      if (p) {
+        p = JSON.parse(p)
+        this.messageId = p.messageId
+      } else {
+        this.$router.push({path: '/repayment/0'})
+      }
       this.getData()
     },
     computed: {

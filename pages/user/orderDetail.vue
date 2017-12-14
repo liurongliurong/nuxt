@@ -1,8 +1,8 @@
 <template>
   <section class="detail">
     <template v-if="!show">
-      <h2>订单详情{{orderType}}</h2>
-      <h3>运行状况{{orderId}}</h3>
+      <h2>订单详情</h2>
+      <h3>运行状况</h3>
       <div class="detail_box">
         <div class="process" v-if="orderType !== 1">
           <div :class="['item', {active: k===processStatus}]" v-for="p,k in processText">
@@ -64,7 +64,9 @@
         type: {hash_type: ['算力类型', ''], product_name: ['矿机名称', ''], buy_amount: ['购买数量', '台'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], income_type: ['收益方式', ''], total_hash: ['总算力', 'T']},
         computeType: {type_name: ['代币类型', ''], buy_amount: ['购买数量', 'T'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], manner: ['发币方式', '']},
         show: false,
-        contract: ''
+        contract: '',
+        orderId: '',
+        orderType: ''
       }
     },
     methods: {
@@ -105,7 +107,7 @@
         this.show = false
       },
       getData () {
-        if (this.token !== 0) {
+        if (this.token !== 0 && this.orderId) {
           var self = this
           var requestUrl = this.orderType !== 1 ? 'showOrderDetail' : 'getTransferRecord'
           var data = this.orderType !== 1 ? {token: this.token, order_id: this.orderId} : {token: this.token, orderid: this.orderId}
@@ -123,10 +125,15 @@
       }
     },
     mounted () {
+      var p = localStorage.getItem('info')
+      if (p) {
+        p = JSON.parse(p)
+        this.orderId = p.orderId
+        this.orderType = p.orderType
+      } else {
+        this.$router.push({path: '/repayment/0'})
+      }
       this.getData()
-    },
-    asyncData ({ params }) {
-      return {orderType: +params.id.split('&')[0], orderId: +params.id.split('&')[1]}
     },
     computed: {
       ...mapState({
