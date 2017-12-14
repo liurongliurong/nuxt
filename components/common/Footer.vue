@@ -44,15 +44,7 @@
       </div>
     </div>
   </footer>
-  <footer class="mobile_tabbar" v-else-if="$route.path.includes('minerShop/detail')" style="display:none;">
-    <div class="mobile_tab_item" v-for="item in footList">
-      <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
-        <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
-        <span class="name">{{item.name}}</span>
-      </nuxt-link>
-    </div>
-  </footer>
-  <footer class="mobile_tabbar" v-else>
+  <footer class="mobile_tabbar" v-else-if="isMobile===1&&!$route.path.includes('minerShop/detail')">
     <div class="mobile_tab_item" v-for="item in footList">
       <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
         <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
@@ -250,7 +242,7 @@
     }
     @include mobile_hide
   }
-  .footer.mobile_tabbar{
+  .mobile_tabbar{
     position: fixed;
     left: 0;
     right:0;
