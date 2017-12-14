@@ -6,7 +6,7 @@
       <div class="museum_content">
         <h6>{{n.title}}</h6>
         <p>{{n.resume}}</p>
-        <router-link :to="'/manufacturer/detail/' + n.id">查看详情</router-link>
+        <div @click="goDetail(n.id)">查看详情</div>
       </div>
     </div>
     <Pager :len="len" style="padding-top:0;"></Pager>
@@ -41,6 +41,10 @@
         }).catch(res => {
           console.log(res)
         })
+      },
+      goDetail (id) {
+        localStorage.setItem('icon_id', JSON.stringify([id]))
+        this.$router.push({path: '/manufacturer/detail/'})
       }
     },
     mounted () {
@@ -107,7 +111,7 @@
           overflow: hidden;
           padding-right: 45px;
         }
-        a{
+        div{
           width: 172px;
           height: 38px;
           border:1px solid #bfbfbf;

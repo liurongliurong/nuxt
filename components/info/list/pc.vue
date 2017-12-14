@@ -3,16 +3,16 @@
     <template v-if="$route.params.type&&$route.params.type!=='news'">
       <h3>{{str[$route.params.type]}}</h3>
       <div class="display">
-        <router-link :class="['item',{active: true}]" :to="'/webInfo/detail/'+list.id" v-for="list in lists" :key="lists.id">
+        <div :class="['item',{active: true}]" @click="goDetail(list.id)" v-for="list in lists" :key="lists.id">
           <span class="title">{{list.title}}</span>
           <span class="time">{{list.dateline}}</span>
-        </router-link>
+        </div>
       </div>
     </template>
     <template v-if="!$route.params.type||$route.params.type==='news'">
       <h3 v-if="$route.params.type">{{str[$route.params.type]}}</h3>
       <h1 style="margin-bottom:12px;position:relative;"  v-if="$route.path.includes('computeNews')">算力资讯<span class="icon iconfont icon-jiantou" style="transform:rotate(90deg);position:absolute;top:3px;"></span></h1>
-      <router-link :class="['item', 'img_text', {active: true}]" :to="$route.params.type?'/webInfo/detail/'+list.id:'/computeNews/detail/'+list.id" v-for="list in lists" :key="lists.id">
+      <div :class="['item', 'img_text', {active: true}]" @click="goDetail(list.id)" v-for="list in lists" :key="lists.id">
         <template v-if="list.image">
           <img :src="list.image"/>
         </template>
@@ -34,7 +34,7 @@
             <p class="notice_content">暂无简介</p>
           </template>
         </div>
-      </router-link>
+      </div>
       <Pager :len="len" style="padding-top:0;"></Pager>
     </template>
   </section>
@@ -75,6 +75,14 @@
             }
           })
         })
+      },
+      goDetail (id) {
+        localStorage.setItem('icon_id', JSON.stringify([id]))
+        if (this.$route.path.includes('computeNews')) {
+          this.$router.push({path: '/computeNews/detail/'})
+        } else {
+          this.$router.push({path: '/webInfo/detail/'})
+        }
       }
     },
     mounted () {

@@ -9,7 +9,7 @@
       <div class="currency_header">suanLi&nbsp;之家 <span>全面聚合算力产业信息</span></div>
       <div class="currency_content">
         <div class="leftnav">
-          <div :class="['leftnav_ol', {'active': active === k}]" v-for="n, k in leftnav" :key="k">
+          <div :class="['leftnav_ol', {'active': k === 4}]" v-for="n, k in leftnav" :key="k">
             <router-link :to="n.path">
               <span :class="['icon', 'iconfont', n.big]"></span>
               <i>{{n.title}}</i>
@@ -24,7 +24,7 @@
               <div class="museum_content">
                 <h6>{{n.title}}</h6>
                 <p>{{n.resume}}</p>
-                <router-link :to="'/equipments/detail/' + n.id">查看详情</router-link>
+                <div @click="goDetail(n.id)">查看详情</div>
               </div>
             </div>
             <Pager :len="len"  style="padding-top:0;"></Pager>
@@ -62,7 +62,7 @@
         ]
       }
     },
-        methods: {
+    methods: {
       getList () {
         var self = this
         util.post('NewsMuseumList', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
@@ -74,6 +74,10 @@
         }).catch(res => {
           console.log(res)
         })
+      },
+      goDetail (id) {
+        localStorage.setItem('icon_id', JSON.stringify([id]))
+        this.$router.push({path: '/equipments/detail/'})
       }
     },
     mounted () {
@@ -114,13 +118,7 @@
             box-sizing: border-box;
             border-top: 2px solid #327fff;
           }
-                    &.active{
-                        color:#327fff;
-            height: 50px;
-            box-sizing: border-box;
-            border-top: 2px solid #327fff;
-                    }
-          &.router-link-active{
+          &.active{
             color:#327fff;
             height: 50px;
             box-sizing: border-box;
@@ -259,7 +257,7 @@
           overflow: hidden;
           padding-right: 45px;
         }
-        a{
+        div{
           width: 172px;
           height: 38px;
           border:1px solid #bfbfbf;
@@ -270,6 +268,7 @@
           border-radius: 5px;
           line-height: 38px;
           text-align: center;
+          cursor: pointer;
           &:hover{
             background:#fe5039;
             color: white;

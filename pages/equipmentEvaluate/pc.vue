@@ -2,14 +2,14 @@
   <div class="museum_right">
     <h1 style="position:relative;">矿机测评<span class="icon iconfont icon-jiantou" style="transform:rotate(90deg);position:absolute;top:3px;"></span></h1>
     <div class="museum_lists" v-for="n, k in list" :key="k">
-      <router-link :to="'/equipmentEvaluate/detail/' + n.id">
+      <div @click="goDetail(n.id)">
         <span class="label">BitCoin</span>
         <img :src="n.image"/>
         <div class="museum_content">
           <p class="resume">{{n.title}}:{{n.resume}}</p>
           <p class="time">{{n.dateline}}</p>
         </div>
-      </router-link>
+      </div>
     </div>
     <div class="nodata" v-if="showImg">
         <div class="nodata_img"></div>
@@ -49,6 +49,10 @@
         }).catch(res => {
           console.log(res)
         })
+      },
+      goDetail (id) {
+        localStorage.setItem('icon_id', JSON.stringify([id]))
+        this.$router.push({path: '/equipmentEvaluate/detail/'})
       }
     },
     mounted () {
