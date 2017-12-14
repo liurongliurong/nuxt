@@ -3,7 +3,7 @@
     <h2>一 矿机抢购 一 <router-link to="/minerShop/miner/1">更多矿机 ></router-link></h2>
     <div class="mobile_listdata">
       <div class="mobile_list_box">
-        <div v-for="d,i in list" @click="goPay(d.product_id||d.id)" :key="i" class="mobile_lists">
+        <div v-for="d,i in list" @click="$parent.goPay(d.product_id||d.id)" :key="i" class="mobile_lists">
           <div class="imgposition">
             <img :src="d.minerPicture"/>
           </div>
@@ -28,11 +28,6 @@
         nav: {'name': {title: '矿机名称', unit: ''}, 'amount': {title: '总数量', unit: '台'}, 'one_amount_value': {title: '单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'left_num': {title: '剩余数量', unit: '台'}},
         list: [],
         index: ''
-      }
-    },
-    methods: {
-      goPay (id) {
-        this.$router.push({path: '/minerShop/detail/' + id + '&1'})
       }
     },
     mounted () {

@@ -14,7 +14,22 @@ module.exports = {
     color: 'white',
     height: '2px'
   },
+<<<<<<< HEAD
   build: {
     vendor: ['axios']
+=======
+  generate: {
+    routes: [
+      '/minerShop/miner/1',
+      '/minerShop/miner/2',
+      '/user/order/0',
+      '/user/order/2',
+      '/user/order/3',
+      '/user/repayment/0',
+      '/user/repayment/1',
+      '/webInfo/list/website',
+      '/webInfo/list/product'
+    ]
+>>>>>>> 79b751d222a1b1781ddd6144ed7abc06b7f58fbe
   }
 }

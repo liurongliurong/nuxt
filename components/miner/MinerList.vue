@@ -3,7 +3,7 @@
     <slot></slot>
     <div class="mill" v-if="!isMobile">
       <div v-for="n,k in $parent.minerData" class="listmill">
-        <router-link :to="'/minerShop/detail/'+ n.id +'&1'">
+        <a href="javascript:;" @click="goPay(n.id)">
           <span class="status" v-if="n.status===1">热销中</span>
           <span class="gray" v-if="n.status===3">已下架</span>
           <span class="gray" v-if="n.status===2">已售罄</span>
@@ -24,7 +24,7 @@
               <p class="title">{{item.title}}</p>
             </div>
           </div>
-        </router-link>
+        </a>
       </div>
       <div class="nodata" v-if="$parent.show">
         <div class="nodata_img"></div>
@@ -33,7 +33,7 @@
     </div>
     <div class="mobileminer" v-else>
       <div class="millsList_mobile" v-for="n,k in $parent.minerData">
-        <router-link :to="'/minerShop/detail/'+ n.id +'&1'">
+        <a href="javascript:;" @click="goPay(n.id)">
           <div class="null">
             <img :src="n.minerPicture"/>
           </div>
@@ -44,7 +44,7 @@
               </div>
           </div>
           <p>算力价： <b>¥{{n.one_amount_value}}</b> <span>{{n.hash}}T</span></p>
-        </router-link>
+        </a>
       </div>
     </div>
   </div>
@@ -62,6 +62,12 @@
       ...mapState({
         isMobile: state => state.isMobile
       })
+    },
+    methods: {
+      goPay (id) {
+        localStorage.setItem('params', JSON.stringify([ id, '1']))
+        this.$router.push({path: '/minerShop/detail/'})
+      }
     }
   }
 </script>

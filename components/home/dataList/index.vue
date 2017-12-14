@@ -28,7 +28,8 @@
     },
     methods: {
       goPay (id) {
-        this.$router.push({path: '/minerShop/detail/' + id + '/1'})
+        localStorage.setItem('params', JSON.stringify([ id, '1']))
+        this.$router.push({path: '/minerShop/detail/'})
       }
     },
     mounted () {

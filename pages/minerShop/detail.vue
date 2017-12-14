@@ -33,7 +33,9 @@
         content1: '',
         show: '',
         str: {4: '预热中', 5: '可售', 7: '已售馨'},
-        rate: 6
+        rate: 6,
+        params1: '',
+        params2: ''
       }
     },
     methods: {
@@ -55,25 +57,24 @@
       getBuyInfo () {
         var url = ''
         var data = {token: this.token, num: this.number}
-        if (this.proType === '1') {
+        if (this.params2 === '1') {
           url = 'buy_miner'
-          data = Object.assign({miner_id: this.proId}, data)
+          data = Object.assign({miner_id: this.params1}, data)
         } else {
           url = 'productOrder'
-          data = Object.assign({product_id: this.proId}, data)
+          data = Object.assign({product_id: this.params1}, data)
         }
-        console.log(this.proType, this.proId)
         var self = this
         util.post(url, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.next = 1
             self.balance = res.balance
-            if (self.proType === '2') {
+            if (self.params2 === '2') {
               self.content = res.part_content
             } else {
               self.content = res.content
             }
-            if (self.proType !== '1') {
+            if (self.params2 !== '1') {
               self.content1 = res.content1
             }
           })
@@ -103,41 +104,52 @@
         this.leftNum = leftAmount < 0 ? 0 : leftAmount
       },
       getData () {
-        var self = this
-        var url = ''
-        var data = {token: this.token}
-        if (this.proType === '1') {
-          url = 'miner_detail'
-          data = Object.assign({miner_id: this.proId}, data)
-        } else {
-          url = 'productDetail'
-          data = Object.assign({product_id: this.proId}, data)
-        }
-        util.post(url, {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.initNum = res.amount - res.buyed_amount
-            self.leftNum = self.initNum
-            self.leftStatus = self.leftNum === 0
-            self.detail = Object.assign(self.detail, res)
-            if (self.proType !== '1') {
-              self.detail = Object.assign(self.detail, res.has_product_miner_base)
-              self.detail.hashType = (res.hashtype && res.hashtype.name) || ''
-            } else {
-              self.detail.name = res.name
-              self.detail.weight = (res.miner_list && res.miner_list.weight) || ''
-            }
+        if (this.token !== 0 && this.params1) {
+          var self = this
+          var url = ''
+          var data = {token: this.token}
+          if (this.params2 === '1') {
+            url = 'miner_detail'
+            data = Object.assign({miner_id: this.params1}, data)
+          } else {
+            url = 'productDetail'
+            data = Object.assign({product_id: this.params1}, data)
+          }
+          util.post(url, {sign: api.serialize(data)}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.initNum = res.amount - res.buyed_amount
+              self.leftNum = self.initNum
+              self.leftStatus = self.leftNum === 0
+              self.detail = Object.assign(self.detail, res)
+              if (self.params2 !== '1') {
+                self.detail = Object.assign(self.detail, res.has_product_miner_base)
+                self.detail.hashType = (res.hashtype && res.hashtype.name) || ''
+              } else {
+                self.detail.name = res.name
+                self.detail.weight = (res.miner_list && res.miner_list.weight) || ''
+              }
+            })
           })
-        })
-        if (this.addressObj.id) {
-          this.number = this.addressObj.num
-          this.getBuyInfo()
+          if (this.addressObj.id) {
+            this.number = this.addressObj.num
+            this.getBuyInfo()
+          }
+        } else {
+          setTimeout(() => {
+            this.getData()
+          }, 5)
         }
       }
     },
-    asyncData ({ params }) {
-      return {proType: params.id.split('&')[1], proId: params.id.split('&')[0]}
-    },
     mounted () {
+      var p = localStorage.getItem('params')
+      if (p) {
+        p = JSON.parse(p)
+        this.params1 = p[0]
+        this.params2 = p[1]
+      } else {
+        this.$router.push({path: '/minerShop/list'})
+      }
       this.getData()
     },
     computed: {

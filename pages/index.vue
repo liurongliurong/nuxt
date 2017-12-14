@@ -60,7 +60,7 @@
     <SideBar></SideBar>
   </article>
   <article class="mobile_home" v-else-if="isMobile===1">
-    <Swiper :pagination-visible="true" :loop="true" :autoPlay="5000" :data="data"></Swiper>
+    <Swiper :pagination-visible="true" :loop="false" :autoPlay="5000" :data="data"></Swiper>
     <div class="nav_box">
       <div class="item" v-for="n,k in nav" :key="k" @click="goPage(n.url, k)">
         <img class="item_img" :src="require('@/assets/images/mobile/nav'+(k+1)+'.png')" alt="">
