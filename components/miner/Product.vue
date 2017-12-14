@@ -220,10 +220,10 @@
       <div class="popup" v-if="sheetVisible">
         <div class="buy_box">
           <div class="img_text">
-            <div class="img">
+            <div class="popup_img">
               <img :src="$parent.detail.product_img||$parent.detail.minerPicture" alt="">
             </div>
-            <div class="text">
+            <div class="popup_text">
               <div class="price">￥{{$parent.detail.one_amount_value}}</div>
               <div class="name">{{$parent.detail.name}}</div>
               <div class="left">剩余可售{{$parent.leftNum}}台</div>
@@ -1097,7 +1097,7 @@
           }
           .img_text{
             @include flex
-            .img{
+            .popup_img{
               width:130px;
               margin-right:15px;
               height:90px;
@@ -1107,7 +1107,7 @@
                 object-fit:cover
               }
             }
-            .text{
+            .popup_text{
               .price{
                 color:$orange;
                 font-size: 0.55rem;
