@@ -80,7 +80,7 @@
         localStorage.setItem('icon_id', JSON.stringify([id]))
         if (this.$route.path.includes('computeNews')) {
           this.$router.push({path: '/computeNews/detail/'})
-        } else {
+        } else if(this.$route.path.includes('webInfo')) {
           this.$router.push({path: '/webInfo/detail/'})
         }
       }

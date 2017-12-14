@@ -1,6 +1,6 @@
 <template>
   <section class="web_info_detail">
-    <h3>{{content.title}}<a class="button" to="#" onclick="window.history.go(-1)">< 返回列表</a></h3>
+    <h3>{{content.title}}<a class="button" to="#" onclick="window.history.go(-1)">< 返回列表{{params1}}</a></h3>
     <!-- <p class="dateline">{{content.dateline}}</p> -->
     <div class="info_detail" v-html="content.content" style="padding:0 50px;"></div>
   </section>

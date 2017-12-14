@@ -14,13 +14,21 @@
   export default {
     data () {
       return {
-        content: {}
+        content: {},
+        params1: ''
       }
     },
     mounted () {
       var self = this
       var url = ''
-      util.post('showCoinInfoDetail', {sign: 'token=0&coin_id=' + this.$route.params.id}).then(function (res) {
+      var p = localStorage.getItem('icon_id')
+      if (p) {
+        p = JSON.parse(p)
+        this.params1 = p[0]
+      } else {
+        this.$router.push({path: '/currency'})
+      }
+      util.post('showCoinInfoDetail', {sign: 'token=0&coin_id=' + this.params1}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.content = res
         })

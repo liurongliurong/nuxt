@@ -28,14 +28,14 @@
       }
       if (this.$route.path.includes('digitalCurrency')) {
         url = 'showCoinInfoDetail'
-        util.post(url, {sign: 'token=0&coin_id=' + this.$route.params.id}).then(function (res) {
+        util.post(url, {sign: 'token=0&coin_id=' + this.params1}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.content = res
           })
         })
       } else {
         url = 'content'
-        util.post(url, {sign: 'token=0&news_id=' + this.$route.params.id}).then(function (res) {
+        util.post(url, {sign: 'token=0&news_id=' + this.params1}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.content = res
           })
