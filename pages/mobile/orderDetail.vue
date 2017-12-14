@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import OrderDetail from '@/pages/user/orderDetail/_id'
+  import OrderDetail from '@/pages/user/orderDetail'
   export default {
     components: {
       OrderDetail

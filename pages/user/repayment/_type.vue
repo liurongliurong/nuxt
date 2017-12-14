@@ -5,7 +5,7 @@
         <span class="text_title">还款管理</span>
       </div>
       <nav>
-        <router-link :to="'/user/repayment/'+ k" v-for="n,k in nav[0]" :key="k">{{n}}</router-link>
+        <nuxt-link :to="'/user/repayment/'+ k" v-for="n,k in nav[0]" :key="k">{{n}}</nuxt-link>
       </nav>
     </div>
     <div class="order_box">
@@ -40,7 +40,7 @@
               <td>{{d.complete_number}}</td>
               <td>{{d.loan_start_time}}</td>
               <td>
-                <router-link :to="'/user/repaymentDetail/'+d.id" class="blue">查看详情</router-link>
+                <a href="javascript:;" @click="goDetail(d.id)" class="blue">查看详情</a>
               </td>
             </template>
             <template v-if="status===1">
@@ -51,7 +51,7 @@
               <td>{{d.complete_number}}</td>
               <td>{{d.loan_start_time}}</td>
               <td>
-                <router-link :to="'/user/repaymentDetail/'+d.id" class="blue">查看详情</router-link>
+                <a href="javascript:;" @click="goDetail(d.id)" class="blue">查看详情</a>
               </td>
             </template>
           </tr>
@@ -85,12 +85,18 @@
         now: 1
       }
     },
+    asyncData ({ params }) {
+      return {status: +params.type}
+    },
     methods: {
+      fetchData () {
+        this.status = +this.$route.params.type
+        this.items()
+      },
       items () {
         if (this.token !== 0) {
           var self = this
           this.item = []
-          this.status = this.$route.params.type
           util.post('getLoanList', {sign: api.serialize({token: this.token, user_id: this.user_id, status: this.status, page: this.now})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.item = res
@@ -104,13 +110,19 @@
             this.items()
           }, 5)
         }
+      },
+      goDetail (id) {
+        var info = JSON.parse(localStorage.getItem('info'))
+        var data = {repaymentId: id}
+        localStorage.setItem('info', JSON.stringify(Object.assign(info, data)))
+        this.$router.push({path: '/user/repaymentDetail/'})
       }
     },
     mounted () {
-      this.items()
+      this.fetchData()
     },
     watch: {
-      '$route': 'items'
+      '$route': 'fetchData'
     },
     computed: {
       ...mapState({

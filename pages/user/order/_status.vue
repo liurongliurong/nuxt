@@ -102,7 +102,7 @@
                 <template v-if="nowEdit===2&&status==0">
                   <button @click="openMask('rent', '出租算力', d.id)" :disabled="!d.remain_hash">出租算力</button>
                 </template>
-                <router-link :to="'/user/orderDetail/'+nowEdit+'&'+d.id"  v-if="nowEdit!==3&&nowEdit!==2&&status!=2&&status!=3">查看详情</router-link>
+                <a href="javascript:;" @click="goDetail(nowEdit,d.id)"  v-if="nowEdit!==3&&nowEdit!==2&&status!=2&&status!=3">查看详情</a>
                 <template v-if="nowEdit===3">
                   <button class="sold" @click="getContract(d.id)">查看协议</button>
                   <button class="sold" @click="getBaoquan(d.id)">查看保全</button>
@@ -420,6 +420,12 @@
       },
       hashcli () {
         this.showtype = !this.showtype
+      },
+      goDetail (type, id) {
+        var info = JSON.parse(localStorage.getItem('info'))
+        var data = {orderType: type, orderId: id}
+        localStorage.setItem('info', JSON.stringify(Object.assign(info, data)))
+        this.$router.push({path: '/user/orderDetail/'})
       }
     },
     computed: {

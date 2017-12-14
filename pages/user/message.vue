@@ -3,17 +3,17 @@
     <h2>消息中心</h2>
     <h3>通知消息<span class="read" v-if="unread_num" @click="setRead()">全部标为已读</span></h3>
     <div class="data">
-      <router-link :to="'/user/messageDetail/'+d.id" :class="['item', {isread: d.is_read}]" v-for="d,k in data" :key="k">
+      <a href="javascript:;" @click="goDetail(d.id)" :class="['item', {isread: d.is_read}]" v-for="d,k in data">
         <div class="title">{{d.title}}</div>
         <div class="text">{{d.dealtContent.split(" ")[0]}}</div>
         <div class="time">{{d.created_at}}</div>
-      </router-link>
+      </a>
       <Pager :len="len"></Pager>
     </div>
     <div class="mobile_box">
       <ul v-show="contentshow">
         <li class="list_one" @click="setRead()" v-if="unread_num"><span></span>全部标为已读</li>
-        <li v-for="d,k in data" :key="k" @click="detailcli(d.id)" :class="['itemlist', {isread: d.is_read}]">
+        <li v-for="d,k in data" :key="k" @click="goDetail(d.id)" :class="['itemlist', {isread: d.is_read}]">
           <span>{{d.title}}</span>
           <i>{{d.created_at.split(" ")[0]}}</i>
         </li>
@@ -85,15 +85,22 @@
       getList () {
         this.fetchData()
       },
-      detailcli (id) {
-        var self = this
-        var messageid = id
-        this.contentshow = false
-        util.post('Messagecontent', {sign: api.serialize({token: this.token, user_id: this.user_id, message_id: messageid})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.content = res
+      goDetail (id) {
+        if (this.isMobile) {
+          var self = this
+          var messageid = id
+          this.contentshow = false
+          util.post('Messagecontent', {sign: api.serialize({token: this.token, user_id: this.user_id, message_id: messageid})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.content = res
+            })
           })
-        })
+        } else {
+          var info = JSON.parse(localStorage.getItem('info'))
+          var data = {messageId: id}
+          localStorage.setItem('info', JSON.stringify(Object.assign(info, data)))
+          this.$router.push({path: '/user/messageDetail/'})
+        }
       },
       back () {
         window.location.reload()

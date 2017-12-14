@@ -128,7 +128,8 @@
         mode: '',
         repayment_id: '',
         sort: [{type: '算力收益', unit: 'btc'}, {type: '资金用户', unit: '元'}],
-        showbutton: false
+        showbutton: false,
+        repaymentId: ''
       }
     },
     methods: {
@@ -175,9 +176,9 @@
         this.showpa = type
       },
       items () {
-        if (this.token !== 0) {
+        if (this.token !== 0 && this.repaymentId) {
           var self = this
-          util.post('getLoanListDetail', {sign: api.serialize({token: this.token, user_id: this.user_id, loan_id: this.$route.params.id})}).then(function (res) {
+          util.post('getLoanListDetail', {sign: api.serialize({token: this.token, user_id: this.user_id, loan_id: this.repaymentId})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.moneydata = res
               self.item = res.list
@@ -218,6 +219,13 @@
       }
     },
     mounted () {
+      var p = localStorage.getItem('info')
+      if (p) {
+        p = JSON.parse(p)
+        this.repaymentId = p.repaymentId
+      } else {
+        this.$router.push({path: '/repayment/0'})
+      }
       this.items()
     },
     computed: {

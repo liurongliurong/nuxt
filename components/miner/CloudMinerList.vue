@@ -78,11 +78,16 @@
     },
     methods: {
       goPay (id, selltype) {
+        // var info = JSON(localStorage.getItem('info'))
+        var data = {}
         if (selltype === 1) {
+          // data = {orderType: '2', orderId: id}
           localStorage.setItem('params', JSON.stringify([ id, '2']))
         } else {
+          // data = {orderType: '0', orderId: id}
           localStorage.setItem('params', JSON.stringify([ id, '0']))
         }
+        // localStorage.setItem('info', JSON.stringify(Object.assign(info, data)))
         this.$router.push({path: '/' + this.page + '/detail/'})
       }
     }
