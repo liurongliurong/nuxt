@@ -157,8 +157,9 @@
             <span>支付方式</span>
             <span>{{payNo===1?'余额支付':'支付宝'}}</span>
           </div>
-          <div class="pay_item" v-if="payNo===1">
-            <mt-field type="password" label="交易密码" name="password" placeholder="请输入交易密码" state="" @blur="test"></mt-field>
+          <div class="pay_item pay_input" v-if="payNo===1">
+            <span>交易密码</span>
+            <input type="password" name="password" placeholder="请输入交易密码" @blur="test"></input>
           </div>
         </div>
         <div class="mobile_btn">
@@ -292,7 +293,6 @@
           callbackUrl += '/user/'
         }
         if (this.params2 === '1') {
-          console.log(this.addressObject)
           if (!this.addressObject.id) {
             this.tip('请添加地址', ff.accept)
             return false
@@ -902,30 +902,19 @@
           &:not(:last-child){
             border-bottom:1px solid $border;
           }
-          .mint-cell{
+          &.pay_input{
             width:100%;
-            .mint-cell-wrapper{
-              padding:0;
-              border:0;
-              font-size: 0.45rem;;
-              .mint-cell-title{
-                width:85px;
-                color:$text
-              }
-              .mint-cell-value{
-                width:calc(100% - 85px);
-                input{
-                  width:100%;
-                  height:40px;
-                  line-height: 40px;
-                  border-radius:3px;
-                  padding: 0 10px;
-                }
-                .mint-field-state{
-                  position: absolute;
-                  right:15px;
-                }
-              }
+            font-size: 0.45rem;
+            span{
+              width:85px;
+              color:$text
+            }
+            input{
+              width:calc(100% - 85px);
+              height:40px;
+              line-height: 40px;
+              border-radius:3px;
+              padding: 0 10px;
             }
           }
         }

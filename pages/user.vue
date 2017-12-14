@@ -102,6 +102,7 @@
             .iconfont{
               text-align: center;
               @include block(22,5px)
+              line-height: 28px;
               & + .iconfont{
                 margin-left:10px
               }
@@ -152,6 +153,7 @@
             color: #cec6a6;
             vertical-align: sub;
             padding-right: 5px;
+            line-height: 10px;
             &:before{
               content:'\e653'
             }
