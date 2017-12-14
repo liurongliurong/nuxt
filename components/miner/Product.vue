@@ -300,7 +300,7 @@
           return false
         }
         if (!(this.true_name && this.true_name.status === 1)) {
-          api.tips('请先实名认证', () => {
+          api.tips('请先实名认证', this.isMobile, () => {
             if (this.isMobile) {
               this.$router.push({name: 'mobile-administration'})
             } else {

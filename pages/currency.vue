@@ -151,7 +151,7 @@ export default {
             overflow: hidden;
             margin: 0 auto;
             background: white;
-            padding:20px 44px 0px 44px;
+            padding:20px 45px 0px 45px;
             margin-bottom: 25px;
             padding-bottom: 58px;
             // background-image: url('../../assets/images/table.png');
@@ -201,7 +201,7 @@ export default {
                     padding-left: 0px;
                   }
                   :nth-child(5){
-                    padding-left: 50px;
+                    padding-left: 80px;
                   }
                 }
             }
@@ -224,6 +224,9 @@ export default {
                     }
                     :nth-child(3){
                       padding-left: 15px;
+                    }
+                    :nth-child(5){
+                      text-align: right;
                     }
                 }
             }
@@ -263,7 +266,7 @@ export default {
                 border:1px solid #bfbfbf;
                 float: left;
                 display:block;
-                margin-right: 10px;
+                margin-right: 24px;
                 margin-bottom: 17px;
                 img{
                 width:25px;
