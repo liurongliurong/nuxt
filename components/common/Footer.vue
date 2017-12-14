@@ -94,7 +94,7 @@
 </script>
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
-  .pc_box{
+  .footer.pc_box{
     background: $black;
     color: $light_text;
     padding-bottom:40px;
@@ -242,7 +242,7 @@
     }
     @include mobile_hide
   }
-  .mobile_tabbar{
+  .footer.mobile_tabbar{
     position: fixed;
     left: 0;
     right:0;
