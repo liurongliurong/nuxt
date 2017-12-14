@@ -248,12 +248,16 @@
     right: 0;
     bottom: 0;
     left: 0;
-    position: fixed;
-    z-index: 1;
-    background:white;
+    position: fixed !important;
+    z-index:9999;
+    overflow: auto;
+    width:100%;
+    height:1.9rem !important;
+    background:red;
     border-top:1px solid $border;
-    padding: 5px 0;
-    @include flex
+    padding: 0px 0;
+    display: flex;
+    justify-content: space-between;
     .mobile_tab_item{
       width:33.33%;
       text-align: center;

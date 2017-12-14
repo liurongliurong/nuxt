@@ -134,7 +134,7 @@
     </template>
     <div class="mobile_box" v-else-if="isMobile===1">
       <div class="img">
-        <img :src="$parent.detail.product_img||$parent.detail.minerPicture" alt="">
+        <img :src="$parent.detail.product_img||$parent.detail.minerPicture" alt="" style="height:6.5rem;">
       </div>
       <div class="first_box">
         <h4>
