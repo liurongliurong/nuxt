@@ -85,7 +85,7 @@
       </div>
     </div>
     <div class="home_compute_loan">
-      <h3 class="home_title">算力白条</h3>
+      <h3 class="home_title">算力分期</h3>
       <div class="loan_img">
         <img :src="require('@/assets/images/mobile/loan.png')" alt="">
       </div>

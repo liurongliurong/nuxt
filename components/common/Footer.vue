@@ -44,16 +44,15 @@
       </div>
     </div>
   </footer>
-  <footer class="footer mobile_tabbar" v-else-if="isMobile===1&&!$route.path.includes('minerShop/detail')" style="z-index:1;">
+  <footer class="mobile_tabbar" v-else-if="isMobile===1&&!$route.path.includes('minerShop/detail')">
     <div class="mobile_tab_item" v-for="item in footList">
       <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
-        <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i><br>
+        <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
         <span class="name">{{item.name}}</span>
       </nuxt-link>
     </div>
   </footer>
 </template>
-
 <script>
   import util from '@/util'
   import { mapState } from 'vuex'
@@ -93,10 +92,9 @@
     }
   }
 </script>
-
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
-  .footer.pc_box{
+  .pc_box{
     background: $black;
     color: $light_text;
     padding-bottom:40px;
@@ -244,23 +242,23 @@
     }
     @include mobile_hide
   }
-  .footer.mobile_tabbar{
+  .mobile_tabbar{
     position: fixed;
-    top:auto;
     left: 0;
     right:0;
     width:100%;
-    bottom: 0;
-    z-index: 1;
+    bottom:0;
+    height: 1.4rem !important;
+    z-index: 9999;
     background:white;
     border-top:1px solid $border;
     padding: 5px 0;
-    @include flex
     .mobile_tab_item{
       width:33.33%;
       text-align: center;
+      float: left;
       .item{
-        height: 50px;
+        // height: 1.9rem;
         .name{
           color: #666;
           font-size: 11px;
@@ -268,7 +266,8 @@
         .iconfont{
           font-size: 20px;
           position: relative;
-          top: 7px;
+          display:block;
+          height:20px;
         }
         &.active{
           color: #327fff;
