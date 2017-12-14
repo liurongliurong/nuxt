@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="currency_right">
-          <div class="museum_right">
+          <div class="museum_right" style="padding:0 !important;">
             <h1 style="position:relative;">矿机博物馆<span class="icon iconfont icon-jiantou" style="transform:rotate(90deg);position:absolute;top:3px;"></span></h1>
             <div class="museum_lists" v-for="n, k in museum" :key="k">
               <img :src="n.image"/>

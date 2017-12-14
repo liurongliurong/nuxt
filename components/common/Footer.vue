@@ -1,62 +1,71 @@
 <template>
-  <footer class="footer pc_box1" v-if="!isMobile">
-    <div class="box">
-      <div class="box_foot">
-        <aside>
-          <h4>联系我们</h4>
-          <h3>
-            <a to="#" v-for="item,k in items" :class="{'active':show===k}">{{item.title}}</a>
-          </h3>
-          <p>咨询电话：<span class="active">0571-28031736</span>工作日（9:00~18:00）</p>
-          <p>客服邮箱：V@suanLi.com</p>
-          <p>公司地址：浙江省杭州市学院路77号黄龙国际中心G座-907</p>
-        </aside>
-        <aside>
-          <div class="help_support">
-            <router-link :to="l" v-for="l,k in link" :key="k">{{k}}</router-link>
-          </div>
-          <div class="service">
-            <h4>产品及服务</h4>
-            <router-link :to="s" v-for="s,k in service" :key="k">{{k}}</router-link>
-          </div>
-          <div class="copyright">
-            <div class="copyright_img"></div>
-            <div class="copyright_text">
-              <span>Copyright © 2013-2017 www.suanli.com All Rights Reserved. 算力网 版权所有 </span>
-              <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602008747" target="_blank"><br><span class="copyright_icon"></span> 浙公网安备 33010602008747号</a>
+    <footer class="footer pc_box1" v-if="!isMobile">
+      <div class="box">
+        <div class="box_foot">
+          <aside>
+            <h4>联系我们</h4>
+            <h3>
+              <a to="#" v-for="item,k in items" :class="{'active':show===k}">{{item.title}}</a>
+            </h3>
+            <p>咨询电话：<span class="active">0571-28031736</span>工作日（9:00~18:00）</p>
+            <p>客服邮箱：V@suanLi.com</p>
+            <p>公司地址：浙江省杭州市学院路77号黄龙国际中心G座-907</p>
+          </aside>
+          <aside>
+            <div class="help_support">
+              <router-link :to="l" v-for="l,k in link" :key="k">{{k}}</router-link>
             </div>
+            <div class="service">
+              <h4>产品及服务</h4>
+              <router-link :to="s" v-for="s,k in service" :key="k">{{k}}</router-link>
+            </div>
+            <div class="copyright">
+              <div class="copyright_img"></div>
+              <div class="copyright_text">
+                <span>Copyright © 2013-2017 www.suanli.com All Rights Reserved. 算力网 版权所有 </span>
+                <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010602008747" target="_blank"><br><span class="copyright_icon"></span> 浙公网安备 33010602008747号</a>
+              </div>
+            </div>
+          </aside>
+          <div class="follow">
+            <h4>关注我们</h4>
+            <router-link :to="i" v-for="i,k in info" :key="k">{{k}}</router-link>
+            <div class="outside">
+              <div class="qrcode"></div>
+            </div>
+            <!-- <div class="active">最新区块链资讯</div> -->
           </div>
-        </aside>
-        <div class="follow">
-          <h4>关注我们</h4>
-          <router-link :to="i" v-for="i,k in info" :key="k">{{k}}</router-link>
-          <div class="outside">
-            <div class="qrcode"></div>
+        </div>
+        <div class="partner" v-if="$route.name === 'index'">
+          <span>友情<br>链接</span>
+          <div>
+            <a :href="p.FriendlyLink_address" target="_blank" v-for="p,k in partner" :key="k">{{p.FriendlyLink_name}}</a>
           </div>
-          <!-- <div class="active">最新区块链资讯</div> -->
         </div>
       </div>
-      <div class="partner" v-if="$route.name === 'index'">
-        <span>友情<br>链接</span>
-        <div>
-          <a :href="p.FriendlyLink_address" target="_blank" v-for="p,k in partner" :key="k">{{p.FriendlyLink_name}}</a>
-        </div>
+    </footer>
+    <div class="mobile_tabbar" v-else-if="$route.path.includes('minerShop/detail')" style="display:none;">
+      <div class="mobile_tab_item" v-for="item in footList">
+        <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
+          <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
+          <span class="name">{{item.name}}</span>
+        </nuxt-link>
       </div>
     </div>
-  </footer>
-  <footer class="mobile_tabbar" v-else-if="isMobile&&!$route.path.includes('minerShop/detail')" style="bottom:0 !important;">
-    <div class="mobile_tab_item" v-for="item in footList">
-      <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
-        <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
-        <span class="name">{{item.name}}</span>
-      </nuxt-link>
+    <div class="mobile_tabbar" v-else>
+      <div class="mobile_tab_item" v-for="item in footList">
+        <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
+          <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
+          <span class="name">{{item.name}}</span>
+        </nuxt-link>
+      </div>
     </div>
-  </footer>
 </template>
 <script>
   import util from '@/util'
   import { mapState } from 'vuex'
   export default {
+    // name: 'footer',
     data () {
       return {
         link: {'关于我们': '/webInfo/aboutUs', '常见问题': '/webInfo/issues'},
@@ -247,11 +256,13 @@
     left: 0;
     right:0;
     width:100%;
-    height: 1.4rem !important;
+    height: 2rem !important;
+    bottom: 0;
     z-index: 9999;
     background:white;
     border-top:1px solid $border;
     padding: 5px 0;
+    display:block;
     .mobile_tab_item{
       width:33.33%;
       text-align: center;

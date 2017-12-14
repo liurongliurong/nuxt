@@ -85,8 +85,8 @@
       <div class="cominfor_shebottom">
         <div class="shebottomleft">
           <h6>【主流厂商】</h6>
-          <div style="height:291px;">
-              <div class="she_ol">
+          <div style="height:313px;">
+              <div class="she_ol" style="padding-top:1px;">
                 <router-link :to="'/manufacturer/detail/' + n.id" class="border" v-for="n, k in sheol1" :key="k"><span></span>{{n.title}}</router-link>
               </div>
           </div>
@@ -679,7 +679,7 @@
                     color: #5d5d5d;
                     font-size: 16px;
                     margin-right: 50px;
-                    width: 206px;
+                    width: 226px;
                     display:inline-block;
                     line-height: 16px;
                     white-space: nowrap;  
@@ -724,7 +724,7 @@
                     color: #5d5d5d;
                     font-size: 16px;
                     margin-right: 50px;
-                    width: 206px;
+                    width: 226px;
                     display:inline-block;
                     line-height: 16px;
                     white-space: nowrap;  
@@ -1097,7 +1097,7 @@
                 text-align: center;
                 color: white;
                 &:nth-child(2){
-                    margin: 0 17px;
+                    margin: 0 21px;
                 }
                 h3{
                     font-size: 34px;

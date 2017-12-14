@@ -28,7 +28,7 @@
             <div class="item_title">{{d[0]}}</div>
             <div class="item_value">{{data[k]}}{{d[1]}}</div>
           </div>
-          <div class="item" v-if="Object.keys((orderType !== 1 ? type : computeType)).length%2">
+          <div class="item" v-if="Object.keys((orderType !== 1 ? type : computeType)).length % 2">
             <div class="item_title"></div>
             <div class="item_value"></div>
           </div>
@@ -72,11 +72,11 @@
         var requestUrl = ''
         var data = {}
         var self = this
-        if (this.orderType === '0') {
+        if (this.orderType === 0) {
           requestUrl = 'hash_contract'
           data = {token: this.token, order_id: this.orderId}
         }
-        if (this.orderType === '1') {
+        if (this.orderType === 1) {
           requestUrl = 'rent_contract'
           data = {token: this.token, transfer_id: this.orderId}
         }

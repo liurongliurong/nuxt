@@ -13,5 +13,8 @@ module.exports = {
   loading: {
     color: 'white',
     height: '2px'
+  },
+  build: {
+    vendor: ['axios']
   }
 }
