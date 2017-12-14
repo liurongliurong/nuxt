@@ -1,5 +1,5 @@
 <template>
-  <section class="swiper" :class="[{'dragging':dragging}]" @touchstart="onTouchStart" ref="swiper-wrap">
+  <section class="swiper" ref="swiper-wrap">
     <div class="swiper_wrap" :style="{'transform':'translate('+translateX+'px,0px','transition-duration':transitionDuration+'ms', width: (oneWidth||width)*slideEls.length+'px'}">
       <template v-if="!data">
         <div class="swiper_one" v-for="n,k in slideEls" @mousemove="onMouseover" :style="{width: width+'px'}">
@@ -24,7 +24,6 @@
         <div class="swiper_one"  :style="{width:oneWidth+'px'}" v-for="n,k in slideEls">
           <template v-if="n.name">
             <div class="left">
-              <!-- <img :src="require('@/assets/images/header.png')" class="header"/> -->
               <img :src="require('@/assets/images/color.png')" class="index"/> 
               <h5>{{n.name}}</h5>
               <p>{{n.time}}</p>
@@ -89,14 +88,8 @@
     data () {
       return {
         banners: [1, 2, 2, 2],
-        bannersMobile: 5,
         slideEls: [],
         currentPage: 1,
-        delta: 0,
-        dragging: false,
-        transitioning: false,
-        startPos: null,
-        startTranslate: 0,
         translateX: 0,
         transitionDuration: 0,
         offset: 0,
@@ -117,7 +110,6 @@
       onMouseover (e) {
         clearInterval(this.t)
         this.t = ''
-        if (this.transitioning) return false
         var w = window.innerWidth
         var h = window.innerHeight
         this.offsetX = e.clientX / w * 40
@@ -131,26 +123,12 @@
           }
         }, 3000)
       },
-      onTouchStart (e) {
-        this.startPos = this.getTouchPos(e)
-        this.delta = 0
-        this.startTranslate = this.currentPage * -this.offset
-        this.startTime = new Date().getTime()
-        this.dragging = true
-        this.transitionDuration = 0
-        document.addEventListener('touchmove', this.onTouchMove, false)
-        document.addEventListener('touchend', this.onTouchEnd, false)
-        clearInterval(this.t)
-        this.t = ''
-      },
       onResize () {
         this.currentPage = 1
         this.onInit()
       },
       onTransitionEnd () {
-        this.transitioning = false
         this.transitionDuration = 0
-        this.delta = 0
         if (this.currentPage <= 0) {
           this.currentPage = this.data ? this.data.length : this.banners.length
         }
@@ -168,68 +146,40 @@
           }, this.autoPlay)
         }
       },
-      onTouchMove (e) {
-        e.preventDefault()
-        this.delta = this.getTouchPos(e) - this.startPos
-        this.setTranslate(this.startTranslate + this.delta)
-      },
-      onTouchEnd (e) {
-        document.removeEventListener('touchmove', this.onTouchMove)
-        document.removeEventListener('touchend', this.onTouchEnd)
-        if (this.delta === 0) return false
-        this.dragging = false
-        this.transitionDuration = this.speed
-        var isQuickAction = new Date().getTime() - this.startTime < 1000
-        if (this.delta < -100 || (isQuickAction && this.delta < 50)) {
-          this.next()
-        } else if (this.delta > 100 || (isQuickAction && this.delta > 50)) {
-          this.prev()
-        } else {
-          this.setPage(this.currentPage)
-        }
-      },
       setPage (page, e) {
         this.currentPage = page
         this.setTranslate()
-        this.transitioning = false
         this.transitionDuration = this.speed
       },
       next () {
         var page = this.currentPage
-        if ((page < (this.data ? this.data.length : this.banners.length)) || this.loop) {
-          this.setPage((page + 1) > 5 ? 5 : (page + 1))
-        } else {
-          this.setPage(this.currentPage)
-        }
+        var total = this.data ? this.data.length : this.banners.length
+        total = this.loop ? (total + 1) : total
+        page = (page + 1) > total ? total : (page + 1)
+        this.setPage(page)
       },
       prev () {
         var page = this.currentPage
         if (page > 1 || this.loop) {
           this.setPage(page - 1)
         } else {
-          this.setPage(this.currentPage)
+          this.setPage(page)
         }
       },
-      setTranslate (value) {
-        if (!value) {
-          value = this.currentPage * -this.offset
-        }
-        this.translateX = value
+      setTranslate () {
+        this.translateX = this.currentPage * -this.offset
         setTimeout(this.onTransitionEnd, this.speed + 500)
-      },
-      getTouchPos (e) {
-        return e.changedTouches ? e.changedTouches[0]['pageX'] : e['pageX']
       },
       onInit () {
         this.width = document.body.clientWidth || document.documentElement.clientWidth
         clearInterval(this.t)
         this.offset = this.oneWidth || this.$refs['swiper-wrap']['offsetWidth']
-        this.onTouchMove = this.onTouchMove.bind(this)
-        this.onTouchEnd = this.onTouchEnd.bind(this)
         var arr = this.data || this.banners
-        this.slideEls = [arr[arr.length - 1], ...arr, arr[0]]
         if (this.loop) {
           this.setTranslate()
+          this.slideEls = [arr[arr.length - 1], ...arr, arr[0]]
+        } else {
+          this.slideEls = arr
         }
         if (this.autoPlay) {
           this.t = setInterval(() => {

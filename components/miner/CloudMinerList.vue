@@ -3,8 +3,8 @@
     <div class="box">
       <slot></slot>
       <div class="data">
-        <div class="item" v-for="d,k in $parent.cloudMinerDate" @click="goPay(d.id, d.sell_type, page==='compute'?d.product_name:d.name)" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">
-          <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="$parent.active!==0&&page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span></h3>
+        <div class="item" v-for="d,k in $parent.cloudMinerDate" @click="goPay(d.id, d.sell_type)" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">
+          <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span></h3>
           <div class="info_box">
             <template v-for="n,i in dataNav">
               <div class="info" v-if="i==='leftNum'">
@@ -77,14 +77,13 @@
       }
     },
     methods: {
-      goPay (id, selltype, name) {
-        if (selltype === 2) {
-          this.$router.push({path: '/' + this.page + '/detail/' + id + '&0'})
-        } else if (this.$parent.active === 0) {
-          this.$router.push({path: '/' + this.page + '/detail/' + id + '&1'})
+      goPay (id, selltype) {
+        if (selltype === 1) {
+          localStorage.setItem('params', JSON.stringify([ id, '2']))
         } else {
-          this.$router.push({path: '/' + this.page + '/detail/' + id + '&2'})
+          localStorage.setItem('params', JSON.stringify([ id, '0']))
         }
+        this.$router.push({path: '/' + this.page + '/detail/'})
       }
     }
   }

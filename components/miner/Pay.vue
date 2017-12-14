@@ -2,7 +2,7 @@
   <section class="pay">
     <div class="pc_box" v-if="!isMobile">
       <div class="left_box">
-        <div class="order_msg address_msg" v-if="$parent.proType==='1'">
+        <div class="order_msg address_msg" v-if="params2==='1'">
           <h3 class="title">选择收货地址</h3>
           <div class="address_box">
             <div :class="['item',{active:a.id===addressObject.id}]" v-for="a,k in addressShowData">
@@ -18,7 +18,7 @@
           <h3 class="title">确认订单信息</h3>
           <div class="order_detail">
             <div class="order_detail_info1">
-              <template v-for="d,k in $parent.proType==='1'?proData2:proData1">
+              <template v-for="d,k in params2==='1'?proData2:proData1">
                 <div class="item">
                   <p class="value" v-if="k==='number'&&page==='minerShop'"><span>{{$parent.number}}{{d.unit}}</span></p>
                   <p class="value" v-else-if="k==='number'&&page!=='minerShop'"><span>{{$parent.detail.hash}}{{d.unit}}</span></p>
@@ -28,7 +28,7 @@
                 <div class="line"></div>
               </template>
             </div>
-            <div class="order_detail_info2" v-if="$parent.proType!=='1'">
+            <div class="order_detail_info2" v-if="params2!=='1'">
               <div class="item" v-for="t,k in proText">{{t}}：
                 <span class="value" v-if="k==='hash'">{{$parent.detail[k]}}T</span>
                 <span class="value" v-else>{{$parent.detail[k]}}</span>
@@ -36,7 +36,7 @@
             </div>
           </div>
         </div>
-        <div class="order_msg miner_info" v-if="$parent.proType!=='1'">
+        <div class="order_msg miner_info" v-if="params2!=='1'">
           <h3 class="title">挖矿收益信息</h3>
           <div class="miner_info_detail">
             <div class="item" v-for="n,k in cloudMinerNav">
@@ -102,7 +102,7 @@
             <FormField :form="form" class="form" v-if="payNo===1"></FormField>
              <label for="accept">
               <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
-              <span @click="openMask(1)">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机{{page === 'minerShop'? '销售':'转让'}}协议》</a><template v-if="$parent.proType!=='1'">和<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
+              <span @click="openMask(1)">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机{{page === 'minerShop'? '销售':'转让'}}协议》</a><template v-if="params2!=='1'">和<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
               <span class="select_accept">{{tips}}</span>
             </label> 
             <button name="btn">确认支付</button>
@@ -126,7 +126,7 @@
       </div>
     </div>
     <div class="mobile_box" v-else>
-      <div class="mobile_address" v-if="$parent.proType==='1'">
+      <div class="mobile_address" v-if="params2==='1'">
         <div class="address_box" @click="selectAddress" v-if="addressObject">
           <h3 :class="{active:addressObject.is_default}">收货人地址：{{addressObject.post_user+'  '+addressObject.post_mobile}}</h3>
           <p>{{addressObject.province_name+addressObject.city_name+addressObject.area_name+addressObject.area_details}}</p>
@@ -138,14 +138,14 @@
         <span class="val">{{totalPrice}}元</span>
       </div>
       <div class="confirm_info">
-        <div class="item" v-for="m,k in $parent.proType === '1'?mobileNav2:mobileNav1">
+        <div class="item" v-for="m,k in params2 === '1'?mobileNav2:mobileNav1">
           <span>{{m.title}}</span>
           <span v-if="k==='number'&&page==='minerShop'">{{$parent.number}}{{m.unit}}</span>
           <span v-else-if="k==='number'&&page!=='minerShop'">{{$parent.detail.hash}}{{m.unit}}</span>
           <span v-else>{{$parent.detail[k]}}{{m.unit}}</span>
         </div>
       </div>
-      <div class="confirm_info confirm_info2" v-if="$parent.proType==='1'">
+      <div class="confirm_info confirm_info2" v-if="params2==='1'">
         <div class="item">
           <span>配送费用</span>
           <span>第三方物流、费用到付</span>
@@ -164,7 +164,7 @@
         <div class="mobile_btn">
            <label for="accept">
             <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
-            <span @click="openMask(1)">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机{{page === 'minerShop'? '销售':'转让'}}协议》</a><template v-if="$parent.proType!=='1'">、<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
+            <span @click="openMask(1)">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机{{page === 'minerShop'? '销售':'转让'}}协议》</a><template v-if="params2!=='1'">、<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
             <span class="select_accept">{{tips}}</span>
           </label> 
           <button name="btn">确认支付</button>
@@ -237,11 +237,10 @@
         payNo: 1,
         rate: 3,
         isFixTop: false,
-        timer: 0
+        timer: 0,
+        params1: '',
+        params2: ''
       }
-    },
-    created () {
-      window.addEventListener('scroll', this.fixTop, false)
     },
     methods: {
       pay (e) {
@@ -292,7 +291,7 @@
         } else {
           callbackUrl += '/user/'
         }
-        if (this.$parent.proType === '1') {
+        if (this.params2 === '1') {
           console.log(this.addressObject)
           if (!this.addressObject.id) {
             this.tip('请添加地址', ff.accept)
@@ -303,7 +302,7 @@
           if (this.payNo === 2) {
             data = Object.assign({url: callbackUrl, mode: '2'}, data)
           }
-          data = Object.assign({post_id: this.addressObject.id, user_id: this.user_id, miner_id: this.$parent.proId, number: this.$parent.number}, data)
+          data = Object.assign({post_id: this.addressObject.id, user_id: this.user_id, miner_id: this.params1, number: this.$parent.number}, data)
         } else {
           if (this.page === 'minerShop') {
             callbackUrl += 'order/0'
@@ -312,17 +311,17 @@
               if (this.payNo === 2) {
                 data = Object.assign({url: callbackUrl, mode: '3'}, data)
               }
-              data = Object.assign({product_id: this.$parent.proId, rate_name: this.rate, num: this.$parent.number}, data)
+              data = Object.assign({product_id: this.params1, rate_name: this.rate, num: this.$parent.number}, data)
             } else {
               url = 'productMall'
               if (this.payNo === 2) {
                 data = Object.assign({url: callbackUrl, mode: '1'}, data)
               }
-              data = Object.assign({product_id: this.$parent.proId, num: this.$parent.number, user_id: this.user_id}, data)
+              data = Object.assign({product_id: this.params1, num: this.$parent.number, user_id: this.user_id}, data)
             }
           } else {
             url = 'doTransfer_Hashrate'
-            data = Object.assign({user_id: this.user_id, transfer_order_id: this.$parent.proId, num: this.$parent.number}, data)
+            data = Object.assign({user_id: this.user_id, transfer_order_id: this.params1, num: this.$parent.number}, data)
             callbackUrl = 'order/1'
           }
         }
@@ -372,7 +371,7 @@
           if (this.payNo === 2) {
             this.alipay(url, data)
           } else {
-            // if (this.$parent.proType === '1') {
+            // if (this.params2 === '1') {
             //   this.$parent.next = 2
             // } else {}
             api.tips(str, 1)
@@ -384,7 +383,7 @@
           if (this.payNo === 2) {
             this.alipay(url, data)
           } else {
-            // if (this.$parent.proType === '1') {
+            // if (this.params2 === '1') {
             //   this.$parent.next = 2
             // } else {}
             api.tips(str, this.isMobile, () => {
@@ -452,7 +451,7 @@
       },
       selectAddress (k) {
         if (this.isMobile) {
-          this.$store.commit('SET_ADDRESS', {url: this.$parent.proId + '/' + this.$parent.proType, num: this.$parent.number})
+          this.$store.commit('SET_ADDRESS', {url: this.params1 + '/' + this.params2, num: this.$parent.number})
           this.$router.push({path: '/mobile/address?select'})
         } else {
           this.addressObject = this.addressShowData[k]
@@ -491,6 +490,13 @@
       }
     },
     mounted () {
+      window.addEventListener('scroll', this.fixTop, false)
+      var p = localStorage.getItem('params')
+      if (p) {
+        p = JSON.parse(p)
+        this.params1 = p[0]
+        this.params2 = p[1]
+      }
       if (this.page === 'minerShop') {
         this.totalPrice = this.$parent.detail.one_amount_value * +this.$parent.number
         if (this.$parent.show) {
@@ -515,7 +521,7 @@
       }
       if (this.addressObj.id) {
         this.addressObject = this.addressObj
-      } else if (this.$parent.proType === '1') {
+      } else if (this.params2 === '1') {
         this.getAddress()
       }
     },

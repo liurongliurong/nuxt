@@ -13,5 +13,18 @@ module.exports = {
   loading: {
     color: 'white',
     height: '2px'
+  },
+  generate: {
+    routes: [
+      '/minerShop/miner/1',
+      '/minerShop/miner/2',
+      '/user/order/0',
+      '/user/order/2',
+      '/user/order/3',
+      '/user/repayment/0',
+      '/user/repayment/1',
+      '/webInfo/list/website',
+      '/webInfo/list/product'
+    ]
   }
 }

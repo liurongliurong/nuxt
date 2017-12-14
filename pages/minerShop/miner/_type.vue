@@ -1,7 +1,7 @@
 <template>
   <section class="compute_shop">
-    <Sort :sort="sort" :sortNav="$route.params.type==='1'?sortNav:sortNav2" :sortType="sortType"></Sort>
-    <MinerList v-if="$route.params.type==='1'"></MinerList>
+    <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2" :sortType="sortType"></Sort>
+    <MinerList v-if="type==='1'"></MinerList>
     <CloudMinerList page="minerShop" v-else></CloudMinerList>
     <Pager :len="len"></Pager>
   </section>
@@ -35,9 +35,13 @@
         status: 0
       }
     },
+    asyncData ({ params }) {
+      return {type: params.type}
+    },
     methods: {
       fetchData (sort) {
         var self = this
+        this.type = this.$route.params.type
         var obj = {token: this.token, page: this.now, product_type: '1'}
         var url = ''
         if (sort >= 0 && this.sort[sort] && this.sort[sort].option) {
@@ -46,14 +50,14 @@
         if (this.status) {
           obj = Object.assign({status: this.status}, obj)
         }
-        if (this.$route.params.type === '1') {
+        if (this.type === '1') {
           url = 'showList'
         } else {
           url = 'productList'
         }
         util.post(url, {sign: api.serialize(obj)}).then(function (res) {
           api.checkAjax(self, res, () => {
-            if (self.$route.params.type === '1') {
+            if (self.type === '1') {
               self.minerData = res.data
             } else {
               self.cloudMinerDate = res.data
