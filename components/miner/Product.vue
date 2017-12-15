@@ -814,7 +814,7 @@
             margin-bottom:30px;
             width: 52%;
             overflow: hidden;
-            padding-left: 30px;
+            padding-left: 5px;
             padding-top: 10px;
           }
         }

@@ -20,7 +20,7 @@
     <div class="quicknews_content"  v-if="showcontent">
       <div class="title">
         <span>{{content.title}}</span>
-        <a class="button" onclick="window.location.reload()">< 返回列表</a>
+        <a class="button" to="javascript:;" onclick="window.location.reload()">< 返回列表</a>
       </div>
       <div class="info_quick" v-html="content.content"></div>
     </div>

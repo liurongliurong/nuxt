@@ -1024,7 +1024,7 @@
                     padding-left: 0px;
                   }
                   :nth-child(5){
-                    padding-left: 50px;
+                    padding-left: 60px;
                   }
                 }
             }
@@ -1047,6 +1047,9 @@
                     }
                     :nth-child(3){
                       padding-left: 15px;
+                    }
+                    :nth-child(5){
+                      text-align: right;
                     }
                 }
             }
