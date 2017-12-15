@@ -36,7 +36,7 @@
         <div class="close" @click="closeEdit(1)">
           <span class="icon"></span>
         </div>
-        <form class="form" @submit.prevent="submit($event,1)" novalidate style="box-sizing:border-box;margin-top:1rem;">
+        <form class="form" @submit.prevent="submit($event,1)" novalidate style="box-sizing:border-box;margin-top:1rem;padding-bottom:2rem;">
           <FormField :form="form[edit]"></FormField>
           <button name="btn">提交</button>
         </form>
