@@ -104,7 +104,7 @@
         this.leftNum = leftAmount < 0 ? 0 : leftAmount
       },
       getData () {
-        if (this.token !== 0 && this.params1) {
+        if (this.params1) {
           var self = this
           var url = ''
           var data = {token: this.token}
