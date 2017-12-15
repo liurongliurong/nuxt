@@ -17,10 +17,10 @@
       </div>
     </div>
     <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
-    <div class="quicknews_content"  v-if="showcontent">
+    <div class="quicknews_content"  v-else>
       <div class="title">
         <span>{{content.title}}</span>
-        <a class="button" onclick="window.location.reload()">< 返回列表</a>
+        <a class="button" @click="showcontent1(false)">< 返回列表</a>
       </div>
       <div class="info_quick" v-html="content.content"></div>
     </div>
@@ -78,10 +78,10 @@
             self.content = res
           })
         })
+      },
+      showcontent1 (type) {
+        this.showcontent = false
       }
-    },
-    mounted () {
-      this.loadMore()
     },
     computed: {
       ...mapState({
