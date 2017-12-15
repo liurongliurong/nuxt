@@ -44,7 +44,7 @@
     <div class="partner">
       <div class="box">
         <h3>携手共赢， 与全球合作伙伴共建算力生态</h3>
-        <p>精诚合作共享资源， 凝心聚力协调发展， 共建算力产业</p>
+        <p>精诚合作共享资源， 凝心聚力协调发展， 共筑算力产业</p>
         <div class="list">
           <div class="item" v-for="i in 7" v-if="i!==2">
             <div :class="'img img'+i"></div>
@@ -435,10 +435,13 @@
         }
         a{
           display: inline-block;
-          padding:10px 50px;
           border-radius:5px;
-          @include button($blue)
+          width: 147px;
+          height: 37px;
+          border:1px solid white;
+          color: white;
           margin-top:30px;
+          line-height: 37px;
           &:hover{
             background:#166cfb;
             border:1px solid #166cfb;
