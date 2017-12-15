@@ -175,11 +175,17 @@
             @include bg(1920, 420)
             background: linear-gradient(to right, #FE5337 10%, #FF9D02);
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FE5337', endColorstr='#FF9D02',GradientType=1 );
+            .btn{
+              color:#FC5137
+            }
           }
           &:nth-child(1),&:nth-child(3){
             @include bg(1920, 420)
             background: linear-gradient(to right, #1077F0 10%, #00E0D8);
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1077F0', endColorstr='#00E0D8',GradientType=1 );
+            .btn{
+              color:#7EAFFC
+            }
           }
           // img{
           //   position: absolute;
@@ -204,14 +210,15 @@
             text-align: center;
             left:calc(50% - 590px);
             top:250px;
-            color:#fff;
+            color:#1e396c;
             border:1px solid #fff;
             border-radius:5px;
             font-size: 18px;
-            &:hover{
-              background: #fff;
-              color:#1e396c
-            }
+            background: #fff;
+            // &:hover{
+            //   background: #fff;
+            //   color:#1e396c
+            // }
           }
           // img:first-child,a.btn{
           //   @media screen and (max-width: 1178px) and (min-width: 340px){

@@ -41,10 +41,10 @@
     <CloudMinerList page="minerShop">
       <h2>
         <div>
-          <span>云矿机推荐</span>
+          <span>云算力推荐</span>
           <span>国家电网 算力保证 无忧挖矿</span>
         </div>
-        <router-link to="/minerShop/miner/2">更多云矿机 ></router-link>
+        <router-link to="/minerShop/miner/2">更多云算力 ></router-link>
       </h2>
     </CloudMinerList>
     <div class="miner_loan">
@@ -80,10 +80,10 @@
     },
     head () {
       return {
-        title: '比特币云矿机-价格最低云矿机产品大全－算力网',
+        title: '比特币云算力-价格最低云算力产品大全－算力网',
         meta: [
           { hid: 'keywords', name: 'keywords', content: '比特币矿机,二手矿机,矿机期货' },
-          { hid: 'description', name: 'description', content: '算力网云矿机商城，汇集目前主流比特币云矿机产品，包括阿瓦隆7云矿机，S9云矿机以及E9矿机云算力产品，为比特币挖矿爱好者提供比特币云矿机购买服务' }
+          { hid: 'description', name: 'description', content: '算力网云算力商城，汇集目前主流比特币云算力产品，包括阿瓦隆7云算力，S9云算力以及E9矿机云算力产品，为比特币挖矿爱好者提供比特币云算力购买服务' }
         ]
       }
     },

@@ -74,7 +74,7 @@
     </template>
     <div class="fund_btn">
       <router-link to="/user/calculator">挖矿计算器</router-link>
-      <router-link to="/user/order/0">出售云矿机</router-link>
+      <router-link to="/user/order/0">出售云算力</router-link>
       <router-link to="/user/order/0">查看订单</router-link>
     </div>
     <MyMask :form="form[edit]" :title="editText" v-if="edit"></MyMask>
@@ -99,10 +99,10 @@
         moneyData: {freeze_account: 0, balance_account: 0},
         computeNav: {today_hash: '今日收益', balance_account: '账户余额', total_hash: '累积已获得收益'},
         computeData: {today_hash: 0, balance_account: 0, total_hash: 0},
-        computeProperty: {total_miner: ['已购入云矿机', '台'], total_hash: ['算力总和', 'T'], selled_miner: ['已出售云矿机', '台'], selling_miner: ['出售中云矿机', '台']},
-        // , selled_hash: ['已出租云矿机', '台'], selling_hash: ['出租中云矿机', '台']
+        computeProperty: {total_miner: ['已购入云算力', '台'], total_hash: ['算力总和', 'T'], selled_miner: ['已出售云算力', '台'], selling_miner: ['出售中云算力', '台']},
+        // , selled_hash: ['已出租云算力', '台'], selling_hash: ['出租中云算力', '台']
         dataProperty: {total_miner: 0, total_hash: 0, buy_transfer_hash: 0, selled_miner: 0, selling_miner: 0, selled_hash: 0, selling_hash: 0},
-        computeFund: {total_miner: ['云矿机', '台'], total_hash: ['云算力总和', 'T'], selled_miner: ['已出租云算力', 'T'], selling_miner: ['出租中云算力', 'T']},
+        computeFund: {total_miner: ['云算力', '台'], total_hash: ['云算力总和', 'T'], selled_miner: ['已出租云算力', 'T'], selling_miner: ['出租中云算力', 'T']},
         dataFund: {total_miner: 0, total_hash: 0, selled_miner: 0, selling_miner: 0},
         edit: '',
         form: {

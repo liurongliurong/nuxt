@@ -203,6 +203,9 @@
       .swiper_one{
         float: left;
         .swiper_box .btn{
+          .swiper_arrow{
+            margin-right:5px;
+          }
           .swiper_arrow:before{
             content:'';
             @include triangle
@@ -210,6 +213,9 @@
           .swiper_arrow:after{
             content:'';
             @include triangle
+            border-left-width:8px;
+            border-top-width:5px;
+            border-bottom-width:5px;
           }
         }
         &:nth-child(2),&:nth-child(4){

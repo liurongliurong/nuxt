@@ -67,7 +67,7 @@
     data () {
       return {
         data: {},
-        nav: [{fund_name: ['基金名称', ''], fund_manager: ['基金管理人', ''], invest_money: ['投资金额', '万'], start_end_time: ['投资时间', ''], fund_time: ['投资期限', '天'], electric_amount: ['累计用电力量', '度'], electric_total_price: ['累积电费', '元']}, {fund_name: ['基金名称', ''], fund_manager: ['基金管理人', ''], invest_money: ['投资金额', '万'], start_end_time: ['投资时间', ''], fund_time: ['投资期限', '天'], miner_num: ['云矿机', '台'], miner_hash: ['运算力', 'T'], hash_income: ['累计获得收益', 'btc']}],
+        nav: [{fund_name: ['基金名称', ''], fund_manager: ['基金管理人', ''], invest_money: ['投资金额', '万'], start_end_time: ['投资时间', ''], fund_time: ['投资期限', '天'], electric_amount: ['累计用电力量', '度'], electric_total_price: ['累积电费', '元']}, {fund_name: ['基金名称', ''], fund_manager: ['基金管理人', ''], invest_money: ['投资金额', '万'], start_end_time: ['投资时间', ''], fund_time: ['投资期限', '天'], miner_num: ['云算力', '台'], miner_hash: ['运算力', 'T'], hash_income: ['累计获得收益', 'btc']}],
         edit: false,
         show: 0,
         content: '',
@@ -118,12 +118,6 @@
         }
         if (!(this.true_name && this.true_name.status === 1)) {
           api.tips('请先实名认证', this.isMobile, () => {
-            this.$router.push({name: 'user-account'})
-          })
-          return false
-        }
-        if (!(this.bank_card && this.bank_card.status === 1)) {
-          api.tips('请先绑定银行卡', this.isMobile, () => {
             this.$router.push({name: 'user-account'})
           })
           return false
@@ -203,7 +197,6 @@
         token: state => state.info.token,
         user_id: state => state.info.user_id,
         true_name: state => state.info.true_name,
-        bank_card: state => state.info.bank_card,
         risk: state => state.info.risk,
         scode: state => state.info.scode,
         isMobile: state => state.isMobile
