@@ -495,9 +495,9 @@
           width: 100%;
           text-align: center;
           margin:0;
-          tr{
-            border-bottom:1px solid $border;
-            &:first-child{
+          thead{
+            tr{
+              border-bottom:1px solid $border;
               background: #f7f8fa;
               color: $light_text;
               border-top:1px solid $border;
@@ -508,42 +508,50 @@
                 line-height: 50px;
               }
             }
-            td{
-              line-height:56px;
-              i.icon_currency{
-                vertical-align: sub;
-                margin-left:5px
-              }
-              &:last-child{
-                width:180px;
-                button,a{
-                  font-size: 12px;
-                  line-height: 28px;
-                  @include gap(8,h)
+          }
+          tbody{
+            tr{
+              border-bottom:1px solid $border;
+              td{
+                line-height:56px;
+                i.icon_currency{
+                  vertical-align: sub;
+                  margin-left:5px
                 }
-                button{
-                  @include button($blue)
-                  margin-right:5px;
-                  &:disabled{
-                    background: #759fe4;
-                    border-color:#759fe4;
-                    cursor: no-drop;
+                &:last-child{
+                  width:180px;
+                  button,a{
+                    font-size: 12px;
+                    line-height: 28px;
+                    @include gap(8,h)
+                  }
+                  button{
+                    @include button($blue)
+                    margin-right:5px;
+                    &:disabled{
+                      background: #759fe4;
+                      border-color:#759fe4;
+                      cursor: no-drop;
+                    }
+                  }
+                  a{
+                    display: inline-block;
+                    @include button($blue,border)
+                    border-radius: 5px;
+                    .btn:not(:disabled){
+                      @include button($orange)
+                      cursor: pointer;
+                    }
                   }
                 }
-                a{
-                  display: inline-block;
-                  @include button($blue,border)
-                  border-radius: 5px;
-                  .btn:not(:disabled){
-                    @include button($orange)
-                    cursor: pointer;
-                  }
-                }
               }
-            }
-            &.active{
-              td:last-child{
-                width:245px;
+              &:hover{
+                background: #f7f8fa;
+              }
+              &.active{
+                td:last-child{
+                  width:245px;
+                }
               }
             }
           }

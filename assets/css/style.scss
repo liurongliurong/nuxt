@@ -788,17 +788,24 @@
       td{
         line-height: 55px;
       }
-      tr:first-child{
-        background: #f7f8fa;
-        border-top:1px solid $border;
-        th{
-          font-size: 12px;
-          color: $light_text;
-          line-height: 48px;
+      thead{
+        tr{
+          background: #f7f8fa;
+          border-top:1px solid $border;
+          th{
+            font-size: 12px;
+            color: $light_text;
+            line-height: 48px;
+          }
         }
       }
-      tr:not(:first-child){
-        border-bottom:1px solid $border
+      tbody{
+        tr{
+          border-bottom:1px solid $border;
+          &:hover{
+            background: #f7f8fa;
+          }
+        }
       }
     }
     @include nodata
