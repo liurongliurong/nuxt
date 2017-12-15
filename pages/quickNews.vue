@@ -15,7 +15,7 @@
         <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)" class="total">
           <h4> {{item.title}} </h4>
           <p v-html="item.content"></p>
-          <div class="time"><span class="icon iconfont icon-shijian2"></span>{{times[k]}}分钟前</div>
+          <div class="time"><span class="icon iconfont icon-shijian2"></span>{{times[k]}}小时前</div>
         </div>
       </div>
       <p v-if="loading"  class="loadmore">加载中······</p>
@@ -82,7 +82,7 @@
                   var date3 = date2.getTime() - new Date(date1).getTime()
                   var leave1 = date3 % (24 * 3600 * 1000)
                   var days = Math.floor(date3 / (24 * 3600 * 1000)) * 24
-                  var hours = Math.floor(leave1 / (3600 * 1000)) + days
+                  var hours = Math.floor((Math.floor(leave1 / (3600 * 1000)) + days) / 60)
                   self.times.push(hours)
                 }
                 for (let i = 0, len = res.length; i < len; i++) {
