@@ -1,13 +1,8 @@
 <template>
   <div class="cloud_list">
     <div class="box">
-      <h2>
-        <div>
-          <span>矿机推荐</span>
-          <span>全球算力输出服务由保全网提供全流程区块链存证、保全服务</span>
-        </div>
-        <router-link to="/minerShop/list">更多矿机 ></router-link>
-      </h2>
+      <h1 class="home_item_title">全方位为你推荐算力服务器</h1>
+      <p class="home_item_desc">全球算力输出服务由保全网提供全流程区块链存证、保全服务</p>
       <table>
         <thead>
           <tr>
@@ -32,6 +27,7 @@
           </tr>
         </tbody>
       </table>
+      <p class="get_more">查看更多矿机 ></p>
     </div>
   </div>
 </template>
@@ -77,8 +73,8 @@
 <style type="text/css" lang="scss">
   @import '../../../assets/css/style.scss';
   .cloud_list{
-    margin:60px 0;
     overflow: hidden;
+    background: #F6F7FB;
     .btn{
       border:0;
       width:145px;
@@ -93,17 +89,16 @@
       }
     }
     .box{
-      h2{
-        @include data_title
-      }
       table{
         @include table;
         @include main;
+        background: #fff;
         margin:0 auto;
         th{
           font-size: 18px;
           line-height: 65px;
-          background: #ecf3ff
+          border-bottom: 1px solid $border;
+          font-weight: bold;
         }
         td{
           font-size: 16px;
@@ -135,6 +130,11 @@
             color:$white
           }
         }
+      }
+      p.get_more{
+        text-align: center;
+        margin:20px 0;
+        color:$light_black;
       }
     }
   }

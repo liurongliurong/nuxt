@@ -4,7 +4,7 @@
       <template v-if="!data">
         <div class="swiper_one" v-for="n,k in slideEls" @mousemove="onMouseover" :style="{width: width+'px'}">
           <div class="swiper_box" :style="{width: width+'px'}">
-            <template v-if="currentPage===k">
+            <!-- <template v-if="currentPage===k">
               <template v-for="b in n">
                 <img :src="require('@/assets/images/swiper/'+(k===0?'4':k===5?'1':k)+'_'+b+'.png')" v-if="b===1">
                 <img :src="require('@/assets/images/swiper/'+(k===0?'4':k===5?'1':k)+'_'+b+'.png')" v-else :style="[{transform: 'translate('+offsetX+'px, '+offsetY+'px)'}]">
@@ -12,10 +12,11 @@
             </template>
             <template v-else>
               <img :src="require('@/assets/images/swiper/'+(k===0?'4':k===5?'1':k)+'_'+b+'.png')" v-for="b in n">
-            </template>
+            </template> -->
+            <img :src="require('@/assets/images/swiper/'+(k===0?'2':k===3?'1':k)+'_'+b+'.jpg')" v-for="b in n">
             <router-link to="/minerShop/list" class="btn" v-if="k===5||k===1">即刻开始</router-link>
-            <router-link to="/bdc" class="btn" v-else-if="k===2">查看详情</router-link>
-            <router-link to="/user/computeProperty" class="btn" v-else-if="k===3">查看详情</router-link>
+            <!-- <router-link to="/bdc" class="btn" v-else-if="k===2">查看详情</router-link>
+            <router-link to="/user/computeProperty" class="btn" v-else-if="k===3">查看详情</router-link> -->
             <router-link to="/minerShop/activity" class="btn" v-else="k===0||k===4">立即抢购</router-link>
           </div>
         </div>
@@ -87,7 +88,7 @@
     },
     data () {
       return {
-        banners: [1, 2, 2, 2],
+        banners: [1, 1],
         slideEls: [],
         currentPage: 1,
         translateX: 0,
