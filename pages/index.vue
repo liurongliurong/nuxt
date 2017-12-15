@@ -377,6 +377,8 @@
       }
     }
     .home_text{
+      background: #f6f7fb;
+      padding-bottom: 29px;
       .main{
         @include main
         line-height: 2;

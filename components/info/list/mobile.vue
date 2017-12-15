@@ -91,7 +91,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .mobilelist{
     width: 100%;
     overflow: hidden;
