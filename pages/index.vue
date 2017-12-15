@@ -287,7 +287,6 @@
       font-size: 28px;
       line-height: 1.8;
       margin-top:20px;
-      font-weight: bold;
     }
     p.home_item_desc{
       font-size: 18px;
