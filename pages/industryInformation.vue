@@ -87,7 +87,7 @@
           <h6>【主流厂商】</h6>
           <div style="height:313px;">
               <div class="she_ol" style="padding-top:1px;">
-                <router-link :to="'/manufacturer/detail/' + n.id" class="border" v-for="n, k in sheol1" :key="k"><span></span>{{n.title}}</router-link>
+                <div  @click="goDetailb(n.id)" class="border" v-for="n, k in sheol1" :key="k"><span></span>{{n.title}}</div>
               </div>
           </div>
           <router-link to="/manufacturer/list">全部厂商介绍 ></router-link>
@@ -95,7 +95,7 @@
         <div class="shebottomcen">
           <h6>【矿机测评】</h6>
           <div class="she_ol">
-            <div class="imgshe" v-for="n, k in sheol2">
+            <div class="imgshe" v-for="n, k in sheol2" @click="goDetaila(n.id)">
               <h2>BitCoin</h2>
               <div class="imgshe1">
                 <img :src="n.image"/>
@@ -109,10 +109,10 @@
         <div class="shebottomright">
           <h6>【矿机博物馆】</h6>
           <div class="all_ol" style="height:287px;">
-            <router-link :to="'/equipments/detail/' + n.id" class="she_ol" v-for="n, k in sheol3" :key="k">
+            <div @click="goDetail(n.id)" class="she_ol" v-for="n, k in sheol3" :key="k">
               <img :src="n.image"/>
               <p class="title">{{n.title}}</p>
-            </router-link>
+            </div>
           </div>
           <router-link to="/equipments/list">全部矿机介绍 ></router-link>
         </div>
@@ -204,7 +204,7 @@
         inforight: [],
         active: 0,
         qwsl: '',
-        miners: [{big: require('@/assets/images/information5.png'), title: '资深矿工-设备之家', route: '前往了解 >', path: '/equipments/list'}, {big: require('@/assets/images/information2.png'), title: '新手矿工-数字货币', route: '前往了解 >', path: '/digitalCurrency/list'}, {big: require('@/assets/images/information3.png'), title: '平台交易最新资讯', route: '前往了解 >', path: '/transaction'}]
+        miners: [{big: require('@/assets/images/information5.png'), title: '资深矿工-设备之家', route: '前往了解 >', path: '/equipments/list'}, {big: require('@/assets/images/information2.png'), title: '新手矿工-数字货币', route: '前往了解 >', path: '/currency'}, {big: require('@/assets/images/information3.png'), title: '平台交易最新资讯', route: '前往了解 >', path: '/transaction'}]
       }
     },
     head () {
@@ -227,6 +227,18 @@
             bigimg[a].style.opacity = '0'
           }
         }
+      },
+      goDetail (id) {
+        localStorage.setItem('icon_id', JSON.stringify([id]))
+        this.$router.push({path: '/equipments/detail/'})
+      },
+      goDetaila (id) {
+        localStorage.setItem('icon_id', JSON.stringify([id]))
+        this.$router.push({path: '/equipmentEvaluate/detail/'})
+      },
+      goDetailb (id) {
+        localStorage.setItem('icon_id', JSON.stringify([id]))
+        this.$router.push({path: '/manufacturer/detail/'})
       }
     },
     mounted () {

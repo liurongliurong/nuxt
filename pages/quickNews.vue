@@ -10,8 +10,8 @@
         </div>
       </div>
     </div>
-    <div class="mobilequicknews currency_right" v-else>
-      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="quicknews_lists">
+    <div class="mobilequicknews" v-else>
+      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="quicknews_lists1">
         <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)" class="total">
           <h4> {{item.title}} </h4>
           <p v-html="item.content"></p>
@@ -112,7 +112,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .news_left{
     float: left;
     width: 1002px;
@@ -192,15 +192,15 @@
     width: 100%;
     overflow: hidden;
     background: white;
-    .quicknews_lists{
+    padding:0 0.5rem;
+    box-sizing: border-box;
+    .quicknews_lists1{
       width: 100%;
-      padding:0 0.5rem;
-      box-sizing: border-box;
       .total{
         border-bottom: 1px solid #bfbfbf;
         width: 100%;
         overflow: hidden;
-        padding: 0.5rem 0;
+        padding: 0.5rem;
         h4{
           font-size: 0.6rem;
           font-weight: 800;

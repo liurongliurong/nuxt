@@ -14,14 +14,6 @@
     components: {
       pageFrame, WebInfoList
     },
-    data () {
-      return {
-        len: 0,
-        now: 1,
-        showImg: false,
-        list: []
-      }
-    },
     head () {
       return {
         title: '算力新闻_比特币资讯－算力网',
@@ -30,24 +22,6 @@
           { hid: 'description', name: 'description', content: '算力网（www.suanli.com)产业新闻栏目，为你提供各种算力产业资讯，比特币新闻，行业动态，关注算力网，开启你的挖矿之旅' }
         ]
       }
-    },
-    methods: {
-      getList () {
-        var self = this
-        util.post('NewsReviewList', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.list = res.list
-            self.showImg = !res.total
-            if (self.now > 1) return false
-            self.len = Math.ceil(res.total / 5)
-          })
-        }).catch(res => {
-          console.log(res)
-        })
-      }
-    },
-    mounted () {
-      this.getList()
     },
     computed: {
       ...mapState({
