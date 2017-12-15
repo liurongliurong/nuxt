@@ -192,15 +192,15 @@
     width: 100%;
     overflow: hidden;
     background: white;
+    padding:0 0.5rem;
+    box-sizing: border-box;
     .quicknews_lists{
       width: 100%;
-      padding:0 0.5rem;
-      box-sizing: border-box;
       .total{
         border-bottom: 1px solid #bfbfbf;
         width: 100%;
         overflow: hidden;
-        padding: 0.5rem 0;
+        padding: 0.5rem;
         h4{
           font-size: 0.6rem;
           font-weight: 800;
