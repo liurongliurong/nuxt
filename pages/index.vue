@@ -2,13 +2,6 @@
   <article class="home" v-if="isMobile===0">
     <Swiper :pagination-visible="true" :loop="true" :autoPlay="5000"></Swiper>
     <MyData></MyData>
-    <div class="wq">
-      <img :src="wqImg" alt="" class="pre">
-      <div class="text">
-        <img src="~assets/images/server.png" style="width:800px;display:block;margin:0 auto;"/>
-        <router-link to="/minerShop/list">即刻体验</router-link>
-      </div>
-    </div>
     <div class="home_text">
       <div class="main">
         <div class="list">
@@ -23,8 +16,8 @@
     </div>
     <div class="home_title">
       <div class="main">
-        <h1>{{ad.title}}</h1>
-        <p>{{ad.desc}}</p>
+        <h1 class="home_item_title">{{ad.title}}</h1>
+        <p class="home_item_desc">{{ad.desc}}</p>
         <div class="list">
           <div class="item" v-for="s,k in suanLi">
             <div class="iconfont"></div>
@@ -34,18 +27,20 @@
         </div>
       </div>
     </div>
-    <div :class="['my_map', {active: dataSrc===1||dataSrc===2||dataSrc===3}]">
+    <WebInfo></WebInfo>
+    <div class="my_map">
       <div class="main">
-        <h3>遍布全球，持续扩张的数据中心让跨域体验更流畅</h3>
-        <div class="data_title">
-          <div :class="['item', {active: k===dataSrc}]" v-for="dt,k in dataTitle" @click="setData(k)">{{dt}}</div>
+        <h1 class="home_item_title">持续扩张的数据中心让跨域体验更流畅</h1>
+        <p class="home_item_desc">全面拓展国际、国内区块链云计算市场，担当行业领头羊角色。胸有成“数”，自当志在四方。</p>
+        <div class="home_map_data">
+          <div class="item" v-for="m,k in mapData">
+            <span class="item_name">{{m.title}}</span>
+            <span class="item_value">{{computeData[m.name]+' '+m.unit}}</span>
+          </div>
         </div>
-        <DataChart class="data_chart" v-if="dataSrc===1||dataSrc===2" :mapType="mapType"></DataChart>
-        <DataChart2 class="data_chart2" v-else-if="dataSrc===3"></DataChart2>
-        <DataMap class="data_chart" v-else></DataMap>
+        <DataMap class="data_chart"></DataMap>
       </div>
     </div>
-    <WebInfo></WebInfo>
     <div class="partner">
       <div class="box">
         <h3>战略合作伙伴</h3>
@@ -55,6 +50,13 @@
             <div :class="'img_hover img_hover'+i"></div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="wq">
+      <img :src="wqImg" alt="" class="pre">
+      <div class="text">
+        <img src="~assets/images/server.png" style="width:800px;display:block;margin:0 auto;"/>
+        <router-link to="/minerShop/list">即刻体验</router-link>
       </div>
     </div>
     <SideBar></SideBar>
@@ -103,18 +105,17 @@
 </template>
 
 <script>
+  import util from '@/util'
   import api from '@/util/function'
   import MyData from '@/components/home/dataList'
   import Swiper from '@/components/common/Swipe'
   import WebInfo from '@/components/home/WebInfo'
   import SideBar from '@/components/home/SideBar'
-  import DataChart from '@/components/home/DataChart'
-  import DataChart2 from '@/components/home/DataChart2'
   import DataMap from '@/components/home/DataMap'
   import { mapState } from 'vuex'
   export default {
     components: {
-      Swiper, MyData, WebInfo, SideBar, DataChart, DataMap, DataChart2
+      Swiper, MyData, WebInfo, SideBar, DataMap
     },
     data () {
       return {
@@ -124,9 +125,8 @@
         ad: {title: '算力驱动未来，信任链接天下', desc: '全球算力产业链资源整合，基于区块链的分布式算力输出平台', items: [{title: '项目合规', desc: '所有项目出具法律意见书<br>并公开法律意见书'}, {title: '用电合规', desc: '项目为政府招商引资项目<br>全部国网供电，电力稳定持久'}, {title: '透明收益', desc: '全流程产业链对接，信息透明<br>避免踩坑'}, {title: '全程存证', desc: '对接保全网区块链电子凭证技术<br>实现全部在线协议的合规有效'}, {title: '算力管家', desc: '为用户投资的每一份算力<br>提供贴心的远程管家服务'}]},
         wqImg: require('@/assets/images/img.jpg'),
         suanLi: [{title: 'SHA256比特币算力', desc: 'Bitcoin数字货币算力', icon: 'ELbobeicesuan'}, {title: '卷积神经算法算力', desc: '为CNN卷积神经网络提供分布式加速服务', icon: 'guanlianxitongwenbenqueren'}, {title: 'EquiHash零币算力', desc: 'ZeroCASH提供隐私保护及零知识证明的基础算力', icon: 'wodegongzuo-liebiao'}, {title: '智能合约算力', desc: '全球贸易智能合约服务的分布式基础算力', icon: 'dianzihetongshenqing'}, {title: 'Curecoin算力', desc: '蛋白质折叠计算，生化反应模型，用于发现新药', icon: 'hebaoshenpi'}, {title: 'Scrypt莱特币算力', desc: 'Litecoin数字货币算力', icon: 'xinxichaxun'}, {title: '游戏币兑换算力', desc: '全球游戏产业虚拟货币通用兑换算力', icon: 'jiedongzhiquzhihang'}, {title: 'Ethash以太算力', desc: '以太坊网络，ETCETH算力', icon: 'yewuchaxun'}, {title: '公证算力', desc: '提供区块链公证服务，存证保全的基础算力', icon: 'shouqushenqingchaxun'}],
-        dataTitle: ['算力网BDC中心分布', '比特币全球节点数', '算力网注册用户数', '交易总算力'],
-        dataSrc: 0,
-        mapType: 1
+        mapData: [{title: '全网算力', name: 'hashrate', unit: 'PH/s'}, {title: '当前全网困难度', name: 'difficulty', unit: 'T'}],
+        computeData: {}
       }
     },
     methods: {
@@ -143,18 +143,16 @@
         } else {
           api.tips('即将开放，敬请期待', 1)
         }
-      },
-      setData (n) {
-        this.dataSrc = n
-        if (n === 1) {
-          this.mapType = 1
-        } else {
-          this.mapType = 0
-        }
       }
     },
     mounted () {
       window.addEventListener('resize', this.goMobile, false)
+      var self = this
+      util.post('showDifficulty', {sign: 'token=0'}).then(function (res) {
+        api.checkAjax(self, res, () => {
+          self.computeData = res
+        })
+      })
     },
     computed: {
       ...mapState({
@@ -171,24 +169,32 @@
       .swiper_wrap{
         .swiper_one{
           position: relative;
-          height: 520px;
-          background: linear-gradient(to bottom, #0D1B36 10%, #264683);
-          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0D1B36', endColorstr='#264683',GradientType=0 );
-          img{
-            position: absolute;
-            transition: all .2s;
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
-            &:first-child{
-              left:calc(50% - 590px);
-            }
-            &:nth-child(2){
-              right:calc(50% - 590px);
-            }
-            @media screen and (max-width: 1178px) and (min-width: 340px){
-              object-fit:contain
-            }
+          height: 420px;
+          &:nth-child(2),&:nth-child(4){
+            @include bg(1920, 420)
+            background: linear-gradient(to right, #FE5337 10%, #FF9D02);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FE5337', endColorstr='#FF9D02',GradientType=1 );
           }
+          &:nth-child(1),&:nth-child(3){
+            @include bg(1920, 420)
+            background: linear-gradient(to right, #1077F0 10%, #00E0D8);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1077F0', endColorstr='#00E0D8',GradientType=1 );
+          }
+          // img{
+          //   position: absolute;
+          //   transition: all .2s;
+          //   transform-style: preserve-3d;
+          //   backface-visibility: hidden;
+          //   &:first-child{
+          //     left:calc(50% - 590px);
+          //   }
+          //   &:nth-child(2){
+          //     right:calc(50% - 590px);
+          //   }
+          //   @media screen and (max-width: 1178px) and (min-width: 340px){
+          //     object-fit:contain
+          //   }
+          // }
           a.btn{
             position: absolute;
             width:200px;
@@ -196,7 +202,7 @@
             line-height: 50px;
             text-align: center;
             left:calc(50% - 590px);
-            top:330px;
+            top:250px;
             color:#fff;
             border:1px solid #fff;
             border-radius:5px;
@@ -206,87 +212,90 @@
               color:#1e396c
             }
           }
-          img:first-child,a.btn{
-            @media screen and (max-width: 1178px) and (min-width: 340px){
-              left:0;
-            }
-          }
-          img:nth-child(2){
-            @media screen and (max-width: 1178px) and (min-width: 340px){
-              right:0;
-            }
-          }
-          &:nth-child(6),&:nth-child(2){
-            img{
-              top:0;
-              left:calc(50% - 590px);
-              width:1180px;
-              height:100%;
-              object-fit:cover;
-              @media screen and (max-width: 1178px) and (min-width: 340px){
-                width:100%;
-              }
-            }
-            a.btn{
-              left:calc(50% - 590px);
-              @include button($blue)
-            }
-          }
-          &:nth-child(3) img:first-child{
-            width:563px;
-            top:calc(50% - 45px);
-            height:90px;
-          }
-          &:nth-child(3) img:nth-child(2){
-            top:calc(50% - 139.5px);
-            width:532px;
-            height:279px;
-          }
-          &:nth-child(4){
-            img:first-child{
-              width:626px;
-              top:calc(50% - 44px);
-              height:88px;
-            }
-          }
-          &:nth-child(4){
-            img:nth-child(2){
-              top:calc(50% - 137.5px);
-              width:404px;
-              height:275px;
-            }
-          }
-          &:nth-child(5),&:nth-child(1){
-            img:first-child{
-              width:493px;
-              top:calc(50% - 44.5px);
-              height:99px;
-            }
-          }
-          &:nth-child(5),&:nth-child(1){
-            img:nth-child(2){
-              top:calc(50% - 143.5px);
-              width:564px;
-              height:287px;
-            }
-          }
+          // img:first-child,a.btn{
+          //   @media screen and (max-width: 1178px) and (min-width: 340px){
+          //     left:0;
+          //   }
+          // }
+          // img:nth-child(2){
+          //   @media screen and (max-width: 1178px) and (min-width: 340px){
+          //     right:0;
+          //   }
+          // }
+          // &:nth-child(6),&:nth-child(2){
+          //   img{
+          //     top:0;
+          //     left:calc(50% - 590px);
+          //     width:1180px;
+          //     height:100%;
+          //     object-fit:cover;
+          //     @media screen and (max-width: 1178px) and (min-width: 340px){
+          //       width:100%;
+          //     }
+          //   }
+          //   a.btn{
+          //     left:calc(50% - 590px);
+          //     @include button($blue)
+          //   }
+          // }
+          // &:nth-child(3) img:first-child{
+          //   width:563px;
+          //   top:calc(50% - 45px);
+          //   height:90px;
+          // }
+          // &:nth-child(3) img:nth-child(2){
+          //   top:calc(50% - 139.5px);
+          //   width:532px;
+          //   height:279px;
+          // }
+          // &:nth-child(4){
+          //   img:first-child{
+          //     width:626px;
+          //     top:calc(50% - 44px);
+          //     height:88px;
+          //   }
+          // }
+          // &:nth-child(4){
+          //   img:nth-child(2){
+          //     top:calc(50% - 137.5px);
+          //     width:404px;
+          //     height:275px;
+          //   }
+          // }
+          // &:nth-child(5),&:nth-child(1){
+          //   img:first-child{
+          //     width:493px;
+          //     top:calc(50% - 44.5px);
+          //     height:99px;
+          //   }
+          // }
+          // &:nth-child(5),&:nth-child(1){
+          //   img:nth-child(2){
+          //     top:calc(50% - 143.5px);
+          //     width:564px;
+          //     height:287px;
+          //   }
+          // }
         }
       }
+    }
+    h1.home_item_title,p.home_item_desc{
+      text-align: center;
+      color:#01215C;
+    }
+    h1.home_item_title{
+      font-size: 28px;
+      line-height: 1.8;
+      margin-top:20px;
+      font-weight: bold;
+    }
+    p.home_item_desc{
+      font-size: 18px;
+      margin-bottom:25px;
     }
     .home_title{
       .main{
         @include main
-        @include gap(30,v,margin)
-        h1,p{
-          text-align: center
-        }
-        h1{
-          font-size: 30px;
-          line-height: 1.8;
-        }
-        p{
-          font-size: 18px
-        }
         .list{
           @include row(5,0)
           margin-top:20px;
@@ -488,17 +497,41 @@
       }
     }
     .my_map{
-      &:not(.active){
-        background: #333333;
-        color:#fff;
-      }
+      background: #F6F7FB;
+      padding-top:30px;
       .main{
         @include main
-        h3{
-          font-size: 24px;
-          padding-top:30px;
-          margin-bottom:20px;
-          text-align: center;
+        .home_map_data{
+          width:700px;
+          margin:0 auto;
+          @include flex
+          .item{
+            position: relative;
+            width:50%;
+            span.item_name{
+              font-size: 16px;
+              margin-right:10px;
+            }
+            span.item_value{
+              font-size: 18px;
+              font-style: italic;
+              color:$blue;
+              font-weight: bold;
+            }
+            &:first-child:after{
+              content:'|';
+              position: absolute;
+              right:0;
+              top:5px;
+              color:$border;
+            }
+            &:last-child{
+              text-align: right;
+            }
+          }
+        }
+        h1.home_item_title{
+          margin-top:0
         }
         .data_title{
           @include flex(center);

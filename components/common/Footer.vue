@@ -95,7 +95,7 @@
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .footer.pc_box{
-    background: $black;
+    background: #F2F6F9;
     color: $light_text;
     padding-bottom:40px;
     .box{
@@ -134,6 +134,7 @@
           .help_support{
             margin-bottom:5px;
             a{
+              color:#01215c;
               @include gap(20,h)
               border-left:1px solid $light_text;
               &:first-child{
@@ -189,7 +190,7 @@
             font-size:14px;
             cursor: pointer;
             &:hover{
-              color:white;
+              color:$blue;
               font-size:14px;
             }
             &.active:nth-of-type(1){
@@ -212,11 +213,12 @@
         @include main
         @include flex
         padding:10px;
-        border:1px dashed $light_text;
+        border:1px dashed $border;
         line-height: 1.2;
         span{
           padding-right:10px;
-          border-right:1px solid $light_text
+          border-right:1px solid $light_text;
+          color:#01215c;
         }
         div{
           @include gap(30,h)
@@ -229,13 +231,13 @@
       }
     }
     h4{
-      color:#f5f8fb;
+      color:#01215c;
     }
     h3,a,p,span,.copyright_text{
-      color:#adaeb1;
+      color:$light_text;
     }
     a:hover,.active{
-      color:$white
+      color:$blue
     }
     &[disabled]{
       display: none;
