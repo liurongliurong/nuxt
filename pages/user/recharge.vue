@@ -55,16 +55,6 @@
     },
     methods: {
       submit () {
-        if (!this.rechargeNo && !(this.bank_card && this.bank_card.status === 1)) {
-          api.tips('请先绑定银行卡', this.isMobile, () => {
-            if (this.isMobile) {
-              this.$router.push({name: 'mobile-administration'})
-            } else {
-              this.$router.push({name: 'user-account'})
-            }
-          })
-          return false
-        }
         var mobile = api.checkEquipment()
         var form = document.querySelector('.form')
         var data = api.checkFrom(form, this, mobile)
@@ -111,7 +101,6 @@
       ...mapState({
         token: state => state.info.token,
         user_id: state => state.info.user_id,
-        bank_card: state => state.info.bank_card,
         isMobile: state => state.isMobile
       })
     }

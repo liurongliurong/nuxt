@@ -26,7 +26,7 @@
         sort: [{title: '价格', option: 'price_desc'}, {title: '算力', option: 'base_desc'}, {title: '出售总数', option: 'num_desc'}],
         sortNav: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热中'}, {code: 1, title: '热销中'}, {code: 2, title: '已售罄'}]}],
         sortNav2: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热中'}, {code: 5, title: '热销中'}, {code: 7, title: '已售罄'}]}],
-        sortType: {title: '商品列表', options: ['矿机', '云矿机']},
+        sortType: {title: '商品列表', options: ['矿机', '云算力']},
         cloudMinerDate: [],
         minerData: [],
         len: 0,

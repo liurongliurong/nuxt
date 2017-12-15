@@ -6,7 +6,7 @@
           <router-link to="/minerShop/list">矿机商城</router-link>
           <span>></span>
           <router-link to="/minerShop/miner/1" v-if="params2==='1'">矿机</router-link>
-          <router-link to="/minerShop/miner/2" v-else>云矿机</router-link>
+          <router-link to="/minerShop/miner/2" v-else>云算力</router-link>
           <span>></span>
           <em>{{$parent.detail.name}}</em>
         </div>
@@ -36,7 +36,7 @@
               </div>
               <p class="miner_number">库存{{$parent.leftNum}}台</p>
             </div>
-            <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" v-if="$parent.detail.status===1" @click="checkPay">立即支付</button>
+            <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" v-if="$parent.detail.status===1" @click="checkPay">立即购买</button>
             <button class="btn" disabled v-else-if="$parent.detail.status===2" style="background:#c3bbba;">已售罄</button>
             <button class="btn" disabled v-else-if="$parent.detail.status===3">产品撤销</button>
           </div>
@@ -44,7 +44,7 @@
         <div class="items cloud_miner" v-if="params2!=='1'">
           <div class="miner_type" style="background:#327fff;">
             <div class="iconfont">&#xe610;</div>
-            <span>云矿机</span>
+            <span>云算力</span>
           </div>
           <div class="cloud_miner_left">
             <h4>
@@ -83,7 +83,7 @@
             <div class="price_text1">总算力：<span class="money">{{$parent.totalHash|format}}T</span></div>
             <div class="price_text1">需支付：<span class="money">{{$parent.totalPrice|format}}元</span></div>
             <button class="btn" disabled v-if="$parent.leftStatus" style="background:#c3bbba;">已售罄</button>
-            <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" v-else @click="checkPay($event, false)">立即支付</button>
+            <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" v-else @click="checkPay($event, false)">立即购买</button>
             <button class="btn loan_btn" @click="checkPay($event, true)" v-if="params2==='2'&&!$parent.leftStatus">分期购买</button>
           </div>
         </div>
@@ -142,7 +142,7 @@
           <span class="name_box">{{$parent.detail.name}}</span>
         </h4>
         <div class="mobile_price">
-          <div class="type_name">{{params2==='1'?'矿机':'云矿机'}}</div>
+          <div class="type_name">{{params2==='1'?'矿机':'云算力'}}</div>
           <div>算力价：<span class="price">￥{{$parent.detail.one_amount_value}}</span></div>
         </div>
         <div class="buy_tips" v-if="params2==='1'">{{$parent.detail.DeliveryTime}}</div>
@@ -178,7 +178,7 @@
         </div>
         <div class="mobile_btn">
           <button disabled v-if="$parent.leftStatus">已售罄</button>
-          <button @click="openMask" v-else>立即支付</button>
+          <button @click="openMask" v-else>立即购买</button>
         </div>
       </template>
       <template v-else>
@@ -211,7 +211,7 @@
           </div>
         </div>
         <div class="mobile_btn">
-          <button @click="openMask" v-if="$parent.detail.status===1">立即支付</button>
+          <button @click="openMask" v-if="$parent.detail.status===1">立即购买</button>
           <button disabled v-else-if="$parent.detail.status===2">已售罄</button>
           <button disabled v-else-if="$parent.detail.status===3">已售罄</button>
           <button disabled v-else>暂不能购买</button>
@@ -247,7 +247,7 @@
           </div>
           <div class="mobile_btn">
             <button disabled v-if="$parent.leftStatus">已售罄</button>
-            <button @click="checkPay($event, false)" v-else>立即支付</button>
+            <button @click="checkPay($event, false)" v-else>立即购买</button>
           </div>
         </div>
       </div>

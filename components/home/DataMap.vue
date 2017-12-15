@@ -29,7 +29,7 @@
       return {
         img: require('@/assets/images/world.png'),
         bdcDots: [{title: '哈萨克斯坦', top: 96, left: 720}, {title: '内蒙古', top: 127, right: 200}, {title: '四川', top: 187, right: 330}, {title: '云南', top: 207, right: 230}, {title: '山西', top: 164, right: 210}, {title: '新疆', top: 137, right: 290}, {title: '俄罗斯', top: 47, right: 220}, {title: '美国', top: 130, left: 166}, {title: '加拿大', top: 79, left: 130}, {title: '欧洲', top: 116, left: 610}],
-        btcDots: [{title: '', top: 66, left: 120}, {title: '', top: 102, left: 140}, {title: '', top: 137, left: 136}, {title: '', top: 145, left: 142}, {title: '', top: 210, left: 210}]
+        btcDots: [{title: '', top: 66, left: 120}, {title: '', top: 102, left: 140}, {title: '', top: 137, left: 136}, {title: '', top: 145, left: 142}, {title: '', top: 210, left: 210}, {title: '', top: 420, left: 350}, {title: '', top: 105, left: 610}, {title: '', top: 125, left: 610}, {title: '', top: 135, left: 600}]
       }
     }
   }
@@ -59,7 +59,15 @@
           height: 32px;
           background: url('~assets/images/home.png') -122px -129px;
           margin-right:5px;
+          animation-duration: 5s;
+          animation-fill-mode: both;
+          animation-iteration-count: infinite;
+          animation-name: bounce;
+          transform-origin: center bottom;
         }
+        // &:nth-child(2n){
+        //   animation-delay: .5s;
+        // }
         &:after{
           position: absolute;
           top: 0;
@@ -98,6 +106,13 @@
       width: 17px;
       height: 15px;
       background: url('~assets/images/home.png') -186px -10px;
+      animation-duration: 3s;
+      animation-fill-mode: both;
+      animation-iteration-count: infinite;
+      animation-name: flash;
+      // &:nth-child(2n){
+      //   animation-delay: 1s;
+      // }
     }
     .map_legend{
       position: absolute;
@@ -143,6 +158,34 @@
       }
     }[not-existing] {
       zoom: 1
+    }
+    @keyframes bounce {
+      from, 20%, 53%, 80%, to {
+        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        transform: translate3d(0,0,0);
+      }
+
+      40%, 43% {
+        animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+        transform: translate3d(0, -10px, 0);
+      }
+
+      70% {
+        animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+        transform: translate3d(0, -5px, 0);
+      }
+
+      90% {
+        transform: translate3d(0,-2px,0);
+      }
+    }
+    @keyframes flash {
+      from, 50%, to {
+        opacity: 0.7;
+      }
+      25%, 75% {
+        opacity: 0.2;
+      }
     }
   }
 </style>

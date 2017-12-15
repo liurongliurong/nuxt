@@ -1,7 +1,7 @@
 <template>
   <div class="activity_list">
     <div class="res">
-      <h2>云矿机购买记录</h2>
+      <h2>云算力购买记录</h2>
       <div class="table">
         <ul class="thead">
             <li v-for="n,k in res">{{n}}</li>

@@ -255,16 +255,6 @@
             this.tip('余额不足，请充值', ff.accept)
             return false
           }
-          if (!(this.bank_card && this.bank_card.status === 1)) {
-            api.tips('请先绑定银行卡', this.isMobile, () => {
-              if (this.isMobile) {
-                this.$router.push({name: 'mobile-administration'})
-              } else {
-                this.$router.push({name: 'user-account'})
-              }
-            })
-            return false
-          }
           if (!this.trade_password) {
             api.tips('请先设置交易密码', this.isMobile, () => {
               this.$router.push({name: 'user-password'})
@@ -532,7 +522,6 @@
       ...mapState({
         token: state => state.info.token,
         user_id: state => state.info.user_id,
-        bank_card: state => state.info.bank_card,
         isMobile: state => state.isMobile,
         trade_password: state => state.info.trade_password,
         addressObj: state => state.addressData

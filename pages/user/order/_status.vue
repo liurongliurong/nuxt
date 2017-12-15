@@ -88,7 +88,7 @@
               </template>
               <td v-if="status!=3&&!(nowEdit===2&&status==1)">
                 <template v-if="nowEdit===0&&status==1&&!d.is_loan">
-                  <button class="sold" @click="openMask('sold', '出售云矿机', d.id)" v-if="d.remain_miner&&d.status===8">出售云矿机</button>
+                  <button class="sold" @click="openMask('sold', '出售云算力', d.id)" v-if="d.remain_miner&&d.status===8">出售云算力</button>
                 </template>
                 <template v-if="nowEdit===0&&status==2">
                   <button @click="quit('sold', d.id)">撤销出售</button>
@@ -183,8 +183,8 @@
     },
     data () {
       return {
-        title: {0: '云矿机', 3: '矿机'},
-        title2: {0: '云矿机', 2: '基金', 3: '矿机'},
+        title: {0: '云算力', 3: '矿机'},
+        title2: {0: '云算力', 2: '基金', 3: '矿机'},
         nav: [{'0': '已购买', '1': '出售中', '2': '已出售', '3': '已结束'}, {'0': '已租赁', '1': '出租中', '2': '已出租', '3': '已结束'}, {'0': '持有', '3': '已结束'}, {'0': '已购买'}],
         data: [],
         status: 1,
