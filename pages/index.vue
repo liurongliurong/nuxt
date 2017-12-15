@@ -394,13 +394,11 @@
           justify-content: space-between;
           .item{
             position: relative;
-            height: 170px;
             width: 280px;
             border-radius: 10px;
             margin-top: 20px;
             img{
               width: 100%;
-              height: 100%;
             }
           }
         }
