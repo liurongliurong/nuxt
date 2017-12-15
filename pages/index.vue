@@ -6,24 +6,24 @@
       <div class="main">
         <div class="list">
           <div class="item" v-for="a,k in ad.items">
-            <span :class="['iconfont', 'icon'+k]"></span>
-            <h3>{{a.title}}</h3>
-            <div class="line"></div>
-            <p v-html="a.desc"></p>
+            <img :src="a.img1"/>
           </div>
         </div>
       </div>
     </div>
     <div class="home_title">
       <div class="main">
-        <h1 class="home_item_title">{{ad.title}}</h1>
-        <p class="home_item_desc">{{ad.desc}}</p>
+        <h1>{{ad.title}}</h1>
+        <p>{{ad.desc}}</p>
         <div class="list">
           <div class="item" v-for="s,k in suanLi">
-            <div class="iconfont"></div>
+            <div class="blurborder">
+              <span></span>
+            </div>
             <div class="item_title">{{s.title}}</div>
             <div class="item_desc">{{s.desc}}</div>
-          </div><div class="item"></div>
+            <div class="item_desc">{{s.bardesc}}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -43,7 +43,8 @@
     </div>
     <div class="partner">
       <div class="box">
-        <h3>战略合作伙伴</h3>
+        <h3>携手共赢， 与全球合作伙伴共建算力生态</h3>
+        <p>精诚合作共享资源， 凝心聚力协调发展， 共建算力产业</p>
         <div class="list">
           <div class="item" v-for="i in 7" v-if="i!==2">
             <div :class="'img img'+i"></div>
@@ -122,9 +123,9 @@
         nav: [{title: '矿机商城', desc: '无忧购买矿机', url: '/minerShop/miner/1'}, {title: 'BDC托管', desc: '多个BDC中心', url: '/bdc'}, {title: '产业资讯', desc: '掌握产业动态', url: '/quickNews'}, {title: '算力转让', desc: '掌握产业动态', url: '/mobile/information'}],
         data: [1, 1, 1],
         newsNav: [{title: '热点快讯·不止于此', desc: '开启算力新篇章'}, {title: '实时交易信息', desc: '前往了解更多'}, {title: '挖矿币种资料', desc: '前往了解更多'}],
-        ad: {title: '算力驱动未来，信任链接天下', desc: '全球算力产业链资源整合，基于区块链的分布式算力输出平台', items: [{title: '项目合规', desc: '所有项目出具法律意见书<br>并公开法律意见书'}, {title: '用电合规', desc: '项目为政府招商引资项目<br>全部国网供电，电力稳定持久'}, {title: '透明收益', desc: '全流程产业链对接，信息透明<br>避免踩坑'}, {title: '全程存证', desc: '对接保全网区块链电子凭证技术<br>实现全部在线协议的合规有效'}, {title: '算力管家', desc: '为用户投资的每一份算力<br>提供贴心的远程管家服务'}]},
+        ad: {title: '算力驱动未来，信任链接天下', desc: '全球算力产业链资源整合，基于区块链的分布式算力输出平台', items: [{img1: require('@/assets/images/home/feature1.png')}, {img1: require('@/assets/images/home/feature2.png')}, {img1: require('@/assets/images/home/feature3.png')}, {img1: require('@/assets/images/home/feature4.png')}]},
         wqImg: require('@/assets/images/img.jpg'),
-        suanLi: [{title: 'SHA256比特币算力', desc: 'Bitcoin数字货币算力', icon: 'ELbobeicesuan'}, {title: '卷积神经算法算力', desc: '为CNN卷积神经网络提供分布式加速服务', icon: 'guanlianxitongwenbenqueren'}, {title: 'EquiHash零币算力', desc: 'ZeroCASH提供隐私保护及零知识证明的基础算力', icon: 'wodegongzuo-liebiao'}, {title: '智能合约算力', desc: '全球贸易智能合约服务的分布式基础算力', icon: 'dianzihetongshenqing'}, {title: 'Curecoin算力', desc: '蛋白质折叠计算，生化反应模型，用于发现新药', icon: 'hebaoshenpi'}, {title: 'Scrypt莱特币算力', desc: 'Litecoin数字货币算力', icon: 'xinxichaxun'}, {title: '游戏币兑换算力', desc: '全球游戏产业虚拟货币通用兑换算力', icon: 'jiedongzhiquzhihang'}, {title: 'Ethash以太算力', desc: '以太坊网络，ETCETH算力', icon: 'yewuchaxun'}, {title: '公证算力', desc: '提供区块链公证服务，存证保全的基础算力', icon: 'shouqushenqingchaxun'}],
+        suanLi: [{title: 'SHA256比特币算力', desc: 'Bitcoin数字货币算力', bardesc: ''}, {title: '卷积神经算法算力', desc: '为CNN卷积神经', bardesc: '网络提供分布式加速服务'}, {title: 'EquiHash零币算力', desc: 'ZeroCASH提供隐私保护', bardesc: '及零知识证明的基础算力'}, {title: '智能合约算力', desc: '全球贸易智能合约', bardesc: '服务的分布式基础算力'}, {title: 'Curecoin算力', desc: '蛋白质折叠计算，', bardesc: '生化反应模型，用于发现新药'}, {title: '游戏币兑换算力', desc: '全球游戏产业', bardesc: '虚拟货币通用兑换算力'}, {title: 'Ethash以太算力', desc: '以太坊网络', bardesc: 'ETC，ETH算力'}, {title: '公证算力', desc: '提供区块链公证服务', bardesc: '存证保全的基础算力'}],
         mapData: [{title: '全网算力', name: 'hashrate', unit: 'PH/s'}, {title: '当前全网困难度', name: 'difficulty', unit: 'T'}],
         computeData: {}
       }
@@ -294,163 +295,104 @@
       margin-bottom:25px;
     }
     .home_title{
+      margin-top: 48px;
       .main{
         @include main
+        @include gap(30,v,margin)
+        h1,p{
+          text-align: center;
+          color: #002059;
+        }
+        h1{
+          font-size: 28px;
+          line-height: 1.8;
+        }
+        p{
+          font-size: 18px
+        }
         .list{
           @include row(5,0)
-          margin-top:20px;
-          border-bottom: 1px solid $border;
-          border-right: 1px solid $border;
+          margin-top:30px;
           .item{
             text-align: center;
-            border-top: 1px solid $border;
-            border-left: 1px solid $border;
-            padding:15px;
-            height:146px;
+            width: 25%;
+            height:229px;
             .item_title{
               font-size: 18px;
               margin-bottom:10px
             }
+            .blurborder{
+              border:3px solid #327fff;
+              width: 75px;
+              height: 75px;
+              box-sizing: border-box;
+              margin:0 auto;
+              margin-top:32px;
+              margin-bottom: 20px;
+              span{
+                margin:0 auto;
+                margin-top: 16px;
+                width: 36px;
+                height: 36px;
+                display:block;
+              }
+            }
             .item_desc{
-              text-align: left;
               color:$light_black;
             }
-            &:nth-child(1),&:nth-child(6),&:nth-child(8){
-              .item_desc{
-                text-align: center
+            &:hover{
+              box-shadow: 0 0 10px #d2d4db;
+              .item_title{
+                color: #327fff;
               }
             }
-            & .iconfont{
-              font-size: 36px;
-              color:#538fee;
-              line-height: 1;
-            }
-            &:nth-child(1) .iconfont:before{
-              content:'\e6ca'
-            }
-            &:nth-child(2) .iconfont:before{
-              content:'\e6cd'
-            }
-            &:nth-child(3) .iconfont:before{
-              content:'\e6d8'
-            }
-            &:nth-child(4) .iconfont:before{
-              content:'\e6cb'
-            }
-            &:nth-child(5) .iconfont:before{
-              content:'\e6ce'
-            }
-            &:nth-child(6) .iconfont:before{
-              content:'\e6dd'
-            }
-            &:nth-child(7) .iconfont:before{
-              content:'\e6d0'
-            }
-            &:nth-child(8) .iconfont:before{
-              content:'\e6dc'
-            }
-            &:nth-child(9) .iconfont:before{
-              content:'\e6da'
-            }
-            &:not(:last-child):hover{
-              background: $blue;
-              &,.iconfont,.item_desc{
-                color:$white
-              }
-            }
-            &:nth-child(10){
-              position: relative;
-              display: inline-block;
-              vertical-align:middle;
-              &:before,&:after{
-                position: absolute;
-                content: "";
-                background: #999;
-              }
-              &:before{
-                left: calc(50% - 15px);
-                top: calc(50% - .5px);
-                width: 30px;
-                height: 1px;
-              }
-              &:after{
-                top: calc(50% - 15px);
-                left: calc(50% - .5px);
-                height: 30px;
-                width: 1px;
-              }
-            }
+          }
+          :nth-child(1) .blurborder span{
+            background: url('~assets/images/home.png') no-repeat -66px -71px;
+          }
+          :nth-child(2) .blurborder span{
+            width: 42px; height: 41px;
+            background: url('~assets/images/home.png') no-repeat -10px -10px;
+          }
+          :nth-child(3) .blurborder span{
+            background: url('~assets/images/home.png') no-repeat -130px -10px;
+          }
+          :nth-child(4) .blurborder span{
+            background: url('~assets/images/home.png') no-repeat -130px -66px;
+          }
+          :nth-child(5) .blurborder span{
+            width: 38px; height: 38px;
+            background: url('~assets/images/home.png') no-repeat -72px -10px;
+          }
+          :nth-child(6) .blurborder span{
+            background: url('~assets/images/home.png') no-repeat -10px -129px;
+          }
+          :nth-child(7) .blurborder span{
+            background: url('~assets/images/home.png') no-repeat -66px -129px;
+          }
+          :nth-child(8) .blurborder span{
+            width: 36px; height: 38px;
+            background: url('~assets/images/home.png') no-repeat -10px -71px;
           }
         }
       }
     }
     .home_text{
-      background:#f7f8fa;
-      border-bottom:1px solid $border;
       .main{
         @include main
         line-height: 2;
         .list{
-          @include flex
-          border:1px solid $border;
-          border-top:0;
-          border-bottom:0;
+          display: flex;
+          justify-content: space-between;
           .item{
             position: relative;
             height: 170px;
-            width:20%;
-            padding:20px;
-            padding-right:18px;
-            &:not(:last-child){
-              border-right:1px solid $border;
-            }
-            h3{
-              font-size: 20px;
-            }
-            .line{
-              width:45px;
-              border-bottom:2px solid $blue;
-              margin-top:5px;
-              margin-bottom:7px;
-            }
-            p{
-              position: relative;
-              text-align: left;
-              line-height: 1.5;
-              font-size: 14px;
-              color:$light_text;
-              z-index: 2;
-            }
-            span{
-              position: absolute;
-              top:calc(50% - 35px);
-              right:20px;
-              @include block(70)
-              &:before{
-                font-size: 70px;
-                color:#e6e6e6
-              }
-            }
-            .icon0:before{
-              content: "\e60a"
-            }
-            .icon1:before{
-              content: "\e60b"
-            }
-            .icon2:before{
-              content: "\e606"
-            }
-            .icon3:before{
-              content: "\e604"
-            }
-            .icon4:before{
-              content: "\e608"
-            }
-            &:hover{
-              background: $white;
-              h3{
-                color:$blue
-              }
+            width: 280px;
+            border-radius: 10px;
+            margin-top: 20px;
+            img{
+              width: 100%;
+              height: 100%;
             }
           }
         }
@@ -553,13 +495,20 @@
       }
     }
     .partner{
+      margin-top: 48px;
       .box{
         @include main
         text-align: center;
         margin-bottom:60px;
         h3{
-          font-size: 24px;
-          margin-bottom:30px
+          font-size: 28px;
+          margin-bottom:10px;
+          color:#002059;
+        }
+        p{
+          font-size: 17px;
+          margin-bottom:43px;
+          color:#002059;
         }
         .list{
           @include row(6,0)
@@ -591,16 +540,16 @@
             .img_hover1{
               background: url('~assets/images/partner.png') -180px -216px;
             }
-            // .img2,.img_hover2{
-            //   height: 50px;
-            //   width: 180px;
-            // }
-            // .img2{
-            //   background: url('../assets/images/partner.png') -360px -117px;
-            // }
-            // .img_hover2{
-            //   background: url('../assets/images/partner.png') -0px -171px;
-            // }
+            .img2,.img_hover2{
+              height: 50px;
+              width: 180px;
+            }
+            .img2{
+              background: url('../assets/images/partner.png') -360px -117px;
+            }
+            .img_hover2{
+              background: url('../assets/images/partner.png') -0px -171px;
+            }
             .img3,.img_hover3{
               height: 49px;
               width: 150px;
