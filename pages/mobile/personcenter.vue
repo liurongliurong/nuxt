@@ -102,21 +102,22 @@
           })
           return false
         }
-        if (!(this.bank_card && this.bank_card.status === 1)) {
-          api.tips('请先绑定银行卡', this.isMobile, () => {
-            if (api.checkEquipment) {
-              this.$router.push({name: 'mobile-administration'})
-            } else {
-              this.$router.push({name: 'auth-account'})
-            }
-          })
-          return false
-        }
         if (k === 1) {
+          this.$store.commit('SET_URL', this.$route.path)
           this.$router.push({name: 'mobile-recharge'})
           return false
         }
         if (k === 2) {
+          if (!(this.bank_card && this.bank_card.status === 1)) {
+            api.tips('请先绑定银行卡', this.isMobile, () => {
+              if (api.checkEquipment) {
+                this.$router.push({name: 'mobile-administration'})
+              } else {
+                this.$router.push({name: 'auth-account'})
+              }
+            })
+            return false
+          }
           if (+this.balance_account <= 0) {
             api.tips('您的账户余额不足，不能提现', this.isMobile)
             return false
@@ -162,9 +163,6 @@
         }
         this.total_price = e.target.value
       }
-    },
-    fetch ({ store, params }) {
-      
     },
     mounted () {
       setTimeout(() => {

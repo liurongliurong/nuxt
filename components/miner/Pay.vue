@@ -84,7 +84,7 @@
             </label>
             <div class="pay_info">
               <span>金额不足，可先</span>
-              <router-link to="/user/recharge">充值</router-link>
+              <a href="javascript:;" @click="goRecharge('/user/recharge')">充值</a>
             </div>
           </div>
           <div :class="['pay_text',{active:payNo===2}]">
@@ -477,6 +477,10 @@
         } else {
           this.isFixTop = false
         }
+      },
+      goRecharge (url) {
+        this.$store.commit('SET_URL', this.$route.path)
+        this.$router.push({path: url})
       }
     },
     mounted () {

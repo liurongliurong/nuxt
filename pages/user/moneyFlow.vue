@@ -108,6 +108,7 @@
           return false
         }
         if (str === 'recharge') {
+          this.$store.commit('SET_URL', this.$route.path)
           this.$router.push({name: 'user-recharge'})
           return false
         }

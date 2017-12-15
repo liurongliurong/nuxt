@@ -69,11 +69,10 @@
               res.subject = encodeURIComponent(res.subject)
               if (mobile) {
                 res = Object.assign(res, {is_mobile: 1})
-                callbackUrl = location.protocol + '//' + location.host + '/mobile/moneyFlow'
               } else {
                 res = Object.assign(res, {is_mobile: 0})
-                callbackUrl = location.protocol + '//' + location.host + '/user/moneyFlow/default'
               }
+              callbackUrl = location.protocol + '//' + location.host + self.callUrl
               util.post('alipay', {sign: api.serialize(Object.assign({url: callbackUrl, token: self.token}, res))}).then((resData) => {
                 api.checkAjax(self, resData, () => {
                   location.href = resData.url
@@ -87,7 +86,11 @@
               form.amount.value = ''
               form.request_id.value = ''
               api.tips('提交成功，请等待工作人员确认', self.isMobile, () => {
-                form.btn.removeAttribute('disabled')
+                if (self.callUrl) {
+                  self.$router.push({path: self.callUrl})
+                  self.$store.commit('SET_URL', '')
+                }
+                // form.btn.removeAttribute('disabled')
               })
             }, form.btn)
           })
@@ -99,6 +102,7 @@
     },
     computed: {
       ...mapState({
+        callUrl: state => state.callUrl,
         token: state => state.info.token,
         user_id: state => state.info.user_id,
         isMobile: state => state.isMobile
