@@ -53,7 +53,7 @@
             })
             api.tips('欢迎来到算力网！', self.isMobile, () => {
               if (self.callUrl) {
-                location.href = self.callUrl
+                self.$router.push({path: self.callUrl})
                 self.$store.commit('SET_URL', '')
               } else {
                 self.$router.push({path: '/'})

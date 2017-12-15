@@ -17,7 +17,7 @@
             <router-link to="/bdc" class="btn" v-if="k===5||k===1"><span class="swiper_arrow"></span>前往申请机位</router-link>
             <!-- <router-link to="/bdc" class="btn" v-else-if="k===2">查看详情</router-link>
             <router-link to="/user/computeProperty" class="btn" v-else-if="k===3">查看详情</router-link> -->
-            <router-link to="/minerShop/activity" class="btn" v-else="k===0||k===4"><span class="swiper_arrow"></span>开启挖矿之旅</router-link>
+            <router-link to="/minerShop/list" class="btn" v-else="k===0||k===4"><span class="swiper_arrow"></span>开启挖矿之旅</router-link>
           </div>
         </div>
       </template>

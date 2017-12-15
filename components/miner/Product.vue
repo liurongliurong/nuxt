@@ -295,8 +295,10 @@
           api.tips('还未到开售时间，开售时间为：' + api.date(new Date(startTime * 1000)))
           return false
         }
-        if (this.token === 0) {
+        if (!this.token) {
+          this.$store.commit('SET_URL', this.$route.path)
           this.$router.push({name: 'auth-login'})
+          this.$store.commit('LOGOUT')
           return false
         }
         if (!(this.true_name && this.true_name.status === 1)) {

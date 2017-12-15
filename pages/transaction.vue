@@ -79,8 +79,10 @@
     methods: {
       allclick (i) {
         this.show = i
-        if (this.token === 0) {
+        if (!this.token) {
+          this.$store.commit('SET_URL', this.$route.path)
           this.$router.push({name: 'auth-login'})
+          this.$store.commit('LOGOUT')
           return false
         }
       }
