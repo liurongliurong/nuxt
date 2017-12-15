@@ -14,10 +14,10 @@
               <img :src="require('@/assets/images/swiper/'+(k===0?'4':k===5?'1':k)+'_'+b+'.png')" v-for="b in n">
             </template> -->
             <img :src="require('@/assets/images/swiper/'+(k===0?'2':k===3?'1':k)+'_'+b+'.jpg')" v-for="b in n">
-            <router-link to="/minerShop/list" class="btn" v-if="k===5||k===1">即刻开始</router-link>
+            <router-link to="/bdc" class="btn" v-if="k===5||k===1"><span class="swiper_arrow"></span>前往申请机位</router-link>
             <!-- <router-link to="/bdc" class="btn" v-else-if="k===2">查看详情</router-link>
             <router-link to="/user/computeProperty" class="btn" v-else-if="k===3">查看详情</router-link> -->
-            <router-link to="/minerShop/activity" class="btn" v-else="k===0||k===4">立即抢购</router-link>
+            <router-link to="/minerShop/activity" class="btn" v-else="k===0||k===4"><span class="swiper_arrow"></span>开启挖矿之旅</router-link>
           </div>
         </div>
       </template>
@@ -202,6 +202,36 @@
       transition: all 0ms ease;
       .swiper_one{
         float: left;
+        .swiper_box .btn{
+          .swiper_arrow:before{
+            content:'';
+            @include triangle
+          }
+          .swiper_arrow:after{
+            content:'';
+            @include triangle
+          }
+        }
+        &:nth-child(2),&:nth-child(4){
+          .swiper_box .btn{
+            .swiper_arrow:before{
+              border-left-color:#FC5137
+            }
+            .swiper_arrow:after{
+              border-left-color:#FF9F02
+            }
+          }
+        }
+        &:nth-child(1),&:nth-child(3){
+          .swiper_box .btn{
+            .swiper_arrow:before{
+              border-left-color:#015FFF
+            }
+            .swiper_arrow:after{
+              border-left-color:#7EAFFC
+            }
+          }
+        }
       }
     }
     .swiper-pagination {
