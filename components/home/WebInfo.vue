@@ -8,12 +8,12 @@
           <router-link to="/webInfo/list/website">查看更多 ></router-link>
         </h3>
         <div class="list">
-          <router-link :to="'/webInfo/detail/'+a.id" class="item" v-for="a,k in activity" :key="k">
+          <div @click="goDetail(a.id)" class="item" v-for="a,k in activity" :key="k">
             <span class="icon"></span>
             <span class="line"></span>
             <span class="text" style="width:72%;">{{a.title}}</span>
             <span class="date">{{a.dateline}}</span>
-          </router-link>
+          </div>
         </div>
       </div><div class="box">
         <h3>
@@ -22,12 +22,12 @@
           <router-link to="/webInfo/list/product">查看更多 ></router-link>
         </h3>
         <div class="list">
-          <router-link :to="'/webInfo/detail/'+a.id" class="item" v-for="a,k in notice" :key="k">
+          <div @click="goDetail(a.id)" class="item" v-for="a,k in notice" :key="k">
             <span class="icon"></span>
             <span class="line"></span>
             <span class="text" style="width:72%;">{{a.title}}</span>
             <span class="date">{{a.dateline}}</span>
-          </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -42,6 +42,12 @@
       return {
         activity: [],
         notice: []
+      }
+    },
+    methods: {
+      goDetail (id) {
+        localStorage.setItem('icon_id', JSON.stringify([id]))
+        this.$router.push({path: '/webInfo/detail/'})
       }
     },
     mounted () {
@@ -107,6 +113,7 @@
             position: relative;
             color:$light_text;
             padding-bottom:25px;
+            cursor: pointer;
             @include flex(space-between)
             .icon{
               @include block(10,50%)
