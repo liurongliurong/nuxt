@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer pc_box" v-if="!isMobile">
+  <footer class="footer pc_box" v-if="isMobile === 0">
     <div class="box">
       <div class="box_foot">
         <aside>
@@ -44,15 +44,7 @@
       </div>
     </div>
   </footer>
-  <div class="mobile_tabbar" v-else-if="isMobile">
-    <div class="mobile_tab_item" v-for="item in footList">
-      <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
-        <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
-        <span class="name">{{item.name}}</span>
-      </nuxt-link>
-    </div>
-  </div>
-  <div class="mobile_tabbar" v-else-if="$route.path.includes('minerShop/detail/')" style="display:none;">
+  <div class="mobile_tabbar" v-else-if="isMobile === 1">
     <div class="mobile_tab_item" v-for="item in footList">
       <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
         <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
