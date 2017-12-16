@@ -79,7 +79,7 @@
                 for (var a = 0; a < res.length; a++) {
                   var date1 = res[a].dateline
                   var date2 = new Date()
-                  var date3 = date2.getTime() - new Date(date1).getTime()
+                  var date3 = date2.getTime() - new Date(date1.replace(/-/g, '/')).getTime()
                   var leave1 = date3 % (24 * 3600 * 1000)
                   var days = Math.floor(date3 / (24 * 3600 * 1000)) * 24
                   var hours = Math.floor((Math.floor(leave1 / (3600 * 1000)) + days) / 60)
