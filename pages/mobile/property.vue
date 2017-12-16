@@ -165,9 +165,10 @@
       }
     },
     mounted () {
-      var data = localStorage.getItem('info')
-      if (!data) {
-        this.$router.replace({ name: 'auth-login' })
+      if (!this.token) {
+        this.$store.commit('SET_URL', this.$route.path)
+        this.$router.push({name: 'auth-login'})
+        this.$store.commit('LOGOUT')
         return false
       }
       this.getList()

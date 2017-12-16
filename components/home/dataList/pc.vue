@@ -110,24 +110,26 @@
             font-size: 24px
           }
         }
-        tr:not(:first-child){
-          cursor: pointer;
-          &:hover{
-            background: #ecf3ff;
-          }
-          td:nth-child(3),a{
-            color:$orange
-          }
-          td:last-child{
-            a{
-              width:130px;
-              padding:5px 25px;
-              border-radius:5px
+        tbody{
+          tr{
+            cursor: pointer;
+            &:hover{
+              background: #ecf3ff;
             }
-          }
-          &:hover a{
-            background:$orange;
-            color:$white
+            td:nth-child(3),a{
+              color:$orange
+            }
+            td:last-child{
+              a{
+                width:130px;
+                padding:5px 25px;
+                border-radius:5px
+              }
+            }
+            &:hover a{
+              background:$orange;
+              color:$white
+            }
           }
         }
       }

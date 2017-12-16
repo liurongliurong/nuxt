@@ -168,10 +168,9 @@
       table{
         width: 100%;
         text-align: center;
-        tr{
-          // line-height: 55px;
-          border-bottom:1px solid $border;
-          &:first-child{
+        thead{
+          tr{
+            border-bottom:1px solid $border;
             background: #f7f8fa;
             color: $light_text;
             border-top:1px solid $border;
@@ -182,55 +181,60 @@
               line-height: 50px;
             }
           }
-          td{
-            line-height:54px;
-            i.icon_currency{
-              vertical-align: sub;
-              margin-left:5px
+        }
+        tbody{
+          tr{
+            border-bottom:1px solid $border;
+            td{
+              line-height:54px;
+              i.icon_currency{
+                vertical-align: sub;
+                margin-left:5px
+              }
+              .nuxt-link-active{
+                background: #327fff;
+                color:white;
+              }
+              &:last-child{
+                width:186px;
+                button,a{
+                  line-height: 34px;
+                  @include gap(15,h)
+                }
+                button{
+                  @include button($blue)
+                  margin-right:5px;
+                  &.sold{
+                    margin-bottom:8px
+                  }
+                  &:disabled{
+                    background: #759fe4;
+                    border-color:#759fe4;
+                    cursor: no-drop;
+                  }
+                }
+                a{
+                  display: block;
+                  margin: 0 auto;
+                  width: 88px;
+                  height: 36px !important;
+                  padding:0;
+                  @include button($blue,border)
+                  border-radius: 5px;
+                  .btn:not(:disabled){
+                    @include button($orange)
+                    cursor: pointer;
+                  }
+                }
+              }
             }
-            .nuxt-link-active{
+            &:hover{
+              background: #f7f8fa;
+            }
+            &:hover .blue{
               background: #327fff;
               color:white;
             }
-            &:last-child{
-              width:186px;
-              button,a{
-                line-height: 34px;
-                @include gap(15,h)
-              }
-              button{
-                @include button($blue)
-                margin-right:5px;
-                &.sold{
-                  margin-bottom:8px
-                }
-                &:disabled{
-                  background: #759fe4;
-                  border-color:#759fe4;
-                  cursor: no-drop;
-                }
-              }
-              a{
-                display: block;
-                margin: 0 auto;
-                width: 88px;
-                height: 36px !important;
-                padding:0;
-                @include button($blue,border)
-                border-radius: 5px;
-                .btn:not(:disabled){
-                  @include button($orange)
-                  cursor: pointer;
-                }
-              }
-            }
-          }
-          &:hover{
-            background: #f7f8fa;
-          }
-          &:hover .blue{
-            background: #327fff;
-            color:white;
           }
         }
       }
