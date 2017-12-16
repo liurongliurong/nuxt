@@ -245,7 +245,7 @@
             <div class="item">支付金额</div>
             <div class="item">{{$parent.totalPrice|format}}元</div>
           </div>
-          <div class="mobile_btn">
+          <div class="mobile_btn" style="z-index:9999999;">
             <button disabled v-if="$parent.leftStatus">已售罄</button>
             <button @click="checkPay($event, false)" v-else>立即购买</button>
           </div>
@@ -1076,7 +1076,7 @@
         border-top:1px solid $border;
         padding:9px 15px;
         background: #fff;
-        z-index: 999999999;
+        z-index: 99;
         button {
           width:100%;
           border:0;

@@ -51,7 +51,7 @@
         <span class="name">{{item.name}}</span>
       </nuxt-link>
     </div>
-  </div>  
+  </div> 
 </template>
 <script>
   import util from '@/util'
@@ -251,7 +251,7 @@
     width:100%;
     bottom:0;
     height: 2rem !important;
-    z-index: 9999;
+    z-index: 1;
     background:white;
     border-top:1px solid $border;
     padding: 5px 0;
