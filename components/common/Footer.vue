@@ -44,14 +44,14 @@
       </div>
     </div>
   </footer>
-   <footer class="mobile_tabbar" v-else-if="$route.path.includes('minerShop/detail')" style="display:none;">
+   <!-- <footer class="mobile_tabbar" v-else-if="$route.path.includes('minerShop/detail')" style="display:none;">
     <div class="mobile_tab_item" v-for="item in footList">
       <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
         <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
         <span class="name">{{item.name}}</span>
       </nuxt-link>
     </div>
-  </footer> 
+  </footer>  -->
   <footer class="mobile_tabbar" v-else>
     <div class="mobile_tab_item" v-for="item in footList">
       <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
