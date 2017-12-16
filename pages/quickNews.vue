@@ -12,7 +12,7 @@
     </div>
     <div class="mobilequicknews" v-else>
       <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="quicknews_lists1">
-        <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)" class="total">
+        <div v-for="item, k in museum" :key="k" class="total">
           <h4> {{item.title}} </h4>
           <p v-html="item.content"></p>
           <div class="time"><span class="icon iconfont icon-shijian2"></span>{{times[k]}}小时前</div>
@@ -79,7 +79,7 @@
                 for (var a = 0; a < res.length; a++) {
                   var date1 = res[a].dateline
                   var date2 = new Date()
-                  var date3 = date2.getTime() - new Date(date1).getTime()
+                  var date3 = date2.getTime() - new Date(date1.replace(/-/g, '/')).getTime()
                   var leave1 = date3 % (24 * 3600 * 1000)
                   var days = Math.floor(date3 / (24 * 3600 * 1000)) * 24
                   var hours = Math.floor((Math.floor(leave1 / (3600 * 1000)) + days) / 60)
