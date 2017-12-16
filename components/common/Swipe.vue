@@ -45,8 +45,11 @@
         </div>
       </template>
     </div>
-    <div class="swiper-pagination" v-show="paginationVisiable">
+    <div class="swiper-pagination" v-if="paginationVisiable&&loop">
       <span class="swiper-pagination-bullet" :class="{'active':k+1===currentPage}" v-for="(slide,k) in (data||banners)" @click="setPage(k+1)"></span>
+    </div>
+    <div class="swiper-pagination" v-if="paginationVisiable&&!loop">
+      <span class="swiper-pagination-bullet" :class="{'active':k===currentPage}" v-for="(slide,k) in (data||banners)" @click="setPage(k+1)"></span>
     </div>
     <template v-if="button">
       <div class="prev" @click="prev"><</div>
@@ -156,7 +159,11 @@
         var page = this.currentPage
         var total = this.data ? this.data.length : this.banners.length
         total = this.loop ? (total + 1) : total
-        page = (page + 1) > total ? total : (page + 1)
+        if (!this.loop) {
+          page = (page + 1) >= total ? 0 : (page + 1)
+        } else {
+          page = (page + 1) > total ? total : (page + 1)
+        }
         this.setPage(page)
       },
       prev () {
@@ -169,7 +176,9 @@
       },
       setTranslate () {
         this.translateX = this.currentPage * -this.offset
-        setTimeout(this.onTransitionEnd, this.speed + 500)
+        if (this.loop) {
+          setTimeout(this.onTransitionEnd, this.speed + 500)
+        }
       },
       onInit () {
         this.width = document.body.clientWidth || document.documentElement.clientWidth
