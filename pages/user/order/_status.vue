@@ -232,7 +232,10 @@
           util.post('fundOrder', {sign: api.serialize({token: this.token, user_id: this.user_id, type: this.nowEdit, status: this.status, page: this.now})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res.list
-              self.showImg = !res.total_num
+              // self.showImg = !res.total_num
+              if (!res.total_num) {
+                self.showImg = false
+              }
               if (self.now > 1) return false
               self.len = Math.ceil(res.total_num / 15)
             })
