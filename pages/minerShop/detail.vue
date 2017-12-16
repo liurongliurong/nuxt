@@ -123,6 +123,7 @@
               self.detail = Object.assign(self.detail, res)
               if (self.params2 !== '1') {
                 self.detail = Object.assign(self.detail, res.has_product_miner_base)
+                self.detail.name = res.product_name
                 self.detail.hashType = (res.hashtype && res.hashtype.name) || ''
               } else {
                 self.detail.name = res.name

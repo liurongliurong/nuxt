@@ -89,20 +89,39 @@
         </div>
       </div>
       <div class="product_info">
-        <template v-if="params2!=='1'">
+         <template v-if="params2!=='1'">
           <div class="info_ul">
-            <div :class="['info_li',{'active': contentShow===k}]" v-for="n,k in infolists" @click="tabs(k)">{{n.title}}</div>
+            <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in infolists" @click="tabs(m,d.name)">{{d.title}}</div>
           </div>
           <div class="content_items">
-            <template v-for="n,k in infolists">
-              <div class="content_item" v-html="$parent.detail[n.name]" v-if="k!==3&&contentShow===k"></div>
-              <div class="content_item" v-if="k===3&&contentShow===3">
-                <img :src="$parent.detail[n.name]" alt="">
+            <div class="product_img">
+              <div class="pro_name">{{$parent.detail.product_name}}</div>
+              <div class="pro_slogan">{{$parent.detail.has_product_miner_base.slogan ? $parent.detail.has_product_miner_base.slogan : ''}}</div>
+              <div class="pro_resume">{{$parent.detail.has_product_miner_base.resume ? $parent.detail.has_product_miner_base.resume : ''}}</div>
+              <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
+              <img class="params_img" :src="$parent.detail.has_product_miner_base.product_img" alt="">
+            </div>
+            <div class="content_item" :id="d.name" v-for="d,m in infolists">
+              <h2 v-if="m!==0">{{d.title}}</h2>
+              <!-- <div class="content_con" v-html="$parent.detail[d.name]" v-if=""></div> -->
+              <div class="content_con" v-html="$parent.detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
+              <div class="content_con" v-else-if="d.name==='product_photos'">
+                 <img :src="$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base.product_photos"> 
               </div>
-            </template>
+              <div class="params_table" v-else>
+                <table border="1" cellspacing="0">
+                  <tbody>
+                    <tr v-for="p,k in params">
+                      <td>{{p}}</td>
+                      <td>{{($parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base[k])||$parent.detail[k]}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-        </template>
-        <template v-else>
+        </template> 
+         <template v-else> 
           <div class="info_ul">
             <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in infolist" @click="tabs(m,d.name)">{{d.title}}</div>
           </div>
@@ -129,7 +148,7 @@
               </div>
             </div>
           </div>
-        </template>
+         </template> 
       </div>
     </template>
     <div class="mobile_box" v-else-if="isMobile===1">
@@ -269,7 +288,7 @@
       return {
         proData: {one_amount_value: {title: '每台服务器价格', unit: '元'}, hash: {title: '每台服务器算力', unit: 'T'}, amount: {title: '服务器总台数', unit: '台'}},
         proText: {hashType: '算力类型', status: '购买类型', incomeType: '结算方式'},
-        infolists: [{name: 'machine_intro', title: '产品参数'}, {name: 'machine_advantage', title: '产品优势'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: '矿场相册'}],
+        infolists: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: '矿场相册'}],
         infolist: [{name: 'MInerBrief', title: '产品介绍'}, {name: 'MinerAdvantage', title: '产品参数'}, {name: 'prProtocolSpeciaification', title: '补充说明'}],
         params: {ChipsNumber: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '矿机尺寸', minerOuterSize: '外箱尺寸', Cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
         mobileNav1: {hash: {title: '服务器算力', unit: 'T'}, weight: {title: '服务器重量', unit: 'kg'}, single_limit_amount: {title: '最少购买数量', unit: ''}},
@@ -816,7 +835,7 @@
             margin-bottom:30px;
             width: 52%;
             overflow: hidden;
-            padding-left: 5px;
+            padding-left: 25px;
             padding-top: 10px;
           }
         }
