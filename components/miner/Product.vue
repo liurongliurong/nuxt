@@ -184,15 +184,33 @@
       <template v-if="params2!=='1'">
         <div class="mobile_product_info">
           <div class="info_ulmobile">
-            <div :class="['info_limobile',{'active': contentShow===k}]" v-for="n,k in infolists" @click="tabs(k)">{{n.title}}</div>
+            <div :class="['info_limobile',{'active': contentShow===m}]" v-for="d,m in infolists" @click="tabs(m,d.name)">{{d.title}}</div>
           </div>
           <div class="content_itemsmobile">
-            <template v-for="n,k in infolists">
-              <div class="content_itemmobile" v-html="$parent.detail[n.name]" v-if="k!==3&&contentShow===k"></div>
-              <div class="content_itemmobile" v-if="k===3&&contentShow===3">
-                <img :src="$parent.detail[n.name]" alt="">
+            <div class="product_img">
+              <div class="pro_name">{{$parent.detail.product_name}}</div>
+              <div class="pro_slogan">{{$parent.detail.has_product_miner_base.slogan ? $parent.detail.has_product_miner_base.slogan : ''}}</div>
+              <div class="pro_resume">{{$parent.detail.has_product_miner_base.resume ? $parent.detail.has_product_miner_base.resume : ''}}</div>
+              <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
+              <!-- <img class="params_img" :src="$parent.detail.ActivityPicture" alt=""> -->
+            </div>
+            <div class="content_itemmobile" :id="d.name" v-for="d,m in infolists">
+              <h2 v-if="m!==0">{{d.title}}</h2>
+              <div class="content_conmobile" v-html="$parent.detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
+              <div class="content_conmobile" v-else-if="d.name==='product_photos'">
+                 <img :src="$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base.product_photos"> 
               </div>
-            </template>
+              <div class="params_tablemobile" v-else>
+                <table border="1" cellspacing="0">
+                  <tbody>
+                    <tr v-for="p,k in $parent.params">
+                      <td>{{p}}</td>
+                      <td>{{($parent.detail.miner_list&&$parent.detail.miner_list[k])||$parent.detail[k]}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
         <div class="mobile_btn">
