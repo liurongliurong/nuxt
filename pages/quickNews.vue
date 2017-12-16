@@ -12,7 +12,7 @@
     </div>
     <div class="mobilequicknews" v-else>
       <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="quicknews_lists1">
-        <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)" class="total">
+        <div v-for="item, k in museum" :key="k" class="total">
           <h4> {{item.title}} </h4>
           <p v-html="item.content"></p>
           <div class="time"><span class="icon iconfont icon-shijian2"></span>{{times[k]}}小时前</div>
