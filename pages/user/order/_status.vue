@@ -102,11 +102,11 @@
                 <template v-if="nowEdit===2&&status==0">
                   <button @click="openMask('rent', '出租算力', d.id)" :disabled="!d.remain_hash">出租算力</button>
                 </template>
-                <a href="javascript:;" @click="goDetail(nowEdit,d.id)"  v-if="nowEdit!==3&&nowEdit!==2&&status!=2&&status!=3">查看详情</a>
-                <template v-if="nowEdit===3">
+                <a href="javascript:;" @click="goDetail(nowEdit,d.id)"  v-if="nowEdit===3||(nowEdit!==2&&status!=2&&status!=3)">查看详情</a>
+                <!-- <template v-if="nowEdit===3">
                   <button class="sold" @click="getContract(d.id)">查看协议</button>
                   <button class="sold" @click="getBaoquan(d.id)">查看保全</button>
-                </template>
+                </template> -->
               </td>
             </tr>
           </tbody>
@@ -232,10 +232,7 @@
           util.post('fundOrder', {sign: api.serialize({token: this.token, user_id: this.user_id, type: this.nowEdit, status: this.status, page: this.now})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res.list
-              // self.showImg = !res.total_num
-              if (!res.total_num) {
-                self.showImg = false
-              }
+              self.showImg = !res.total_num
               if (self.now > 1) return false
               self.len = Math.ceil(res.total_num / 15)
             })

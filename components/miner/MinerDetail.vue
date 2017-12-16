@@ -5,12 +5,11 @@
         <div class="box">
           <router-link to="/minerShop/list">矿机商城</router-link>
           <span>></span>
-          <router-link to="/minerShop/miner/1" v-if="params2==='1'">矿机</router-link>
-          <router-link to="/minerShop/miner/2" v-else>云算力</router-link>
+          <router-link to="/minerShop/miner/1">矿机</router-link>
           <span>></span>
           <em>{{$parent.detail.name}}</em>
         </div>
-        <div class="items miner" v-if="params2==='1'">
+        <div class="items miner">
           <div class="miner_type">
             <div class="iconfont">&#xe603;</div>
             <span>矿机</span>
@@ -41,114 +40,38 @@
             <button class="btn" disabled v-else-if="$parent.detail.status===3">产品撤销</button>
           </div>
         </div>
-        <div class="items cloud_miner" v-if="params2!=='1'">
-          <div class="miner_type" style="background:#327fff;">
-            <div class="iconfont">&#xe610;</div>
-            <span>云算力</span>
-          </div>
-          <div class="cloud_miner_left">
-            <h4>
-              {{$parent.detail.product_name}}
-              <span>{{$parent.str[$parent.detail.status]}}</span>
-            </h4>
-            <p class="white" v-if="params2==='2'">可使用算力分期</p>
-            <div class="product_data">
-              <template v-for="d,k in proData" v-if="k!=='product_name'">
-                <div class="item">
-                  <div class="item_word">
-                    <span class="num" v-if="k==='price'">{{$parent.detail[k]|format}}</span>
-                    <span class="num" v-else>{{$parent.detail[k]}}</span>
-                    <span class="unit">{{d.unit}}</span>
-                  </div>
-                  <p class="tips">{{d.title}}</p>
-                </div>
-              </template>
-            </div>
-            <div class="progress_info press" style="overflow:hidden;">
-              <div class="progress_box">
-                <div class="box" :style="{margin:0,width:(parseInt($parent.detail.buyed_amount)/parseInt($parent.detail.amount)*100)+'%'}"></div>
-              </div>
-            </div>
-            <div class="progress_price">
-              <span class="one">当前进度 {{((parseInt($parent.detail.buyed_amount)/parseInt($parent.detail.amount))*100).toFixed(2)}}%</span>
-              <span class="two">剩余可售 {{$parent.leftNum}}台</span>
-            </div>
-          </div>
-          <div class="cloud_miner_right">
-            <div class="price_text">我要购买</div>
-            <div class="input_box">
-              <input type="text" v-model="$parent.number" :placeholder="(parseInt($parent.detail.single_limit_amount)||1)+'台起售'" @blur="$parent.changeNum($parent.number)">
-              <span>台</span>
-            </div>
-            <div class="price_text1">总算力：<span class="money">{{$parent.totalHash|format}}T</span></div>
-            <div class="price_text1">需支付：<span class="money">{{$parent.totalPrice|format}}元</span></div>
-            <button class="btn" disabled v-if="$parent.leftStatus" style="background:#c3bbba;">已售罄</button>
-            <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" v-else @click="checkPay($event, false)">立即购买</button>
-            <button class="btn loan_btn" @click="checkPay($event, true)" v-if="params2==='2'&&!$parent.leftStatus">分期购买</button>
-          </div>
-        </div>
       </div>
       <div class="product_info">
-        <template v-if="params2!=='1'">
-          <div class="info_ul">
-            <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in infolists" @click="tabs(m,d.name)">{{d.title}}</div>
+        <div class="info_ul">
+          <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in infolists" @click="tabs(m,d.name)">{{d.title}}</div>
+        </div>
+        <div class="content_items">
+          <div class="product_img">
+            <div class="pro_name">{{$parent.detail.product_name}}</div>
+            <div class="pro_slogan">{{$parent.detail.has_product_miner_base && $parent.detail.has_product_miner_base.slogan}}</div>
+            <div class="pro_resume">{{$parent.detail.has_product_miner_base && $parent.detail.has_product_miner_base.resume}}</div>
+            <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
+            <img class="params_img" :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_img" alt="">
           </div>
-          <div class="content_items">
-            <div class="product_img">
-              <div class="pro_name">{{$parent.detail.product_name}}</div>
-              <div class="pro_slogan">{{$parent.detail.has_product_miner_base && $parent.detail.has_product_miner_base.slogan}}</div>
-              <div class="pro_resume">{{$parent.detail.has_product_miner_base && $parent.detail.has_product_miner_base.resume}}</div>
-              <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
-              <img class="params_img" :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_img" alt="">
+          <div class="content_item" :id="d.name" v-for="d,m in infolists">
+            <h2 v-if="m!==0">{{d.title}}</h2>
+            <!-- <div class="content_con" v-html="$parent.detail[d.name]" v-if=""></div> -->
+            <div class="content_con" v-html="$parent.detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
+            <div class="content_con" v-else-if="d.name==='product_photos'">
+               <img :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos"> 
             </div>
-            <div class="content_item" :id="d.name" v-for="d,m in infolists">
-              <h2 v-if="m!==0">{{d.title}}</h2>
-              <!-- <div class="content_con" v-html="$parent.detail[d.name]" v-if=""></div> -->
-              <div class="content_con" v-html="$parent.detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
-              <div class="content_con" v-else-if="d.name==='product_photos'">
-                 <img :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos"> 
-              </div>
-              <div class="params_table" v-else>
-                <table border="1" cellspacing="0">
-                  <tbody>
-                    <tr v-for="p,k in params">
-                      <td>{{p}}</td>
-                      <td>{{($parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base[k])||$parent.detail[k]}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <div class="params_table" v-else>
+              <table border="1" cellspacing="0">
+                <tbody>
+                  <tr v-for="p,k in params">
+                    <td>{{p}}</td>
+                    <td>{{($parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base[k])||$parent.detail[k]}}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-        </template> 
-        <template v-else> 
-          <div class="info_ul">
-            <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in infolist" @click="tabs(m,d.name)">{{d.title}}</div>
-          </div>
-          <div class="content_items">
-            <div class="product_img">
-              <div class="pro_name">{{$parent.detail.name}}</div>
-              <div class="pro_slogan">{{$parent.detail.miner_list&&$parent.detail.miner_list.slogan}}</div>
-              <div class="pro_resume">{{$parent.detail.miner_list&&$parent.detail.miner_list.resume}}</div>
-              <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
-              <img class="params_img" :src="$parent.detail.ActivityPicture" alt="">
-            </div>
-            <div class="content_item" :id="d.name" v-for="d,m in infolist">
-              <h2 v-if="m!==0">{{d.title}}</h2>
-              <div class="content_con" v-html="$parent.detail[d.name]" v-if="d.name!=='MinerAdvantage'"></div>
-              <div class="params_table" v-else>
-                <table border="1" cellspacing="0">
-                  <tbody>
-                    <tr v-for="p,k in params">
-                      <td>{{p}}</td>
-                      <td>{{($parent.detail.miner_list&&$parent.detail.miner_list[k])||$parent.detail[k]}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </template> 
+        </div>
       </div>
     </template>
     <div class="mobile_box" v-else-if="isMobile===1">
@@ -161,10 +84,10 @@
           <span class="name_box">{{$parent.detail.name}}</span>
         </h4>
         <div class="mobile_price">
-          <div class="type_name">{{params2==='1'?'矿机':'云算力'}}</div>
+          <div class="type_name">矿机</div>
           <div>算力价：<span class="price">￥{{$parent.detail.one_amount_value}}</span></div>
         </div>
-        <div class="buy_tips" v-if="params2==='1'">{{$parent.detail.DeliveryTime}}</div>
+        <div class="buy_tips">{{$parent.detail.DeliveryTime}}</div>
         <div class="progress_info">
           <div class="progress_box">
             <div class="box" :style="{width:((1-$parent.leftNum/$parent.detail.amount)*100).toFixed(1)+'%'}"></div>
@@ -172,7 +95,7 @@
           <div class="progress_text">剩余{{$parent.leftNum}}台</div>
         </div>
         <div class="base_info">
-          <template v-for="n,k in params2==='1'?mobileNav1:mobileNav2">
+          <template v-for="n,k in mobileNav1">
             <div class="item">
               <div class="item_data">{{$parent.detail[k]}}{{n.unit}}</div>
               <div class="item_text">{{n.title}}</div>
@@ -181,79 +104,40 @@
           </template>
         </div>
       </div>
-      <template v-if="params2!=='1'">
-        <div class="mobile_product_info">
-          <div class="info_ulmobile">
-            <div :class="['info_limobile',{'active': contentShow===m}]" v-for="d,m in infolists" @click="tabs(m,d.name)">{{d.title}}</div>
+      <div class="mobile_product_info">
+        <div class="info_ulmobile">
+          <div :class="['info_limobile',{'active': contentShow===m}]" v-for="d,m in infolists" @click="tabs(m,d.name)">{{d.title}}</div>
+        </div>
+        <div class="content_itemsmobile">
+          <div class="product_img">
+            <div class="pro_name">{{$parent.detail.product_name}}</div>
+            <div class="pro_slogan">{{$parent.detail.has_product_miner_base && $parent.detail.has_product_miner_base.slogan}}</div>
+            <div class="pro_resume">{{$parent.detail.has_product_miner_base && $parent.detail.has_product_miner_base.resume}}</div>
+            <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
           </div>
-          <div class="content_itemsmobile">
-            <div class="product_img">
-              <div class="pro_name">{{$parent.detail.product_name}}</div>
-              <div class="pro_slogan">{{$parent.detail.has_product_miner_base && $parent.detail.has_product_miner_base.slogan}}</div>
-              <div class="pro_resume">{{$parent.detail.has_product_miner_base && $parent.detail.has_product_miner_base.resume}}</div>
-              <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
-              <!-- <img class="params_img" :src="$parent.detail.ActivityPicture" alt=""> -->
+          <div class="content_itemmobile" :id="d.name" v-for="d,m in infolists">
+            <h2 v-if="m!==0">{{d.title}}</h2>
+            <div class="content_conmobile" v-html="$parent.detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
+            <div class="content_conmobile" v-else-if="d.name==='product_photos'">
+               <img :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos"> 
             </div>
-            <div class="content_itemmobile" :id="d.name" v-for="d,m in infolists">
-              <h2 v-if="m!==0">{{d.title}}</h2>
-              <div class="content_conmobile" v-html="$parent.detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
-              <div class="content_conmobile" v-else-if="d.name==='product_photos'">
-                 <img :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos"> 
-              </div>
-              <div class="params_tablemobile" v-else>
-                <table border="1" cellspacing="0">
-                  <tbody>
-                    <tr v-for="p,k in $parent.params">
-                      <td>{{p}}</td>
-                      <td>{{($parent.detail.miner_list&&$parent.detail.miner_list[k])||$parent.detail[k]}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <div class="params_tablemobile" v-else>
+              <table border="1" cellspacing="0">
+                <tbody>
+                  <tr v-for="p,k in $parent.params">
+                    <td>{{p}}</td>
+                    <td>{{($parent.detail.miner_list&&$parent.detail.miner_list[k])||$parent.detail[k]}}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-        <div class="mobile_btn">
-          <button disabled v-if="$parent.leftStatus">已售罄</button>
-          <button @click="openMask" v-else>立即购买</button>
-        </div>
-      </template>
-      <template v-else>
-        <div class="mobile_product_info">
-          <div class="info_ulmobile">
-            <div :class="['info_limobile',{'active': contentShow===m}]" v-for="d,m in infolist" @click="tabs(m,d.name)">{{d.title}}</div>
-          </div>
-          <div class="content_itemsmobile">
-            <div class="product_img">
-              <div class="pro_name">{{$parent.detail.name}}</div>
-              <div class="pro_slogan">{{$parent.detail.miner_list&&$parent.detail.miner_list.slogan}}</div>
-              <div class="pro_resume">{{$parent.detail.miner_list&&$parent.detail.miner_list.resume}}</div>
-              <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
-              <!-- <img class="params_img" :src="$parent.detail.ActivityPicture" alt=""> -->
-            </div>
-            <div class="content_itemmobile" :id="d.name" v-for="d,m in infolist">
-              <h2 v-if="m!==0">{{d.title}}</h2>
-              <div class="content_conmobile" v-html="$parent.detail[d.name]" v-if="d.name!=='MinerAdvantage'"></div>
-              <div class="params_tablemobile" v-else>
-                <table border="1" cellspacing="0">
-                  <tbody>
-                    <tr v-for="p,k in $parent.params">
-                      <td>{{p}}</td>
-                      <td>{{($parent.detail.miner_list&&$parent.detail.miner_list[k])||$parent.detail[k]}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="mobile_btn">
-          <button @click="openMask" v-if="$parent.detail.status===1">立即购买</button>
-          <button disabled v-else-if="$parent.detail.status===2">已售罄</button>
-          <button disabled v-else-if="$parent.detail.status===3">已售罄</button>
-          <button disabled v-else>暂不能购买</button>
-        </div>
-      </template>
+      </div>
+      <div class="mobile_btn">
+        <button disabled v-if="$parent.leftStatus">已售罄</button>
+        <button @click="openMask" v-else>立即购买</button>
+      </div>
       <div class="popup" v-if="sheetVisible">
         <div class="buy_box">
           <div class="img_text">

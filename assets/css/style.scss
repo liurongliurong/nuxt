@@ -813,7 +813,7 @@
 // process
   @mixin process{
     padding:25px 30px;
-    @include flex(space-between)
+    @include flex
     .item{
       &:not(:last-child){
         position: relative;
