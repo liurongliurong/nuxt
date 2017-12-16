@@ -1076,7 +1076,7 @@
         border-top:1px solid $border;
         padding:9px 15px;
         background: #fff;
-        z-index: 999999999;
+        z-index: 999;
         button {
           width:100%;
           border:0;

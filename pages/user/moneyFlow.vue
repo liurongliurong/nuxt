@@ -75,7 +75,6 @@
   import MyMask from '@/components/common/Mask'
   import Pager from '@/components/common/Pager'
   import Sort from '@/components/common/Sort'
-  import md5 from 'js-md5'
   export default {
     components: {
       MyMask, Pager, Sort
@@ -88,7 +87,7 @@
         list: [],
         edit: '',
         form: {
-          Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7}, {name: 'trade_password', type: 'password', title: '交易密码', placeholder: '请输入交易密码', pattern: 'telCode'}]
+          Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}]
         },
         editText: '',
         len: 0,
@@ -151,7 +150,6 @@
         var form = document.querySelector('.form_content')
         var data = api.checkFrom(form)
         var sendData = {token: this.token, user_id: this.user_id}
-        data.trade_password = md5(data.trade_password)
         if (!data) return false
         form.btn.setAttribute('disabled', true)
         var self = this
@@ -194,6 +192,7 @@
       ...mapState({
         token: state => state.info.token,
         user_id: state => state.info.user_id,
+        mobile: state => state.info.mobile,
         bank_card: state => state.info.bank_card,
         isMobile: state => state.isMobile
       })

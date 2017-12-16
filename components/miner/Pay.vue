@@ -158,10 +158,12 @@
             <span>支付方式</span>
             <span>{{payNo===1?'余额支付':'支付宝'}}</span>
           </div>
-          <div class="pay_item pay_input" v-if="payNo===1">
+          <!-- <div class="pay_item pay_input" v-if="payNo===1">
             <span>交易密码</span>
             <input type="password" name="password" placeholder="请输入交易密码" @blur="test"></input>
-          </div>
+          </div> -->
+          <input type="hidden" name="mobile" :value="mobile">
+          <FormField :form="form" class="form" v-if="payNo===1"></FormField>
         </div>
         <div class="mobile_btn">
            <label for="accept">
@@ -205,7 +207,6 @@
   import { mapState } from 'vuex'
   import FormField from '@/components/common/FormField'
   import MyMask from '@/components/common/AddressMask'
-  import md5 from 'js-md5'
   export default {
     props: {
       page: {
@@ -877,53 +878,53 @@
           padding:10px 15px;
         }
       }
-      .pay_info{
-        .pay_item{
-          @include flex(space-between)
-          line-height: 50px;
-          &:first-child{
-            span:last-child:after{
-              content:'';
-              @include block(8)
-              @include arrow
+      .payForm2{
+        @include form
+        .pay_info{
+          padding-bottom:2px;
+          .pay_item{
+            @include flex(space-between)
+            line-height: 50px;
+            &:first-child{
+              span:last-child:after{
+                content:'';
+                @include block(8)
+                @include arrow
+              }
+            }
+            &.pay_input{
+              width:100%;
+              font-size: 0.45rem;
+              span{
+                width:85px;
+                color:$text
+              }
+              input{
+                width:calc(100% - 85px);
+                height:40px;
+                line-height: 40px;
+                border-radius:3px;
+                padding: 0 10px;
+              }
             }
           }
-          &:not(:last-child){
-            border-bottom:1px solid $border;
-          }
-          &.pay_input{
+        }
+        .mobile_btn{
+          padding:15px;
+          button{
             width:100%;
-            font-size: 0.45rem;
-            span{
-              width:85px;
-              color:$text
-            }
-            input{
-              width:calc(100% - 85px);
-              height:40px;
-              line-height: 40px;
-              border-radius:3px;
-              padding: 0 10px;
+            margin:10px 0;
+            border:0;
+            color:#fff;
+            background: $orange;
+            label{
+              color:$white;
             }
           }
-        }
-      }
-      .mobile_btn{
-        padding:15px;
-        button{
-          width:100%;
-          margin:10px 0;
-          border:0;
-          color:#fff;
-          line-height: 3;
-          background: $orange;
           label{
-            color:$white;
+            font-size: 0.5rem;
+            @include accept_label
           }
-        }
-        label{
-          font-size: 0.5rem;
-          @include accept_label
         }
       }
     }
