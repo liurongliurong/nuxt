@@ -96,17 +96,17 @@
           <div class="content_items">
             <div class="product_img">
               <div class="pro_name">{{$parent.detail.product_name}}</div>
-              <div class="pro_slogan">{{$parent.detail.has_product_miner_base.slogan ? $parent.detail.has_product_miner_base.slogan : ''}}</div>
-              <div class="pro_resume">{{$parent.detail.has_product_miner_base.resume ? $parent.detail.has_product_miner_base.resume : ''}}</div>
+              <div class="pro_slogan">{{$parent.detail.has_product_miner_base && $parent.detail.has_product_miner_base.slogan}}</div>
+              <div class="pro_resume">{{$parent.detail.has_product_miner_base && $parent.detail.has_product_miner_base.resume}}</div>
               <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
-              <img class="params_img" :src="$parent.detail.has_product_miner_base.product_img" alt="">
+              <img class="params_img" :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_img" alt="">
             </div>
             <div class="content_item" :id="d.name" v-for="d,m in infolists">
               <h2 v-if="m!==0">{{d.title}}</h2>
               <!-- <div class="content_con" v-html="$parent.detail[d.name]" v-if=""></div> -->
               <div class="content_con" v-html="$parent.detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
               <div class="content_con" v-else-if="d.name==='product_photos'">
-                 <img :src="$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base.product_photos"> 
+                 <img :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos"> 
               </div>
               <div class="params_table" v-else>
                 <table border="1" cellspacing="0">
@@ -189,8 +189,8 @@
           <div class="content_itemsmobile">
             <div class="product_img">
               <div class="pro_name">{{$parent.detail.product_name}}</div>
-              <div class="pro_slogan">{{$parent.detail.has_product_miner_base.slogan ? $parent.detail.has_product_miner_base.slogan : ''}}</div>
-              <div class="pro_resume">{{$parent.detail.has_product_miner_base.resume ? $parent.detail.has_product_miner_base.resume : ''}}</div>
+              <div class="pro_slogan">{{$parent.detail.has_product_miner_base && $parent.detail.has_product_miner_base.slogan}}</div>
+              <div class="pro_resume">{{$parent.detail.has_product_miner_base && $parent.detail.has_product_miner_base.resume}}</div>
               <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
               <!-- <img class="params_img" :src="$parent.detail.ActivityPicture" alt=""> -->
             </div>
@@ -198,7 +198,7 @@
               <h2 v-if="m!==0">{{d.title}}</h2>
               <div class="content_conmobile" v-html="$parent.detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
               <div class="content_conmobile" v-else-if="d.name==='product_photos'">
-                 <img :src="$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base.product_photos"> 
+                 <img :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos"> 
               </div>
               <div class="params_tablemobile" v-else>
                 <table border="1" cellspacing="0">
