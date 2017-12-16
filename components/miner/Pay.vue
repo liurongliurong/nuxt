@@ -99,6 +99,7 @@
             </div>
           </div>
           <form class="form payForm" action="" @submit.prevent="pay" novalidate>
+            <input type="hidden" name="mobile" :value="mobile">
             <FormField :form="form" class="form" v-if="payNo===1"></FormField>
              <label for="accept">
               <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
@@ -223,7 +224,7 @@
         mobileNav1: {one_amount_value: {title: '每台服务器价格', unit: '元'}, number: {title: '购买服务器数量', unit: '台'}, batch_area: {title: '批次所在区域', unit: ''}},
         mobileNav2: {one_amount_value: {title: '每台服务器价格', unit: '元'}, number: {title: '购买服务器数量', unit: '台'}, hash: {title: '每台服务器算力', unit: 'T'}},
         thead: [{title: '选择'}, {title: '分期金额（元）'}, {title: '分期期数'}, {title: '手续费率 （%）'}, {title: '每期应还（元）'}, {title: '每期手续费（元）'}],
-        form: [{name: 'password', type: 'password', title: '交易密码', placeholder: '请输入交易密码', pattern: 'telCode'}],
+        form: [{name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
         address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}, {name: 'is_default', type: 'radio', title: '是否设为默认地址'}],
         tips: '请同意服务条款',
         totalPrice: 0,
@@ -246,25 +247,19 @@
     methods: {
       pay (e) {
         var ff = e.target
-        var val = ff[0].value
+        var val = ff.code.value
         var url = ''
         var callbackUrl = ''
-        var data = {token: this.token, trade_password: md5(val)}
+        var data = {token: this.token, code: val, mobile: ff.mobile.value}
         if (this.payNo === 1) {
           if (this.totalPrice > this.$parent.balance) {
             this.tip('余额不足，请充值', ff.accept)
             return false
           }
-          if (!this.trade_password) {
-            api.tips('请先设置交易密码', this.isMobile, () => {
-              this.$router.push({name: 'user-password'})
-            })
-            return false
-          }
           if (!val) {
-            this.tip('交易密码不能为空', ff.accept)
+            this.tip('短信验证码不能为空', ff.accept)
             return false
-          } else if (!api.check('^[0-9]{6}$', ff[0].value)) {
+          } else if (!api.check('^[0-9]{6}$', ff.code.value)) {
             if (this.isMobile) {
               api.tips('请输入6位数字', 1)
             }
@@ -526,6 +521,7 @@
       ...mapState({
         token: state => state.info.token,
         user_id: state => state.info.user_id,
+        mobile: state => state.info.mobile,
         isMobile: state => state.isMobile,
         trade_password: state => state.info.trade_password,
         addressObj: state => state.addressData
