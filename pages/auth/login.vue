@@ -40,7 +40,7 @@
     },
     methods: {
       login () {
-        var form = document.querySelector('.form')
+        var form = document.getElementsByClassName('.form')[0]
         var data = api.checkFrom(form, this, api.checkEquipment())
         if (!data) return false
         var self = this
