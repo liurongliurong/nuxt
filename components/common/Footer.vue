@@ -255,7 +255,7 @@
       width:100%;
       bottom:0;
       height: 2rem !important;
-      z-index: 1;
+      z-index: 999999;
       background:white;
       border-top:1px solid $border;
       padding: 5px 0;

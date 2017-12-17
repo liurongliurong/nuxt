@@ -22,7 +22,6 @@
     </form>
   </div>
 </template>
-
 <script>
   import util from '@/util/index'
   import api from '@/util/function'
@@ -73,7 +72,6 @@
     }
   }
 </script>
-
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .login{
