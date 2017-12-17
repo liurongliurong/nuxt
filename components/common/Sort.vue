@@ -4,16 +4,16 @@
       <div class="box" v-if="!isMobile">
         <div class="sort_title" v-if="!page">
           <h1>项目列表</h1>
-          <div class="input_box">
+          <!-- <div class="input_box">
             <input type="text">
             <span class="input_btn iconfont">&#xe63e;</span>
-          </div>
+          </div> -->
         </div>
         <div class="sort_body" v-if="sortNav||sortType">
-          <div class="item" v-if="sortType">
+          <!-- <div class="item" v-if="sortType">
             <span>{{sortType.title}}</span>
             <a :class="{active:$route.params.type==(+k+1)}" href="javascript:;" @click="setType((+k+1))" v-for="s,k in sortType.options">{{s}}</a>
-          </div>
+          </div> -->
           <div class="item" v-for="s,i in sortNav" v-if="sortNav">
             <span>{{s.title}}</span>
             <a href="javascript:;" :class="{active:$parent.status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
