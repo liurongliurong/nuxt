@@ -164,10 +164,10 @@
       },
       selectAddress (k) {
         if (location.href.split('?')[1] === 'select') {
-          console.log(this.addressObj)
+          // console.log(this.addressObj)
           var obj = Object.assign(this.addressObj, this.data[k])
           this.$store.commit('SET_ADDRESS', obj)
-          this.$router.push({path: '/minerShop/detail/' + obj.url})
+          this.$router.push({path: '/minerShop/detail/'})
         }
       }
     },
