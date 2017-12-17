@@ -4,14 +4,9 @@ import qs from 'qs'
 import util from './function'
 
 let api = axios.create({
-<<<<<<< HEAD
   baseURL: 'http://www.suanli.local/background/api',
   // baseURL: 'http://suanli.baoquan.com/background/api',
   // baseURL: 'http://192.168.3.45/background/api/',
-=======
-  // baseURL: 'http://suanli.baoquan.com/background/api',
-  baseURL: 'http://192.168.3.45/background/api/',
->>>>>>> ecacf29839d1faf2ec3c801f27e49fef6f61406b
   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
   responseType: 'json'
 })
