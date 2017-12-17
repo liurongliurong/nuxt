@@ -4,14 +4,13 @@ import qs from 'qs'
 import util from './function'
 
 let api = axios.create({
-
   //baseURL: 'http://suanli.baoquan.com/background/api',
   baseURL: 'https://www.suanli.com/background/api/',
   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
   responseType: 'json'
 })
 // 修改返回数据格式
-api.defaults.transformResponse = (res) => {ls
+api.defaults.transformResponse = (res) => {
   if (typeof res === 'string') {
     res = JSON.parse(res)
   }
