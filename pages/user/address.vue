@@ -81,8 +81,11 @@
           })
         })
       },
+      closeMask () {
+        this.show = ''
+        document.body.style.overflow = 'auto'
+      },
       submit (e) {
-        console.log(11)
         var form = e.target
         var data = api.checkFrom(form)
         var url = ''
