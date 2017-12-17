@@ -60,39 +60,13 @@
              <td><button disabled="disabled" class="no" style="background:none;color:gray;width:120px;">还不到还款日期</button></td>
            </template>
            <template v-else>
-             <td><button class="yes" @click="showButton(true, n.id)">去还款</button></td>
+             <td><button class="yes" @click="openMask(n.id)">去还款</button></td>
            </template>
          </tr>
        </tbody>
      </table>
     </div>
-    <div class="button" v-show="show">
-      <div class="opaction">
-        <form class="form" action="" @submit.prevent="submit" novalidate>
-            <h4>确认还款<span @click="showButton(false)"><em class="one"></em><em class="two"></em></span></h4>
-            <div class="one">
-              <label>还款方式</label>
-              <select @change="onChange">
-                <option v-for="n,k in sort" :value="k">{{n.type}}</option>
-              </select>
-            </div>
-            <div class="one">
-              <label>账户余额</label>
-              <input type="text" placeholder="0.0024562 btc" class="total" :value="banlance" onfocus="this.blur()"/>
-            </div>
-            <div class="one">
-              <label>还款总额</label>
-              <input type="text" placeholder="0.0024562 btc" class="total" :value="total" onfocus="this.blur()"/>
-            </div>
-            <div class="one">
-              <label>交易密码</label>
-              <input type="password" placeholder="请输入交易密码" class="passwordone"/>
-            </div>
-            <p class="block1" style="color:red;font-size:12px;padding-left:160px;padding-top:10px;display:none;">请输入交易密码</p>
-            <button name="btn">提交</button>
-        </form>
-      </div>
-    </div>
+    <MyMask :form="form" title="确认还款" v-if="show"></MyMask>
   </section>
 </template>
 
@@ -100,71 +74,31 @@
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
-  import md5 from 'js-md5'
+  import MyMask from '@/components/common/Mask'
   export default {
+    components: {
+      MyMask
+    },
     data () {
       return {
-        detail: {},
+        form: [{name: '', type: 'select', title: '还款方式', option: ['算力收益', '资金用户'], dataNo: 1, changeEvent: true}, {name: 'balance', type: 'text', title: '账户余额', edit: 'balance'}, {name: 'totalMoney', type: 'text', title: '还款总额', edit: 'totalMoney'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
+        loanData: {0: {data1: '', data2: '', unit: 'btc'}, 1: {data1: '', data2: '', unit: '元'}},
+        model: 0,
         item: {},
         moneydata: {},
         show: '',
-        showpa: '',
-        status: '',
-        repayment_method: 0,
-        total: '',
-        banlance: '',
-        password: '',
         mode: '',
-        repayment_id: '',
-        sort: [{type: '算力收益', unit: 'btc'}, {type: '资金用户', unit: '元'}],
-        showbutton: false,
+        detailId: '',
+        balance: '',
+        totalMoney: '',
         repaymentId: ''
       }
     },
     methods: {
-      showButton (type, id) {
-        this.repayment_id = id
-        this.show = type
-        document.getElementsByClassName('passwordone')[0].value = ''
-        this.select()
-      },
-      select () {
-        var self = this
-        this.model = document.querySelector('select').value
-        console.log(this.model)
-        util.post('showRepayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repayment_id, product_hash_type: 1, mode: this.model})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            var ff = document.querySelector('.form')
-            if (self.model === '0') {
-              if (res.user_coin_value < res.coin_repayment) {
-                self.banlance = res.user_coin_value + ' btc'
-                self.total = '您的币余额不足'
-                ff.btn.setAttribute('disabled', true)
-                // return false
-              } else {
-                self.banlance = res.user_coin_value + ' btc'
-                self.total = res.coin_repayment + ' btc'
-                ff.btn.removeAttribute('disabled')
-              }
-            } else {
-              if (res.user_balance < res.repayment) {
-                self.banlance = res.user_balance + ' 元'
-                self.total = '您的账户余额不足'
-                ff.btn.setAttribute('disabled', true)
-                // return false
-              } else {
-                self.banlance = res.user_balance + ' 元'
-                self.total = res.repayment + ' 元'
-                ff.btn.removeAttribute('disabled')
-              }
-            }
-          })
-        })
-      },
       items () {
-        if (this.token !== 0 && this.repaymentId) {
+        if (this.token !== 0 && this.detailId) {
           var self = this
-          util.post('getLoanListDetail', {sign: api.serialize({token: this.token, user_id: this.user_id, loan_id: this.repaymentId})}).then(function (res) {
+          util.post('getLoanListDetail', {sign: api.serialize({token: this.token, user_id: this.user_id, loan_id: this.detailId})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.moneydata = res
               self.item = res.list
@@ -181,17 +115,8 @@
         var data = api.checkFrom(ff)
         if (!data) return false
         ff.btn.setAttribute('disabled', true)
-        this.password = document.getElementsByClassName('passwordone')[0].value
-        this.model = document.querySelector('select').value
-        console.log(this.model)
         var self = this
-        if (!this.password) {
-          document.querySelector('.block1').style = 'display:block;color:red;font-size:12px;padding-left:160px;padding-top:10px;'
-          return false
-        } else {
-          document.querySelector('.block1').style = 'display:none;color:red;font-size:12px;padding-left:160px;padding-top:10px;'
-        }
-        util.post('repayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repayment_id, product_hash_type: 1, mode: this.model, trade_password: md5(this.password)})}).then(function (res) {
+        util.post('repayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repaymentId, product_hash_type: 1, mode: this.model, mobile: ff.mobile.value, code: ff.code.value})}).then(function (res) {
           api.checkAjax(self, res, () => {
             api.tips('提交成功', self.isMobile, () => {
               self.show = false
@@ -200,15 +125,47 @@
           }, ff.btn)
         })
       },
-      onChange () {
-        this.select()
+      changeEvent (e) {
+        // console.log(11)
+        this.model = e.target.value
+        this.balance = this.loanData[this.model].data1 + this.loanData[this.model].unit
+        this.totalMoney = this.loanData[this.model].data2 + this.loanData[this.model].unit
+        // this.select()
+        if (+this.loanData[this.model].data1 < +this.loanData[this.model].data2) {
+          var ff = document.querySelector('.form')
+          api.tips('余额不足')
+          ff.btn.setAttribute('disabled', true)
+          // return false
+        }
+      },
+      openMask (id) {
+        this.repaymentId = id
+        var self = this
+        util.post('showRepayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repaymentId, product_hash_type: 1, mode: 0})}).then(function (res) {
+          api.checkAjax(self, res, () => {
+            self.loanData[0].data1 = res.user_coin_value
+            self.loanData[0].data2 = res.coin_repayment
+            self.loanData[1].data1 = res.user_balance
+            self.loanData[1].data2 = res.repayment
+            console.log(self.balance)
+            self.balance = self.loanData[self.model].data1 + self.loanData[self.model].unit
+            self.totalMoney = self.loanData[self.model].data2 + self.loanData[self.model].unit
+            window.scroll(0, 0)
+            document.body.style.overflow = 'hidden'
+            self.show = true
+          })
+        })
+      },
+      closeEdit () {
+        this.show = ''
+        document.body.style.overflow = 'auto'
       }
     },
     mounted () {
       var p = localStorage.getItem('info')
       if (p) {
         p = JSON.parse(p)
-        this.repaymentId = p.repaymentId
+        this.detailId = p.repaymentId
       } else {
         this.$router.push({path: '/repayment/0'})
       }
@@ -218,6 +175,7 @@
       ...mapState({
         token: state => state.info.token,
         user_id: state => state.info.user_id,
+        mobile: state => state.info.mobile,
         isMobile: state => state.isMobile
       })
     },
@@ -261,211 +219,42 @@
           }
         }
       }
-      ol{
+      table{
         width: 100%;
-        border:1px solid #eeeeee;
-        height: 54px;
-        box-sizing: border-box;
-        li{
-          width: 25%;
-          float: left;
-          line-height: 54px;
-          text-align: center; 
-          color: #999999;
-          span{
-            color: black;
-          }
-        }
-      }
-      .table{
-        width: 100%;
-        margin-top: 118px;
-        border:1px solid #d2e9ff;
-        border-bottom:0;
-        border-right:0;
-        box-sizing: border-box;
-        overflow: hidden;
-        .item{
-          width: 50%;
-          float: left;
-          box-sizing: border-box;
-          border-bottom:1px solid #d2e9ff;
-          border-right:1px solid #d2e9ff;
+        margin-top: 40px;
+        margin-bottom: 30px;
+        thead tr{
           height: 40px;
-          line-height:40px;
-          text-align:center;
-          .title{
-            float: left;
-            width: 164px;
-            border:1px solid #d2e9ff;
-            height: 40px;
-            border-left:0;
-            border-top:0;
-            background-color: rgba(240,247,253,1);
-            font-size: 16px;
-            color: black;
-            box-sizing: border-box;
-          }
-          .value{
-            font-size: 16px;
-            color:#666666;
-          }
+          background: #f0f7fd;
         }
-      }
-    }
-    .button{
-      width: 100%;
-      height: 100%;
-      position: fixed;
-      background:rgba(0,0,0,.2);
-      top:0;
-      left:0;
-      z-index:999;
-    }
-    .button .opaction{
-      width: 476px;
-      height: 450px;
-      background: white;
-      position: absolute;
-      left: 50%;
-      top:50%;
-      margin-left:-238px;
-      margin-top:-190px;
-      h4{
-        width: 100%;
-        margin-top: 29px;
-        font-size: 18px;
-        text-align: center;
-        // span{
-        //   position: absolute;
-        //   right: 0;
-        //   margin-right: 42px;
-        //   cursor: pointer;
-        //   display:block;
-        //   width:30px;
-        //   height: 30px;
-        //   background:red;
-        //   font-family: cursive;
-        //   .one{
-        //     display: block;
-        //     position: absolute;
-        //     left:0;
-        //     top:0;
-        //     width:30px;
-        //     height:1px;
-        //     background: black;
-        //   }
-        // }
-      }
-      .one{
-        width: 100%;
-        padding:0 70px;
-        box-sizing: border-box;
-        margin-top: 42px;
-        label{
-          display:inline-block;
-          width: 70px;
-          font-size: 16px;
-          line-height: 28px;
-          height: 28px;
-        }
-        input{
-          width: 250px;
-          height: 28px;
-          border:1px solid #dcd7d7;
-          margin-left: 10px;
-          padding-left: 22px;
-          box-sizing: border-box;
-        }
-        select{
-          width: 250px;
-          height: 28px;
-          border:1px solid #dcd7d7;
-          margin-left: 10px;
-          padding-left: 22px;
-          box-sizing: border-box;
-        }
-      }
-      button{
-        width: 180px;
-        height: 28px;
-        background: $blue;
-        border:0;
-        margin-top: 45px;
-        margin-left: 147px;
-        color: white;
-        border-radius: 0;
-        &:hover{
-          background: #2470ef;
-        }
-      }
-    }
-    .design_formulas{
-      width: 100%;
-      height: 100%;
-      position: fixed;
-      background:rgba(0,0,0,.2);
-      top:0;
-      left:0;
-      .opaction{
-        width: 476px;
-        height: 380px;
-        background: white;
-        position: absolute;
-        left: 50%;
-        top:50%;
-        margin-left:-238px;
-        margin-top:-190px;
-        h4{
-          width: 100%;
-          margin-top: 29px;
-          font-size: 18px;
+        tbody tr{
+          height: 30px;
           text-align: center;
-          span{
-            position: absolute;
-            right: 0;
-            margin-right: 42px;
-            cursor: pointer;
-            font-family: cursive;
+          .green{
+            color: #009944;
+          }
+          .red{
+            color: #fe5039;
+          }
+          .gay{
+            color: rgb(50, 127, 255);
+          }
+          button{
+            width: 60px;
+            height: 30px;
+            border:0;
+            background: #327fff;
+            color: white;
+            margin:5px 0;
           }
         }
-        p{
-          width: 100%;
-          text-align: center;
-          font-size: 14px;
-          color: black;
-          margin-top: 20px;
-        }
       }
     }
-  }
-  table{
-    width: 100%;
-    margin-top: 40px;
-    margin-bottom: 30px;
-    thead tr{
-      height: 40px;
-      background: #f0f7fd;
-    }
-    tbody tr{
-      height: 30px;
-      text-align: center;
-      .green{
-        color: #009944;
-      }
-      .red{
-        color: #fe5039;
-      }
-      .gay{
-        color: rgb(50, 127, 255);
-      }
-      button{
-        width: 60px;
-        height: 30px;
-        border:0;
-        background: #327fff;
-        color: white;
-        margin:5px 0;
+    .mask_con{
+      .form button:disabled{
+        background: #999;
+        border:#999;
+        cursor: no-drop;
       }
     }
   }

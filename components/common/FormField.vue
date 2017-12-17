@@ -9,11 +9,15 @@
         <!-- input -->
         <template v-if="f.type!=='select'">
           <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :value="$parent[f.value]&&$parent[f.value].card_no" v-if="f.value==='bank_card'" :title="f.pattern&&check[f.pattern].tips">
-          <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" @change="f.changeEvent&&$parent.$parent.onChange($event,f.name,f.tipsUnit)" :isChange="f.isChange" :title="f.pattern&&check[f.pattern].tips" :maxlength="f.len" v-else>
+          <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" @change="($parent.onChange&&$parent.onChange($event,f.name,f.tipsUnit))||($parent.$parent.onChange&&$parent.$parent.onChange($event,f.name,f.tipsUnit))" :isChange="f.isChange" :title="f.pattern&&check[f.pattern].tips" :maxlength="f.len" v-else-if="f.changeEvent">
+          <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :isChange="f.isChange" :title="f.pattern&&check[f.pattern].tips" :maxlength="f.len" v-else>
         </template>
         <!-- select -->
         <div class="sel" v-else-if="f.option">
-          <select :name="f.name" isChange="f.isChange">
+          <select :name="f.name" @change="$parent.$parent.changeEvent" v-if="f.dataNo">
+            <option :value="k" v-for="v,k in f.option">{{v}}</option>
+          </select>
+          <select :name="f.name" isChange="f.isChange" v-else>
             <template v-if="f.name==='product_hash_type'">
               <option :value="v.name" v-for="v,k in hashType">{{v.name}}</option>
             </template>
@@ -49,7 +53,7 @@
           <span>{{f.tipsUnit}}</span>
           <template v-if="f.tipsInfo!=='show'">
             <span v-if="f.showUse">{{f.tipsInfo+'：'+$parent.$parent.have_use_time+f.tipsUnit}}</span>
-            <span v-else>{{f.tipsInfo+'：'+$parent.$parent[f.name]+f.tipsUnit}}</span>
+            <span v-else>{{f.tipsInfo+'：'+($parent[f.name]||$parent.$parent[f.name])+f.tipsUnit}}</span>
           </template>
         </template>
       </div>

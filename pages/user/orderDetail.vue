@@ -26,7 +26,8 @@
         <div class="detail_table">
           <div class="item" v-for="d,k in type[orderType]">
             <div class="item_title">{{d[0]}}</div>
-            <div class="item_value">{{data[k]}}{{d[1]}}</div>
+            <div class="item_value" v-if="k === 'hash_type'">{{data[k]||'BTC'}}</div>
+            <div class="item_value" v-else>{{data[k]}}{{d[1]}}</div>
           </div>
           <div class="item">
             <div class="item_title"></div>
@@ -40,8 +41,11 @@
       </div>
     </template>
     <div v-if="show" class="agreement_text">
-      <div class="" v-html="contract.hash_res&&contract.hash_res.content"></div>
-      <div class="" v-html="contract.host_res&&contract.host_res.content"></div>
+      <template v-if="orderType!==3">
+        <div class="" v-html="contract.hash_res&&contract.hash_res.content"></div>
+        <div class="" v-html="contract.host_res&&contract.host_res.content"></div>
+      </template>
+      <div v-else v-html="contract.miner_res&&contract.miner_res.content"></div>
       <div class="btn_box">
         <button @click="back">返回</button>
       </div>
@@ -56,7 +60,7 @@
   export default {
     data () {
       return {
-        processText: {3: ['订单完成', '矿场发货'], 0: ['订单下达', '矿场确认', '矿机上架', '回报计算']},
+        processText: {3: ['订单完成', '矿机发货'], 0: ['订单完成', '矿场发货', '矿机运行', '收益计算']},
         processStatus: 1,
         info: {0: {realized_income_value: '累计已获得收益', today_income: '今日收益', total_realized_power_fee_value: '今日支付运维费'}, 1: {realized_income_value: '累计已获得收益', today_income_value: '今日收益', today_power_fee_value: '今日支付运维费'}},
         data: {},
@@ -64,8 +68,8 @@
         requestUrl: {0: 'showOrderDetail', 3: 'showMinerDetail'},
         show: false,
         contract: '',
-        orderId: '',
-        orderType: ''
+        orderId: 0,
+        orderType: 0
       }
     },
     methods: {
@@ -80,6 +84,10 @@
         if (this.orderType === 1) {
           requestUrl = 'rent_contract'
           data = {token: this.token, transfer_id: this.orderId}
+        }
+        if (this.orderType === 3) {
+          requestUrl = 'miner_contract'
+          data = {token: this.token, user_id: this.user_id, order_id: this.orderId}
         }
         util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
@@ -114,7 +122,7 @@
             api.checkAjax(self, res, () => {
               self.data = res
               if (res.miner) {
-                Object.assign(self.data, res.miner)
+                self.data = Object.assign(self.data, res.miner)
               }
             })
           })
@@ -129,12 +137,12 @@
       var p = localStorage.getItem('info')
       if (p) {
         p = JSON.parse(p)
-        this.orderId = p.orderId
-        this.orderType = p.orderType
+        this.orderId = +p.orderId
+        this.orderType = +p.orderType
+        this.getData()
       } else {
-        this.$router.push({path: '/repayment/0'})
+        this.$router.push({path: '/order/0'})
       }
-      this.getData()
     },
     computed: {
       ...mapState({

@@ -424,7 +424,8 @@
         var info = JSON.parse(localStorage.getItem('info'))
         var data = {orderType: type, orderId: id}
         localStorage.setItem('info', JSON.stringify(Object.assign(info, data)))
-        this.$router.push({path: '/user/orderDetail/'})
+        location.href = '/user/orderDetail/'
+        // this.$router.push({path: '/user/orderDetail/'})
       }
     },
     computed: {

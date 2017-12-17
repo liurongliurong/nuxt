@@ -203,7 +203,7 @@
               <div class="params_tablemobile" v-else>
                 <table border="1" cellspacing="0">
                   <tbody>
-                    <tr v-for="p,k in $parent.params">
+                    <tr v-for="p,k in params">
                       <td>{{p}}</td>
                       <td>{{($parent.detail.miner_list&&$parent.detail.miner_list[k])||$parent.detail[k]}}</td>
                     </tr>
@@ -237,7 +237,7 @@
               <div class="params_tablemobile" v-else>
                 <table border="1" cellspacing="0">
                   <tbody>
-                    <tr v-for="p,k in $parent.params">
+                    <tr v-for="p,k in params">
                       <td>{{p}}</td>
                       <td>{{($parent.detail.miner_list&&$parent.detail.miner_list[k])||$parent.detail[k]}}</td>
                     </tr>
@@ -308,10 +308,10 @@
         proText: {hashType: '算力类型', status: '购买类型', incomeType: '结算方式'},
         infolists: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: '矿场相册'}],
         infolist: [{name: 'MInerBrief', title: '产品介绍'}, {name: 'MinerAdvantage', title: '产品参数'}, {name: 'prProtocolSpeciaification', title: '补充说明'}],
-        params: {ChipsNumber: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '矿机尺寸', minerOuterSize: '外箱尺寸', Cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
+        params: {chips_num: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '矿机尺寸', minerOuterSize: '外箱尺寸', cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
         mobileNav1: {hash: {title: '服务器算力', unit: 'T'}, weight: {title: '服务器重量', unit: 'kg'}, single_limit_amount: {title: '最少购买数量', unit: ''}},
         mobileNav2: {hashType: {title: '算力类型', unit: ''}, amount: {title: '服务器总数', unit: '台'}, incomeType: {title: '结算方式', unit: ''}},
-        statusObj: {1: {title: '热销中', color: 'red'}, 2: {title: '已售罄', color: 'gray'}, 3: {title: '产品撤销', color: 'gray'}},
+        statusObj: {1: {title: '热销中', color: 'red'}, 2: {title: '已售罄', color: 'gray'}, 3: {title: '产品撤销', color: 'gray'}, 4: {title: '预热中', color: 'red'}},
         sheetVisible: false,
         contentShow: 0,
         active: 0,
