@@ -1,9 +1,9 @@
 <template>
-  <header class="header" v-if="$route.name===('index')||$route.path.includes('bdc')">
+  <header class="header" v-if="$route.name===('index')||$route.name===('bdc')">
     <div class="left" v-if="token === 0">
-      <nuxt-link to="/auth/regist">注册</nuxt-link>
+      <router-link to="/auth/regist">注册</router-link>
       <span>|</span>
-      <nuxt-link to="/auth/login">登录</nuxt-link>
+      <router-link to="/auth/login">登录</router-link>
     </div>
     <div v-else class="left">
       <router-link to="/mobile/personcenter">

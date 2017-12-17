@@ -46,10 +46,10 @@
   </footer>
   <div class="mobile_tabbar" v-else-if="isMobile === 1">
     <div class="mobile_tab_item" v-for="item in footList">
-      <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
+      <router-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
         <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
         <span class="name">{{item.name}}</span>
-      </nuxt-link>
+      </router-link>
     </div>
   </div> 
 </template>
