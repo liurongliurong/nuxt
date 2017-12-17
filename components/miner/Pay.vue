@@ -248,11 +248,12 @@
     methods: {
       pay (e) {
         var ff = e.target
-        var val = ff.code.value
         var url = ''
         var callbackUrl = ''
-        var data = {token: this.token, code: val, mobile: ff.mobile.value}
+        var data = {token: this.token}
         if (this.payNo === 1) {
+          var val = ff.code.value
+          data = Object.assign({code: val, mobile: ff.mobile.value}, data)
           if (this.totalPrice > this.$parent.balance) {
             this.tip('余额不足，请充值', ff.accept)
             return false
