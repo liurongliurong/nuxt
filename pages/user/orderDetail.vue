@@ -114,7 +114,7 @@
         this.show = false
       },
       getData () {
-        if (this.token !== 0 && this.orderId && this.orderType) {
+        if (this.token !== 0 && this.orderId) {
           var self = this
           var requestUrl = this.requestUrl[this.orderType]
           var data = this.orderType !== 1 ? {token: this.token, order_id: this.orderId} : {token: this.token, orderid: this.orderId}
