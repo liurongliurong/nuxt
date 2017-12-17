@@ -26,7 +26,8 @@
         <div class="detail_table">
           <div class="item" v-for="d,k in type[orderType]">
             <div class="item_title">{{d[0]}}</div>
-            <div class="item_value">{{data[k]}}{{d[1]}}</div>
+            <div class="item_value" v-if="k === 'hash_type'">{{data[k]||'BTC'}}</div>
+            <div class="item_value" v-else>{{data[k]}}{{d[1]}}</div>
           </div>
           <div class="item">
             <div class="item_title"></div>
@@ -56,7 +57,7 @@
   export default {
     data () {
       return {
-        processText: {3: ['订单完成', '矿场发货'], 0: ['订单下达', '矿场确认', '矿机上架', '回报计算']},
+        processText: {3: ['订单完成', '矿机发货'], 0: ['订单下达', '矿场确认', '矿机上架', '回报计算']},
         processStatus: 1,
         info: {0: {realized_income_value: '累计已获得收益', today_income: '今日收益', total_realized_power_fee_value: '今日支付运维费'}, 1: {realized_income_value: '累计已获得收益', today_income_value: '今日收益', today_power_fee_value: '今日支付运维费'}},
         data: {},
@@ -131,10 +132,10 @@
         p = JSON.parse(p)
         this.orderId = p.orderId
         this.orderType = p.orderType
+        this.getData()
       } else {
         this.$router.push({path: '/repayment/0'})
       }
-      this.getData()
     },
     computed: {
       ...mapState({

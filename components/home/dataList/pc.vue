@@ -27,7 +27,7 @@
           </tr>
         </tbody>
       </table>
-      <p class="get_more">查看更多矿机 ></p>
+      <router-link class="get_more" to="/minerShop/miner/1">查看更多矿机 ></router-link>
     </div>
   </div>
 </template>
@@ -133,9 +133,10 @@
           }
         }
       }
-      p.get_more{
+      .get_more{
         text-align: center;
-        margin:20px 0;
+        margin:37px 0;
+        display: block;
         color:$light_black;
       }
     }
