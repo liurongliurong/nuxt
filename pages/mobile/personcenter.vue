@@ -51,7 +51,6 @@
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import FormField from '@/components/common/FormField'
-  import md5 from 'js-md5'
   export default {
     components: {
       FormField
@@ -59,7 +58,7 @@
     data () {
       return {
         nav: [{name: '账户管理', link: '/mobile/administration'}, {name: '地址管理', link: '/mobile/address'}, {name: '资金流水', link: '/mobile/moneyFlow'}, {name: '订单管理', link: '/mobile/order/0'}, {name: '常见问题', link: '/mobile/help'}, {name: '消息中心', link: '/mobile/message'}, {name: '意见反馈', link: '/mobile/advice'}],
-        Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元'}, {name: 'trade_password', type: 'password', title: '交易密码', placeholder: '请输入交易密码', pattern: 'telCode'}],
+        Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
         balance_account: '',
         edit: 0,
         showModal: false,
@@ -72,6 +71,7 @@
     },
     computed: {
       ...mapState({
+        token: state => state.info.token,
         mobile: state => state.info.mobile,
         user_id: state => state.info.user_id,
         token: state => state.info.token,
@@ -93,7 +93,6 @@
         this.total_price = 0
         if (!(this.true_name && this.true_name.status === 1)) {
           api.tips('请先实名认证', this.isMobile, () => {
-            // this.$router.push({name: 'madministration'})
             if (api.checkEquipment) {
               this.$router.push({name: 'mobile-administration'})
             } else {
@@ -146,7 +145,6 @@
         var sendData = {token: this.token, user_id: this.user_id}
         var tipsStr = '提现成功'
         if (!data) return false
-        data.trade_password = md5(data.trade_password)
         form.btn.setAttribute('disabled', true)
         var self = this
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
@@ -157,7 +155,6 @@
         })
       },
       onChange (e) {
-        console.log(this.amount)
         if (parseFloat(e.target.value) > parseFloat(this.amount)) {
           e.target.value = this.amount
         }
@@ -179,12 +176,6 @@
           })
         })
       }, 500)
-    },
-    computed: {
-      ...mapState({
-        token: state => state.info.token,
-        mobile: state => state.info.mobile
-      })
     }
   }
 </script>
