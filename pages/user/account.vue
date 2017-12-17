@@ -17,7 +17,6 @@
         <div class="item" v-for="k in 3" @click="setInfo(list[k+1].name,menu[k+1].status)">
             <span>{{list[k+1].title}}</span>
             <i v-if="list[k+1].name==='card'&&bank_card&&bank_card.open_bank">{{bank_card&&bank_card.card_no|format}}</i>
-            <i v-else-if="list[k+1].name==='trade'&&trade_password">已设置<em></em></i>
             <i v-else-if="list[k+1].name==='login'">修改<em></em></i>
             <i v-else>设置<em></em></i>
         </div>
@@ -65,15 +64,15 @@
           {title: '手机认证', desc: '手机号码是在算力网进行操作的重要凭证。', text: '手机号码', name: 'tel'},
           {title: '实名认证', desc: '完成实名认证，认证后可以获得更多权限。', text: '身份证号', name: 'auth'},
           {title: '绑定银行卡', desc: '绑定银行卡之后才能进行充值、购买和提现等操作。', text: '', name: 'card'},
-          {title: '算力收益地址', desc: '请选择算力类型并设置算力地址。', text: '', name: 'address'}
+          {title: '算力收益地址', desc: '请选择算力类型并设置算力地址。', text: '', name: 'address'},
+          {title: '登录密码', desc: '登录算力网的重要凭证', text: '登录密码', name: 'login'}
         ],
-        list: [{name: 'tel', title: '用户名'}, {name: 'auth', title: '实名认证'}, {name: 'card', title: '银行卡'}, {name: 'trade', title: '交易密码'}, {name: 'login', title: '登录密码'}, {name: 'address', title: '算力收益地址'}],
+        list: [{name: 'tel', title: '用户名'}, {name: 'auth', title: '实名认证'}, {name: 'card', title: '银行卡'}, {name: 'login', title: '登录密码'}, {name: 'address', title: '算力收益地址'}],
         form: {
           auth: [{name: 'truename', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true}, {name: 'idcard', type: 'text', title: '证件号码', placeholder: '请输入您的证件号码', pattern: 'idCard'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
           card: [{name: 'card_no', type: 'text', title: '银行卡号', placeholder: '请输入银行卡号', pattern: 'bankCard', changeEvent: true}, {name: 'open_bank', type: 'text', title: '开户银行', placeholder: '自动识别或手动输入开户银行', isChange: true}, {name: 'bank_branch', type: 'text', title: '开户支行', placeholder: '请输入开户支行名称', isChange: true}, {name: 'bank', type: 'select', title: '开户行地址', isChange: true}, {name: 'mobile', type: 'text', title: '银行预留手机号', placeholder: '请输入银行预留手机号', pattern: 'tel'}, {name: 'code', type: 'text', title: '手机验证码', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
           address: [{name: 'product_hash_type', type: 'select', title: '算力类型', option: []}, {name: 'address', type: 'text', title: '算力地址', placeholder: '请输入对应算力地址', pattern: 'computeAddress'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
-          login: [{name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}, {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password'}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}],
-          trade: [{name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}, {name: 'trade_password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'telCode'}, {name: 'trade_password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'telCode', error: '两次密码不一致'}]
+          login: [{name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}, {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password'}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}]
         },
         showModal: false,
         edit: '',
@@ -119,12 +118,6 @@
             url = 'changeLoginPassword'
             tipsStr = '修改成功'
             break
-          case 'trade':
-            url = 'tradePassword'
-            data.trade_password = md5(data.trade_password)
-            data.trade_password1 = md5(data.trade_password1)
-            tipsStr = '设置成功'
-            break
         }
         if (!data) return false
         var self = this
@@ -140,8 +133,6 @@
               }, 7000)
             } else if (self.edit === 'address') {
               self.requestData(callbackUrl, sendData, val)
-            } else if (self.edit === 'trade') {
-              self.$store.commit('SET_INFO', {trade_password: 1})
             }
             self.closeEdit()
           })
@@ -206,7 +197,6 @@
         mobile: state => state.info.mobile,
         true_name: state => state.info.true_name,
         bank_card: state => state.info.bank_card,
-        trade_password: state => state.info.trade_password,
         isMobile: state => state.isMobile,
         address: state => state.info.address
       }),

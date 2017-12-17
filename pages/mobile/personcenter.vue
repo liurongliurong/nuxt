@@ -182,7 +182,8 @@
     },
     computed: {
       ...mapState({
-        token: state => state.info.token
+        token: state => state.info.token,
+        mobile: state => state.info.mobile
       })
     }
   }

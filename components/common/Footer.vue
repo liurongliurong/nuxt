@@ -44,7 +44,7 @@
       </div>
     </div>
   </footer>
-  <div class="mobile_tabbar" v-else-if="isMobile === 1">
+  <div class="mobile_tabbar" v-else-if="isMobile === 1&&!$route.path.includes('minerShop/detail/')">
     <div class="mobile_tab_item" v-for="item in footList">
       <router-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
         <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>

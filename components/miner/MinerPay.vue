@@ -28,51 +28,6 @@
                 <div class="line"></div>
               </template>
             </div>
-            <div class="order_detail_info2" v-if="params2!=='1'">
-              <div class="item" v-for="t,k in proText">{{t}}：
-                <span class="value" v-if="k==='hash'">{{$parent.detail[k]}}T</span>
-                <span class="value" v-else>{{$parent.detail[k]}}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="order_msg miner_info" v-if="params2!=='1'">
-          <h3 class="title">挖矿收益信息</h3>
-          <div class="miner_info_detail">
-            <div class="item" v-for="n,k in cloudMinerNav">
-              <span class="info_left">{{n.title}}</span>
-              <span class="info_right">{{$parent.detail[k]}}<em>{{n.unit}}</em></span>
-            </div>
-          </div>
-        </div>
-        <div class="order_msg hire_purchase" v-show="$parent.show">
-          <h3 class="title">分期购买计划</h3>
-          <div class="order_detail">
-            <table border="0">
-               <thead>
-                 <tr>
-                   <th v-for="n,k in thead">{{n.title}}</th>
-                 </tr>
-               </thead>
-               <tbody>
-                 <tr :class="{active: rate===3}">
-                   <td><input type="radio" class="teradio" name="qi" @click="setValue('rate',3)" checked/></td>
-                   <td>{{totalPrice}}</td>
-                   <td>3期</td>
-                   <td>2%</td>
-                   <td>{{(totalPrice/3 + (totalPrice*0.02)).toFixed(2)}}（含每期手续费）</td>
-                   <td>{{(totalPrice*0.02).toFixed(2)}}</td>
-                 </tr>
-                 <tr :class="{active: rate===6}">
-                   <td><input type="radio" name="qi" class="teradio" @click="setValue('rate',6)"/></td>
-                   <td>{{totalPrice}}</td>
-                   <td>6期</td>
-                   <td>3%</td>
-                   <td>{{(totalPrice/6 + (totalPrice*0.03)).toFixed(2)}}（含每期手续费）</td>
-                   <td>{{(totalPrice*0.03).toFixed(2)}}</td>
-                 </tr>
-               </tbody>
-            </table>
           </div>
         </div>
         <div class="order_msg order_pay">
