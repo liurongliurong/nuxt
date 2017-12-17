@@ -53,7 +53,7 @@
           <span>{{f.tipsUnit}}</span>
           <template v-if="f.tipsInfo!=='show'">
             <span v-if="f.showUse">{{f.tipsInfo+'：'+$parent.$parent.have_use_time+f.tipsUnit}}</span>
-            <span v-else>{{f.tipsInfo+'：'+$parent.$parent[f.name]+f.tipsUnit}}</span>
+            <span v-else>{{f.tipsInfo+'：'+($parent[f.name]||$parent.$parent[f.name])+f.tipsUnit}}</span>
           </template>
         </template>
       </div>
