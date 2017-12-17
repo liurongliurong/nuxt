@@ -93,17 +93,6 @@
         </form>
       </div>
     </div>
-    <div class="design_formulas" v-show = "showpa">
-       <div class="opaction">
-         <h4>分期业务计算<span @click="showpay(false)">x</span></h4>
-         <p>利息=贷款额*手续费率</p>
-         <p>贷款总额=利息+贷款额</p>
-         <p>每期需还款=贷款额/期数</p>
-         <p>贷款余额=贷款总额-期数*每期需还款</p>
-         <p>手续费=利息/期数</p>
-         <p>本期还款额=每期需还款+手续费 ||   本期还款额=贷款总额/期数</p>
-       </div>
-    </div>
   </section>
 </template>
 
@@ -171,9 +160,6 @@
             }
           })
         })
-      },
-      showpay (type) {
-        this.showpa = type
       },
       items () {
         if (this.token !== 0 && this.repaymentId) {
