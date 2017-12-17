@@ -26,7 +26,7 @@
       } else {
         this.$router.push({path: '/webInfo/list/website'})
       }
-      if (this.$route.path.includes('digitalCurrency')) {
+      if (this.$route.name === 'digitalCurrency') {
         url = 'showCoinInfoDetail'
         util.post(url, {sign: 'token=0&coin_id=' + this.params1}).then(function (res) {
           api.checkAjax(self, res, () => {
