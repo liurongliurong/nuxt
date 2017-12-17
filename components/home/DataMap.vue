@@ -28,8 +28,8 @@
     data () {
       return {
         img: require('@/assets/images/world.png'),
-        bdcDots: [{title: '哈萨克斯坦', top: 96, left: 720}, {title: '内蒙古', top: 127, right: 200}, {title: '四川', top: 187, right: 330}, {title: '云南', top: 207, right: 230}, {title: '山西', top: 164, right: 210}, {title: '新疆', top: 137, right: 290}, {title: '俄罗斯', top: 47, right: 220}, {title: '美国', top: 130, left: 166}, {title: '加拿大', top: 79, left: 130}, {title: '欧洲', top: 116, left: 610}],
-        btcDots: [{title: '', top: 66, left: 120}, {title: '', top: 102, left: 140}, {title: '', top: 137, left: 136}, {title: '', top: 145, left: 142}, {title: '', top: 210, left: 210}, {title: '', top: 420, left: 350}, {title: '', top: 105, left: 610}, {title: '', top: 125, left: 610}, {title: '', top: 135, left: 600}]
+        bdcDots: [{title: '哈萨克斯坦', top: 96, left: 720}, {title: '内蒙古', top: 127, right: 200}, {title: '四川', top: 187, right: 330}, {title: '云南', top: 207, right: 230}, {title: '山西', top: 164, right: 210}, {title: '新疆', top: 137, right: 290}, {title: '俄罗斯', top: 90, right: 193}, {title: '美国', top: 183, left: 200}, {title: '加拿大', top: 120, left: 176}, {title: '欧洲', top: 156, left: 610}],
+        btcDots: [{title: '', top: 108, left: 190}, {title: '', top: 160, left: 216}, {title: '', top: 220, left: 237}, {title: '', top: 230, left: 252}, {title: '', top: 210, left: 220}, {title: '', top: 420, left: 350}, {title: '', top: 168, left: 610}, {title: '', top: 125, left: 610}, {title: '', top: 135, left: 600}, {title: '', top: 140, left: 620}, {title: '', top: 140, left: 720}, {title: '', top: 210, right: 230}, {title: '', top: 220, right:230}, {title: '', top: 230, right: 374}, {title: '', top: 172, right: 390}, {title: '', top: 200, right: 345}, {title: '', top: 220, right:350}, {title: '', top: 180, right: 225}, {title: '', top: 227, right: 245}]
       }
     }
   }
