@@ -145,7 +145,7 @@
           api.checkAjax(self, res, () => {
             self.loanData[0].data1 = res.user_coin_value
             self.loanData[0].data2 = res.coin_repayment
-            self.loanData[1].data1 = res.coin_price
+            self.loanData[1].data1 = res.user_balance
             self.loanData[1].data2 = res.repayment
             console.log(self.balance)
             self.balance = self.loanData[self.model].data1 + self.loanData[self.model].unit
