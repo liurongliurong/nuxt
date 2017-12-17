@@ -93,7 +93,6 @@
         this.total_price = 0
         if (!(this.true_name && this.true_name.status === 1)) {
           api.tips('请先实名认证', this.isMobile, () => {
-            // this.$router.push({name: 'madministration'})
             if (api.checkEquipment) {
               this.$router.push({name: 'mobile-administration'})
             } else {
@@ -178,7 +177,7 @@
             self.balance_account = res.balance_account
           })
         })
-      }, 50)
+      }, 500)
     },
     computed: {
       ...mapState({
