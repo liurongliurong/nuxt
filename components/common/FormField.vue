@@ -9,7 +9,8 @@
         <!-- input -->
         <template v-if="f.type!=='select'">
           <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :value="$parent[f.value]&&$parent[f.value].card_no" v-if="f.value==='bank_card'" :title="f.pattern&&check[f.pattern].tips">
-          <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" @change="f.changeEvent&&$parent.$parent.onChange($event,f.name,f.tipsUnit)" :isChange="f.isChange" :title="f.pattern&&check[f.pattern].tips" :maxlength="f.len" v-else>
+          <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" @change="($parent.onChange&&$parent.onChange($event,f.name,f.tipsUnit))||($parent.$parent.onChange&&$parent.$parent.onChange($event,f.name,f.tipsUnit))" :isChange="f.isChange" :title="f.pattern&&check[f.pattern].tips" :maxlength="f.len" v-else-if="f.changeEvent">
+          <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :isChange="f.isChange" :title="f.pattern&&check[f.pattern].tips" :maxlength="f.len" v-else>
         </template>
         <!-- select -->
         <div class="sel" v-else-if="f.option">

@@ -60,7 +60,6 @@
   import { mapState } from 'vuex'
   import FormField from '@/components/common/FormField'
   import IncomeChart from '@/pages/user/incomeChart'
-  import md5 from 'js-md5'
   export default {
     components: {
       FormField, IncomeChart
@@ -71,7 +70,7 @@
         computeData: {today_hash: 0, balance_account: 0, total_hash: 0},
         computeProperty: {total_miner: ['已购入云算力', '台'], total_hash: ['算力总和', 'T'], selled_miner: ['已出售云算力', '台'], selling_miner: ['出售中云算力', '台']},
         dataProperty: {total_miner: 0, total_hash: 0, selled_miner: 0, selling_miner: 0},
-        GetIncome: [{name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType'}, {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', tipsUnit: 'hash'}, {name: 'trade_password', type: 'password', title: '交易密码', placeholder: '请输入交易密码', pattern: 'telCode'}],
+        GetIncome: [{name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType'}, {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', tipsUnit: 'hash'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
         showSelect: false,
         edit: 0,
         showModal: false,
@@ -105,22 +104,24 @@
         })
       },
       openMask (k) {
-        this.total_price = 0
-        this.edit = k
-        if (!(this.true_name && this.true_name.status === 1)) {
-          api.tips('请先实名认证', 1)
-          return false
-        }
-        if (!(this.bank_card && this.bank_card.status === 1)) {
-          api.tips('请先绑定银行卡', 1)
-          return false
-        }
-        if (+this.computeData.balance_account <= 0 && this.edit !== 2) {
-          api.tips('您的账户余额不足，不能提取收益', 1)
-          return false
-        }
-        this.showModal = true
         if (k === 1) {
+          this.total_price = 0
+          if (!(this.true_name && this.true_name.status === 1)) {
+            api.tips('请先实名认证', 1)
+            return false
+          }
+          if (!this.address.length) {
+            api.tips('请先绑定算力地址', 1, () => {
+              this.$router.push({name: 'user-account'})
+            })
+            return false
+          }
+          if (+this.computeData.balance_account <= 0 && this.edit !== 2) {
+            api.tips('您的账户余额不足，不能提取收益', 1)
+            return false
+          }
+          this.edit = k
+          this.showModal = true
           var requestUrl = 'showWithdrawCoin'
           var data = {token: this.token, user_id: this.user_id, product_hash_type: this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id}
           this.product_hash_type = this.hashType[this.nowEdit].name.toUpperCase()
@@ -131,6 +132,9 @@
               self.amount = res.coin_account
             })
           })
+        } else {
+          this.edit = k
+          this.showModal = true
         }
       },
       submit () {
@@ -143,7 +147,6 @@
         var data = api.checkFrom(form, this, true)
         var sendData = {token: this.token, user_id: this.user_id}
         if (!data) return false
-        data.trade_password = md5(data.trade_password)
         form.btn.setAttribute('disabled', true)
         var self = this
         util.post('withdrawCoin', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
@@ -154,7 +157,6 @@
         })
       },
       onChange (e) {
-        console.log(this.amount)
         if (parseFloat(e.target.value) > parseFloat(this.amount)) {
           e.target.value = this.amount
         }
@@ -165,21 +167,24 @@
       }
     },
     mounted () {
-      if (!this.token) {
-        this.$store.commit('SET_URL', this.$route.path)
-        this.$router.push({name: 'auth-login'})
-        this.$store.commit('LOGOUT')
-        return false
-      }
-      this.getList()
+      setTimeout(() => {
+        if (!this.token) {
+          this.$store.commit('SET_URL', this.$route.path)
+          this.$router.push({name: 'auth-login'})
+          return false
+        }
+        this.getList()
+      }, 500)
     },
     computed: {
       ...mapState({
         token: state => state.info.token,
         user_id: state => state.info.user_id,
+        mobile: state => state.info.mobile,
         hashType: state => state.hashType,
         true_name: state => state.info.true_name,
-        bank_card: state => state.info.bank_card
+        bank_card: state => state.info.bank_card,
+        address: state => state.info.address
       })
     },
     filters: {

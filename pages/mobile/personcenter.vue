@@ -178,7 +178,7 @@
             self.balance_account = res.balance_account
           })
         })
-      }, 50)
+      }, 500)
     },
     computed: {
       ...mapState({
