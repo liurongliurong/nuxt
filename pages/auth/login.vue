@@ -22,7 +22,6 @@
     </form>
   </div>
 </template>
-
 <script>
   import util from '@/util/index'
   import api from '@/util/function'
@@ -40,29 +39,29 @@
     },
     methods: {
       login () {
-        var form = document.getElementsByClassName('.form')[0]
-        var data = api.checkFrom(form, this, api.checkEquipment())
-        if (!data) return false
-        var self = this
-        form.btn.setAttribute('disabled', true)
-        util.post('login', {sign: api.serialize(Object.assign(data, {token: 0}))}).then(res => {
-          api.checkAjax(self, res, () => {
-            self.$store.commit('SET_TOKEN', Object.assign(res, {mobile: data.mobile}))
-            util.post('getAll', {sign: api.serialize(res)}).then(function (data) {
-              self.$store.commit('SET_INFO', data)
-            })
-            api.tips('欢迎来到算力网！', self.isMobile, () => {
-              if (self.callUrl) {
-                self.$router.push({path: self.callUrl})
-                self.$store.commit('SET_URL', '')
-              } else {
-                self.$router.push({path: '/'})
-              }
-            })
-          }, form.btn)
-        }).catch(res => {
-          api.tips('您的网络情况不太好，请稍后再尝试', self.isMobile)
-        })
+        // var form = document.querySelector('.form')
+        // var data = api.checkFrom(form, this, api.checkEquipment())
+        // if (!data) return false
+        // var self = this
+        // form.btn.setAttribute('disabled', true)
+        // util.post('login', {sign: api.serialize(Object.assign(data, {token: 0}))}).then(res => {
+        //   api.checkAjax(self, res, () => {
+        //     self.$store.commit('SET_TOKEN', Object.assign(res, {mobile: data.mobile}))
+        //     util.post('getAll', {sign: api.serialize(res)}).then(function (data) {
+        //       self.$store.commit('SET_INFO', data)
+        //     })
+        //     api.tips('欢迎来到算力网！', self.isMobile, () => {
+        //       if (self.callUrl) {
+        //         self.$router.push({path: self.callUrl})
+        //         self.$store.commit('SET_URL', '')
+        //       } else {
+        //         self.$router.push({path: '/'})
+        //       }
+        //     })
+        //   }, form.btn)
+        // }).catch(res => {
+        //   api.tips('您的网络情况不太好，请稍后再尝试', self.isMobile)
+        // })
       }
     },
     computed: {
@@ -73,7 +72,6 @@
     }
   }
 </script>
-
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .login{
