@@ -13,7 +13,10 @@
         </template>
         <!-- select -->
         <div class="sel" v-else-if="f.option">
-          <select :name="f.name" isChange="f.isChange">
+          <select :name="f.name" @change="$parent.$parent.changeEvent" v-if="f.dataNo">
+            <option :value="k" v-for="v,k in f.option">{{v}}</option>
+          </select>
+          <select :name="f.name" isChange="f.isChange" v-else>
             <template v-if="f.name==='product_hash_type'">
               <option :value="v.name" v-for="v,k in hashType">{{v.name}}</option>
             </template>

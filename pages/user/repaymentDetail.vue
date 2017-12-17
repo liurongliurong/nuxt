@@ -60,13 +60,13 @@
              <td><button disabled="disabled" class="no" style="background:none;color:gray;width:120px;">还不到还款日期</button></td>
            </template>
            <template v-else>
-             <td><button class="yes" @click="showButton(true, n.id)">去还款</button></td>
+             <td><button class="yes" @click="openMask(n.id)">去还款</button></td>
            </template>
          </tr>
        </tbody>
      </table>
     </div>
-    <div class="button" v-show="show">
+    <!-- <div class="button" v-show="show">
       <div class="opaction">
         <form class="form" action="" @submit.prevent="submit" novalidate>
             <h4>确认还款<span @click="showButton(false)"><em class="one"></em><em class="two"></em></span></h4>
@@ -92,7 +92,8 @@
             <button name="btn">提交</button>
         </form>
       </div>
-    </div>
+    </div> -->
+    <MyMask :form="form" title="确认还款" v-if="show"></MyMask>
   </section>
 </template>
 
@@ -100,11 +101,18 @@
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
+  import MyMask from '@/components/common/Mask'
   import md5 from 'js-md5'
   export default {
+    components: {
+      MyMask
+    },
     data () {
       return {
+        form: [{name: '', type: 'select', title: '还款方式', option: ['算力收益', '资金用户'], dataNo: 1, changeEvent: true}, {name: 'balance', type: 'text', title: '账户余额', edit: 'balance'}, {name: 'totalMoney', type: 'text', title: '还款总额', edit: 'totalMoney'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
+        loanData: {0: {data1: '', data2: '', unit: 'btc'}, 1: {data1: '', data2: '', unit: '元'}},
         detail: {},
+        model: 0,
         item: {},
         moneydata: {},
         show: '',
@@ -118,7 +126,9 @@
         repayment_id: '',
         sort: [{type: '算力收益', unit: 'btc'}, {type: '资金用户', unit: '元'}],
         showbutton: false,
-        repaymentId: ''
+        repaymentId: '',
+        balance: '',
+        totalMoney: ''
       }
     },
     methods: {
@@ -181,17 +191,8 @@
         var data = api.checkFrom(ff)
         if (!data) return false
         ff.btn.setAttribute('disabled', true)
-        this.password = document.getElementsByClassName('passwordone')[0].value
-        this.model = document.querySelector('select').value
-        console.log(this.model)
         var self = this
-        if (!this.password) {
-          document.querySelector('.block1').style = 'display:block;color:red;font-size:12px;padding-left:160px;padding-top:10px;'
-          return false
-        } else {
-          document.querySelector('.block1').style = 'display:none;color:red;font-size:12px;padding-left:160px;padding-top:10px;'
-        }
-        util.post('repayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repayment_id, product_hash_type: 1, mode: this.model, trade_password: md5(this.password)})}).then(function (res) {
+        util.post('repayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repaymentId, product_hash_type: 1, mode: this.model, mobile: ff.mobile.value, code: ff.code.value})}).then(function (res) {
           api.checkAjax(self, res, () => {
             api.tips('提交成功', self.isMobile, () => {
               self.show = false
@@ -200,8 +201,39 @@
           }, ff.btn)
         })
       },
-      onChange () {
-        this.select()
+      changeEvent (e) {
+        // console.log(11)
+        this.model = e.target.value
+        this.balance = this.loanData[this.model].data1 + this.loanData[this.model].unit
+        this.totalMoney = this.loanData[this.model].data2 + this.loanData[this.model].unit
+        // this.select()
+        if (+this.loanData[this.model].data1 < +this.loanData[this.model].data2) {
+          var ff = document.querySelector('.form')
+          api.tips('余额不足')
+          ff.btn.setAttribute('disabled', true)
+          // return false
+        }
+      },
+      openMask (id) {
+        var self = this
+        util.post('showRepayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repaymentId, product_hash_type: 1, mode: 0})}).then(function (res) {
+          api.checkAjax(self, res, () => {
+            self.loanData[0].data1 = res.user_coin_value
+            self.loanData[0].data2 = res.coin_repayment
+            self.loanData[1].data1 = res.coin_price
+            self.loanData[1].data2 = res.repayment
+            console.log(self.balance)
+            self.balance = self.loanData[self.model].data1 + self.loanData[self.model].unit
+            self.totalMoney = self.loanData[self.model].data2 + self.loanData[self.model].unit
+            window.scroll(0, 0)
+            document.body.style.overflow = 'hidden'
+            self.show = true
+          })
+        })
+      },
+      closeEdit () {
+        this.show = ''
+        document.body.style.overflow = 'auto'
       }
     },
     mounted () {
@@ -218,8 +250,15 @@
       ...mapState({
         token: state => state.info.token,
         user_id: state => state.info.user_id,
+        mobile: state => state.info.mobile,
         isMobile: state => state.isMobile
       })
+      // balance: () => {
+      //   return this.loanData[this.model].data1
+      // },
+      // totalMoney: () => {
+      //   return this.loanData[this.model].data2
+      // }
     },
     filters: {
       format: api.decimal
