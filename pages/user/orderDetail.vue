@@ -41,8 +41,11 @@
       </div>
     </template>
     <div v-if="show" class="agreement_text">
-      <div class="" v-html="contract.hash_res&&contract.hash_res.content"></div>
-      <div class="" v-html="contract.host_res&&contract.host_res.content"></div>
+      <template v-if="orderType!==3">
+        <div class="" v-html="contract.hash_res&&contract.hash_res.content"></div>
+        <div class="" v-html="contract.host_res&&contract.host_res.content"></div>
+      </template>
+      <div v-else v-html="contract.miner_res&&contract.miner_res.content"></div>
       <div class="btn_box">
         <button @click="back">返回</button>
       </div>
@@ -65,8 +68,8 @@
         requestUrl: {0: 'showOrderDetail', 3: 'showMinerDetail'},
         show: false,
         contract: '',
-        orderId: '',
-        orderType: ''
+        orderId: 0,
+        orderType: 0
       }
     },
     methods: {
@@ -81,6 +84,10 @@
         if (this.orderType === 1) {
           requestUrl = 'rent_contract'
           data = {token: this.token, transfer_id: this.orderId}
+        }
+        if (this.orderType === 3) {
+          requestUrl = 'miner_contract'
+          data = {token: this.token, user_id: this.user_id, order_id: this.orderId}
         }
         util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
@@ -107,7 +114,7 @@
         this.show = false
       },
       getData () {
-        if (this.token !== 0 && this.orderId) {
+        if (this.token !== 0 && this.orderId && this.orderType) {
           var self = this
           var requestUrl = this.requestUrl[this.orderType]
           var data = this.orderType !== 1 ? {token: this.token, order_id: this.orderId} : {token: this.token, orderid: this.orderId}
@@ -115,7 +122,7 @@
             api.checkAjax(self, res, () => {
               self.data = res
               if (res.miner) {
-                Object.assign(self.data, res.miner)
+                self.data = Object.assign(self.data, res.miner)
               }
             })
           })
@@ -130,11 +137,11 @@
       var p = localStorage.getItem('info')
       if (p) {
         p = JSON.parse(p)
-        this.orderId = p.orderId
-        this.orderType = p.orderType
+        this.orderId = +p.orderId
+        this.orderType = +p.orderType
         this.getData()
       } else {
-        this.$router.push({path: '/repayment/0'})
+        this.$router.push({path: '/order/0'})
       }
     },
     computed: {
