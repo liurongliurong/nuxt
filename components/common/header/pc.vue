@@ -1,5 +1,5 @@
 <template>
-  <header :class="headerClass" :disabled="$route.name==='notFound'">
+  <div :class="headerClass" :disabled="$route.name==='notFound'">
     <section class="box">
       <div class="nav_left1">
         <router-link class="logo" to="/"></router-link>
@@ -33,20 +33,16 @@
         </template>
       </div>
     </section>
-  </header>
+  </div>
 </template>
 
 <script>
   import api from '@/util/function'
-  import util from '@/util'
   import { mapState } from 'vuex'
-  import MobileHeader from './mobile'
-  import PcHeader from './pc'
   export default {
     name: 'header',
     data () {
       return {
-        // nav: [{name: 'minerShop', text: '矿机商城', link: '/minerShop/list/1'}, {name: 'compute', text: '算力转让', link: '/compute/list/1'}, {name: 'bdc', text: 'BDC托管', link: '/bdc'}, {name: 'news', text: '产业资讯', link: '/webInfo/list/news'}, {name: 'dataTrade', text: '数据交易', link: ''}, {name: 'computeTrade', text: '算法交易', link: ''}],'/industryInformation'
         nav: [{name: 'miner/1', text: '品牌矿机', link: '/minerShop/miner/1'}, {name: 'miner/2', text: '云算力', link: '/minerShop/miner/2'}, {name: 'bdc', text: 'BDC托管', link: '/bdc'}, {name: 'industryInformation', text: '产业资讯', link: '/industryInformation'}],
         path: {frame_header: ['regist', 'passwordRetrieval', '/minerShop/list', 'user', 'account', '/detail', '/currency', 'webInfo', 'article/agreement', 'minerShop/miner', '/industryInformation', 'computeNews', 'transaction', 'quickNews', 'digitalCurrency', 'equipments', 'equipmentEvaluate', 'manufacturer', 'computeChart'], border: ['login', 'bdc'], shadow: ['regist', 'passwordRetrieval'], web_box: ['webInfo', 'minerShop/miner']},
         headerClass: ''
@@ -103,10 +99,6 @@
     },
     watch: {
       '$route': 'updateClass'
-    },
-    components: {
-      MobileHeader,
-      PcHeader
     }
   }
 </script>
