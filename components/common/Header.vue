@@ -5,7 +5,7 @@
       <div class="left" v-if="token === 0">
         <nuxt-link to="/auth/regist">注册</nuxt-link>
         <span>|</span>
-        <nuxt-link to="/auth/passwordRetrieval">登录</nuxt-link>
+        <nuxt-link to="/auth/login">登录</nuxt-link>
       </div>
       <div v-else class="left">
         <nuxt-link to="/mobile/personcenter">
@@ -23,7 +23,6 @@
 
 <script>
   import { mapState } from 'vuex'
-  import MobileHeader from './header/mobile'
   import PcHeader from './header/pc'
 
   export default {
@@ -35,7 +34,6 @@
       })
     },
     components: {
-      MobileHeader,
       PcHeader
     }
   }
