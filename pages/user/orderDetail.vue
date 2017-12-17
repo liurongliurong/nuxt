@@ -2,17 +2,17 @@
   <section class="detail">
     <template v-if="!show">
       <h2>订单详情</h2>
-      <h3>运行状况</h3>
+      <h3>订单状态</h3>
       <div class="detail_box">
         <div class="process" v-if="orderType !== 1">
-          <div :class="['item', {active: k===processStatus}]" v-for="p,k in processText">
+          <div :class="['item', {active: k===processStatus}]" v-for="p,k in processText[orderType]">
             <i><template v-if="k>=processStatus">{{k+1}}</template></i>
             <span>{{p}}</span>
             <div class="line" v-if="k<3"></div>
           </div>
         </div>
-        <div class="detailinfo">
-          <template v-for="i,k in (orderType !== 1 ? info : info2)">
+        <div class="detailinfo" v-if="orderType !== 3">
+          <template v-for="i,k in info[orderType]">
             <div class="item">
               <p>{{i}}</p>
               <div class="profit"><span>{{data[k]||'0.00000000'}}</span>Btc</div>
@@ -24,11 +24,11 @@
       <h3>基本信息</h3>
       <div class="detail_box">
         <div class="detail_table">
-          <div class="item" v-for="d,k in (orderType !== 1 ? type : computeType)">
+          <div class="item" v-for="d,k in type[orderType]">
             <div class="item_title">{{d[0]}}</div>
             <div class="item_value">{{data[k]}}{{d[1]}}</div>
           </div>
-          <div class="item" v-if="Object.keys((orderType !== 1 ? type : computeType)).length % 2">
+          <div class="item">
             <div class="item_title"></div>
             <div class="item_value"></div>
           </div>
@@ -56,13 +56,12 @@
   export default {
     data () {
       return {
-        processText: ['订单下达', '矿场确认', '矿机上架', '回报计算'],
+        processText: {3: ['订单完成', '矿场发货'], 0: ['订单下达', '矿场确认', '矿机上架', '回报计算']},
         processStatus: 1,
-        info: {realized_income_value: '累计已获得收益', today_income: '今日收益', total_realized_power_fee_value: '今日支付运维费'},
-        info2: {realized_income_value: '累计已获得收益', today_income_value: '今日收益', today_power_fee_value: '今日支付运维费'},
+        info: {0: {realized_income_value: '累计已获得收益', today_income: '今日收益', total_realized_power_fee_value: '今日支付运维费'}, 1: {realized_income_value: '累计已获得收益', today_income_value: '今日收益', today_power_fee_value: '今日支付运维费'}},
         data: {},
-        type: {hash_type: ['算力类型', ''], product_name: ['矿机名称', ''], buy_amount: ['购买数量', '台'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], income_type: ['收益方式', ''], total_hash: ['总算力', 'T']},
-        computeType: {type_name: ['代币类型', ''], buy_amount: ['购买数量', 'T'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], manner: ['发币方式', '']},
+        type: {0: {hash_type: ['算力类型', ''], product_name: ['矿机名称', ''], buy_amount: ['购买数量', '台'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], income_type: ['收益方式', ''], total_hash: ['总算力', 'T']}, 1: {type_name: ['代币类型', ''], buy_amount: ['购买数量', 'T'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], manner: ['发币方式', '']}, 3: {hash_type: ['算力类型', ''], name: ['矿机名称', ''], buy_amount: ['购买数量', '台'], created_time: ['购买日期', ''], pay_value: ['购买金额', '元']}},
+        requestUrl: {0: 'showOrderDetail', 3: 'showMinerDetail'},
         show: false,
         contract: '',
         orderId: '',
@@ -109,12 +108,14 @@
       getData () {
         if (this.token !== 0 && this.orderId) {
           var self = this
-          var requestUrl = this.orderType !== 1 ? 'showOrderDetail' : 'getTransferRecord'
+          var requestUrl = this.requestUrl[this.orderType]
           var data = this.orderType !== 1 ? {token: this.token, order_id: this.orderId} : {token: this.token, orderid: this.orderId}
           util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res
-              console.log(self.data)
+              if (res.miner) {
+                Object.assign(self.data, res.miner)
+              }
             })
           })
         } else {

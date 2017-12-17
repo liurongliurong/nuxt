@@ -102,11 +102,11 @@
                 <template v-if="nowEdit===2&&status==0">
                   <button @click="openMask('rent', '出租算力', d.id)" :disabled="!d.remain_hash">出租算力</button>
                 </template>
-                <a href="javascript:;" @click="goDetail(nowEdit,d.id)"  v-if="nowEdit!==3&&nowEdit!==2&&status!=2&&status!=3">查看详情</a>
-                <template v-if="nowEdit===3">
+                <a href="javascript:;" @click="goDetail(nowEdit,d.id)"  v-if="nowEdit===3||(nowEdit!==2&&status!=2&&status!=3)">查看详情</a>
+                <!-- <template v-if="nowEdit===3">
                   <button class="sold" @click="getContract(d.id)">查看协议</button>
                   <button class="sold" @click="getBaoquan(d.id)">查看保全</button>
-                </template>
+                </template> -->
               </td>
             </tr>
           </tbody>
@@ -190,9 +190,9 @@
         status: 1,
         edit: '',
         form: {
-          sold: [{name: 'amount', type: 'text', title: '出售数量', placeholder: '请输入出售数量', changeEvent: true, tipsInfo: '最大可出售数量', tipsUnit: '台', pattern: 'int'}, {name: 'one_amount_value', type: 'text', title: '出售单价', placeholder: '请输入出售单价', changeEvent: true, tipsInfo: '购入价格', tipsUnit: '元', pattern: 'float'}, {name: 'total_price', type: 'text', title: '出售总价', edit: 'price', tipsInfo: 'show', tipsUnit: '元'}, {name: 'trade_password', type: 'password', title: '交易密码', placeholder: '请输入交易密码', pattern: 'telCode'}],
-          rent: [{name: 'amount', type: 'text', title: '出租数量', placeholder: '请输入出租数量', changeEvent: true, tipsInfo: '最大可出租数量', tipsUnit: 'T', pattern: 'float'}, {name: 'transfer_time', type: 'select', title: '出租时长', option: ['30', '90', '180', '360'], unit: '天'}, {name: 'transfer_price', type: 'text', title: '出租单价', placeholder: '请输入出租单价', changeEvent: true, tipsInfo: 'show', tipsUnit: '元', pattern: 'float'}, {name: 'total_price', type: 'text', title: '出租总价', edit: 'price', tipsInfo: 'show', tipsUnit: '元'}, {name: 'trade_password', type: 'password', title: '交易密码', placeholder: '请输入交易密码', pattern: 'telCode'}],
-          againRent: [{name: 'amount', type: 'text', title: '转租数量', placeholder: '请输入出租数量', edit: 'price', tipsInfo: 'show', tipsUnit: 'T', pattern: 'float'}, {name: 'transfer_time', type: 'text', title: '转租时长', edit: 'price', tipsInfo: '已使用时长', tipsUnit: '天', showUse: true}, {name: 'transfer_price', type: 'text', title: '转租单价', placeholder: '请输入出租单价', edit: 'price', tipsInfo: 'show', tipsUnit: '元'}, {name: 'total_price', type: 'text', title: '转租总价', placeholder: '请输入转租总价', changeEvent: true, tipsInfo: 'show', tipsUnit: '元', pattern: 'float'}, {name: 'trade_password', type: 'password', title: '交易密码', placeholder: '请输入交易密码', pattern: 'telCode'}]
+          sold: [{name: 'amount', type: 'text', title: '出售数量', placeholder: '请输入出售数量', changeEvent: true, tipsInfo: '最大可出售数量', tipsUnit: '台', pattern: 'int'}, {name: 'one_amount_value', type: 'text', title: '出售单价', placeholder: '请输入出售单价', changeEvent: true, tipsInfo: '购入价格', tipsUnit: '元', pattern: 'float'}, {name: 'total_price', type: 'text', title: '出售总价', edit: 'price', tipsInfo: 'show', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
+          rent: [{name: 'amount', type: 'text', title: '出租数量', placeholder: '请输入出租数量', changeEvent: true, tipsInfo: '最大可出租数量', tipsUnit: 'T', pattern: 'float'}, {name: 'transfer_time', type: 'select', title: '出租时长', option: ['30', '90', '180', '360'], unit: '天'}, {name: 'transfer_price', type: 'text', title: '出租单价', placeholder: '请输入出租单价', changeEvent: true, tipsInfo: 'show', tipsUnit: '元', pattern: 'float'}, {name: 'total_price', type: 'text', title: '出租总价', edit: 'price', tipsInfo: 'show', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
+          againRent: [{name: 'amount', type: 'text', title: '转租数量', placeholder: '请输入出租数量', edit: 'price', tipsInfo: 'show', tipsUnit: 'T', pattern: 'float'}, {name: 'transfer_time', type: 'text', title: '转租时长', edit: 'price', tipsInfo: '已使用时长', tipsUnit: '天', showUse: true}, {name: 'transfer_price', type: 'text', title: '转租单价', placeholder: '请输入出租单价', edit: 'price', tipsInfo: 'show', tipsUnit: '元'}, {name: 'total_price', type: 'text', title: '转租总价', placeholder: '请输入转租总价', changeEvent: true, tipsInfo: 'show', tipsUnit: '元', pattern: 'float'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}]
         },
         editText: '',
         amount: 0,
@@ -232,10 +232,7 @@
           util.post('fundOrder', {sign: api.serialize({token: this.token, user_id: this.user_id, type: this.nowEdit, status: this.status, page: this.now})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res.list
-              // self.showImg = !res.total_num
-              if (!res.total_num) {
-                self.showImg = false
-              }
+              self.showImg = !res.total_num
               if (self.now > 1) return false
               self.len = Math.ceil(res.total_num / 15)
             })
@@ -358,7 +355,6 @@
             break
         }
         if (!data) return false
-        data.trade_password = md5(data.trade_password)
         var self = this
         console.log(data)
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
@@ -435,6 +431,7 @@
       ...mapState({
         token: state => state.info.token,
         user_id: state => state.info.user_id,
+        mobile: state => state.info.mobile,
         scode: state => state.info.scode,
         isMobile: state => state.isMobile
       })
