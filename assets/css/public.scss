@@ -138,7 +138,7 @@ input::-webkit-input-placeholder {
     transition: .2s ease-out;
     transform: translate3d(-50%,-50%,0);
     backface-visibility: hidden;
-    z-index: 2001;
+    z-index: 1000001;
     overflow-y:scroll;
     .close{
       @include close
@@ -172,5 +172,5 @@ input::-webkit-input-placeholder {
     height: 100%;
     opacity: 0.5;
     background: #000;
-    z-index: 2000
+    z-index: 1000000
   }
