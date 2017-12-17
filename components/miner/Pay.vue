@@ -103,7 +103,7 @@
             <FormField :form="form" class="form" v-if="payNo===1"></FormField>
              <label for="accept">
               <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
-              <span @click="openMask(1)">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机{{page === 'minerShop'? '销售':'转让'}}协议》</a><template v-if="params2!=='1'">和<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
+              <span @click="openMask(1)" style="margin-left:10px;">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机{{page === 'minerShop'? '销售':'转让'}}协议》</a><template v-if="params2!=='1'">和<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
               <span class="select_accept">{{tips}}</span>
             </label> 
             <button name="btn">确认支付</button>
@@ -168,7 +168,7 @@
         <div class="mobile_btn">
            <label for="accept">
             <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
-            <span @click="openMask(1)">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机{{page === 'minerShop'? '销售':'转让'}}协议》</a><template v-if="params2!=='1'">、<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
+            <span @click="openMask(1)" style="margin-left:10px;">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机{{page === 'minerShop'? '销售':'转让'}}协议》</a><template v-if="params2!=='1'">、<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
             <span class="select_accept">{{tips}}</span>
           </label> 
           <button name="btn">确认支付</button>
@@ -714,7 +714,9 @@
                   font-size: 26px;
                   padding-right:8px;
                   line-height: 25px;
+                  position: relative;
                   vertical-align: bottom;
+                  top: 6px;
                 }
                 &.yue:before{
                   content:'\e60c'
@@ -745,6 +747,13 @@
             margin:30px auto 0 auto;
             .input,.input input{
               line-height: 1.5;
+            }
+            .count_btn {
+              top:0 !important;
+              right: 0 !important;
+              border-top-right-radius: 3px;
+              border-bottom-right-radius: 3px;
+              height: 42px;
             }
             .input{
               margin-bottom: 25px;

@@ -236,6 +236,7 @@
       img{
         width:132px;
         margin-top: 40px;
+        height: 100px;
         float: left;
         object-fit: cover;
         margin-left: 48px;

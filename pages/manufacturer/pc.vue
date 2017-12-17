@@ -58,7 +58,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .museum_right{
     float: left;
     width: 1002px;
