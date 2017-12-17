@@ -86,7 +86,6 @@
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import MyMask from '@/components/common/Mask'
-  import md5 from 'js-md5'
   export default {
     components: {
       MyMask
@@ -106,8 +105,8 @@
         dataFund: {total_miner: 0, total_hash: 0, selled_miner: 0, selling_miner: 0},
         edit: '',
         form: {
-          Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元'}, {name: 'trade_password', type: 'password', title: '交易密码', placeholder: '请输入交易密码', pattern: 'telCode'}],
-          GetIncome: [{name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType'}, {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', tipsUnit: 'hash'}, {name: 'trade_password', type: 'password', title: '交易密码', placeholder: '请输入交易密码', pattern: 'telCode'}]
+          Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
+          GetIncome: [{name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType'}, {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', tipsUnit: 'hash'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}]
         },
         editText: '',
         fee: 0,
@@ -156,12 +155,6 @@
           }
           if (+this.moneyData.balance_account <= 0) {
             api.tips('您的账户余额不足，不能提现', this.isMobile)
-            return false
-          }
-          if (!this.trade_password) {
-            api.tips('请先设置交易密码', this.isMobile, () => {
-              this.$router.push({name: 'user-password'})
-            })
             return false
           }
           requestUrl = 'showWithdraw'
@@ -228,13 +221,12 @@
             break
         }
         if (!data) return false
-        data.trade_password = md5(data.trade_password)
         form.btn.setAttribute('disabled', true)
         var self = this
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.closeEdit()
-            api.tips(tipsStr, this.isMobile)
+            api.tips(tipsStr, self.isMobile)
           }, form.btn)
         })
       },
@@ -273,10 +265,10 @@
       ...mapState({
         token: state => state.info.token,
         user_id: state => state.info.user_id,
+        mobile: state => state.info.mobile,
         true_name: state => state.info.true_name,
         bank_card: state => state.info.bank_card,
         address: state => state.info.address,
-        trade_password: state => state.info.address,
         hashType: state => state.hashType,
         scode: state => state.info.scode,
         isMobile: state => state.isMobile

@@ -120,7 +120,7 @@
     },
     data () {
       return {
-        nav: [{title: '矿机商城', desc: '无忧购买矿机', url: '/minerShop/miner/1'}, {title: 'BDC托管', desc: '多个BDC中心', url: '/bdc'}, {title: '产业资讯', desc: '掌握产业动态', url: '/quickNews'}, {title: '算力转让', desc: '掌握产业动态', url: '/mobile/information'}],
+        nav: [{title: '品牌矿机', desc: '无忧购买矿机', url: '/minerShop/miner/1'}, {title: 'BDC托管', desc: '多个BDC中心', url: '/bdc'}, {title: '产业资讯', desc: '掌握产业动态', url: '/quickNews'}, {title: '云算力', desc: '掌握产业动态', url: '/minerShop/miner/2'}],
         data: [1, 1, 1],
         newsNav: [{title: '热点快讯·不止于此', desc: '开启算力新篇章'}, {title: '实时交易信息', desc: '前往了解更多'}, {title: '挖矿币种资料', desc: '前往了解更多'}],
         ad: {title: '算力驱动未来，信任链接天下', desc: '全球算力产业链资源整合，基于区块链的分布式算力输出平台', items: [{img1: require('@/assets/images/home/feature1.png')}, {img1: require('@/assets/images/home/feature2.png')}, {img1: require('@/assets/images/home/feature3.png')}, {img1: require('@/assets/images/home/feature4.png')}]},
@@ -139,11 +139,7 @@
         }
       },
       goPage (url, k) {
-        if (k !== 3) {
-          this.$router.push({path: url})
-        } else {
-          api.tips('即将开放，敬请期待', 1)
-        }
+        this.$router.push({path: url})
       }
     },
     mounted () {
@@ -539,75 +535,74 @@
             .img_hover,&:hover .img{
               display: inline-block;
             }
-            .img1,.img_hover1{
-              height: 49px;
-              width: 150px;
-            }
-            .img1{
-              background: url('~assets/images/partner.png') -10px -216px;
-            }
-            .img_hover1{
-              background: url('~assets/images/partner.png') -180px -216px;
-            }
-            .img2,.img_hover2{
-              height: 50px;
-              width: 180px;
-            }
-            .img2{
-              background: url('../assets/images/partner.png') -360px -117px;
-            }
-            .img_hover2{
-              background: url('../assets/images/partner.png') -0px -171px;
-            }
-            .img3,.img_hover3{
-              height: 49px;
-              width: 150px;
-            }
-            .img3{
-              background: url('~assets/images/partner.png') -180px -10px;
-            }
-            .img_hover3{
-              background: url('~assets/images/partner.png') -180px -79px;
-            }
             .img4,.img_hover4{
-              height: 46px;
+              height: 49px;
               width: 150px;
+            }
+            .img1,.img_hover1{
+              width: 150px; height: 32px;
             }
             .img4{
-              background: url('~assets/images/partner.png') -10px -150px;
+              background: url('~assets/images/partner.png') -180px -216px;
             }
             .img_hover4{
-              background: url('~assets/images/partner.png') -180px -150px;
+              background: url('~assets/images/partner.png') -10px -216px;
             }
+            // .img7,.img_hover7{
+            //   height: 50px;
+            //   width: 180px;
+            // }
+            // .img7{
+            //   background: url('../assets/images/partner.png') -360px -117px;
+            // }
+            // .img_hover7{
+            //   background: url('../assets/images/partner.png') -0px -171px;
+            // }
             .img5,.img_hover5{
-              height: 32px;
+              height: 49px;
               width: 150px;
             }
             .img5{
-              background: url('~assets/images/partner.png') -10px -281px;
+              background: url('~assets/images/partner.png') -210px -10px;
             }
             .img_hover5{
-              background: url('~assets/images/partner.png') -180px -281px;
+              background: url('~assets/images/partner.png') -210px -79px;
             }
-            .img6,.img_hover6{
-              height: 50px;
+            .img3,.img_hover3{
+              height: 46px;
               width: 150px;
             }
-            .img6{
-              background: url('~assets/images/partner.png') -10px -10px;
+            .img3{
+              background: url('~assets/images/partner.png') -10px -150px;
             }
-            .img_hover6{
-              background: url('~assets/images/partner.png') -10px -80px;
+            .img_hover3{
+              background: url('~assets/images/partner.png') -180px -150px;
+            }
+            
+            .img1{
+              background: url('~assets/images/partner.png') -180px -281px;
+            }
+            .img_hover1{
+              background: url('~assets/images/partner.png') -10px -281px;
             }
             .img7,.img_hover7{
+              width: 180px; height: 50px;
+            }
+            .img7{
+              background: url('~assets/images/partner.png') -10px -80px;
+            }
+            .img_hover7{
+              background: url('~assets/images/partner.png') -10px -10px;
+            }
+            .img6,.img_hover6{
               height: 20px;
               width: 150px;
             }
-            .img7{
-              background: url('~assets/images/partner.png') -350px -10px;
+            .img6{
+              background: url('~assets/images/partner.png') -10px -333px;
             }
-            .img_hover7{
-              background: url('~assets/images/partner.png') -350px -50px;
+            .img_hover6{
+              background: url('~assets/images/partner.png') -180px -333px;
             }
           }
         }

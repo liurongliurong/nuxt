@@ -116,7 +116,11 @@
         }
         if (ele.getAttribute('disabled') === 'true') return false
         util.post('send_code', {sign: api.serialize({token: this.token, mobile: form.dep_tel ? form.dep_tel.value : form.mobile.value})}).then(res => {
-          api.setTips(form.code, 'success')
+          if (!this.isMobile) {
+            api.setTips(form.code, 'success')
+          } else {
+            api.tips('发送成功', 1)
+          }
           api.countDown()
           ele.setAttribute('disabled', true)
         })
@@ -152,7 +156,8 @@
         token: state => state.info.token,
         user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
-        hashType: state => state.hashType
+        hashType: state => state.hashType,
+        isMobile: state => state.isMobile
       })
     },
     filters: {
