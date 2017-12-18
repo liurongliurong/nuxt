@@ -32,21 +32,6 @@
         this.$router.push({path: '/minerShop/detail/'})
       }
     },
-    mounted () {
-      var self = this
-      // util.post('product_top_list', {sign: api.serialize({token: this.token})}).then(function (res) {
-      //   api.checkAjax(self, res, () => {
-      //     self.list = res
-      //   })
-      // })
-      util.post('showTopMiner', {sign: api.serialize({token: this.token})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.list = res
-        })
-      }).catch(res => {
-        console.log(res)
-      })
-    },
     filters: {
       format: api.readable
     },

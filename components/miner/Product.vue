@@ -82,9 +82,10 @@
             </div>
             <div class="price_text1">总算力：<span class="money">{{$parent.totalHash|format}}T</span></div>
             <div class="price_text1">需支付：<span class="money">{{$parent.totalPrice|format}}元</span></div>
-            <button class="btn" disabled v-if="$parent.leftStatus" style="background:#c3bbba;">已售罄</button>
-            <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" v-else @click="checkPay($event, false)">立即购买</button>
-            <button class="btn loan_btn" @click="checkPay($event, true)" v-if="params2==='2'&&!$parent.leftStatus">分期购买</button>
+            <button class="btn" disabled v-if="$parent.leftStatus||$parent.detail.status===7">已售罄</button>
+            <button class="btn" disabled v-else-if="$parent.detail.status===4">暂不能购买</button>
+            <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" @click="checkPay($event, false)" v-else>立即购买</button>
+            <button class="btn loan_btn" @click="checkPay($event, true)" v-if="$parent.detail.status!==4&&params2==='2'&&!$parent.leftStatus">分期购买</button>
           </div>
         </div>
       </div>
@@ -214,7 +215,8 @@
           </div>
         </div>
         <div class="mobile_btn">
-          <button disabled v-if="$parent.leftStatus">已售罄</button>
+          <button disabled v-if="$parent.leftStatus||$parent.detail.status===7">已售罄</button>
+          <button disabled v-else-if="$parent.detail.status===4">暂不能购买</button>
           <button @click="openMask" v-else>立即购买</button>
         </div>
       </template>
@@ -250,7 +252,7 @@
         <div class="mobile_btn">
           <button @click="openMask" v-if="$parent.detail.status===1">立即购买</button>
           <button disabled v-else-if="$parent.detail.status===2">已售罄</button>
-          <button disabled v-else-if="$parent.detail.status===3">已售罄</button>
+          <button disabled v-else-if="$parent.detail.status===3">已撤销</button>
           <button disabled v-else>暂不能购买</button>
         </div>
       </template>
@@ -283,8 +285,7 @@
             <div class="item">{{$parent.totalPrice|format}}元</div>
           </div>
           <div class="mobile_btn" style="z-index:9999999;">
-            <button disabled v-if="$parent.leftStatus">已售罄</button>
-            <button @click="checkPay($event, false)" v-else>立即购买</button>
+            <button @click="checkPay($event, false)">立即购买</button>
           </div>
         </div>
       </div>
@@ -759,6 +760,9 @@
           background: #fe5039;
           color: white;
           font-size: 18px;
+          &:disabled{
+            background: $border;
+          }
           &.buy_btn{
             position: relative;
             &:before{

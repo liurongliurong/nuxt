@@ -1,14 +1,8 @@
 <template>
   <section class="order_manage">
-    <div v-if="show" class="agreement_text">
-      <div class="" v-html="contract"></div>
-      <div class="btn_box">
-        <button @click="back">返回</button>
-      </div>
-    </div>
-    <div class="pc_box" v-else>
+    <div class="pc_box" v-if="isMobile===0">
       <div class="order_title">
-        <div class="text">
+        <div class="order_type_select">
           <span class="text_title">订单管理</span>
           <div class="title_content">
             <span class="title_now" v-if="scode">{{title2[nowEdit]}}</span>
@@ -38,28 +32,19 @@
                 <th>出售金额</th>
                 <th>出售时间</th>
               </template>
-              <template v-if="nowEdit!==0&&(status==2||status==3)">
-                <th>转让金额</th>
-                <th>转让数量</th>
-                <th>转让单价</th>
-                <th>转让时间</th>
-              </template>
               <template v-if="status==1||status==4">
-                <th v-if="nowEdit!==1">购买数量</th>
+                <th>购买数量</th>
                 <th>购买金额</th>
                 <th>购买时间</th>
               </template>
               <template v-if="nowEdit===0&&status==1">
                 <th>剩余可出售</th>
               </template>
-              <template v-if="nowEdit===2&&status==1&&!(nowEdit===2&&status==1)">
-                <th>剩余可出租</th>
-              </template>
               <th v-if="status!=3&&!(nowEdit===2&&status==1)">操作</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="d,k in data" :class="{active: nowEdit===0&&status==1}">
+            <tr v-for="d,k in data">
               <td v-if="nowEdit===3">{{d.miner&&d.miner.name}}</i></td>
               <td v-else>{{d.product_name}}<i :class="'icon_currency '+d.hash_type_name"></i></td>
               <td v-if="nowEdit!==3&&(nowEdit===0||status==1||status==4)">{{d.total_hash|format}}T</td>
@@ -68,45 +53,19 @@
                 <td>{{d.selling_amount}}台</td>
                 <td>{{d.total_price}}元</td>
               </template>
-              <template v-if="(nowEdit!==0)&&(status==2||status==3)">
-                <td>{{d.total_price}}元</td>
-                <td>{{d.transfer_amount|format}}T</td>
-                <td>{{d.transfer_price}}元</td>
-              </template>
               <template v-if="status==1||status==4">
                 <td v-if="nowEdit!==1">{{d.buy_amount}}台</td>
                 <td v-if="nowEdit!==3">{{d.total_price}}元</td>
                 <td v-else>{{d.pay_value}}元</td>
               </template>
-              <td v-if="nowEdit===1&&(status==2||status==3)">{{d.transfer_time}}天</td>
-              <td v-else>{{d.create_time||d.created_time}}</td>
-              <template v-if="nowEdit===0&&status==1">
-                <td>{{d.remain_miner}}台</td>
-              </template>
-              <template v-if="nowEdit===2&&status==1&&!(nowEdit===2&&status==1)">
-                <td>{{d.remain_hash|format}}T</td>
-              </template>
+              <td>{{d.create_time||d.created_time}}</td>
+              <td v-if="nowEdit===0&&status==1">{{d.remain_miner}}台</td>
+              <td v-if="nowEdit===2&&status==1&&!(nowEdit===2&&status==1)">{{d.remain_hash|format}}T</td>
               <td v-if="status!=3&&!(nowEdit===2&&status==1)">
-                <template v-if="nowEdit===0&&status==1&&!d.is_loan">
-                  <button class="sold" @click="openMask('sold', '出售云算力', d.id)" v-if="d.remain_miner&&d.status===8">出售云算力</button>
-                </template>
-                <template v-if="nowEdit===0&&status==2">
-                  <button @click="quit('sold', d.id)">撤销出售</button>
-                </template>
-                <template v-if="nowEdit===1&&status==1">
-                  <button @click="openMask('againRent', '转租算力', d.id)" :disabled="!d.remain_hash">转租算力</button>
-                </template>
-                <template v-if="(nowEdit===1||nowEdit==2)&&status==2">
-                  <button @click="quit('rent', d.id)">撤销出租</button>
-                </template>
-                <template v-if="nowEdit===2&&status==0">
-                  <button @click="openMask('rent', '出租算力', d.id)" :disabled="!d.remain_hash">出租算力</button>
-                </template>
+                <button class="sold" @click="openMask('sold', '出售云算力', d.id)" v-if="nowEdit===0&&status==1&&!d.is_loan&&d.remain_miner&&d.status===8">出售云算力</button>
+                <button @click="quit('sold', d.id)" v-if="nowEdit===0&&status==2">撤销出售</button>
+                <button @click="openMask('rent', '出租算力', d.id)" :disabled="!d.remain_hash" v-if="nowEdit===2&&status==0">出租算力</button>
                 <a href="javascript:;" @click="goDetail(nowEdit,d.id)"  v-if="nowEdit===3||(nowEdit!==2&&status!=2&&status!=3)">查看详情</a>
-                <!-- <template v-if="nowEdit===3">
-                  <button class="sold" @click="getContract(d.id)">查看协议</button>
-                  <button class="sold" @click="getBaoquan(d.id)">查看保全</button>
-                </template> -->
               </td>
             </tr>
           </tbody>
@@ -118,52 +77,52 @@
         <Pager :len="len"></Pager>
       </div>
     </div>
-    <div class="mobile_box" v-if="!show">
-      <div class="typeclass">
-        <div class="one">
-          <div class="hash active" @click="hashcli" v-if="scode">{{title2[nowEdit]}}<span class="active"></span></div>
-          <div class="hash active" @click="hashcli" v-else>{{title[nowEdit]}}<span class="active"></span></div>
-          <div class="other_hash" v-show="showtype">
-            <div class="hash_center" v-if="scode">
-              <router-link class="item" :to="'/mobile/order/'+k" v-for="n,k in title2" :key="k"><span>{{n}}</span><span class="yes">√</span></router-link>
-            </div>
-            <div class="hash_center" v-else>
-              <router-link class="item" :to="'/mobile/order/'+k" v-for="n,k in title" :key="k"><span>{{n}}</span><span class="yes">√</span></router-link>
-            </div>
-          </div>
+    <div class="mobile_box" v-if="isMobile===1">
+      <div class="type_nav_box">
+        <div class="type_list" @click="showtype=!showtype">
+          <span>{{scode?title2[nowEdit]:title[nowEdit]}}</span>
+          <span class="active"></span>
         </div>
-        <a :class="['one', {active: status===(+k+1)}]" href="javascript:;" @click="getList(+k+1)" v-for="n,k in nav[nowEdit]">{{n}}</a>
+        <a :class="{active: status===(+k+1)}" href="javascript:;" @click="getList(+k+1)" v-for="n,k in nav[nowEdit]">{{n}}</a>
+        <div class="nav_list" v-show="showtype">
+          <router-link class="item" :to="'/mobile/order/'+k" v-for="n,k in scode?title2:title" :key="k">
+            <span>{{n}}</span>
+            <span class="yes">√</span>
+          </router-link>
+        </div>
       </div>
-      <div class="listall">
+      <div class="order_data">
         <div class="item" v-for="d,k in data">
-          <p class="top" v-if="nowEdit==3"><span>{{d.miner&&d.miner.name}}</span><em>{{d.created_time}}</em></p>
-          <p class="top" v-else><span>{{d.product_name}}</span><em>{{d.create_time}}</em></p>
-          <div class="listlist">
-            <div class="listone">
-              <h4 style="color:#ff721f;" v-if="nowEdit!=3">{{d.total_price}}<em> 元</em></h4>
-              <h4 style="color:#ff721f;" v-else>{{d.pay_value}}<em> 元</em></h4>
+          <p class="order_product_name" v-if="">
+            <span>{{nowEdit==3?(d.miner&&d.miner.name):d.product_name}}</span>
+            <em>{{nowEdit==3?d.created_time:d.create_time}}</em>
+          </p>
+          <div class="order_product_value">
+            <div class="value_one">
+              <h4 class="buy_number">{{nowEdit!=3?d.total_price:d.pay_value}}<em> 元</em></h4>
               <p>购买金额</p>
             </div>
-            <div class="listone" style="border-left:1px solid #ddd;border-right:1px solid #ddd;">
+            <div class="line"></div>
+            <div class="value_one">
               <h4 v-if="nowEdit!=3&&(nowEdit==0||status==1||status==4)">{{d.total_hash|format}}<em> T</em></h4>
-              <h4 v-if="nowEdit==3"><em>{{+d.buy_amount * (d.miner&&(+d.miner.hash))}} T</em></h4>
+              <h4 v-if="nowEdit==3">{{+d.buy_amount * (d.miner&&(+d.miner.hash))}}<em> T</em></h4>
               <p>总算力</p>
             </div>
-            <div class="listone">
+            <div class="line"></div>
+            <div class="value_one">
               <h4>{{d.buy_amount}}<em> 台</em></h4>
               <p>购买数量</p>
             </div>
           </div>
-          <div class="orderbutton" v-if="nowEdit==3">
-            <button class="left" @click="getContract(d.id)">查看协议</button>
-            <button class="right" @click="getBaoquan(d.id)">查看保全</button>
+          <div class="order_button">
+            <button class="left" @click="goDetail(nowEdit,d.id)">查看详情</button>
           </div>
         </div>
         <Pager :len="len"></Pager>
       </div>
-      <div class="mnodata" v-if="showImg">
+      <div class="nodata" v-if="showImg">
         <div class="nodata_img"></div>
-        <p style="text-align:center;">暂无列表信息</p>
+        <p>暂无列表信息</p>
       </div>
     </div>
     <MyMask :form="form[edit]" :title="editText" v-if="edit"></MyMask>
@@ -176,7 +135,6 @@
   import { mapState } from 'vuex'
   import MyMask from '@/components/common/Mask'
   import Pager from '@/components/common/Pager'
-  import md5 from 'js-md5'
   export default {
     components: {
       MyMask, Pager
@@ -185,7 +143,7 @@
       return {
         title: {0: '云算力', 3: '矿机'},
         title2: {0: '云算力', 2: '基金', 3: '矿机'},
-        nav: [{'0': '已购买', '1': '出售中', '2': '已出售', '3': '已结束'}, {'0': '已租赁', '1': '出租中', '2': '已出租', '3': '已结束'}, {'0': '持有', '3': '已结束'}, {'0': '已购买'}],
+        nav: {0: {'0': '已购买', '1': '出售中', '2': '已出售', '3': '已结束'}, 2: {'0': '持有', '3': '已结束'}, 3: {'0': '已购买'}},
         data: [],
         status: 1,
         edit: '',
@@ -208,7 +166,6 @@
         now: 1,
         fee: 0,
         showImg: false,
-        show: false,
         showtype: false,
         nowEdit: 0
       }
@@ -248,24 +205,24 @@
         this.fetchData()
       },
       openMask (str, title, id) {
-        this.total_price = 0
-        this.inputAmount = 0
-        this.inputPrice = 0
-        this.order_id = id
-        var data = {}
-        var requestUrl = ''
-        if (str === 'rent') {
-          requestUrl = 'showRentHash'
-          data = {order_id: id}
-        } else if (str === 'againRent') {
-          requestUrl = 'showSubletHash'
-          data = {transfer_record_id: id}
-        } else {
-          requestUrl = 'showSellMiner'
-          data = {order_id: id}
-        }
-        var self = this
         if (this.token !== 0) {
+          this.total_price = 0
+          this.inputAmount = 0
+          this.inputPrice = 0
+          this.order_id = id
+          var data = {}
+          var requestUrl = ''
+          if (str === 'rent') {
+            requestUrl = 'showRentHash'
+            data = {order_id: id}
+          } else if (str === 'againRent') {
+            requestUrl = 'showSubletHash'
+            data = {transfer_record_id: id}
+          } else {
+            requestUrl = 'showSellMiner'
+            data = {order_id: id}
+          }
+          var self = this
           util.post(requestUrl, {sign: api.serialize(Object.assign({token: this.token, user_id: this.user_id}, data))}).then(function (res) {
             api.checkAjax(self, res, () => {
               window.scroll(0, 0)
@@ -289,27 +246,7 @@
           })
         } else {
           setTimeout(() => {
-            util.post(requestUrl, {sign: api.serialize(Object.assign({token: this.token, user_id: this.user_id}, data))}).then(function (res) {
-              api.checkAjax(self, res, () => {
-                window.scroll(0, 0)
-                document.body.style.overflow = 'hidden'
-                self.editText = title
-                self.edit = str
-                if (str === 'sold') {
-                  self.one_amount_value = res.one_amount_value
-                  self.amount = res.show_miner
-                  self.fee = res.sell_miner_fee
-                } else if (str === 'againRent') {
-                  self.amount = res.show_hash
-                  self.transfer_time = res.rent_time - res.have_use_time
-                  self.fee = res.rent_fee
-                  self.have_use_time = res.have_use_time
-                } else {
-                  self.amount = res.show_hash
-                  self.fee = res.rent_fee
-                }
-              })
-            })
+            this.getData()
           }, 5)
         }
       },
@@ -387,45 +324,16 @@
           this.total_price = isNaN(this.total_price) ? 0 : this.total_price
         }
       },
-      getContract (id) {
-        var self = this
-        var data = {token: this.token, user_id: this.user_id, order_id: id}
-        util.post('miner_contract', {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            if (!res.miner_res) {
-              api.tips('暂无协议', self.isMobile)
-            } else {
-              self.show = true
-              self.contract = res.miner_res.content
-            }
-          })
-        })
-      },
-      getBaoquan (id) {
-        if (api.checkWechat()) {
-          api.tips('请在浏览器里打开', 1)
-        }
-        var data = {token: this.token, order_id: id, security_hash_type: 3, user_id: this.user_id}
-        var self = this
-        var newTab = window.open('about:blank')
-        util.post('getBaoquan', {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            newTab.location.href = 'https://www.baoquan.com/attestations/' + res
-          })
-        })
-      },
-      back () {
-        this.show = false
-      },
-      hashcli () {
-        this.showtype = !this.showtype
-      },
       goDetail (type, id) {
         var info = JSON.parse(localStorage.getItem('info'))
         var data = {orderType: type, orderId: id}
         localStorage.setItem('info', JSON.stringify(Object.assign(info, data)))
-        location.href = '/user/orderDetail/'
         // this.$router.push({path: '/user/orderDetail/'})
+        if (this.isMobile) {
+          location.href = '/mobile/orderDetail/'
+        } else {
+          location.href = '/user/orderDetail/'
+        }
       }
     },
     computed: {
@@ -452,25 +360,12 @@
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .order_manage{
-    .agreement_text{
-      padding:15px;
-      overflow: hidden;
-      .btn_box{
-        text-align: center;
-        button{
-          line-height: 2;
-          width:120px;
-          margin:30px auto;
-          @include button($blue)
-        }
-      }
-    }
     .pc_box{
       .order_title{
         @include gap(25,h)
         padding-top:15px;
         border-bottom: 1px solid $border;
-        .text{
+        .order_type_select{
           @include select_list
           margin-bottom:30px;
         }
@@ -549,111 +444,63 @@
               &:hover{
                 background: #f7f8fa;
               }
-              &.active{
-                td:last-child{
-                  width:245px;
-                }
-              }
             }
           }
         }
         @include nodata
       }
-      @include mobile_hide
     }
     .mobile_box{
-      @include mobile_show
       width: 100%;
       background: #f4f4f4;
-      .typeclass{
+      .type_nav_box{
         width: 100%;
         height: 2rem;
         line-height: 2rem;
         background: white;
-        display: flex;
-        justify-content: space-between;
+        @include flex(space-between)
         border-bottom:1px solid #ddd;
-        .one{
+        padding:0 0.5rem;
+        .type_list{
           width: 20%;
           text-align:center;
-          .hash{
-            span{
-              @include triangle(bottom)
-              border-top: 7px solid black;
-              margin-left:10px;
-              position: relative;
-              top:-2px;
-              &.active{
-                border-top: 7px solid #327fff;
-              }
-            }
-          }
-          .other_hash{
-            width: 100%;
-            height: 100vh;
-            position: absolute;
-            top:2rem;
-            z-index:999;
-            background:rgba(0,0,0,.3);
-            .hash_center{
-              width: 100%;
-              overflow: hidden;
-              background: white;
-              text-align: left;
-              padding-left:0.5rem;
-              line-height: 1.5rem;
-              .item{
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                padding-right: 0.5rem;
-                .yes{
-                  display:none;
-                }
-                &.router-link-active{
-                  color: #327fff;
-                  .yes{
-                    display:block;
-                  }
-                }
-              }
-            }
-          }
           .active{
-            color: #327fff;
+            @include triangle(bottom)
+            border-top: 7px solid #327fff;
+            margin-left:10px;
+            position: relative;
+            top:-2px;
           }
         }
-        a.one.router-link-active{
-          color:#327fff
+        .nav_list{
+          position: absolute;
+          left:0;
+          top:2rem;
+          width: 100%;
+          height: calc(100vh - 2rem);
+          z-index:999;
+          background:rgba(0,0,0,.3);
+          .item{
+            @include flex(space-between)
+            background: white;
+            padding:0 0.5rem;
+            line-height: 1.5rem;
+            .yes{
+              display:none;
+            }
+            &.nuxt-link-active{
+              color: #327fff;
+              .yes{
+                display:block;
+              }
+            }
+          }
+        }
+        a.active{
+          color: #327fff;
         }
       }
-      .mnodata{
-        width: 100%;
-        text-align: center;
-        height: 100%;
-        background:white;
-        top:0;
-        .nodata_img{
-          display: inline-block;
-          width: 234px;
-          height: 215px;
-          margin-top: 100px;
-          background: url('~assets/images/css_sprites.png') -335px -10px;
-        }
-        img{
-          width: 130px;
-          display: block;
-          margin:0 auto;
-          margin-top: 140px;
-          margin-bottom: 20px;
-        }
-        p{
-          text-align: center !important;
-          width: 40% !important;
-          margin-left:30%;
-        }
-      }
-      .listall{
+      .order_data{
         width:100%;
         overflow: hidden;
         .item{
@@ -662,13 +509,13 @@
           background:white;
           padding:0 .5rem;
           box-sizing: border-box;
-          margin-bottom: 0.5rem;
-          .top{
+          .order_product_name{
             width: 100%;
             display: flex;
             justify-content: space-between;
             padding:.4rem 0;
             border-bottom: 1px solid #ddd;
+            line-height: 1rem;
             span{
               color:#121212;
               font-size: 0.7rem;
@@ -679,13 +526,11 @@
               font-size: 0.5rem;
             }
           }
-          .listlist{
+          .order_product_value{
             width: 100%;
-            display: flex;
-            justify-content: space-between;
+            @include flex(space-between)
             padding:0.8rem 0;
-            .listone{
-              width: 33.3%;
+            .value_one{
               text-align: center;
               h4{
                 font-size:0.9rem;
@@ -693,27 +538,42 @@
                   font-style: normal;
                   font-size: 0.5rem;
                 }
+                &.buy_number{
+                  color:#ff721f;
+                }
               }
               p{
                 color: #999;
               }
+              &:nth-child(3){
+                text-align: center;
+              }
+              &:nth-child(1){
+                text-align: left;
+              }
+              &:nth-child(5){
+                text-align: right;
+              }
+            }
+            .line{
+              height:1.5rem;
+              width:1px;
+              background: $border;
             }
           }
-          .orderbutton{
-            width: 100%;
+          .order_button{
             text-align:right;
-            padding:0.5rem 0;
+            padding-bottom:0.5rem;
             button{
               background: #327fff;
               color: #fff;
               padding: .2rem .5rem;
             }
-            .left{
-              margin-right:.5rem;
-            }
           }
-        }
-        .pager 
+          &:not(:last-child){
+            margin-bottom: 0.5rem;
+          }
+        } 
         .pager{
           padding-top: 20px;
           padding-bottom: 20px;
@@ -722,6 +582,12 @@
             border-top: 1px solid #ddd !important;
           }
         }
+      }
+      @include nodata
+      .nodata{
+        background: #fff;
+        margin-top:0;
+        padding-top:100px;
       }
     }
   }

@@ -1,6 +1,6 @@
 <template>
-  <section class="detail">
-    <template v-if="!show">
+  <section class="order_detail">
+    <div class="pc_box" v-if="isMobile===0&&!show">
       <h2>订单详情</h2>
       <h3>订单状态</h3>
       <div class="detail_box">
@@ -39,7 +39,34 @@
           <button @click="getBaoquan">查看保全</button>
         </div>
       </div>
-    </template>
+    </div>
+    <div class="mobile_box" v-if="isMobile===1&&!show">
+      <div class="detail_box" v-if="orderType !== 1">
+        <div class="process">
+          <div :class="['item', {active: k===processStatus}]" v-for="p,k in processText[orderType]">
+            <div class="spot"></div>
+            <div>{{p}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="detail_box" v-if="orderType !== 3">
+        <div class="data_item" v-for="i,k in info[orderType]">
+          <p>{{i}}</p>
+          <div class="profit"><span>{{data[k]||'0.00000000'}}</span>Btc</div>
+        </div>
+      </div>
+      <div class="detail_box">
+        <div class="data_item" v-for="d,k in type[orderType]">
+          <div class="item_title">{{d[0]}}</div>
+          <div class="item_value" v-if="k === 'hash_type'">{{data[k]||'BTC'}}</div>
+          <div class="item_value" v-else>{{data[k]}}{{d[1]}}</div>
+        </div>
+      </div>
+      <div class="detail_btn">
+        <button @click="getContract">查看协议</button>
+        <button @click="getBaoquan">查看保全</button>
+      </div>
+    </div>
     <div v-if="show" class="agreement_text">
       <template v-if="orderType!==3">
         <div class="" v-html="contract.hash_res&&contract.hash_res.content"></div>
@@ -47,7 +74,7 @@
       </template>
       <div v-else v-html="contract.miner_res&&contract.miner_res.content"></div>
       <div class="btn_box">
-        <button @click="back">返回</button>
+        <button @click="show=false">返回</button>
       </div>
     </div>
   </section>
@@ -110,9 +137,6 @@
           })
         })
       },
-      back () {
-        this.show = false
-      },
       getData () {
         if (this.token !== 0 && this.orderId) {
           var self = this
@@ -121,6 +145,7 @@
           util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res
+              self.processStatus = res.status === 8 ? 3 : 1
               if (res.miner) {
                 self.data = Object.assign(self.data, res.miner)
               }
@@ -156,54 +181,131 @@
 
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
-  .detail{
-    padding:15px;
-    h2{
-      margin-bottom:15px;
-      padding-left:15px
+  .order_detail{
+    .pc_box{
+      padding:15px;
+      h2{
+        margin-bottom:15px;
+        padding-left:15px
+      }
+      .detail_box{
+        .process{
+          @include process
+        }
+        .detailinfo{
+          padding:25px 30px;
+          @include flex(space-between)
+          .item{
+            &:first-child .profit{
+              span{
+                color:$orange
+              }
+            }
+            p{
+              margin-bottom:10px
+            }
+            .profit{
+              span{
+                font-size: 24px;
+                color:#000;
+                margin-right:15px
+              }
+            }
+          }
+          .line:not(:last-child){
+            width:1px;
+            height:40px;
+            background: $border;
+          }
+        }
+        .detail_table{
+          @include detail
+        }
+        .detail_btn{
+          // display: none;
+          margin:30px 15px;
+          text-align: right;
+          button{
+            @include button($blue)
+            padding:5px 15px;
+            & + button{
+              margin-left:10px
+            }
+          }
+        }
+      }
     }
-    .detail_box{
-      .process{
-        @include process
-      }
-      .detailinfo{
-        padding:25px 30px;
-        @include flex(space-between)
-        .item{
-          &:first-child .profit{
-            span{
-              color:$orange
+    .mobile_box{
+      background: #f4f4f4;
+      padding-bottom:15px;
+      .detail_box{
+        background: #fff;
+        color:$light_text;
+        padding:0.5rem;
+        .data_item{
+          @include flex(space-between)
+          line-height: 1rem;
+        }
+        .process{
+          @include flex
+          .item{
+            position: relative;
+            flex:1;
+            text-align: center;
+            .spot{
+              @include block(16,50%)
+              border:1px solid #1BACFF;
+              &:after{
+                position: relative;
+                content: '';
+                display: block;
+                width:6px;
+                height:6px;
+                margin-left:calc(50% - 3px);
+                margin-top:calc(50% - 3px);
+                background: #1BACFF;
+                border-radius:50%;
+              }
             }
-          }
-          p{
-            margin-bottom:10px
-          }
-          .profit{
-            span{
-              font-size: 24px;
-              color:#000;
-              margin-right:15px
+            &:not(:first-child){
+              .spot:before{
+                content:'';
+                position: absolute;
+                top:7px;
+                width:calc(100% - 16px);
+                right:calc(50% + 8px);
+                height:1px;
+                background: #1BACFF;
+                z-index: 1;
+              }
+            }
+            &.active{
+              color:#1BACFF;
+              & ~ .item{
+                .spot{
+                  border-color:#ccc;
+                  &:after{
+                    background: #ccc;
+                  }
+                  &:before{
+                    background: #ccc;
+                  }
+                }
+              }
             }
           }
         }
-        .line:not(:last-child){
-          width:1px;
-          height:40px;
-          background: $border;
+        &:not(:last-child){
+          margin-bottom:15px;
         }
-      }
-      .detail_table{
-        @include detail
       }
       .detail_btn{
-        // display: none;
-        margin:30px 15px;
-        text-align: right;
+        text-align: center;
         button{
           @include button($blue)
-          padding:5px 15px;
+          padding:3px 10px;
           & + button{
-            margin-left:10px
+            margin-left:10px;
           }
         }
       }
