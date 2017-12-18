@@ -71,6 +71,7 @@
       </div>
     </div>
     <MyData></MyData>
+    <minner-list></minner-list>
     <div class="home_compute_news">
       <h3 class="home_title">算力资讯</h3>
       <div class="compute_items">
@@ -109,6 +110,7 @@
   import util from '@/util'
   import api from '@/util/function'
   import MyData from '@/components/home/dataList'
+  import MinnerList from '@/components/home/MinerList'
   import Swiper from '@/components/common/Swipe'
   import WebInfo from '@/components/home/WebInfo'
   import SideBar from '@/components/home/SideBar'
@@ -116,11 +118,11 @@
   import { mapState } from 'vuex'
   export default {
     components: {
-      Swiper, MyData, WebInfo, SideBar, DataMap
+      Swiper, MyData, WebInfo, SideBar, DataMap, MinnerList
     },
     data () {
       return {
-        nav: [{title: '品牌矿机', desc: '无忧购买矿机', url: '/minerShop/miner/1'}, {title: 'BDC托管', desc: '多个BDC中心', url: '/bdc'}, {title: '产业资讯', desc: '掌握产业动态', url: '/quickNews'}, {title: '云算力', desc: '掌握产业动态', url: '/minerShop/miner/2'}],
+        nav: [{title: '品牌矿机', desc: '无忧购买矿机', url: '/minerShop/miner/1'}, {title: '云算力', desc: '掌握产业动态', url: '/minerShop/miner/2'}, {title: 'BDC托管', desc: '多个BDC中心', url: '/bdc'}, {title: '产业资讯', desc: '掌握产业动态', url: '/quickNews'}],
         data: [1, 1, 1],
         newsNav: [{title: '热点快讯·不止于此', desc: '开启算力新篇章'}, {title: '实时交易信息', desc: '前往了解更多'}, {title: '挖矿币种资料', desc: '前往了解更多'}],
         ad: {title: '算力驱动未来，信任链接天下', desc: '全球算力产业链资源整合，基于区块链的分布式算力输出平台', items: [{img1: require('@/assets/images/home/feature1.png')}, {img1: require('@/assets/images/home/feature2.png')}, {img1: require('@/assets/images/home/feature3.png')}, {img1: require('@/assets/images/home/feature4.png')}]},

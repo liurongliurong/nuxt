@@ -1,9 +1,9 @@
 <template>
-  <div class="museum_right">
+  <div class="museum_right1" style="padding-bottom: 60px !important;">
     <h1 style="position:relative;">矿机制造商<span class="icon iconfont icon-jiantou" style="transform:rotate(90deg);position:absolute;top:3px;"></span></h1>
-    <div class="museum_lists" v-for="n, k in museum" :key="k">
-      <div class="museuming"><img :src="n.image"/></div>
-      <div class="museum_content">
+    <div class="museum_lists1" v-for="n, k in museum" :key="k">
+      <div class="museuming1"><img :src="n.image"/></div>
+      <div class="museum_content1">
         <h6>{{n.title}}</h6>
         <p>{{n.resume}}</p>
         <div @click="goDetail(n.id)">查看详情</div>
@@ -59,7 +59,7 @@
 </script>
 
 <style lang="scss">
-  .museum_right{
+  .museum_right1{
     float: left;
     width: 1002px;
     background: white;
@@ -74,14 +74,14 @@
         margin-left: 13px;
       }
     }
-    .museum_lists{
+    .museum_lists1{
       width: 100%;
       height: 232px;
       background: white;
       box-shadow: 0 0 10px #c2c2c2;
       margin-top: 20px;
       border-radius: 8px;
-      .museuming{
+      .museuming1{
         width: 254px;
         height: 170px;
         border-right: 1px solid #999999;
@@ -94,7 +94,7 @@
           margin-top: 49px;
         }
       }
-      .museum_content{
+      .museum_content1{
         width: 70%;
         float: left;
         padding-left: 58px;

@@ -249,6 +249,7 @@
       padding:0 .5rem;
       background: white;
       padding-top: .5rem;
+      min-height: 100vh;
       .millsList_mobile{
         display: block;
         width: 48%;
