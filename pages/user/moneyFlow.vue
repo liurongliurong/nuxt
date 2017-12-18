@@ -58,7 +58,6 @@
             </span>
             <span :class="['right', {active: n.value<=0}]">{{n.value}}</span>
           </div>
-          <Pager :len="len"></Pager>
         </div>
       </div>
       <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
