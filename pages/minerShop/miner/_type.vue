@@ -3,7 +3,7 @@
     <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2" :sortType="sortType"></Sort>
     <MinerList v-if="type==='1'"></MinerList>
     <CloudMinerList page="minerShop" v-else></CloudMinerList>
-    <Pager :len="len"></Pager>
+    <Pager :len="len" v-if="!isMobile"></Pager>
   </section>
 </template>
 
@@ -81,7 +81,8 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id
+        user_id: state => state.info.user_id,
+        isMobile: state => state.isMobile
       })
     }
   }
