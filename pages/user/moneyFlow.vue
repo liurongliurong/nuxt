@@ -49,20 +49,19 @@
         <span>资金用途</span>
         <span>金额（元）</span>
       </p>
-      <div class="moneyflow">
-        <div v-for="n, k in list" class="monrylist">
-          <span class="left">
-            <i>{{n.type_name}}</i>
-            <em>{{n.create_time}}</em>
-          </span>
-          <span :class="['right', {active: n.value<=0}]">{{n.value}}</span>
+      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
+        <div class="moneyflow">
+          <div v-for="n, k in cloudMinerDate" class="monrylist">
+            <span class="left">
+              <i>{{n.type_name}}</i>
+              <em>{{n.create_time}}</em>
+            </span>
+            <span :class="['right', {active: n.value<=0}]">{{n.value}}</span>
+          </div>
         </div>
-        <Pager :len="len"></Pager>
       </div>
-      <div class="mnodata" v-if="show">
-        <div class="nodata_img"></div>
-        <p>暂无列表信息</p>
-      </div>
+      <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
+      <p v-if="showno" class="showno loadmore">暂无数据······</p>
     </div>
     <MyMask :form="form[edit]" :title="editText" v-if="edit"></MyMask>
   </section>
@@ -75,6 +74,9 @@
   import MyMask from '@/components/common/Mask'
   import Pager from '@/components/common/Pager'
   import Sort from '@/components/common/Sort'
+  import Vue from 'vue'
+  import { InfiniteScroll } from 'mint-ui'
+  Vue.use(InfiniteScroll)
   export default {
     components: {
       MyMask, Pager, Sort
@@ -90,15 +92,49 @@
           Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}]
         },
         editText: '',
-        len: 0,
-        now: 1,
         sort: [{title: '时间', option: 'desc'}],
         show: false,
         fee: 0,
-        total_price: 0
+        total_price: 0,
+        loading: false,
+        showcontent: false,
+        cloudMinerDate: [],
+        showno: false,
+        len: 0,
+        now: 1,
+        total: -1
       }
     },
     methods: {
+      loadMore () {
+        var self = this
+        this.loading = true
+        if (this.total === 0) {
+          this.loading = false
+          this.showno = true
+          return
+        }
+        var self = this
+        if (this.total > this.cloudMinerDate.length || this.cloudMinerDate.length === 0) {
+          let time = this.cloudMinerDate.length === 0 ? 0 : 1000
+          setTimeout(() => {
+            util.post('userCapitalList', {sign: api.serialize({token: this.token, user_id: this.user_id, page: this.now,sort: ''})}).then(function (res) {
+              api.checkAjax(self, res, () => {
+                self.total = res.total_num
+                for (let i = 0, len = res.value_list.length; i < len; i++) {
+                  self.cloudMinerDate.push(res.value_list[i])
+                }
+                self.loading = false
+                self.now++
+              })
+            }).catch(res => {
+              console.log(res)
+            })
+          }, time)
+        } else {
+          this.loading = false
+        }
+      },
       openMask (str, title) {
         if ((str === 'Withdrawals') && !this.bank_card) {
           api.tips('请先绑定银行卡', this.isMobile, () => {
@@ -297,4 +333,11 @@
       padding-bottom:61px;
     }
   }
+  .loadmore{
+        width: 100%;
+        height: 2rem;
+        text-align: center;
+        line-height: 2rem;
+        background: white;
+    }
 </style>

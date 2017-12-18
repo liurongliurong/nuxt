@@ -44,7 +44,6 @@
     </div>
   </section>
 </template>
-
 <script>
   import api from '@/util/function'
   import util from '@/util'
@@ -209,7 +208,6 @@
     }
   }
 </script>
-
 <style lang="scss">
   @import '~assets/css/style.scss';
   .account{

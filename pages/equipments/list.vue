@@ -24,7 +24,7 @@
               <div class="museum_content">
                 <h6>{{n.title}}</h6>
                 <p>{{n.resume}}</p>
-                <div @click="goDetail(n.id)">查看详情</div>
+                <div @click="goDetail(n.id)" class="button" style="margin-top:0 !important;">查看详情</div>
               </div>
             </div>
             <Pager :len="len"  style="padding-top:0;"></Pager>
@@ -258,7 +258,7 @@
           overflow: hidden;
           padding-right: 45px;
         }
-        div{
+        .button{
           width: 172px;
           height: 38px;
           border:1px solid #bfbfbf;
