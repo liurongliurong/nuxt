@@ -35,36 +35,36 @@
               </template>
             </div>
           </div>
-          </template>
-          <template v-else>
-            <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
-              <div class="item" v-for="d,k in cloudMinerDate" @click="goPay(d.id, d.sell_type)" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">
-                <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span></h3>
-                <div class="mobile_info_box">
-                  <div class="mobile_info">
-                    <h4>每台服务器价格1{{length}}<span><b>{{d.one_amount_value}}</b>元</span></h4>
-                    <div class="mobile_text">
-                      <div class="mobile_text_item">每台服务器价格<b>{{d.hash}}T</b></div>
-                      <div class="mobile_text_item">剩余可售<b>{{d.amount-d.buyed_amount}}台</b></div>
-                    </div>
+        </template>
+        <template v-else>
+          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
+            <div class="item" v-for="d,k in cloudMinerDate" @click="goPay(d.id, d.sell_type)" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">
+              <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span></h3>
+              <div class="mobile_info_box">
+                <div class="mobile_info">
+                  <h4>每台服务器价格1{{length}}<span><b>{{d.one_amount_value}}</b>元</span></h4>
+                  <div class="mobile_text">
+                    <div class="mobile_text_item">每台服务器价格<b>{{d.hash}}T</b></div>
+                    <div class="mobile_text_item">剩余可售<b>{{d.amount-d.buyed_amount}}台</b></div>
                   </div>
-                  <div class="circle sell_progress">
-                    <template v-if="(((d.amount-d.buyed_amount)/d.amount*100).toFixed(1))<=180">
-                        <div class="pie_left"><div class="left"></div></div> 
-                      <div class="pie_right"><div class="right"  :style="{transform:'rotate(-'+(((d.amount-d.buyed_amount)/d.amount*100).toFixed(1) * 3.6)+'deg)'}"></div></div> 
-                    </template>
-                    <template v-else>
-                        <div class="pie_left"><div class="left" :style="{transform:'rotate(-'+((((d.amount-d.buyed_amount)/d.amount*100).toFixed(1) - 180) * 3.6)+'deg)'}"></div></div>   
-                        <div class="pie_right"><div class="right" :style="{transform:'rotate('+180+'deg)'}"></div></div>  
-                    </template>
-                    <div class="mask"><span>{{((d.amount-d.buyed_amount)/d.amount*100).toFixed(1)}}</span>%</div>
-                  </div>
+                </div>
+                <div class="circle sell_progress">
+                  <template v-if="(((d.amount-d.buyed_amount)/d.amount*100).toFixed(1))<=180">
+                      <div class="pie_left"><div class="left"></div></div>
+                    <div class="pie_right"><div class="right"  :style="{transform:'rotate(-'+(((d.amount-d.buyed_amount)/d.amount*100).toFixed(1) * 3.6)+'deg)'}"></div></div>
+                  </template>
+                  <template v-else>
+                      <div class="pie_left"><div class="left" :style="{transform:'rotate(-'+((((d.amount-d.buyed_amount)/d.amount*100).toFixed(1) - 180) * 3.6)+'deg)'}"></div></div>
+                      <div class="pie_right"><div class="right" :style="{transform:'rotate('+180+'deg)'}"></div></div>
+                  </template>
+                  <div class="mask"><span>{{((d.amount-d.buyed_amount)/d.amount*100).toFixed(1)}}</span>%</div>
                 </div>
               </div>
             </div>
-            <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
-            <p v-if="showno" class="showno loadmore">暂无数据······</p>
-          </template>
+          </div>
+          <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
+          <p v-if="showno" class="showno loadmore">暂无数据······</p>
+        </template>
         <div class="nodata" v-if="$parent.show">
           <div class="nodata_img"></div>
           <p>即将上线，敬请期待</p>
@@ -306,13 +306,13 @@
       box-sizing: border-box;
       overflow: hidden;
       .pie_left, .pie_right {
-			width:70px; 
+			width:70px;
 			height:70px;
 			position: absolute;
 			top: 0;left: 0;
 		}
 		.left, .right {
-			width:70px; 
+			width:70px;
 			height:70px;
 			background:#ffb386;
 			border-radius: 50%;
