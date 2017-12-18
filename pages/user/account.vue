@@ -21,14 +21,9 @@
           <i v-else>设置<em></em></i>
         </div>
         <div class="compute_address item">
-            <div class="compute_address_title" @click="setInfo(list[5].name,menu[5].setting)">
-              <span>{{list[5]&&list[5].title}}</span>
-              <i>设置<em></em></i>
-            </div> -->
-            <div class="compute_address_box" v-for="a in address" @click="setInfo(list[5].name,menu[5].setting,a.product_hash_type)">
-              <div class="val">{{a.product_hash_type+'地址: '+a.address|format}}</div>
-              <div class="opr">修改</div>
-            </div>
+          <div class="compute_address_title" @click="setInfo(list[4].name,menu[4].setting)">
+            <span>{{list[4]&&list[4].title}}</span>
+            <i>设置<em></em></i>
           </div>
           <div class="compute_address_box" v-for="a in address" @click="setInfo((list[4]&&list[4].name),menu[4].setting,a.product_hash_type)">
             <div class="val">{{a.product_hash_type+'地址: '+a.address|format}}</div>
@@ -49,7 +44,6 @@
     </div>
   </section>
 </template>
-
 <script>
   import api from '@/util/function'
   import util from '@/util'
@@ -214,7 +208,6 @@
     }
   }
 </script>
-
 <style lang="scss">
   @import '~assets/css/style.scss';
   .account{
