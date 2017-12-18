@@ -28,8 +28,8 @@
     <ul>
       <li v-for="m,k in compute">
         <span>{{m.title}}</span>
-        <i v-if="k===0">{{(qwsl.price * (+computeData.today_hash)).toFixed(8)}} CNY</i>
-        <i v-if="k===1">{{(qwsl.price * (+computeData.balance_account)).toFixed(8)}} CNY</i>
+        <i v-if="k===0">{{(qwsl.price * (+computeData.today_hash)).toFixed(2)}} CNY</i>
+        <i v-if="k===1">{{(qwsl.price * (+computeData.balance_account)).toFixed(2)}} CNY</i>
         <i v-else-if="k===2">{{output}}{{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}} /T/天</i>
       </li>
       <li v-for="d,k in computeProperty">
