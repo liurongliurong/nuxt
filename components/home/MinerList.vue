@@ -1,6 +1,6 @@
 <template>
   <div class="mobile_data">
-    <h2>一 云算力抢购 一 <router-link to="/minerShop/miner/2">更多矿机 ></router-link></h2>
+    <h2>一 云算力抢购 一 <router-link to="/minerShop/miner/2">更多云算力 ></router-link></h2>
     <div class="mobile_listdata">
       <div class="mobile_list_box">
         <div v-for="d,i in list" @click="goPay(d.product_id)" :key="i" class="mobile_lists">
