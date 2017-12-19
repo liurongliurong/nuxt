@@ -32,6 +32,13 @@
             type: 'text/javascript',
             src: 'https://api.map.baidu.com/api?v=2.0&ak=GKTGV62UVGc1FZb4wUBdWG8w'
           }
+        ],
+        link: [
+          {
+            rel: 'stylesheet',
+            type: 'text/css',
+            href: '/fonts/iconfont.css'
+          }
         ]
       }
     },
@@ -77,6 +84,5 @@
 </script>
 
 <style type="text/css" lang="scss">
-  @import '../assets/css/public.scss';
-  @import '../assets/fonts/iconfont.css';
+  @import '~assets/css/public.scss';
 </style>

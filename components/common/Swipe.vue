@@ -32,10 +32,10 @@
             <div class="right">{{n.content}}</div>
           </template>
           <template v-else>
-            <router-link to="/minerShop/activity" v-if="k<=1">
+            <router-link to="/minerShop/activity" v-if="k===0">
               <img :src="require('@/assets/images/swiper/mobile1.jpg')" alt="">
             </router-link>
-            <router-link to="/bdc" v-else-if="k>=3">
+            <router-link to="/bdc" v-else-if="k===2">
               <img :src="require('@/assets/images/swiper/mobile3.jpg')" alt="">
             </router-link>
             <router-link to="/mobile/personcenter" v-else>
@@ -189,6 +189,7 @@
           this.setTranslate()
           this.slideEls = [arr[arr.length - 1], ...arr, arr[0]]
         } else {
+          this.currentPage = 0
           this.slideEls = arr
         }
         if (this.autoPlay) {
