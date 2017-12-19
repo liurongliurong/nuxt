@@ -30,6 +30,7 @@
   @import '~assets/css/style.scss';
   .auth{
     position: relative;
+    padding-top:40px;
     .bg_box{
       @include bg(1920,calc(100vh - 80px))
       @include position
@@ -64,6 +65,8 @@
     }
     .box{
       @include main
+      background: #fff;
+      min-height:700px;
     }
     .regist_mobile{
       text-align: center;
@@ -74,10 +77,12 @@
     }
     .copyright{
       text-align: center;
-      padding: 15px 0
+      padding: 15px 0;
+      margin-top:50px;
     }
     &.login_block{
       height:100vh;
+      padding-top:0;
       .bg_box{
         top:0;
         background: #181a1c;
@@ -95,7 +100,7 @@
         }
       }
       .copyright{
-        margin-top:50px;
+        margin-top:150px;
         color:$light_text
       }
     }
@@ -108,8 +113,11 @@
     }
     @media screen and (max-width: $mobile) {
       background: #f4f4f4;
+      padding-top:0;
       .box{
         padding:15px;
+        min-height:auto;
+        background: transparent;
         .form button{
           line-height: 2;
           margin-top:30px;
@@ -121,9 +129,13 @@
           padding:30px 15px;
         }
       }
+      &.login_block .copyright{
+        margin-top:0
+      }
       .copyright{
         font-size: 12px;
-        color:$light_text
+        color:$light_text;
+        margin-top:0
       }
     }
   }

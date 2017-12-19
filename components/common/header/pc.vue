@@ -1,5 +1,5 @@
 <template>
-  <div :class="headerClass" :disabled="$route.name==='notFound'">
+  <div :class="headerClass" :disabled="$route.name==='notFound'" :title="($route.name==='auth-login'||$route.name==='bdc')&&'border'">
     <section class="box">
       <div class="nav_left1">
         <router-link class="logo" to="/"></router-link>
@@ -240,7 +240,7 @@
         }
       }
     }
-    &.border{
+    &[title='border']{
       border-bottom:1px solid $light_text;
     }
     &.shadow{

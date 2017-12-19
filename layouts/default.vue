@@ -2,7 +2,7 @@
   <article id="app">
     <MyHead></MyHead>
     <nuxt class="body"/>
-    <MyFoot></MyFoot>
+    <MyFoot v-if="$route.name!=='auth-login'&&$route.name!=='auth-regist'&&$route.name!=='auth-passwordRetrieval'"></MyFoot>
     <div class="web_tips" v-if="!isMobile"></div>
     <div class="toast" v-else></div>
   </article>
