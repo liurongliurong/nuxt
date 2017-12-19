@@ -1,18 +1,18 @@
 <template>
   <div ref="bar" class="side_bar">
-    <div class="item" v-for="n,k in nav">
+    <div class="item1" v-for="n,k in nav">
       <div :class="'iconfont icon_'+k" @click="openPopup(n)"></div>
-      <div class="popup" v-if="n==='qq'">
+      <div class="popup1" v-if="n==='qq'">
         <!-- <span>QQ群</span>
         <span>3567894561</span> -->
         <!-- <img border="0" :src="img" alt="算力网官方用户群" title="算力网官方用户群"> -->
         <a class="qq" title="点击或扫描加入群" href="http://qm.qq.com/cgi-bin/qm/qr?k=WS2QITBH5tuDJbC5FmpEz1wx9Qi-nskJ"></a>
       </div>
-      <div class="popup tel" v-if="n==='tel'">
+      <div class="popup1 tel" v-if="n==='tel'">
         <span>0571-</span>
         <span>28031736</span>
       </div>
-      <div class="popup" v-if="n==='wechat'">
+      <div class="popup1" v-if="n==='wechat'">
         <div class="wechat"></div>
       </div>
       </div>
@@ -32,7 +32,9 @@
       }
     },
     mounted () {
-      window.addEventListener('scroll', this.test, false)
+      if (this.$route.name === 'index') {
+        window.addEventListener('scroll', this.test, false)
+      }
     },
     methods: {
       openPopup (n) {
@@ -53,9 +55,9 @@
         }
       },
       test (e) {
-        var ele = document.querySelector('.fixed_header')
+        // var ele = document.querySelector('.fixed_header')
         var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
-        if (!ele || !this.$refs.bar) return false
+        // if (!ele || !this.$refs.bar) return false
         if (scrollTop > 0) {
           this.$refs.bar.style.display = 'block'
         } else {
@@ -80,7 +82,7 @@
     background: #fff;
     box-shadow:0px 0px 6px 0px #bbb;
     display: none;
-    .item{
+    .item1{
       position: relative;
       cursor: pointer;
       &:not(:last-child){
@@ -110,7 +112,7 @@
           content:'\e621'
         }
       }
-      .popup{
+      .popup1{
         position: absolute;
         top:3px;
         right:100%;
@@ -138,7 +140,7 @@
         }
       }
       &:hover{
-        .popup{
+        .popup1{
           display: block;
         }
         .iconfont:before{

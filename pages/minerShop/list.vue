@@ -54,7 +54,7 @@
         <p><span>惠</span>最长享有180天的分期付款</p>
       </div>
     </div>
-    <SideBar></SideBar>
+    <!-- <SideBar></SideBar> -->
   </section>
 </template>
 
@@ -64,10 +64,10 @@
   import { mapState } from 'vuex'
   import CloudMinerList from '@/components/miner/CloudMinerList'
   import MinerList from '@/components/miner/MinerList'
-  import SideBar from '@/components/home/SideBar'
+  // import SideBar from '@/components/home/SideBar'
   export default {
     components: {
-      CloudMinerList, SideBar, MinerList
+      CloudMinerList, MinerList
     },
     data () {
       return {
