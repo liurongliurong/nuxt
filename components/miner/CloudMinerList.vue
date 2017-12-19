@@ -73,7 +73,6 @@
     </div>
   </section>
 </template>
-
 <script>
   import util from '@/util/index'
   import api from '@/util/function'
@@ -117,6 +116,8 @@
           this.loading = false
           this.showno = true
           return
+        } else {
+          this.showno = false
         }
         this.type = this.$route.params.type
         if (this.status) {
@@ -177,7 +178,6 @@
     }
   }
 </script>
-
 <style type="text/css" lang="scss">
   @import '../../assets/css/style.scss';
   .product_list{
@@ -298,11 +298,11 @@
     border:0;
   }
   .circle {
-			width: 70px;
-			height: 70px;
-			position: absolute;
-			border-radius: 50%;
-			background: #e5e5e5;
+            width: 70px;
+            height: 70px;
+            position: absolute;
+            border-radius: 50%;
+            background: #e5e5e5;
       text-align:  center;
       box-sizing: border-box;
       border:0;
@@ -311,43 +311,43 @@
       box-sizing: border-box;
       overflow: hidden;
       .pie_left, .pie_right {
-			width:70px;
-			height:70px;
-			position: absolute;
-			top: 0;left: 0;
-		}
-		.left, .right {
-			width:70px;
-			height:70px;
-			background:#ffb386;
-			border-radius: 50%;
-			position: absolute;
-			top: 0;
-			left: 0;
-      box-sizing: border-box;
-		}
-		.pie_right, .right {
-			clip:rect(0,auto,auto,35px);
-		}
-		.pie_left, .left {
-			clip:rect(0,35px,auto,0);
-		}
-		.mask {
-			width: 66px;
-			height: 66px;
-			border-radius: 50%;
-			background: #FFF;
-			position: absolute;
-			text-align: center;
+            width:70px;
+            height:70px;
+            position: absolute;
+            top: 0;left: 0;
+        }
+        .left, .right {
+            width:70px;
+            height:70px;
+            background:#ffb386;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            box-sizing: border-box;
+        }
+        .pie_right, .right {
+            clip:rect(0,auto,auto,35px);
+        }
+        .pie_left, .left {
+            clip:rect(0,35px,auto,0);
+        }
+        .mask {
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            background: #FFF;
+            position: absolute;
+            text-align: center;
       left:2px;
       top:2px;
-			line-height: 70px;
-			font-size: 0.7rem;
+            line-height: 70px;
+            font-size: 0.7rem;
       margin: 0 auto;
-			color: #ffb386;
+            color: #ffb386;
       box-sizing: border-box;
-		}
-	}
+        }
+    }
   .loadmore{
         width: 100%;
         height: 2rem;
