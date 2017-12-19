@@ -108,7 +108,7 @@
       return {type: params.type}
     },
     methods: {
-      loadMore (sort) {
+      loadMore () {
         let self = this
         let obj = {token: this.token, page: this.currentPage, product_type: '1'}
         this.loading = true
@@ -324,7 +324,7 @@
             position: absolute;
             top: 0;
             left: 0;
-      box-sizing: border-box;
+            box-sizing: border-box;
         }
         .pie_right, .right {
             clip:rect(0,auto,auto,35px);

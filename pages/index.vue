@@ -1,7 +1,6 @@
 <template>
   <article class="home" v-if="isMobile===0">
     <Swiper :pagination-visible="true" :loop="true" :autoPlay="5000"></Swiper>
-    <MyData></MyData>
     <div class="home_text">
       <div class="main">
         <div class="list">
@@ -11,6 +10,7 @@
         </div>
       </div>
     </div>
+    <MyData></MyData>
     <div class="home_title">
       <div class="main">
         <h1>{{ad.title}}</h1>
@@ -383,7 +383,6 @@
     }
     .home_text{
       background: #f6f7fb;
-      padding-bottom: 29px;
       .main{
         @include main
         line-height: 2;
