@@ -6,6 +6,7 @@
       <div class="time">{{data.created_at}}</div>
       <div class="text" v-html="data.msg"></div>
     </div>
+    <button @click="back()">返回</button>
   </section>
 </template>
 
@@ -34,6 +35,9 @@
             this.getData()
           }, 5)
         }
+      },
+      back () {
+        this.$router.push({path: '/user/message'})
       }
     },
     mounted () {
@@ -77,6 +81,13 @@
       .text{
         font-size: 16px;
       }
+    }
+    button{
+      width: 100px;
+      height: 30px;
+      background: #f5f8ff;
+      float: right;
+      border:0;
     }
   }
 </style>

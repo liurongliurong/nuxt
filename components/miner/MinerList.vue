@@ -32,42 +32,121 @@
       </div>
     </div>
     <div class="mobileminer" v-else>
-      <div class="millsList_mobile" v-for="n,k in $parent.minerData">
-        <a href="javascript:;" @click="goPay(n.id)">
-          <div class="null">
-            <img :src="n.minerPicture"/>
-          </div>
-          <h6>{{n.name}}</h6>
-          <div class="progress_info1">
-            <div class="progress_box1">
-              <div class="box1" :style="{width:((n.buyed_amount/n.amount)*100).toFixed(1)+'%'}"></div>
-              </div>
-          </div>
-          <p>算力价： <b>¥{{n.one_amount_value}}</b> <span>{{n.hash}}T</span></p>
-        </a>
+      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
+        <div class="millsList_mobile" v-for="n,k in minerData">
+          <a href="javascript:;" @click="goPay(n.id)">
+            <div class="null">
+              <img :src="n.minerPicture"/>
+            </div>
+            <h6>{{n.name}}</h6>
+            <div class="progress_info1">
+              <div class="progress_box1">
+                <div class="box1" :style="{width:((n.buyed_amount/n.amount)*100).toFixed(1)+'%'}"></div>
+                </div>
+            </div>
+            <p>算力价： <b>¥{{n.one_amount_value}}</b> <span>{{n.hash}}T</span></p>
+          </a>
+        </div>
       </div>
+      <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
+      <p v-if="showno" class="showno loadmore">暂无数据······</p>
     </div>
   </div>
 </template>
 
 <script>
+  import util from '@/util/index'
+  import api from '@/util/function'
   import { mapState } from 'vuex'
+  import Vue from 'vue'
+  import { InfiniteScroll } from 'mint-ui'
+  Vue.use(InfiniteScroll)
   export default {
-    data () {
-      return {
-        items: {'one_amount_value': {title: '服务器单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'buyed_amount': {title: '出售总数', unit: '台'}}
+    props: {
+      page: {
+        type: String
+      },
+      status: {
+        type: Number
       }
     },
-    computed: {
-      ...mapState({
-        isMobile: state => state.isMobile
-      })
+    data () {
+      return {
+        loading: false,
+        showcontent: false,
+        minerData: [],
+        showno: false,
+        len: 0,
+        total: -1,
+        currentPage: 1,
+        items: {'one_amount_value': {title: '服务器单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'buyed_amount': {title: '出售总数', unit: '台'}},
+        sortNav: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热中'}, {code: 1, title: '热销中'}, {code: 2, title: '已售罄'}]}]
+      }
+    },
+    asyncData ({ params }) {
+      return {type: params.type}
     },
     methods: {
+      loadMore () {
+        let self = this
+        let obj = {token: this.token, page: this.currentPage, product_type: '1'}
+        this.loading = true
+        if (this.total === 0) {
+          this.loading = false
+          this.showno = true
+          return
+        } else {
+          this.showno = false
+        }
+        this.type = this.$route.params.type
+        console.log(this.type)
+        if (this.status) {
+          obj = Object.assign({status: this.status}, obj)
+          console.log(obj)
+        }
+        if (this.total > this.minerData.length || this.minerData.length === 0) {
+          let time = this.minerData.length === 0 ? 0 : 1000
+          setTimeout(() => {
+            util.post('showList', {sign: api.serialize(obj)}).then(function (res) {
+              api.checkAjax(self, res, () => {
+                self.total = res.page.count
+                for (let i = 0, len = res.data.length; i < len; i++) {
+                  self.minerData.push(res.data[i])
+                }
+                self.loading = false
+                self.currentPage++
+              })
+            }).catch(res => {
+              console.log(res)
+            })
+          }, time)
+        } else {
+          this.loading = false
+        }
+      },
       goPay (id) {
         localStorage.setItem('params', JSON.stringify([ id, '1']))
         this.$router.push({path: '/minerShop/detail/'})
       }
+    },
+    mounted () {
+      this.loadMore()
+    },
+    watch: {
+      'status': function () {
+        this.currentPage = 1
+        this.minerData = []
+        this.total = -1
+        this.loadMore()
+        console.log(this.status)
+      }
+    },
+    computed: {
+      ...mapState({
+        token: state => state.info.token,
+        user_id: state => state.info.user_id,
+        isMobile: state => state.isMobile
+      })
     }
   }
 </script>
@@ -80,6 +159,12 @@
     margin:0 auto;
     background: #f6f7f9;
     margin-top: 20px;
+    .loadmore{
+      width: 100%;
+      height: 2rem;
+      line-height: 2rem;
+      text-align: center;
+    }
     h2{
       @include data_title
     }
@@ -240,13 +325,16 @@
     .mobileminer{
       width: 100%;
       overflow: hidden;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
       padding:0 .5rem;
       background: white;
       padding-top: .5rem;
       min-height: 100vh;
+      .list_lists{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
       .millsList_mobile{
         display: block;
         width: 48%;
