@@ -23,10 +23,10 @@
     </div>
     <div class="alllist">
       <router-link :to="n.link" class="route" v-for="n,k in nav" :key="k">
-        <span class="left">
-          <img :src="require('../../assets/images/icon'+(k+1)+'.png')"/>
-          {{n.name}}
-        </span>
+        <div class="left">
+          <span :class="['icon', 'iconfont', n.icon]"></span>
+          <span>{{n.name}}</span>
+        </div>
         <em></em>
       </router-link>
     </div>
@@ -57,7 +57,7 @@
     },
     data () {
       return {
-        nav: [{name: '账户管理', link: '/mobile/administration'}, {name: '地址管理', link: '/mobile/address'}, {name: '资金流水', link: '/mobile/moneyFlow'}, {name: '订单管理', link: '/mobile/order/0'}, {name: '常见问题', link: '/mobile/help'}, {name: '消息中心', link: '/mobile/message'}, {name: '意见反馈', link: '/mobile/advice'}],
+        nav: [{name: '账户管理', link: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'}, {name: '地址管理', link: '/mobile/address', icon: 'icon-dingwei'}, {name: '资金流水', link: '/mobile/moneyFlow', icon: 'icon-wodezichan'}, {name: '订单管理', link: '/mobile/order/0', icon: 'icon-31shoucangxuanzhong'}, {name: '常见问题', link: '/mobile/help', icon: 'icon-yiwen'}, {name: '消息中心', link: '/mobile/message', icon: 'icon-31wangwangxuanzhong'}, {name: '意见反馈', link: '/mobile/advice', icon: 'icon-xiai'}],
         Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
         balance_account: '',
         edit: 0,
@@ -289,11 +289,9 @@
         .left{
           width: 90%;
           font-size: 0.6rem;
-          img{
-            width: 0.65rem;
+          .icon{
+            font-size:0.7rem;
             margin-right: 0.5rem;
-            position: relative;
-            top: -0.71rem;
           }
         }
         em{
@@ -305,8 +303,27 @@
           margin-bottom:0.5rem;
           border-bottom:0;
         }
+        &:nth-child(2) .left .icon{
+          font-size: 0.8rem;
+          position:relative;
+          top:.1rem;
+          left: -.1rem;
+          margin-right: 0.35rem;
+        }
         &:not(:last-child){
           border-bottom:1px solid #ddd;
+        }
+        &:nth-child(1) .left .icon,&:nth-child(5) .left .icon{
+          color:#327FFF
+        }
+        &:nth-child(2) .left .icon,&:nth-child(6) .left .icon{
+          color:#EC6351
+        }
+        &:nth-child(3) .left .icon,&:nth-child(7) .left .icon{
+          color:#FFAB1F
+        }
+        &:nth-child(4) .left .icon{
+          color:#51C9C0
         }
       }
     }
