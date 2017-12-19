@@ -2,7 +2,7 @@
   <section class="compute_shop">
     <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2" :sortType="sortType"></Sort>
     <MinerList v-if="type==='1'"></MinerList>
-    <CloudMinerList page="minerShop" v-else></CloudMinerList>
+    <CloudMinerList page="minerShop" :status="status" v-else></CloudMinerList>
     <Pager :len="len" v-if="!isMobile"></Pager>
   </section>
 </template>
@@ -40,6 +40,9 @@
     },
     methods: {
       fetchData (sort) {
+        if (this.isMobile) {
+          return
+        }
         var self = this
         this.type = this.$route.params.type
         var obj = {token: this.token, page: this.now, product_type: '1'}
@@ -76,7 +79,9 @@
       '$route': 'fetchData'
     },
     mounted () {
-      this.fetchData()
+      if (!this.isMobile) {
+        this.fetchData()
+      }
     },
     computed: {
       ...mapState({

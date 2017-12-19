@@ -42,7 +42,7 @@
               <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span></h3>
               <div class="mobile_info_box">
                 <div class="mobile_info">
-                  <h4>每台服务器价格1{{length}}<span><b>{{d.one_amount_value}}</b>元</span></h4>
+                  <h4>每台服务器价格<span><b>{{d.one_amount_value}}</b>元</span></h4>
                   <div class="mobile_text">
                     <div class="mobile_text_item">每台服务器价格<b>{{d.hash}}T</b></div>
                     <div class="mobile_text_item">剩余可售<b>{{d.amount-d.buyed_amount}}台</b></div>
@@ -85,6 +85,9 @@
     props: {
       page: {
         type: String
+      },
+      status: {
+        type: Number
       }
     },
     data () {
@@ -99,29 +102,23 @@
         len: 0,
         now: 1,
         total: -1,
-        status: 0,
-        length: ''
+        currentPage: 1
       }
     },
     asyncData ({ params }) {
       return {type: params.type}
     },
     methods: {
-      loadMore (sort) {
-        var self = this
+      loadMore () {
+        let self = this
+        let obj = {token: this.token, page: this.currentPage, product_type: '1'}
         this.loading = true
         if (this.total === 0) {
           this.loading = false
           this.showno = true
           return
         }
-        var self = this
         this.type = this.$route.params.type
-        var obj = {token: this.token, page: this.now, product_type: '1'}
-        var url = ''
-        if (sort >= 0 && this.sort[sort] && this.sort[sort].option) {
-          obj = Object.assign({sort: this.sort[sort].option}, obj)
-        }
         if (this.status) {
           obj = Object.assign({status: this.status}, obj)
         }
@@ -131,12 +128,11 @@
             util.post('productList', {sign: api.serialize(obj)}).then(function (res) {
               api.checkAjax(self, res, () => {
                 self.total = res.page.count
-                self.length = res.data.length
                 for (let i = 0, len = res.data.length; i < len; i++) {
                   self.cloudMinerDate.push(res.data[i])
                 }
                 self.loading = false
-                self.now++
+                self.currentPage++
               })
             }).catch(res => {
               console.log(res)
@@ -162,6 +158,15 @@
     },
     mounted () {
       this.loadMore()
+    },
+    watch: {
+      'status': function () {
+        this.currentPage = 1
+        this.cloudMinerDate = []
+        this.total = -1
+        this.loadMore()
+        console.log(this.status)
+      }
     },
     computed: {
       ...mapState({
