@@ -165,7 +165,6 @@
         this.cloudMinerDate = []
         this.total = -1
         this.loadMore()
-        console.log(this.status)
       }
     },
     computed: {
