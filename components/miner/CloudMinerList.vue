@@ -35,36 +35,36 @@
               </template>
             </div>
           </div>
-          </template>
-          <template v-else>
-            <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
-              <div class="item" v-for="d,k in cloudMinerDate" @click="goPay(d.id, d.sell_type)" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">
-                <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span></h3>
-                <div class="mobile_info_box">
-                  <div class="mobile_info">
-                    <h4>每台服务器价格1{{length}}<span><b>{{d.one_amount_value}}</b>元</span></h4>
-                    <div class="mobile_text">
-                      <div class="mobile_text_item">每台服务器价格<b>{{d.hash}}T</b></div>
-                      <div class="mobile_text_item">剩余可售<b>{{d.amount-d.buyed_amount}}台</b></div>
-                    </div>
+        </template>
+        <template v-else>
+          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
+            <div class="item" v-for="d,k in cloudMinerDate" @click="goPay(d.id, d.sell_type)" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">
+              <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span></h3>
+              <div class="mobile_info_box">
+                <div class="mobile_info">
+                  <h4>每台服务器价格<span><b>{{d.one_amount_value}}</b>元</span></h4>
+                  <div class="mobile_text">
+                    <div class="mobile_text_item">每台服务器价格<b>{{d.hash}}T</b></div>
+                    <div class="mobile_text_item">剩余可售<b>{{d.amount-d.buyed_amount}}台</b></div>
                   </div>
-                  <div class="circle sell_progress">
-                    <template v-if="(((d.amount-d.buyed_amount)/d.amount*100).toFixed(1))<=180">
-                        <div class="pie_left"><div class="left"></div></div> 
-                      <div class="pie_right"><div class="right"  :style="{transform:'rotate(-'+(((d.amount-d.buyed_amount)/d.amount*100).toFixed(1) * 3.6)+'deg)'}"></div></div> 
-                    </template>
-                    <template v-else>
-                        <div class="pie_left"><div class="left" :style="{transform:'rotate(-'+((((d.amount-d.buyed_amount)/d.amount*100).toFixed(1) - 180) * 3.6)+'deg)'}"></div></div>   
-                        <div class="pie_right"><div class="right" :style="{transform:'rotate('+180+'deg)'}"></div></div>  
-                    </template>
-                    <div class="mask"><span>{{((d.amount-d.buyed_amount)/d.amount*100).toFixed(1)}}</span>%</div>
-                  </div>
+                </div>
+                <div class="circle sell_progress">
+                  <template v-if="(((d.amount-d.buyed_amount)/d.amount*100).toFixed(1))<=180">
+                      <div class="pie_left"><div class="left"></div></div>
+                    <div class="pie_right"><div class="right"  :style="{transform:'rotate(-'+(((d.amount-d.buyed_amount)/d.amount*100).toFixed(1) * 3.6)+'deg)'}"></div></div>
+                  </template>
+                  <template v-else>
+                      <div class="pie_left"><div class="left" :style="{transform:'rotate(-'+((((d.amount-d.buyed_amount)/d.amount*100).toFixed(1) - 180) * 3.6)+'deg)'}"></div></div>
+                      <div class="pie_right"><div class="right" :style="{transform:'rotate('+180+'deg)'}"></div></div>
+                  </template>
+                  <div class="mask"><span>{{((d.amount-d.buyed_amount)/d.amount*100).toFixed(1)}}</span>%</div>
                 </div>
               </div>
             </div>
-            <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
-            <p v-if="showno" class="showno loadmore">暂无数据······</p>
-          </template>
+          </div>
+          <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
+          <p v-if="showno" class="showno loadmore">暂无数据······</p>
+        </template>
         <div class="nodata" v-if="$parent.show">
           <div class="nodata_img"></div>
           <p>即将上线，敬请期待</p>
@@ -73,7 +73,6 @@
     </div>
   </section>
 </template>
-
 <script>
   import util from '@/util/index'
   import api from '@/util/function'
@@ -85,6 +84,9 @@
     props: {
       page: {
         type: String
+      },
+      status: {
+        type: Number
       }
     },
     data () {
@@ -99,8 +101,7 @@
         len: 0,
         now: 1,
         total: -1,
-        status: 0,
-        length: ''
+        currentPage: 1
       }
     },
     asyncData ({ params }) {
@@ -108,20 +109,17 @@
     },
     methods: {
       loadMore (sort) {
-        var self = this
+        let self = this
+        let obj = {token: this.token, page: this.currentPage, product_type: '1'}
         this.loading = true
         if (this.total === 0) {
           this.loading = false
           this.showno = true
           return
+        } else {
+          this.showno = false
         }
-        var self = this
         this.type = this.$route.params.type
-        var obj = {token: this.token, page: this.now, product_type: '1'}
-        var url = ''
-        if (sort >= 0 && this.sort[sort] && this.sort[sort].option) {
-          obj = Object.assign({sort: this.sort[sort].option}, obj)
-        }
         if (this.status) {
           obj = Object.assign({status: this.status}, obj)
         }
@@ -131,12 +129,11 @@
             util.post('productList', {sign: api.serialize(obj)}).then(function (res) {
               api.checkAjax(self, res, () => {
                 self.total = res.page.count
-                self.length = res.data.length
                 for (let i = 0, len = res.data.length; i < len; i++) {
                   self.cloudMinerDate.push(res.data[i])
                 }
                 self.loading = false
-                self.now++
+                self.currentPage++
               })
             }).catch(res => {
               console.log(res)
@@ -163,6 +160,15 @@
     mounted () {
       this.loadMore()
     },
+    watch: {
+      'status': function () {
+        this.currentPage = 1
+        this.cloudMinerDate = []
+        this.total = -1
+        this.loadMore()
+        console.log(this.status)
+      }
+    },
     computed: {
       ...mapState({
         token: state => state.info.token,
@@ -172,7 +178,6 @@
     }
   }
 </script>
-
 <style type="text/css" lang="scss">
   @import '../../assets/css/style.scss';
   .product_list{
@@ -293,11 +298,11 @@
     border:0;
   }
   .circle {
-			width: 70px;
-			height: 70px;
-			position: absolute;
-			border-radius: 50%;
-			background: #e5e5e5;
+            width: 70px;
+            height: 70px;
+            position: absolute;
+            border-radius: 50%;
+            background: #e5e5e5;
       text-align:  center;
       box-sizing: border-box;
       border:0;
@@ -306,43 +311,43 @@
       box-sizing: border-box;
       overflow: hidden;
       .pie_left, .pie_right {
-			width:70px; 
-			height:70px;
-			position: absolute;
-			top: 0;left: 0;
-		}
-		.left, .right {
-			width:70px; 
-			height:70px;
-			background:#ffb386;
-			border-radius: 50%;
-			position: absolute;
-			top: 0;
-			left: 0;
+            width:70px;
+            height:70px;
+            position: absolute;
+            top: 0;left: 0;
+        }
+        .left, .right {
+            width:70px;
+            height:70px;
+            background:#ffb386;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
       box-sizing: border-box;
-		}
-		.pie_right, .right {
-			clip:rect(0,auto,auto,35px);
-		}
-		.pie_left, .left {
-			clip:rect(0,35px,auto,0);
-		}
-		.mask {
-			width: 66px;
-			height: 66px;
-			border-radius: 50%;
-			background: #FFF;
-			position: absolute;
-			text-align: center;
+        }
+        .pie_right, .right {
+            clip:rect(0,auto,auto,35px);
+        }
+        .pie_left, .left {
+            clip:rect(0,35px,auto,0);
+        }
+        .mask {
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            background: #FFF;
+            position: absolute;
+            text-align: center;
       left:2px;
       top:2px;
-			line-height: 70px;
-			font-size: 0.7rem;
+            line-height: 70px;
+            font-size: 0.7rem;
       margin: 0 auto;
-			color: #ffb386;
+            color: #ffb386;
       box-sizing: border-box;
-		}
-	}
+        }
+    }
   .loadmore{
         width: 100%;
         height: 2rem;
