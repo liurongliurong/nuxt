@@ -21,6 +21,10 @@
           </template>
         </div>
       </div>
+      <h3>地址信息</h3>
+      <div class="detail_box address_box" v-if="orderType === 3">
+        <p>{{data.post_addr+'('+data.post_user+' '+data.post_mobile+")"}}</p>
+      </div>
       <h3>基本信息</h3>
       <div class="detail_box">
         <div class="detail_table">
@@ -50,10 +54,18 @@
         </div>
       </div>
       <div class="detail_box" v-if="orderType !== 3">
+        <div class="data_item miner_name">
+          <div>矿机名称</div>
+          <div class="profit">{{data.miner_name}}</div>
+        </div>
         <div class="data_item" v-for="i,k in info[orderType]">
-          <p>{{i}}</p>
+          <div>{{i}}</div>
           <div class="profit"><span>{{data[k]||'0.00000000'}}</span>Btc</div>
         </div>
+      </div>
+      <div class="detail_box" v-if="orderType === 3">
+        <p>{{'收货人地址'+'：'+data.post_user+' '+data.post_mobile}}</p>
+        <p>{{data.post_addr}}</p>
       </div>
       <div class="detail_box">
         <div class="data_item" v-for="d,k in type[orderType]">
@@ -61,9 +73,12 @@
           <div class="item_value" v-if="k === 'hash_type'">{{data[k]||'BTC'}}</div>
           <div class="item_value" v-else>{{data[k]}}{{d[1]}}</div>
         </div>
+        <div class="data_item get_contract" @click="getContract">
+          <div class="item_title">查看协议</div>
+          <div class="item_value"></div>
+        </div>
       </div>
       <div class="detail_btn">
-        <button @click="getContract">查看协议</button>
         <button @click="getBaoquan">查看保全</button>
       </div>
     </div>
@@ -149,6 +164,9 @@
               if (res.miner) {
                 self.data = Object.assign(self.data, res.miner)
               }
+              if (res.user_addr) {
+                self.data = Object.assign(self.data, res.user_addr)
+              }
             })
           })
         } else {
@@ -233,18 +251,37 @@
             }
           }
         }
+        &.address_box{
+          padding:15px;
+          font-size: 16px;
+        }
       }
     }
     .mobile_box{
       background: #f4f4f4;
-      padding-bottom:15px;
+      height:calc(100vh - 106px);
       .detail_box{
         background: #fff;
         color:$light_text;
-        padding:0.5rem;
+        padding:0.4rem;
+        &:first-child{
+          border-top:1px solid $border;
+        }
         .data_item{
           @include flex(space-between)
-          line-height: 1rem;
+          line-height: 2;
+          &.get_contract{
+            color:#000;
+            .item_value{
+              @include block(8)
+              @include arrow(right,#000,1)
+            }
+          }
+          &.miner_name{
+            color:#000;
+            font-size: 0.57rem;
+            margin-bottom:0.2rem
+          }
         }
         .process{
           @include flex
@@ -296,17 +333,13 @@
           }
         }
         &:not(:last-child){
-          margin-bottom:15px;
+          margin-bottom:0.4rem;
         }
       }
       .detail_btn{
-        text-align: center;
-        button{
-          @include button($blue)
-          padding:3px 10px;
-          & + button{
-            margin-left:10px;
-          }
+        @include mobile_footer_btn
+        button {
+          background-color: $blue;
         }
       }
     }

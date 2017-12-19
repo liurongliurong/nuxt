@@ -74,9 +74,6 @@
 
 <style type="text/css" lang="scss">
   @import '../../assets/css/style.scss';
-  .sort{
-      padding-bottom: 0;
-  }
   .millsList{
     width: 100%;
     overflow: hidden;

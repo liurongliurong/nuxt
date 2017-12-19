@@ -1186,4 +1186,28 @@
     background: linear-gradient(to right, #337eff 20%, #c72abc);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#337eff', endColorstr='#c72abc',GradientType=1 );
   }
-
+// mobile_footer_btn
+  @mixin mobile_footer_btn{
+    position: fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    text-align: center;
+    border-top:1px solid $border;
+    padding:9px 15px;
+    background: #fff;
+    z-index: 999;
+    button {
+      width:100%;
+      border:0;
+      background-color: $orange;
+      color:#fff;
+      line-height: 3;
+      &:disabled{
+        background: $border;
+      }
+      & + button{
+        margin-top:10px;
+      }
+    }
+  }

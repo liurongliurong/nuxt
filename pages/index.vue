@@ -54,7 +54,7 @@
       </div>
     </div>
     <div class="wq">
-      <img :src="wqImg" alt="" class="pre">
+      <img :src="require('@/assets/images/home/suanli_bottom_bg.jpg')" alt="" class="pre">
       <div class="text">
         <img src="~assets/images/server.png" style="width:800px;display:block;margin:0 auto;"/>
         <router-link to="/minerShop/list">即刻体验</router-link>
@@ -126,7 +126,6 @@
         data: [1, 1, 1],
         newsNav: [{title: '热点快讯·不止于此', desc: '开启算力新篇章'}, {title: '实时交易信息', desc: '前往了解更多'}, {title: '挖矿币种资料', desc: '前往了解更多'}],
         ad: {title: '算力驱动未来，信任链接天下', desc: '全球算力产业链资源整合，基于区块链的分布式算力输出平台', items: [{img1: require('@/assets/images/home/feature1.png')}, {img1: require('@/assets/images/home/feature2.png')}, {img1: require('@/assets/images/home/feature3.png')}, {img1: require('@/assets/images/home/feature4.png')}]},
-        wqImg: require('@/assets/images/img.jpg'),
         suanLi: [{title: 'SHA256比特币算力', desc: 'Bitcoin数字货币算力', bardesc: ''}, {title: '卷积神经算法算力', desc: '为CNN卷积神经', bardesc: '网络提供分布式加速服务'}, {title: 'EquiHash零币算力', desc: 'ZeroCASH提供隐私保护', bardesc: '及零知识证明的基础算力'}, {title: '智能合约算力', desc: '全球贸易智能合约', bardesc: '服务的分布式基础算力'}, {title: 'Curecoin算力', desc: '蛋白质折叠计算，', bardesc: '生化反应模型，用于发现新药'}, {title: '游戏币兑换算力', desc: '全球游戏产业', bardesc: '虚拟货币通用兑换算力'}, {title: 'Ethash以太算力', desc: '以太坊网络', bardesc: 'ETC，ETH算力'}, {title: '公证算力', desc: '提供区块链公证服务', bardesc: '存证保全的基础算力'}],
         mapData: [{title: '全网算力', name: 'hashrate', unit: 'PH/s'}, {title: '当前全网困难度', name: 'difficulty', unit: 'T'}],
         computeData: {}
@@ -549,16 +548,6 @@
             .img_hover4{
               background: url('~assets/images/partner.png') -10px -216px;
             }
-            // .img7,.img_hover7{
-            //   height: 50px;
-            //   width: 180px;
-            // }
-            // .img7{
-            //   background: url('../assets/images/partner.png') -360px -117px;
-            // }
-            // .img_hover7{
-            //   background: url('../assets/images/partner.png') -0px -171px;
-            // }
             .img5,.img_hover5{
               height: 49px;
               width: 150px;

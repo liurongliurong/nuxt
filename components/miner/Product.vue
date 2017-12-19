@@ -389,7 +389,7 @@
     background: #f7f8fa;
     padding-bottom: 50px;
     .top_nav{
-      background-image: url('~assets/images/miner.png');
+      background-image: url('~assets/images/miner_shop/miner_bg.jpg');
       width: 100%;
       height: 352px;
       background-size: 100% 100%;
@@ -1109,28 +1109,7 @@
         }
       }
       .mobile_btn{
-        position: fixed;
-        bottom:0;
-        left:0;
-        width:100%;
-        text-align: center;
-        border-top:1px solid $border;
-        padding:9px 15px;
-        background: #fff;
-        z-index: 999;
-        button {
-          width:100%;
-          border:0;
-          background-color: $orange;
-          color:#fff;
-          line-height: 3;
-          &:disabled{
-            background: $border;
-          }
-          & + button{
-            margin-top:10px;
-          }
-        }
+        @include mobile_footer_btn
       }
       .popup{
         .buy_box{

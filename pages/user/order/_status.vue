@@ -65,7 +65,7 @@
                 <button class="sold" @click="openMask('sold', '出售云算力', d.id)" v-if="nowEdit===0&&status==1&&!d.is_loan&&d.remain_miner&&d.status===8">出售云算力</button>
                 <button @click="quit('sold', d.id)" v-if="nowEdit===0&&status==2">撤销出售</button>
                 <button @click="openMask('rent', '出租算力', d.id)" :disabled="!d.remain_hash" v-if="nowEdit===2&&status==0">出租算力</button>
-                <a href="javascript:;" @click="goDetail(nowEdit,d.id)"  v-if="nowEdit===3||(nowEdit!==2&&status!=2&&status!=3)">查看详情</a>
+                <a href="javascript:;" @click="goDetail(nowEdit,d.id)" v-if="nowEdit===3||(nowEdit!==2&&status!=2&&status!=3)">查看详情</a>
               </td>
             </tr>
           </tbody>
@@ -115,7 +115,9 @@
             </div>
           </div>
           <div class="order_button">
-            <button class="left" @click="goDetail(nowEdit,d.id)">查看详情</button>
+            <button class="left" @click="openMask('sold', '出售云算力', d.id)" v-if="nowEdit===0&&status==1&&!d.is_loan&&d.remain_miner&&d.status===8">出售云算力</button>
+            <button @click="quit('sold', d.id)" v-if="nowEdit===0&&status==2">撤销出售</button>
+            <button class="left" @click="goDetail(nowEdit,d.id)" v-if="nowEdit===3||(nowEdit!==2&&status!=2&&status!=3)">查看详情</button>
           </div>
         </div>
         <Pager :len="len"></Pager>
@@ -125,7 +127,18 @@
         <p>暂无列表信息</p>
       </div>
     </div>
-    <MyMask :form="form[edit]" :title="editText" v-if="edit"></MyMask>
+    <div class="popup" v-if="showModal">
+      <div class="close" @click="closeEdit()">
+        <span class="icon"></span>
+      </div>
+      <form class="form" @submit.prevent="submit" novalidate>
+        <FormField :form="form['sold']"></FormField>
+        <p>手续费：{{total_price * fee|format}}元<span class="fee">({{fee*100+'%'}})</span></p>
+        <button name="btn">提交</button>
+      </form>
+    </div>
+    <div class="popup_mask" v-if="showModal"></div>
+    <MyMask :form="form[edit]" :title="editText" v-if="showMask"></MyMask>
   </section>
 </template>
 
@@ -134,10 +147,11 @@
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import MyMask from '@/components/common/Mask'
+  import FormField from '@/components/common/FormField'
   import Pager from '@/components/common/Pager'
   export default {
     components: {
-      MyMask, Pager
+      MyMask, Pager, FormField
     },
     data () {
       return {
@@ -167,7 +181,9 @@
         fee: 0,
         showImg: false,
         showtype: false,
-        nowEdit: 0
+        nowEdit: 0,
+        showModal: false,
+        showMask: false
       }
     },
     asyncData ({ params }) {
@@ -227,8 +243,13 @@
             api.checkAjax(self, res, () => {
               window.scroll(0, 0)
               document.body.style.overflow = 'hidden'
-              self.editText = title
               self.edit = str
+              if (self.isMobile) {
+                self.showModal = true
+              } else {
+                self.editText = title
+                self.showMask = true
+              }
               if (str === 'sold') {
                 self.one_amount_value = res.one_amount_value
                 self.amount = res.show_miner
@@ -267,12 +288,17 @@
         })
       },
       closeEdit () {
+        if (this.isMobile) {
+          this.showModal = false
+        } else {
+          this.showMask = false
+        }
         this.edit = ''
         document.body.style.overflow = 'auto'
       },
-      submit () {
-        var form = document.querySelector('.form_content')
-        var data = api.checkFrom(form)
+      submit (e) {
+        var form = e.target
+        var data = api.checkFrom(form, this, this.isMobile)
         var url = ''
         var sendData = {token: this.token, user_id: this.user_id, order_id: this.order_id}
         var tipsStr = ''
@@ -293,7 +319,6 @@
         }
         if (!data) return false
         var self = this
-        console.log(data)
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.closeEdit()
@@ -478,7 +503,7 @@
           top:2rem;
           width: 100%;
           height: calc(100vh - 2rem);
-          z-index:999;
+          z-index:1000000;
           background:rgba(0,0,0,.3);
           .item{
             @include flex(space-between)
@@ -568,6 +593,9 @@
               background: #327fff;
               color: #fff;
               padding: .2rem .5rem;
+              & + button{
+                margin-left:10px;
+              }
             }
           }
           &:not(:last-child){

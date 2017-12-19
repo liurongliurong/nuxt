@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <PcHeader class="pc_header" v-if="isMobile===0"></PcHeader>
-    <div class="mobile_header" v-if="isMobile===1&&($route.name===('index')||$route.name === 'bdc')">
+    <div class="mobile_header" v-if="isMobile===1&&($route.name===('index')||$route.name === 'bdc'||$route.name === 'mobile-orderDetail')">
       <div class="left" v-if="token === 0">
         <nuxt-link to="/auth/regist">注册</nuxt-link>
         <span>|</span>

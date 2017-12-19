@@ -197,7 +197,6 @@
           line-height: 120px;
           text-align: center;
           color:#fff;
-          // background: url(~assets/images/mobile/miner.png);
           background-size: 100% 100%;
           font-size: 0.6rem;
         }

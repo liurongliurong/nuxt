@@ -1,5 +1,8 @@
 
 module.exports = {
+  build: {
+    vendor: ['axios']
+  },
   head: {
     title: 'starter',
     meta: [
@@ -7,13 +10,17 @@ module.exports = {
       { name: 'viewport', content: 'width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/logo_icon.png' }
+      { rel: 'icon', type: 'image/x-icon', href: '/logo_icon.png' },
+      { rel: 'stylesheet', type: 'text/css', href: '/fonts/iconfont.css' }
     ]
   },
   loading: {
     color: 'white',
     height: '2px'
   },
+  css: [
+    { src: '~assets/css/public.scss', lang: 'scss'}
+  ],
   generate: {
     routes: [
       '/minerShop/miner/1',
