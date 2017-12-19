@@ -97,7 +97,24 @@
             <span>{{nowEdit==3?(d.miner&&d.miner.name):d.product_name}}</span>
             <em>{{nowEdit==3?d.created_time:d.create_time}}</em>
           </p>
-          <div class="order_product_value">
+          <div class="order_product_value" v-if="status==2||status==3">
+            <div class="value_one">
+              <h4>{{d.total_price}}<em> 元</em></h4>
+              <p>出售金额</p>
+            </div>
+            <div class="line"></div>
+            <div class="value_one">
+              <h4 v-if="nowEdit!=3&&(nowEdit==0||status==1||status==4)">{{d.total_hash|format}}<em> T</em></h4>
+              <h4 v-if="nowEdit==3">{{+d.buy_amount * (d.miner&&(+d.miner.hash))}}<em> T</em></h4>
+              <p>总算力</p>
+            </div>
+            <div class="line"></div>
+            <div class="value_one">
+              <h4 class="buy_number">{{d.selling_amount}}<em> 台</em></h4>
+              <p>出售数量</p>
+            </div>
+          </div>
+          <div class="order_product_value" v-else>
             <div class="value_one">
               <h4 class="buy_number">{{nowEdit!=3?d.total_price:d.pay_value}}<em> 元</em></h4>
               <p>购买金额</p>

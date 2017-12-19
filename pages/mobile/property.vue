@@ -139,7 +139,11 @@
           }
           if (!this.address.length) {
             api.tips('请先绑定算力地址', 1, () => {
-              this.$router.push({name: 'user-account'})
+              if (this.isMobile) {
+                this.$router.push({name: 'mobile-administration'})
+              } else {
+                this.$router.push({name: 'user-account'})
+              }
             })
             return false
           }

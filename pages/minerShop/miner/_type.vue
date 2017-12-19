@@ -14,11 +14,10 @@
   import MinerList from '@/components/miner/MinerList'
   import ProductNav from '@/components/miner/ProductNav'
   import Pager from '@/components/common/Pager'
-  import SideBar from '@/components/home/SideBar'
   import Sort from '@/components/common/Sort'
   export default {
     components: {
-      CloudMinerList, ProductNav, Pager, SideBar, Sort, MinerList
+      CloudMinerList, ProductNav, Pager, Sort, MinerList
     },
     data () {
       return {
