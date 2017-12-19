@@ -1,12 +1,11 @@
 <template>
   <section class="compute_shop">
     <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2" :sortType="sortType"></Sort>
-    <MinerList v-if="type==='1'"></MinerList>
+    <MinerList v-if="type==='1'" :status="status"></MinerList>
     <CloudMinerList page="minerShop" :status="status" v-else></CloudMinerList>
     <Pager :len="len" v-if="!isMobile"></Pager>
   </section>
 </template>
-
 <script>
   import util from '@/util'
   import api from '@/util/function'
@@ -92,7 +91,6 @@
     }
   }
 </script>
-
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .compute_shop{
