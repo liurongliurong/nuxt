@@ -168,12 +168,6 @@
         }
       }
     }
-    .transaction_img{
-      width: 100%;
-      height: 410px;
-      background-image: url('~assets/images/ji.png');
-      background-size: 100% 100%;
-    }
     .transaction_all{
         width: 1180px;
         height: 40px;

@@ -160,7 +160,6 @@ export default {
             padding:20px 45px 0px 45px;
             margin-bottom: 25px;
             padding-bottom: 58px;
-            // background-image: url('../../assets/images/table.png');
             background-size: 100% 100%;
             h4{
                 width: 100%;

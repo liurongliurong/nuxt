@@ -204,7 +204,7 @@
         inforight: [],
         active: 0,
         qwsl: '',
-        miners: [{big: require('@/assets/images/information5.png'), title: '资深矿工-设备之家', route: '前往了解 >', path: '/equipments/list'}, {big: require('@/assets/images/information2.png'), title: '新手矿工-数字货币', route: '前往了解 >', path: '/currency'}, {big: require('@/assets/images/information3.png'), title: '平台交易最新资讯', route: '前往了解 >', path: '/transaction'}]
+        miners: [{big: require('@/assets/images/information5.jpg'), title: '资深矿工-设备之家', route: '前往了解 >', path: '/equipments/list'}, {big: require('@/assets/images/information2.jpg'), title: '新手矿工-数字货币', route: '前往了解 >', path: '/currency'}, {big: require('@/assets/images/information3.jpg'), title: '平台交易最新资讯', route: '前往了解 >', path: '/transaction'}]
       }
     },
     head () {
@@ -379,14 +379,14 @@
           width: 300px;
           height: 400px;
           float: left;
-          background-image: url('~assets/images/information1.png');
+          background-image: url('~assets/images/information1.jpg');
           margin-right: 4px;
           position: relative;
           .red{
             position: absolute;
             width: 296px;
             height: 170px;
-            background-image: url('~assets/images/red.png');
+            background-image: url('~assets/images/red.jpg');
             background-size: 100% 100%;
             left: -15px;
             top:-13px;
@@ -769,7 +769,7 @@
         box-shadow: #d2d4db 0 0 20px;
         padding:30px 44px 0px 44px;
         margin-bottom: 25px;
-        background-image: url('~assets/images/tabletop.png');
+        background-image: url('~assets/images/tabletop.jpg');
         background-size: 100% 100%;
         h4{
             width: 100%;
@@ -989,7 +989,7 @@
         padding:30px 44px 0px 44px;
         margin-bottom: 25px;
         padding-bottom: 58px;
-        background-image: url('~assets/images/table.png');
+        background-image: url('~assets/images/table.jpg');
         background-size: 100% 100%;
         h4{
             width: 100%;
@@ -1107,7 +1107,7 @@
                 width: 350px;
                 height: 202px;
                 float: left;
-                background-image: url('~assets/images/tablebottom.png');
+                background-image: url('~assets/images/tablebottom.jpg');
                 background-size: 100% 100%;
                 text-align: center;
                 color: white;
