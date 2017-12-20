@@ -150,8 +150,13 @@
           <p>16.3 本协议中的任何条款或部分条款因被认定为无效或无法实施的，不影响本协议其他条款的效力。</p>
           <p>16.4 您确认并同意本公司有权不时地根据法律、法规、政府要求透露、修改、屏蔽或删除必要的、合适的信息，以便更好地运营本网站并保护本公司用户的合法权益。</p>
           <p class="foot">浙江数秦科技有限公司</p>
-          <div class="btn"><a href="javascript:;" @click="userAgreement">返回</a></div> 
+           <!-- <div class="btn"><a href="javascript:;" @click="userAgreement">返回</a></div>   -->
         </div>
+        <label for="accept" id="accept1">
+            <input type="checkbox" name="accept1">
+            <span>阅读并接受<a href="javascript:;" @click="userAgreement" style="color:#327fff;">《用户使用协议》</a></span>
+            <span class="select_accept">请选择</span>
+        </label>
       </div>
     </div>
     <div class="popup_mask" @click="show=!show" v-if="show"></div>
@@ -226,6 +231,7 @@
         font-size: 12px;
       }
       input{
+        margin-right: 10px;
         & ~ span.select_accept{
           display: none;
         }
@@ -237,10 +243,29 @@
     .popup{
       .agreement{
         height:calc(90vh - 30px);
+        #accept1{
+          height: 50px;
+          width: 100%;
+          text-align: center;
+          background: #f6f7fb;
+          input{
+            position: relative;
+            vertical-align: middle;
+            border: 1px solid #e5e5e5;
+            -webkit-transition: all .2s linear;
+            width: 18px;
+            height: 18px;
+            border-radius: 0;
+          }
+        }
         h2{
           text-align: center;
         }
         .box_content{
+          width: 100%;
+          height: 650px;
+          overflow: auto;
+          margin-top: 20px;
           p{
             text-indent: 0.2rem;
           }

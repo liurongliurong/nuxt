@@ -24,7 +24,7 @@
         <div class="cominfo_headerright">
           <div class="bigtop">
             <div class="bigimg">
-              <img :src="n.image" v-for="n, k in bigimglist" class="teimg"/> 
+              <img :src="n.image" v-for="n, k in bigimglist" class="teimg"/>
             </div>
             <div class="bigtab">
               <div class="bighover" v-for="d,m in bigimglist" :class="{'active': show === m}" @mouseover="hoverwhite(m)">
@@ -455,7 +455,7 @@
                           color: white;
                           margin-right: 22px;
                           &:hover{
-                              color: #327fff; 
+                              color: #327fff;
                           }
                       }
                   }
@@ -520,7 +520,7 @@
                         background: white;
                         border-right: 4px solid #327fff;
                         h5{
-                           color: #7d7d7d; 
+                           color: #7d7d7d;
                         }
                         p{
                            color: #c6c6c6;
@@ -530,7 +530,7 @@
                         background: white;
                         border-right: 4px solid #327fff;
                         h5{
-                           color: #7d7d7d; 
+                           color: #7d7d7d;
                         }
                         p{
                            color: #c6c6c6;
@@ -608,7 +608,7 @@
             float: left;
           }
           :nth-child(1){
-            color:#121212;
+            color:#327fff;
             display:inline-block;
             margin-right: 30px;
             b{
@@ -694,8 +694,8 @@
                     width: 226px;
                     display:inline-block;
                     line-height: 16px;
-                    white-space: nowrap;  
-                    text-overflow:ellipsis; 
+                    white-space: nowrap;
+                    text-overflow:ellipsis;
                     overflow:hidden;
                 }
                 .time{
@@ -739,8 +739,8 @@
                     width: 226px;
                     display:inline-block;
                     line-height: 16px;
-                    white-space: nowrap;  
-                    text-overflow:ellipsis; 
+                    white-space: nowrap;
+                    text-overflow:ellipsis;
                     overflow:hidden;
                 }
                 .time{
@@ -957,7 +957,7 @@
                     float: left;
                     margin: 5px;
                     display:block;
-                    margin-bottom:8px; 
+                    margin-bottom:8px;
                     text-align: center;
                     img{
                         width:76px;

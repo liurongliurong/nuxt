@@ -69,6 +69,10 @@
           api.checkAjax(self, res, () => {
             self.next = 1
             self.balance = res.balance
+            if (res.output) {
+              self.detail.output = res.output
+              self.detail.total_electric_fee = res.total_electric_fee
+            }
             if (self.params2 === '2') {
               self.content = res.part_content
             } else {

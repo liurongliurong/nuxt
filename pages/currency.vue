@@ -63,20 +63,20 @@ export default {
     }
   },
   head () {
-      return {
-        title: '比特币-数字货币-算力网',
-        meta: [
-          { hid: 'keywords', name: 'keywords', content: '数字货币,比特币,莱特币,以太币,数字货币查询' },
-          { hid: 'description', name: 'description', content: '算力网（www.suanli.com）列举了常见的数字货币，如比特币，莱特币，以太币等主流币种，以及各类代币如DASH、ZCash、EOS等。' }
-        ]
-      }
-    },
-    methods: {
-      goDetail (id) {
-        localStorage.setItem('icon_id', JSON.stringify([id]))
-        this.$router.push({path: '/digitalCurrency/detail/'})
-      }
-    },    
+    return {
+      title: '比特币-数字货币-算力网',
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: '数字货币,比特币,莱特币,以太币,数字货币查询' },
+        { hid: 'description', name: 'description', content: '算力网（www.suanli.com）列举了常见的数字货币，如比特币，莱特币，以太币等主流币种，以及各类代币如DASH、ZCash、EOS等。' }
+      ]
+    }
+  },
+  methods: {
+    goDetail (id) {
+      localStorage.setItem('icon_id', JSON.stringify([id]))
+      this.$router.push({path: '/digitalCurrency/detail/'})
+    }
+  },
   mounted () {
     var self = this
     util.post('showCoinInfo', {sign: api.serialize({token: 0})}).then(function (res) {
@@ -250,45 +250,51 @@ export default {
         margin-bottom: 60px;
         margin-top: 20px;
       h1{
-            color: #121212;
-            font-size: 24px;
-            font-weight: 800;
-            span{
-                font-size: 20px;
-                margin-left: 13px;
-            }
-            }
-            .bottomlist{
-                margin-top: 58px;
-            }
-            .currency_toplist{
-            width: 100%;
-            margin-top: 30px;
-            overflow: hidden;
-            .toplist{
-                width: 240px;
-                height: 45px;
-                border:1px solid #bfbfbf;
-                float: left;
-                display:block;
-                margin-right: 24px;
-                margin-bottom: 17px;
-                cursor: pointer;
-                img{
-                width:25px;
-                margin-top: 6px;
-                margin-left: 20px;
-                position: relative;
-                top:-10px;
-                }
-                span{
-                margin-left: 20px;
-                line-height: 45px;
-                font-size: 14px;
-                color: #333333;
-                }
-            }
-            }
+        color: #121212;
+        font-size: 24px;
+        font-weight: 800;
+          span{
+            font-size: 20px;
+            margin-left: 13px;
+          }
         }
+        .bottomlist{
+          margin-top: 58px;
+        }
+        .currency_toplist{
+          width: 100%;
+          padding-top: 30px;
+          overflow: hidden;
+          .toplist{
+            width: 240px;
+            height: 45px;
+            border:1px solid #bfbfbf;
+            float: left;
+            display:block;
+            margin-right: 24px;
+            margin-bottom: 17px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            position: relative;
+            img{
+              width:25px;
+              margin-left: 20px;
+            }
+            span{
+              margin-left: 20px;
+              line-height: 45px;
+              font-size: 14px;
+              color: #333333;
+            }
+            &:hover {
+              top: -3px;
+              z-index: 100;
+              border:1px solid #bfbfbf;
+              box-shadow: 5px 5px 3px #ddd;
+            }
+          }
+        }
+      }
   }
 </style>

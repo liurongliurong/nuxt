@@ -159,23 +159,24 @@
           e.target.value = this.amount
         }
         this.total_price = e.target.value
+      },
+      getData () {
+        if (this.token !== 0) {
+          var self = this
+          util.post('myAccount', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.balance_account = res.balance_account
+            })
+          })
+        } else {
+          setTimeout(() => {
+            this.getData()
+          }, 5)
+        }
       }
     },
     mounted () {
-      setTimeout(() => {
-        if (!this.token) {
-          this.$store.commit('SET_URL', this.$route.path)
-          this.$router.push({name: 'auth-login'})
-          this.$store.commit('LOGOUT')
-          return false
-        }
-        var self = this
-        util.post('myAccount', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.balance_account = res.balance_account
-          })
-        })
-      }, 500)
+      this.getData()
     }
   }
 </script>

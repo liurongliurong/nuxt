@@ -199,14 +199,6 @@
     },
     mounted () {
       this.getData()
-      setTimeout(() => {
-        if (!this.token) {
-          this.$store.commit('SET_URL', this.$route.path)
-          this.$router.push({name: 'auth-login'})
-          return false
-        }
-        this.getList()
-      }, 500)
     },
     computed: {
       ...mapState({

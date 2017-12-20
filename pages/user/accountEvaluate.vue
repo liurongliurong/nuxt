@@ -60,7 +60,6 @@
         } else {
           rickType = '进取型'
         }
-        console.log(rickType)
         var self = this
         var sendData = {token: this.token, user_id: this.user_id}
         util.post('risk_score', {sign: api.serialize(Object.assign({user_risk_score: score, risk_type: encodeURIComponent(rickType)}, sendData))}).then(function (res) {

@@ -41,7 +41,7 @@
           <div class="miner_info_detail">
             <div class="item" v-for="n,k in cloudMinerNav">
               <span class="info_left">{{n.title}}</span>
-              <span class="info_right">{{$parent.detail[k]}}<em>{{n.unit}}</em></span>
+              <span class="info_right">{{$parent.detail[k]||'暂无'}}<em>{{n.unit}}</em></span>
             </div>
           </div>
         </div>
@@ -221,7 +221,7 @@
         proData1: {product_name: {title: '矿机名称', unit: ''}, one_amount_value: {title: '每台服务器价格', unit: '元'}, number: {title: '购买服务器数量', unit: '台'}},
         proData2: {name: {title: '矿机名称', unit: ''}, one_amount_value: {title: '每台服务器价格', unit: '元'}, number: {title: '购买服务器数量', unit: '台'}, hash: {title: '每台服务器算力', unit: 'T'}},
         proText: {hashType: '算力类型', hash: '每台矿机算力', incomeType: '结算方式'},
-        cloudMinerNav: {income: {title: '今日每T预期收益', unit: 'btc'}, electricityFees: {title: '每日电费支出约', unit: 'btc'}, batch_area: {title: '批次所在区域', unit: ''}},
+        cloudMinerNav: {output: {title: '今日每T预期收益', unit: 'btc/T/天'}, total_electric_fee: {title: '每日电费支出约', unit: 'btc/台/天'}, batch_area: {title: '批次所在区域', unit: ''}},
         mobileNav1: {one_amount_value: {title: '每台服务器价格', unit: '元'}, number: {title: '购买服务器数量', unit: '台'}, batch_area: {title: '批次所在区域', unit: ''}},
         mobileNav2: {one_amount_value: {title: '每台服务器价格', unit: '元'}, number: {title: '购买服务器数量', unit: '台'}, hash: {title: '每台服务器算力', unit: 'T'}},
         thead: [{title: '选择'}, {title: '分期金额（元）'}, {title: '分期期数'}, {title: '手续费率 （%）'}, {title: '每期应还（元）'}, {title: '每期手续费（元）'}],
@@ -642,6 +642,8 @@
                   font-style: normal;
                   margin-left: 10px;
                   font-weight: 100;
+                  color:$light_text;
+                  font-size: 13px;
                 }
               }
             }
