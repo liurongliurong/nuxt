@@ -79,7 +79,7 @@
         len: 0,
         total: -1,
         currentPage: 1,
-        items: {'one_amount_value': {title: '服务器单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'buyed_amount': {title: '出售总数', unit: '台'}},
+        items: {'one_amount_value': {title: '矿机单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'buyed_amount': {title: '剩余数量', unit: '台'}},
         sortNav: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热中'}, {code: 1, title: '热销中'}, {code: 2, title: '已售罄'}]}]
       }
     },
@@ -170,7 +170,7 @@
     }
     .mill{
       width: 1198px;
-      overflow: hidden;
+      // overflow: hidden;
       margin:0 auto;
       .listmill{
         padding:0;
@@ -257,7 +257,7 @@
             margin-top: 20px;
             .progress_box{
               position: relative;
-              overflow:hidden;
+              // overflow:hidden;
               height:100%;
               .box{
                 @include position
@@ -303,6 +303,8 @@
         }
         &:hover{
            box-shadow:#dfe0e1 0 0 30px;
+           transform: scale(1.05);
+           z-index: 999;
         }
       }
       .nodata{
