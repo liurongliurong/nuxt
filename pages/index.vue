@@ -141,16 +141,19 @@
       },
       goPage (url, k) {
         this.$router.push({path: url})
+      },
+      getComputeData () {
+        util.post('showDifficulty', {sign: 'token=0'})
+        .then((res) => {
+          api.checkAjax(this, res, () => {
+            this.computeData = res
+          })
+        })
       }
     },
     mounted () {
       window.addEventListener('resize', this.goMobile, false)
-      var self = this
-      util.post('showDifficulty', {sign: 'token=0'}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.computeData = res
-        })
-      })
+      this.getComputeData()
     },
     computed: {
       ...mapState({
@@ -412,7 +415,7 @@
         transition:2s;
       }
       &:hover .pre{
-        transform:scale(1.1); 
+        transform:scale(1.1);
       }
       .text{
         margin-top:85px;
@@ -568,7 +571,7 @@
             .img_hover3{
               background: url('~assets/images/partner.png') -180px -150px;
             }
-            
+
             .img1{
               background: url('~assets/images/partner.png') -180px -281px;
             }
