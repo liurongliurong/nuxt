@@ -509,7 +509,7 @@
           .active{
             @include triangle(bottom)
             border-top: 7px solid #327fff;
-            margin-left:10px;
+            margin-left:5px;
             position: relative;
             top:-2px;
           }

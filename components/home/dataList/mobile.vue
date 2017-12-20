@@ -3,7 +3,7 @@
     <h2>一 矿机抢购 一 <router-link to="/minerShop/miner/1">更多矿机 ></router-link></h2>
     <div class="mobile_listdata">
       <div class="mobile_list_box">
-        <div v-for="d,i in list" @click="$parent.goPay(d.product_id||d.id)" :key="i" class="mobile_lists">
+        <div v-for="d,i in $parent.list" @click="$parent.goPay(d.product_id||d.id)" :key="i" class="mobile_lists">
           <div class="imgposition">
             <img :src="d.minerPicture"/>
           </div>
@@ -15,52 +15,6 @@
     </div>
   </div>
 </template>
-
-<script>
-  import api from '@/util/function'
-  import util from '@/util'
-  import { mapState } from 'vuex'
-  export default {
-    name: 'chart',
-    data () {
-      return {
-        // nav: {'name': {title: '矿机名称', unit: ''}, 'amount': {title: '总数量', unit: '台'}, 'one_amount_value': {title: '单价', unit: '元'}, 'buy_step_amount': {title: '最小购买单位', unit: '台'}, 'hash': {title: '算力', unit: 'T'}, 'type_name': {title: '算力类型', unit: ''}, 'plan': {title: '项目进度', unit: ''}},
-        nav: {'name': {title: '矿机名称', unit: ''}, 'amount': {title: '总数量', unit: '台'}, 'one_amount_value': {title: '单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'left_num': {title: '剩余数量', unit: '台'}},
-        list: [],
-        index: ''
-      }
-    },
-    mounted () {
-      var self = this
-      // util.post('product_top_list', {sign: api.serialize({token: this.token})}).then(function (res) {
-      //   api.checkAjax(self, res, () => {
-      //     self.list = res
-      //   })
-      // })
-      // console.log(document.getElementsByClassName('mobile_lists').length * 6 + document.getElementsByClassName('mobile_lists').length)
-      // document.getElementsByClassName('mobile_list_box')[0].style.width = (document.getElementsByClassName('mobile_lists').length * 6 + document.getElementsByClassName('mobile_lists').length) + 'rem'
-      util.post('showTopMiner', {sign: api.serialize({token: this.token})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.list = res
-          document.getElementsByClassName('mobile_list_box')[0].style.width = (res.length * 6) + (res.length) + 'rem'
-        })
-      }).catch(res => {
-        console.log(res)
-      })
-    },
-    filters: {
-      format: api.readable
-    },
-    computed: {
-      ...mapState({
-        token: state => state.info.token,
-        true_name: state => state.info.true_name,
-        bank_card: state => state.info.bank_card,
-        isMobile: state => state.isMobile
-      })
-    }
-  }
-</script>
 
 <style type="text/css" lang="scss">
   @import '../../../assets/css/style.scss';

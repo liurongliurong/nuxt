@@ -6,20 +6,18 @@
       <table>
         <thead>
           <tr>
-            <th v-for="n in nav">{{n.title}}</th>
+            <th v-for="n in $parent.nav">{{n.title}}</th>
             <th>操作</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="l,i in list" @click="$parent.goPay(l.product_id||l.id)">
-            <td v-for="v,k in nav">
+          <tr v-for="l,i in $parent.list" @click="$parent.goPay(l.product_id||l.id)">
+            <td v-for="v,k in $parent.nav">
               <template v-if="k==='name'"><i class="iconfont">&#xe605;</i>{{l[k]}}</template>
-              <!-- <template v-else-if="k==='one_amount_value'">{{+l[k]||'????'}}</template> -->
               <template v-else-if="k==='left_num'">{{l.amount-(l.sell_amount||l.buyed_amount)+v.unit}}</template>
               <template v-else>{{l[k]+[v.unit]}}</template>
             </td>
             <td>
-              <!-- <a href="javascript:;">购买</a> -->
                <a class="btn" v-if="l.status===4">预热</a> 
                <a class="btn" v-else-if="l.amount-(l.sell_amount||l.buyed_amount)>0">立即购买</a> 
               <button class="btn" disabled v-else>已售罄</button>
@@ -31,44 +29,6 @@
     </div>
   </div>
 </template>
-
-<script>
-  import api from '@/util/function'
-  import util from '@/util'
-  import { mapState } from 'vuex'
-  export default {
-    name: 'chart',
-    data () {
-      return {
-        // nav: {'name': {title: '矿机名称', unit: ''}, 'amount': {title: '总数量', unit: '台'}, 'one_amount_value': {title: '单价', unit: '元'}, 'buy_step_amount': {title: '最小购买单位', unit: '台'}, 'hash': {title: '算力', unit: 'T'}, 'type_name': {title: '算力类型', unit: ''}, 'plan': {title: '项目进度', unit: ''}},
-        nav: {'name': {title: '矿机名称', unit: ''}, 'amount': {title: '总数量', unit: '台'}, 'one_amount_value': {title: '单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'left_num': {title: '剩余数量', unit: '台'}},
-        list: [],
-        index: ''
-      }
-    },
-    mounted () {
-      var self = this
-      util.post('showTopMiner', {sign: api.serialize({token: this.token})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.list = res
-        })
-      }).catch(res => {
-        console.log(res)
-      })
-    },
-    filters: {
-      format: api.readable
-    },
-    computed: {
-      ...mapState({
-        token: state => state.info.token,
-        true_name: state => state.info.true_name,
-        bank_card: state => state.info.bank_card,
-        isMobile: state => state.isMobile
-      })
-    }
-  }
-</script>
 
 <style type="text/css" lang="scss">
   @import '../../../assets/css/style.scss';
