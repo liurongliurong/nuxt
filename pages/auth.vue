@@ -81,7 +81,7 @@
       margin-top:50px;
     }
     &.login_block{
-      height:100vh;
+      min-height:100vh;
       padding-top:0;
       .bg_box{
         top:0;
