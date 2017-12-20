@@ -266,7 +266,7 @@
         }
         .box_content{
           width: 100%;
-          height: 650px;
+          height: 650px !important;
           overflow: auto;
           margin-top: 20px;
           p{
