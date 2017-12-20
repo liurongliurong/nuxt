@@ -34,7 +34,7 @@
       </div>
     </template>
   </pageFrame>
-  
+
 </template>
 
 <script>
@@ -156,6 +156,7 @@
       box-shadow: 0 0 10px #c2c2c2;
       margin-top: 20px;
       border-radius: 8px;
+      cursor: pointer;
       .museuming1{
         width: 254px;
         height: 170px;

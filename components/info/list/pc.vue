@@ -149,6 +149,7 @@
     border-bottom:1px dashed #e5e5e5;
     overflow: hidden;
     margin-bottom: 28px;
+    cursor: pointer;
     img{
       width: 200px;
       height: 120px;
