@@ -650,7 +650,7 @@
 // pager
   @mixin pager($color:$blue){
     @include flex(flex-end)
-    border-top:1px solid #bfbfbf;
+    // border-top:1px solid #bfbfbf;
     padding-top:20px;
     span{
       text-align: center;

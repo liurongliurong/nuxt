@@ -45,7 +45,7 @@
           this.timer = setInterval(function () {
             var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
             var ispeed = 0
-            ispeed = Math.floor(-scrollTop / 3)
+            ispeed = Math.floor(-scrollTop / 5)
             document.documentElement.scrollTop = document.body.scrollTop = scrollTop + ispeed
             if (scrollTop === 0) {
               clearInterval(self.timer)

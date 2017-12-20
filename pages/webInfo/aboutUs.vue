@@ -159,7 +159,7 @@
             content:'>';
             font-size:18px;
             color:white;
-            font-family: "宋体" !important;
+            font-family: 宋体 !important;
             font-weight:800;
             width:18px;
             height:18px;
