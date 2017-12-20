@@ -250,45 +250,51 @@ export default {
         margin-bottom: 60px;
         margin-top: 20px;
       h1{
-            color: #121212;
-            font-size: 24px;
-            font-weight: 800;
-            span{
-                font-size: 20px;
-                margin-left: 13px;
-            }
-            }
-            .bottomlist{
-                margin-top: 58px;
-            }
-            .currency_toplist{
-            width: 100%;
-            margin-top: 30px;
-            overflow: hidden;
-            .toplist{
-                width: 240px;
-                height: 45px;
-                border:1px solid #bfbfbf;
-                float: left;
-                display:block;
-                margin-right: 24px;
-                margin-bottom: 17px;
-                cursor: pointer;
-                img{
-                width:25px;
-                margin-top: 6px;
-                margin-left: 20px;
-                position: relative;
-                top:-10px;
-                }
-                span{
-                margin-left: 20px;
-                line-height: 45px;
-                font-size: 14px;
-                color: #333333;
-                }
-            }
-            }
+        color: #121212;
+        font-size: 24px;
+        font-weight: 800;
+          span{
+            font-size: 20px;
+            margin-left: 13px;
+          }
         }
+        .bottomlist{
+          margin-top: 58px;
+        }
+        .currency_toplist{
+          width: 100%;
+          padding-top: 30px;
+          overflow: hidden;
+          .toplist{
+            width: 240px;
+            height: 45px;
+            border:1px solid #bfbfbf;
+            float: left;
+            display:block;
+            margin-right: 24px;
+            margin-bottom: 17px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            position: relative;
+            img{
+              width:25px;
+              margin-left: 20px;
+            }
+            span{
+              margin-left: 20px;
+              line-height: 45px;
+              font-size: 14px;
+              color: #333333;
+            }
+            &:hover {
+              top: -3px;
+              z-index: 100;
+              border:1px solid #bfbfbf;
+              box-shadow: 5px 5px 3px #ddd;
+            }
+          }
+        }
+      }
   }
 </style>
