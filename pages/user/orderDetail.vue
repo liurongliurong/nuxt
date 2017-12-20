@@ -142,18 +142,19 @@
           })
         })
       },
-      getBaoquan (id) {
+      getBaoquan () {
         var data = {token: this.token, order_id: this.orderId, security_hash_type: this.orderType, user_id: this.user_id}
         var self = this
-        var a = document.createElement('a')
-        a.setAttribute('target', '_blank')
-        document.body.appendChild(a)
         // var newTab = window.open('about:blank')
         util.post('getBaoquan', {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             // newTab.location.href = 'https://www.baoquan.com/attestations/' + res
+            var a = document.createElement('a')
+            a.setAttribute('target', '_blank')
             a.setAttribute('href', 'https://www.baoquan.com/attestations/' + res)
+            document.body.appendChild(a)
             a.click()
+            a.parentNode.removeChild(a)
           })
         })
       },
@@ -205,6 +206,7 @@
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .order_detail{
+    min-height:calc(100vh - 45px);
     .pc_box{
       padding:15px;
       h2{
@@ -264,7 +266,7 @@
     }
     .mobile_box{
       background: #f4f4f4;
-      height:calc(100vh - 106px);
+      min-height:calc(100vh - 106px);
       .detail_box{
         background: #fff;
         color:$light_text;

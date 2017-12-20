@@ -199,7 +199,6 @@
     },
     mounted () {
       this.getData()
-      this.getList()
     },
     computed: {
       ...mapState({

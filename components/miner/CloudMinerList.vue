@@ -193,9 +193,6 @@
           padding:30px 50px;
           background: $white;
           cursor: pointer;
-          &[disabled]{
-            cursor: no-drop;
-          }
           h3{
             font-size: 18px;
             margin-bottom:10px;
