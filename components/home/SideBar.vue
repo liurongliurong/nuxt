@@ -36,6 +36,11 @@
         window.addEventListener('scroll', this.test, false)
       }
     },
+    destroyed () {
+      if (this.$route.name === 'index') {
+        window.removeEventListener('scroll', this.test)
+      }
+    },
     methods: {
       openPopup (n) {
         if (n !== 'gotop') {
@@ -55,9 +60,8 @@
         }
       },
       test (e) {
-        // var ele = document.querySelector('.fixed_header')
+        if (this.$route.name !== 'index') return false
         var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
-        // if (!ele || !this.$refs.bar) return false
         if (scrollTop > 0) {
           this.$refs.bar.style.display = 'block'
         } else {

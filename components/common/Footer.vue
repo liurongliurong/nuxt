@@ -47,10 +47,10 @@
     </div>
     <div class="mobile_tabbar" v-if="isMobile === 1&&$route.name!=='minerShop-detail'&&$route.name!=='mobile-orderDetail'">
       <div class="mobile_tab_item" v-for="item in footList">
-        <nuxt-link :to="{name: item.linkName}" class="item" :class="{active: $route.name === item.linkName}">
+        <a href="javascript:;" @click="goPage(item.linkName)" class="item" :class="{active: $route.name === item.linkName}">
           <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
           <span class="name">{{item.name}}</span>
-        </nuxt-link>
+        </a>
       </div>
     </div>
   </footer>
@@ -84,7 +84,8 @@
     },
     computed: {
       ...mapState({
-        isMobile: state => state.isMobile
+        isMobile: state => state.isMobile,
+        token: state => state.info.token
       })
     },
     mounted () {
@@ -92,6 +93,15 @@
       util.post('friendlinkList', {sign: 'token=0'}).then(function (res) {
         self.partner = res
       })
+    },
+    methods: {
+      goPage (link) {
+        if (this.token || link === 'index') {
+          this.$router.push({name: link})
+        } else {
+          this.$router.push({name: 'auth-login'})
+        }
+      }
     }
   }
 </script>

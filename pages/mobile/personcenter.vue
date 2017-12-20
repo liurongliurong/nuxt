@@ -162,20 +162,12 @@
       }
     },
     mounted () {
-      setTimeout(() => {
-        if (!this.token) {
-          this.$store.commit('SET_URL', this.$route.path)
-          this.$router.push({name: 'auth-login'})
-          this.$store.commit('LOGOUT')
-          return false
-        }
-        var self = this
-        util.post('myAccount', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.balance_account = res.balance_account
-          })
+      var self = this
+      util.post('myAccount', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
+        api.checkAjax(self, res, () => {
+          self.balance_account = res.balance_account
         })
-      }, 500)
+      })
     }
   }
 </script>
