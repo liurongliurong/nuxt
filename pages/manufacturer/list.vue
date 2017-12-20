@@ -34,7 +34,7 @@
       </div>
     </template>
   </pageFrame>
-  
+
 </template>
 
 <script>
@@ -152,15 +152,17 @@
     .museum_lists1{
       width: 100%;
       height: 232px;
-      background: white;
+      background: #fff;
       box-shadow: 0 0 10px #c2c2c2;
       margin-top: 20px;
       border-radius: 8px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
       .museuming1{
         width: 254px;
         height: 170px;
         border-right: 1px solid #999999;
-        margin-top: 28px;
         text-align: center;
         float: left;
         img{
@@ -173,7 +175,6 @@
         width: 70%;
         float: left;
         padding-left: 58px;
-        padding-top: 50px;
         h6{
           color: #333333;
           font-size: 22px;

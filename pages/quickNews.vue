@@ -139,6 +139,7 @@
       width: 100%;
       height: 1272px;
       overflow: auto;
+      margin-bottom: 40px;
       .news_lists{
         width: 95%;
         height: 140px;

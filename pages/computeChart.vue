@@ -142,7 +142,6 @@
           self.data1.push({name: v._id, value: [v.timestamp, v.difficulty]})
           self.data2.push({name: v._id, value: [v.timestamp, v.avg_network_hashrate[0], v.avg_network_hashrate[1]]})
         })
-        console.log(self.data1, self.data2)
         self.initChart('.myChart', self.data1, '算力困难度历史曲线')
         self.initChart('.myChart2', self.data2, '全网算力历史曲线')
       })

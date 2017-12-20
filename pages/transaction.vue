@@ -281,6 +281,11 @@
                     background: #fe5039;
                     color: white;
                   }
+                  &:disabled {
+                    background: #fff !important;
+                    color: rgb(153, 153, 153) !important;
+                    border: solid rgb(153, 153, 153) 1px !important;
+                  }
               }
           }
           &:hover{

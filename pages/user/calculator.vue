@@ -1,7 +1,7 @@
 <template>
   <div class="calculator">
     <h2>挖矿计算器</h2>
-     <form @submit.prevent="submit"> 
+     <form @submit.prevent="submit">
       <div class="fromone">
         <label>币种</label>
         <select id="select" @change="changeon">
@@ -83,7 +83,7 @@
         <input type="datetime-local" :value="timedays1" class="cover el-range-input" name="timeend" :min="timedays"/>
       </div>
       <button class="button" name="btn">计算</button>
-     </form> 
+     </form>
      <h2>预期利润概览</h2>
      <div class="total">
          <p>
@@ -167,7 +167,6 @@
         var end = form.timeend.value
         var d1 = new Date(start)
         var d2 = new Date(end)
-        console.log(d1, d2)
         this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
         start = this.timedays()
         end = this.timedays1()
@@ -175,7 +174,6 @@
     },
     mounted () {
       var self = this
-      // console.log(self.value3[1].split(' ')[3] + '/' + self.value3[1].split(' ')[2] + '/' + self.value3[1].split(' ')[4])
       util.post('showDifficulty', {sign: api.serialize({token: 0})}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.difficulty = (res.difficulty.replace(/,/g, '') * 7.158 * 0.001 / 1000000).toFixed(0)
@@ -189,7 +187,6 @@
       var d1 = new Date(time)
       var d2 = new Date(time1)
       this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
-      console.log(this.message8)
     },
     computed: {
       timedays: function () {
