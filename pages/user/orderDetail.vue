@@ -150,11 +150,12 @@
           api.checkAjax(self, res, () => {
             // newTab.location.href = 'https://www.baoquan.com/attestations/' + res
             var a = document.createElement('a')
-            a.setAttribute('target', '_blank')
-            a.setAttribute('href', 'https://www.baoquan.com/attestations/' + res)
             document.body.appendChild(a)
+            a.target = '_blank'
+            a.href = 'https://www.baoquan.com/attestations/' + res
             a.click()
-            a.parentNode.removeChild(a)
+            document.body.removeChild(a)
+            // window.open('https://www.baoquan.com/attestations/' + res, '_blank')
           })
         })
       },
