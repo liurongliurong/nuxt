@@ -153,8 +153,8 @@
            <!-- <div class="btn"><a href="javascript:;" @click="userAgreement">返回</a></div>   -->
         </div>
         <label for="accept" id="accept1">
-            <input type="checkbox" name="accept1">
-            <span>阅读并接受<a href="javascript:;" @click="userAgreement" style="color:#327fff;">《用户使用协议》</a></span>
+            <input type="checkbox" name="accept1" @click="userAgreement">
+            <span>阅读并接受<a href="javascript:;" style="color:#327fff;">《用户使用协议》</a></span>
             <span class="select_accept">请选择</span>
         </label>
       </div>
@@ -247,7 +247,9 @@
           height: 50px;
           width: 100%;
           text-align: center;
-          background: #f6f7fb;
+          position: relative;
+          top: 10px;
+          padding-left: 340px;
           input{
             position: relative;
             vertical-align: middle;
@@ -255,6 +257,7 @@
             -webkit-transition: all .2s linear;
             width: 18px;
             height: 18px;
+            margin-right: 10px;
             border-radius: 0;
           }
         }
