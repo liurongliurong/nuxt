@@ -221,8 +221,29 @@
           })
         }
       },
+      checkType (v) {
+        var re1 = new RegExp('^(?:[0-9]+|[a-z]+|[A-Z]+)$')
+        var re2 = new RegExp('^(?![a-z]+$)(?![0-9]+$)(?![A-Z]+$)[a-zA-Z0-9]+$')
+        var re3 = new RegExp('^(?![a-z]+$)(?![0-9]+$)(?![A-Z]+$)(?![a-z0-9]+$)(?![A-Z0-9]+$)(?![a-zA-Z]+$)[a-zA-Z0-9]+$')
+        if (re3.test(v)) {
+          return 3
+        }
+        if (re2.test(v)) {
+          return 2
+        }
+        if (re1.test(v)) {
+          return 1
+        }
+      },
       onFocus (e) {
-        
+        var ele = e.target
+        var value = ele.value
+        if (value.length >= 6) {
+          var type = this.checkType(value)
+          if (type) {
+            ele.className = 'level level' + type
+          }
+        }
       }
     },
     computed: {
