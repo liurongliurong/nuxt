@@ -31,7 +31,7 @@
               </template>
               <template v-else>
                 <button class="btn" v-if="d.amount-d.buyed_amount>0">立即购买</button>
-                <button class="btn" disabled v-else>已售罄</button>
+                <button class="btn disabled" v-else>已售罄</button>
               </template>
             </div>
           </div>
@@ -250,6 +250,9 @@
               line-height: 48px;
               border-radius:5px;
               background: transparent;
+              &.disabled{
+                color: #999;
+              }
               &:disabled{
                 // cursor: no-drop;
                 color:$light_black
@@ -267,6 +270,11 @@
             .btn:not(:disabled){
               @include button($orange)
               cursor: pointer;
+            }
+            .btn.disabled{
+               background: #e4e4e4;
+               border:0;
+               color: #999;
             }
           }
           &.disabled{
