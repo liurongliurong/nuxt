@@ -50,10 +50,10 @@
           <h3>携手共赢， 与全球合作伙伴共建算力生态</h3>
           <p>精诚合作共享资源， 凝心聚力协调发展， 共筑算力产业</p>
           <div class="list">
-            <div class="item" v-for="i in 7" v-if="i!==2">
-              <div :class="'img img'+i"></div>
-              <div :class="'img_hover img_hover'+i"></div>
-            </div>
+              <a :href="k.route" class="item" target="_blank" v-for="k, i in link" style="display:block;" :key="i">
+                <div :class="'img img'+(i+1)"></div>
+                <div :class="'img_hover img_hover'+(i+1)"></div>
+              </a>
           </div>
         </div>
       </div>
@@ -129,6 +129,7 @@
       return {
         nav: [{title: '品牌矿机', desc: '无忧购买矿机', url: '/minerShop/miner/1'}, {title: '云算力', desc: '掌握产业动态', url: '/minerShop/miner/2'}, {title: 'BDC托管', desc: '多个BDC中心', url: '/bdc'}, {title: '产业资讯', desc: '掌握产业动态', url: '/quickNews'}],
         data: [1, 1, 1],
+        link: [{route: 'http://www.tsinghua-zj.edu.cn/'}, {route: 'http://www.gosun.com/'}, {route: 'http://www.enjoyor.cc/'}, {route: 'https://canaan.io/'}, {route: 'http://www.ebang.com.cn/'}, {route: 'https://www.suanlibao.com/'}],
         newsNav: [{title: '热点快讯·不止于此', desc: '开启算力新篇章'}, {title: '实时交易信息', desc: '前往了解更多'}, {title: '挖矿币种资料', desc: '前往了解更多'}],
         ad: {title: '算力驱动未来，信任链接天下', desc: '全球算力产业链资源整合，基于区块链的分布式算力输出平台', items: [{img1: require('@/assets/images/home/feature1.png')}, {img1: require('@/assets/images/home/feature2.png')}, {img1: require('@/assets/images/home/feature3.png')}, {img1: require('@/assets/images/home/feature4.png')}]},
         suanLi: [{title: 'SHA256比特币算力', desc: 'Bitcoin数字货币算力', bardesc: ''}, {title: '卷积神经算法算力', desc: '为CNN卷积神经', bardesc: '网络提供分布式加速服务'}, {title: 'EquiHash零币算力', desc: 'ZeroCASH提供隐私保护', bardesc: '及零知识证明的基础算力'}, {title: '智能合约算力', desc: '全球贸易智能合约', bardesc: '服务的分布式基础算力'}, {title: 'Curecoin算力', desc: '蛋白质折叠计算，', bardesc: '生化反应模型，用于发现新药'}, {title: '游戏币兑换算力', desc: '全球游戏产业', bardesc: '虚拟货币通用兑换算力'}, {title: 'Ethash以太算力', desc: '以太坊网络', bardesc: 'ETC，ETH算力'}, {title: '公证算力', desc: '提供区块链公证服务', bardesc: '存证保全的基础算力'}],
@@ -231,21 +232,6 @@
               color:#7EAFFC
             }
           }
-          // img{
-          //   position: absolute;
-          //   transition: all .2s;
-          //   transform-style: preserve-3d;
-          //   backface-visibility: hidden;
-          //   &:first-child{
-          //     left:calc(50% - 590px);
-          //   }
-          //   &:nth-child(2){
-          //     right:calc(50% - 590px);
-          //   }
-          //   @media screen and (max-width: 1178px) and (min-width: 340px){
-          //     object-fit:contain
-          //   }
-          // }
           a.btn{
             position: absolute;
             width:200px;
@@ -259,75 +245,7 @@
             border-radius:5px;
             font-size: 18px;
             background: #fff;
-            // &:hover{
-            //   background: #fff;
-            //   color:#1e396c
-            // }
           }
-          // img:first-child,a.btn{
-          //   @media screen and (max-width: 1178px) and (min-width: 340px){
-          //     left:0;
-          //   }
-          // }
-          // img:nth-child(2){
-          //   @media screen and (max-width: 1178px) and (min-width: 340px){
-          //     right:0;
-          //   }
-          // }
-          // &:nth-child(6),&:nth-child(2){
-          //   img{
-          //     top:0;
-          //     left:calc(50% - 590px);
-          //     width:1180px;
-          //     height:100%;
-          //     object-fit:cover;
-          //     @media screen and (max-width: 1178px) and (min-width: 340px){
-          //       width:100%;
-          //     }
-          //   }
-          //   a.btn{
-          //     left:calc(50% - 590px);
-          //     @include button($blue)
-          //   }
-          // }
-          // &:nth-child(3) img:first-child{
-          //   width:563px;
-          //   top:calc(50% - 45px);
-          //   height:90px;
-          // }
-          // &:nth-child(3) img:nth-child(2){
-          //   top:calc(50% - 139.5px);
-          //   width:532px;
-          //   height:279px;
-          // }
-          // &:nth-child(4){
-          //   img:first-child{
-          //     width:626px;
-          //     top:calc(50% - 44px);
-          //     height:88px;
-          //   }
-          // }
-          // &:nth-child(4){
-          //   img:nth-child(2){
-          //     top:calc(50% - 137.5px);
-          //     width:404px;
-          //     height:275px;
-          //   }
-          // }
-          // &:nth-child(5),&:nth-child(1){
-          //   img:first-child{
-          //     width:493px;
-          //     top:calc(50% - 44.5px);
-          //     height:99px;
-          //   }
-          // }
-          // &:nth-child(5),&:nth-child(1){
-          //   img:nth-child(2){
-          //     top:calc(50% - 143.5px);
-          //     width:564px;
-          //     height:287px;
-          //   }
-          // }
         }
       }
     }
@@ -483,10 +401,9 @@
           color: white;
           margin-top:30px;
           line-height: 37px;
-          &:hover{
-            background:#166cfb;
-            border:1px solid #166cfb;
-          }
+          // &:hover{
+          //   border:1px solid #166cfb;
+          // }
         }
       }
     }
@@ -582,37 +499,37 @@
             .img_hover,&:hover .img{
               display: inline-block;
             }
-            .img4,.img_hover4{
+            .img3,.img_hover3{
               height: 49px;
               width: 150px;
             }
             .img1,.img_hover1{
               width: 150px; height: 32px;
             }
-            .img4{
+            .img3{
               background: url('~assets/images/partner.png') -180px -216px;
             }
-            .img_hover4{
+            .img_hover3{
               background: url('~assets/images/partner.png') -10px -216px;
             }
-            .img5,.img_hover5{
+            .img4,.img_hover4{
               height: 49px;
               width: 150px;
             }
-            .img5{
+            .img4{
               background: url('~assets/images/partner.png') -210px -10px;
             }
-            .img_hover5{
+            .img_hover4{
               background: url('~assets/images/partner.png') -210px -79px;
             }
-            .img3,.img_hover3{
+            .img2,.img_hover2{
               height: 46px;
               width: 150px;
             }
-            .img3{
+            .img2{
               background: url('~assets/images/partner.png') -10px -150px;
             }
-            .img_hover3{
+            .img_hover2{
               background: url('~assets/images/partner.png') -180px -150px;
             }
 
@@ -622,23 +539,23 @@
             .img_hover1{
               background: url('~assets/images/partner.png') -10px -281px;
             }
-            .img7,.img_hover7{
+            .img6,.img_hover6{
               width: 180px; height: 50px;
             }
-            .img7{
+            .img6{
               background: url('~assets/images/partner.png') -10px -80px;
             }
-            .img_hover7{
+            .img_hover6{
               background: url('~assets/images/partner.png') -10px -10px;
             }
-            .img6,.img_hover6{
+            .img5,.img_hover5{
               height: 20px;
               width: 150px;
             }
-            .img6{
+            .img5{
               background: url('~assets/images/partner.png') -10px -333px;
             }
-            .img_hover6{
+            .img_hover5{
               background: url('~assets/images/partner.png') -180px -333px;
             }
           }

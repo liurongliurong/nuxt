@@ -60,7 +60,7 @@
              <td><button disabled="disabled" class="no" style="background:none;color:gray;width:120px;">还不到还款日期</button></td>
            </template>
            <template v-else>
-             <td><button class="yes" @click="openMask(n.id)">去还款</button></td>
+             <td><button class="yes" @click="openMask(n.id)">待还款</button></td>
            </template>
          </tr>
        </tbody>

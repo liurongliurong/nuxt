@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile_data">
+  <div class="mobile_data" v-if="total">
     <h2>一 云算力抢购 一 <router-link to="/minerShop/miner/2">更多云算力 ></router-link></h2>
     <div class="mobile_listdata">
       <div class="mobile_list_box">
@@ -27,7 +27,8 @@
         // nav: {'name': {title: '矿机名称', unit: ''}, 'amount': {title: '总数量', unit: '台'}, 'one_amount_value': {title: '单价', unit: '元'}, 'buy_step_amount': {title: '最小购买单位', unit: '台'}, 'hash': {title: '算力', unit: 'T'}, 'type_name': {title: '算力类型', unit: ''}, 'plan': {title: '项目进度', unit: ''}},
         nav: {'name': {title: '矿机名称', unit: ''}, 'amount': {title: '总数量', unit: '台'}, 'one_amount_value': {title: '单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'left_num': {title: '剩余数量', unit: '台'}},
         list: [],
-        index: ''
+        index: '',
+        total: ''
       }
     },
     methods: {
@@ -41,6 +42,7 @@
       util.post('product_top_list', {sign: api.serialize({token: this.token})}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.list = res
+          self.total = res.length
           document.getElementsByClassName('mobile_list_box')[1].style.width = (res.length * 6) + (res.length) + 'rem'
         })
       }).catch(res => {

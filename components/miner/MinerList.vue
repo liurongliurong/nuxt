@@ -7,7 +7,7 @@
           <span class="status" v-if="n.status===1">热销中</span>
           <span class="gray" v-if="n.status===3">已下架</span>
           <span class="gray" v-if="n.status===2">已售罄</span>
-          <span class="gray" v-if="n.status===4" style="background: #ff721f;">预热</span>
+          <span class="gray" v-if="n.status===4" style="background: #32cf99;">预热</span>
           <div class="img1">
             <img :src="n.minerPicture"/>
           </div>
@@ -156,7 +156,7 @@
   @import '../../assets/css/style.scss';
   .millsList{
     width: 100%;
-    // overflow: hidden;
+    overflow: hidden;
     margin:0 auto;
     background: #f6f7f9;
     margin-top: 20px;
@@ -304,8 +304,10 @@
         }
         &:hover{
            box-shadow:#dfe0e1 0 0 30px;
-           transform: scale(1.05);
            z-index: 999;
+           img{
+             transform: scale(1.1);
+           }
         }
       }
       .nodata{

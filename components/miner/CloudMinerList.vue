@@ -4,8 +4,8 @@
       <slot></slot>
       <div class="data">
         <template v-if="!isMobile">
-          <div class="item" v-for="d,k in $parent.cloudMinerDate" @click="goPay(d.id, d.sell_type)" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">
-            <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span></h3>
+          <div :class="['item', {'disabled': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]" v-for="d,k in $parent.cloudMinerDate" @click="goPay(d.id, d.sell_type)" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">
+            <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span><span class="sell_type gray" v-if="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">售罄</span></h3>
             <div class="info_box">
               <template v-for="n,i in dataNav">
                 <div class="info" v-if="i==='leftNum'">
@@ -31,7 +31,7 @@
               </template>
               <template v-else>
                 <button class="btn" v-if="d.amount-d.buyed_amount>0">立即购买</button>
-                <button class="btn" disabled v-else>已售罄</button>
+                <button class="btn disabled" v-else>已售罄</button>
               </template>
             </div>
           </div>
@@ -39,12 +39,12 @@
         <template v-else>
           <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
             <div class="item" v-for="d,k in cloudMinerDate" @click="goPay(d.id, d.sell_type)" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">
-              <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span></h3>
+              <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span><span class="sell_type gray" v-if="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">售罄</span></h3>
               <div class="mobile_info_box">
                 <div class="mobile_info">
-                  <h4>每台服务器价格<span><b>{{d.one_amount_value}}</b>元</span></h4>
+                  <h4>每台单价<span><b>{{d.one_amount_value}}</b>元</span></h4>
                   <div class="mobile_text">
-                    <div class="mobile_text_item">每台服务器价格<b>{{d.hash}}T</b></div>
+                    <div class="mobile_text_item">每台单价<b>{{d.hash}}T</b></div>
                     <div class="mobile_text_item">剩余可售<b>{{d.amount-d.buyed_amount}}台</b></div>
                   </div>
                 </div>
@@ -91,8 +91,8 @@
     },
     data () {
       return {
-        sortNav2: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热中'}, {code: 5, title: '热销中'}, {code: 7, title: '已售罄'}]}],
-        dataNav: {'one_amount_value': {title: '每台服务器价格', unit: '元'}, 'hash': {title: '每台服务器算力', unit: 'T'}, 'buyed_amount': {title: '出售服务器总数', unit: '台'}, 'leftNum': {title: '剩余可售服务器', unit: '台'}},
+        sortNav2: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热'}, {code: 5, title: '热销'}, {code: 7, title: '已售罄'}]}],
+        dataNav: {'one_amount_value': {title: '每台单价', unit: '元'}, 'hash': {title: '每台算力', unit: 'T'}, 'buyed_amount': {title: '出售总数', unit: '台'}, 'leftNum': {title: '剩余可售', unit: '台'}},
         str: {4: '预热', 5: '预售'},
         loading: false,
         showcontent: false,
@@ -210,6 +210,12 @@
               color:#ff721f;
               display: inline-block;
               border:1px solid #ff721f;
+              position: relative;
+              top: -4px;
+              &.gray{
+                border:1px solid #999;
+                color: #999;
+              }
               &.active{
                 border-color:$blue;
                 color:$blue;
@@ -244,8 +250,11 @@
               line-height: 48px;
               border-radius:5px;
               background: transparent;
+              &.disabled{
+                color: #999;
+              }
               &:disabled{
-                cursor: no-drop;
+                // cursor: no-drop;
                 color:$light_black
               }
             }
@@ -261,6 +270,23 @@
             .btn:not(:disabled){
               @include button($orange)
               cursor: pointer;
+            }
+            .btn.disabled{
+               background: #e4e4e4;
+               border:0;
+               color: #999;
+            }
+          }
+          &.disabled{
+            background: #f5f3f3;
+            .info_box{
+              :nth-child(1){
+                .text{
+                  span{
+                    color: black;
+                  }
+                }
+              }
             }
           }
         }

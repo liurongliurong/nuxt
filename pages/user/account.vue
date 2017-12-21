@@ -61,10 +61,10 @@
       return {
         nav: [
           {title: '手机认证', desc: '手机号码是在算力网进行操作的重要凭证。', text: '手机号码', name: 'tel'},
+          {title: '登录密码', desc: '登录算力网的重要凭证', text: '登录密码', name: 'login'},
           {title: '实名认证', desc: '完成实名认证，认证后可以获得更多权限。', text: '身份证号', name: 'auth'},
           {title: '绑定银行卡', desc: '绑定银行卡之后才能进行充值、购买和提现等操作。', text: '', name: 'card'},
-          {title: '算力收益地址', desc: '请选择算力类型并设置算力地址。', text: '', name: 'address'},
-          {title: '登录密码', desc: '登录算力网的重要凭证', text: '登录密码', name: 'login'}
+          {title: '算力收益地址', desc: '请选择算力类型并设置算力地址。', text: '', name: 'address'}
         ],
         list: [{name: 'tel', title: '用户名'}, {name: 'auth', title: '实名认证'}, {name: 'card', title: '银行卡'}, {name: 'login', title: '登录密码'}, {name: 'address', title: '算力收益地址'}],
         form: {
