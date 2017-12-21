@@ -1,108 +1,113 @@
 <template>
-  <article class="home" v-if="isMobile===0">
-    <Swiper :pagination-visible="true" :loop="true" :autoPlay="5000"></Swiper>
-    <div class="home_text">
-      <div class="main">
-        <div class="list">
-          <div class="item" v-for="a,k in ad.items">
-            <img :src="a.img1"/>
-          </div>
-        </div>
-      </div>
-    </div>
-    <MyData></MyData>
-    <div class="home_title">
-      <div class="main">
-        <h1>{{ad.title}}</h1>
-        <p>{{ad.desc}}</p>
-        <div class="list">
-          <div class="item" v-for="s,k in suanLi">
-            <div class="blurborder">
-              <span></span>
-            </div>
-            <div class="item_title">{{s.title}}</div>
-            <div class="item_desc">{{s.desc}}</div>
-            <div class="item_desc">{{s.bardesc}}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <WebInfo></WebInfo>
-    <div class="my_map">
-      <div class="main">
-        <h1 class="home_item_title">持续扩张的数据中心让跨域体验更流畅</h1>
-        <p class="home_item_desc">全面拓展国际、国内区块链云计算市场，担当行业领头羊角色。胸有成“数”，自当志在四方。</p>
-        <div class="home_map_data">
-          <div class="item" v-for="m,k in mapData">
-            <span class="item_name">{{m.title}}</span>
-            <span class="item_value">{{computeData[m.name]+' '+m.unit}}</span>
-          </div>
-        </div>
-        <DataMap class="data_chart"></DataMap>
-      </div>
-    </div>
-    <div class="partner">
-      <div class="box">
-        <h3>携手共赢， 与全球合作伙伴共建算力生态</h3>
-        <p>精诚合作共享资源， 凝心聚力协调发展， 共筑算力产业</p>
-        <div class="list">
-          <div class="item" v-for="i in 7" v-if="i!==2">
-            <div :class="'img img'+i"></div>
-            <div :class="'img_hover img_hover'+i"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="wq">
-      <img :src="require('@/assets/images/home/suanli_bottom_bg.jpg')" alt="" class="pre">
-      <div class="text">
-        <img src="~assets/images/server.png" style="width:800px;display:block;margin:0 auto;"/>
-        <router-link to="/minerShop/list">即刻体验</router-link>
-      </div>
-    </div>
-    <SideBar></SideBar>
-  </article>
-  <article class="mobile_home" v-else-if="isMobile===1">
-    <Swiper :pagination-visible="true" :loop="false" :autoPlay="5000" :data="data"></Swiper>
-    <div class="nav_box">
-      <div class="item" v-for="n,k in nav" :key="k" @click="goPage(n.url, k)">
-        <img class="item_img" :src="require('@/assets/images/mobile/nav'+(k+1)+'.png')" alt="">
-        <h3 class="item_text">{{n.title}}</h3>
-      </div>
-    </div>
-    <MyData></MyData>
-    <minner-list></minner-list>
-    <div class="home_compute_news">
-      <h3 class="home_title">算力资讯</h3>
-      <div class="compute_items">
-        <router-link to="/quickNews">
-          <div class="item" v-for="n,k in newsNav">
-            <div class="text">
-              <p>{{n.title}}</p>
-              <p>{{n.desc}}</p>
-            </div>
-            <div class="item_img">
-              <img :src="require('@/assets/images/mobile/news'+(k+1)+'.png')" alt="">
+  <article>
+    <!-- <div>
+      <MyData></MyData>
+    </div> -->
+    <article class="home" v-if="isMobile===0">
+      <Swiper :pagination-visible="true" :loop="true" :autoPlay="5000"></Swiper>
+      <div class="home_text">
+        <div class="main">
+          <div class="list">
+            <div class="item" v-for="a,k in ad.items">
+              <img :src="a.img1"/>
             </div>
           </div>
-        </router-link>
+        </div>
       </div>
-    </div>
-    <div class="home_compute_loan">
-      <h3 class="home_title">算力分期</h3>
-      <div class="loan_img">
-        <img :src="require('@/assets/images/mobile/loan.png')" alt="">
+      <MyData></MyData>
+      <div class="home_title">
+        <div class="main">
+          <h1>{{ad.title}}</h1>
+          <p>{{ad.desc}}</p>
+          <div class="list">
+            <div class="item" v-for="s,k in suanLi">
+              <div class="blurborder">
+                <span></span>
+              </div>
+              <div class="item_title">{{s.title}}</div>
+              <div class="item_desc">{{s.desc}}</div>
+              <div class="item_desc">{{s.bardesc}}</div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <a class="home_service" href="tel:0571-28031736">
-      <div class="service_img">
-        <img :src="require('@/assets/images/mobile/service.png')" alt="">
+      <WebInfo></WebInfo>
+      <div class="my_map">
+        <div class="main">
+          <h1 class="home_item_title">持续扩张的数据中心让跨域体验更流畅</h1>
+          <p class="home_item_desc">全面拓展国际、国内区块链云计算市场，担当行业领头羊角色。胸有成“数”，自当志在四方。</p>
+          <div class="home_map_data">
+            <div class="item" v-for="m,k in mapData">
+              <span class="item_name">{{m.title}}</span>
+              <span class="item_value">{{computeData[m.name]+' '+m.unit}}</span>
+            </div>
+          </div>
+          <DataMap class="data_chart"></DataMap>
+        </div>
       </div>
-      <div class="service_text">
-        <h1>售前咨询在线客服</h1>
-        <p>我们认真听取您的每一条建议</p>
+      <div class="partner">
+        <div class="box">
+          <h3>携手共赢， 与全球合作伙伴共建算力生态</h3>
+          <p>精诚合作共享资源， 凝心聚力协调发展， 共筑算力产业</p>
+          <div class="list">
+            <div class="item" v-for="i in 7" v-if="i!==2">
+              <div :class="'img img'+i"></div>
+              <div :class="'img_hover img_hover'+i"></div>
+            </div>
+          </div>
+        </div>
       </div>
-    </a>
+      <div class="wq">
+        <img :src="require('@/assets/images/home/suanli_bottom_bg.jpg')" alt="" class="pre">
+        <div class="text">
+          <img src="~assets/images/server.png" style="width:800px;display:block;margin:0 auto;"/>
+          <router-link to="/minerShop/list">即刻体验</router-link>
+        </div>
+      </div>
+      <SideBar></SideBar>
+    </article>
+    <article class="mobile_home" v-else-if="isMobile===1">
+      <Swiper :pagination-visible="true" :loop="false" :autoPlay="5000" :data="data"></Swiper>
+      <div class="nav_box">
+        <div class="item" v-for="n,k in nav" :key="k" @click="goPage(n.url, k)">
+          <img class="item_img" :src="require('@/assets/images/mobile/nav'+(k+1)+'.png')" alt="">
+          <h3 class="item_text">{{n.title}}</h3>
+        </div>
+      </div>
+      <MyData></MyData>
+      <minner-list></minner-list>
+      <div class="home_compute_news">
+        <h3 class="home_title">算力资讯</h3>
+        <div class="compute_items">
+          <router-link to="/quickNews">
+            <div class="item" v-for="n,k in newsNav">
+              <div class="text">
+                <p>{{n.title}}</p>
+                <p>{{n.desc}}</p>
+              </div>
+              <div class="item_img">
+                <img :src="require('@/assets/images/mobile/news'+(k+1)+'.png')" alt="">
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+      <div class="home_compute_loan">
+        <h3 class="home_title">算力分期</h3>
+        <div class="loan_img">
+          <img :src="require('@/assets/images/mobile/loan.png')" alt="">
+        </div>
+      </div>
+      <a class="home_service" href="tel:0571-28031736">
+        <div class="service_img">
+          <img :src="require('@/assets/images/mobile/service.png')" alt="">
+        </div>
+        <div class="service_text">
+          <h1>售前咨询在线客服</h1>
+          <p>我们认真听取您的每一条建议</p>
+        </div>
+      </a>
+    </article>
   </article>
 </template>
 
@@ -131,6 +136,14 @@
         computeData: {}
       }
     },
+    // asyncData () {
+      // let {data} = await util.post('showTopMiner', {sign: 'token=0'})
+      // return { list: data }
+      // return util.post('showTopMiner', {sign: 'token=0'}).then(function (res) {
+      //   console.log(res)
+      //   // return { list: 123 }
+      // })
+    // },
     methods: {
       goMobile () {
         if (api.checkEquipment()) {

@@ -140,7 +140,7 @@
         var self = this
         util.post('sign_contract', {sign: api.serialize(Object.assign({token: this.token, user_id: this.user_id}, self.contract))}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips(res, this.isMobile)
+            api.tips(res, self.isMobile)
             self.show = 2
             util.post('scode_info', {sign: 'token=' + self.token}).then(function (data) {
               if (data && !data.code) {

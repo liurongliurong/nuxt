@@ -11,20 +11,13 @@
             <div class="line" v-if="k<3"></div>
           </div>
         </div>
-        <div class="detailinfo" v-if="orderType !== 3">
-          <template v-for="i,k in info[orderType]">
-            <div class="item">
-              <p>{{i}}</p>
-              <div class="profit"><span>{{data[k]||'0.00000000'}}</span>Btc</div>
-            </div>
-            <div class="line"></div>
-          </template>
+      </div>
+      <template v-if="orderType === 3">
+        <h3>地址信息</h3>
+        <div class="detail_box address_box">
+          <p>{{data.post_addr+'('+data.post_user+' '+data.post_mobile+")"}}</p>
         </div>
-      </div>
-      <h3>地址信息</h3>
-      <div class="detail_box address_box" v-if="orderType === 3">
-        <p>{{data.post_addr+'('+data.post_user+' '+data.post_mobile+")"}}</p>
-      </div>
+      </template>
       <h3>基本信息</h3>
       <div class="detail_box">
         <div class="detail_table">
@@ -33,15 +26,17 @@
             <div class="item_value" v-if="k === 'hash_type'">{{data[k]||'BTC'}}</div>
             <div class="item_value" v-else>{{data[k]}}{{d[1]}}</div>
           </div>
-          <div class="item">
-            <div class="item_title"></div>
-            <div class="item_value"></div>
+          <div class="item" v-if="orderType === 3">
+            <div class="item_title">总算力</div>
+            <div class="item_value">{{data.hash*data.buy_amount}}T</div>
           </div>
         </div>
-        <div class="detail_btn">
-          <button @click="getContract">查看协议</button>
-          <button @click="getBaoquan">查看保全</button>
-        </div>
+      </div>
+      <h3>补充说明</h3>
+      <div class="agreement_content" v-html="(orderType !== 3?data.machine_agreement:data.prProtocolSpeciaification)||'暂无'"></div>
+      <div class="detail_btn">
+        <button @click="getContract">查看协议</button>
+        <button @click="getBaoquan">查看保全</button>
       </div>
     </div>
     <div class="mobile_box" v-if="isMobile===1&&!show">
@@ -73,6 +68,10 @@
           <div class="item_value" v-if="k === 'hash_type'">{{data[k]||'BTC'}}</div>
           <div class="item_value" v-else>{{data[k]}}{{d[1]}}</div>
         </div>
+        <div class="data_item" v-if="orderType === 3">
+          <div class="item_title">总算力</div>
+          <div class="item_value">{{data.hash*data.buy_amount}}T</div>
+        </div>
         <div class="data_item get_contract" @click="getContract">
           <div class="item_title">查看协议</div>
           <div class="item_value"></div>
@@ -80,6 +79,9 @@
       </div>
       <div class="detail_btn">
         <button @click="getBaoquan">查看保全</button>
+      </div>
+      <div class="detail_box">
+        <div class="agreement_content" v-html="(orderType !== 3?data.machine_agreement:data.prProtocolSpeciaification)||'暂无'"></div>
       </div>
     </div>
     <div v-if="show" class="agreement_text">
@@ -106,7 +108,7 @@
         processStatus: 1,
         info: {0: {realized_income_value: '累计已获得收益', today_income: '今日收益', total_realized_power_fee_value: '今日支付运维费'}, 1: {realized_income_value: '累计已获得收益', today_income_value: '今日收益', today_power_fee_value: '今日支付运维费'}},
         data: {},
-        type: {0: {hash_type: ['算力类型', ''], product_name: ['矿机名称', ''], buy_amount: ['购买数量', '台'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], income_type: ['收益方式', ''], total_hash: ['总算力', 'T']}, 1: {type_name: ['代币类型', ''], buy_amount: ['购买数量', 'T'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], manner: ['发币方式', '']}, 3: {hash_type: ['算力类型', ''], name: ['矿机名称', ''], buy_amount: ['购买数量', '台'], created_time: ['购买日期', ''], pay_value: ['购买金额', '元']}},
+        type: {0: {hash_type: ['算力类型', ''], buy_amount: ['购买数量', '台'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], income_type: ['收益方式', ''], total_hash: ['总算力', 'T'], product_name: ['矿机型号', ''], bdc_name: ['所在BDC', '']}, 1: {type_name: ['代币类型', ''], buy_amount: ['购买数量', 'T'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], manner: ['发币方式', '']}, 3: {name: ['矿机型号', ''], buy_amount: ['购买数量', '台'], created_time: ['购买日期', ''], pay_value: ['购买金额', '元'], hash_type: ['算力类型', '']}},
         requestUrl: {0: 'showOrderDetail', 3: 'showMinerDetail'},
         show: false,
         contract: '',
@@ -146,15 +148,15 @@
         var data = {token: this.token, order_id: this.orderId, security_hash_type: this.orderType, user_id: this.user_id}
         var self = this
         // var newTab = window.open('about:blank')
-        var a = document.createElement('a')
-        document.body.appendChild(a)
-        a.target = '_blank'
+        // var a = document.createElement('a')
+        // document.body.appendChild(a)
+        // a.target = '_blank'
         util.post('getBaoquan', {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             // newTab.location.href = 'https://www.baoquan.com/attestations/' + res
-            a.href = 'https://www.baoquan.com/attestations/' + res
-            a.click()
-            document.body.removeChild(a)
+            location.href = 'https://www.baoquan.com/attestations/' + res
+            // a.click()
+            // document.body.removeChild(a)
           })
         })
       },
@@ -207,6 +209,7 @@
   @import '~assets/css/style.scss';
   .order_detail{
     min-height:calc(100vh - 45px);
+    padding-bottom:61px;
     .pc_box{
       padding:15px;
       h2{
@@ -217,50 +220,27 @@
         .process{
           @include process
         }
-        .detailinfo{
-          padding:25px 30px;
-          @include flex(space-between)
-          .item{
-            &:first-child .profit{
-              span{
-                color:$orange
-              }
-            }
-            p{
-              margin-bottom:10px
-            }
-            .profit{
-              span{
-                font-size: 24px;
-                color:#000;
-                margin-right:15px
-              }
-            }
-          }
-          .line:not(:last-child){
-            width:1px;
-            height:40px;
-            background: $border;
-          }
-        }
         .detail_table{
           @include detail
-        }
-        .detail_btn{
-          // display: none;
-          margin:30px 15px;
-          text-align: right;
-          button{
-            @include button($blue)
-            padding:5px 15px;
-            & + button{
-              margin-left:10px
-            }
-          }
         }
         &.address_box{
           padding:15px;
           font-size: 16px;
+        }
+      }
+      .agreement_content{
+        padding:15px;
+      }
+      .detail_btn{
+        // display: none;
+        margin:30px 15px;
+        text-align: right;
+        button{
+          @include button($blue)
+          padding:5px 15px;
+          & + button{
+            margin-left:10px
+          }
         }
       }
     }
