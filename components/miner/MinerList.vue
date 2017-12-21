@@ -80,7 +80,7 @@
         total: -1,
         currentPage: 1,
         items: {'one_amount_value': {title: '矿机单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'buyed_amount': {title: '剩余数量', unit: '台'}},
-        sortNav: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热中'}, {code: 1, title: '热销中'}, {code: 2, title: '已售罄'}]}]
+        sortNav: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热'}, {code: 1, title: '热销'}, {code: 2, title: '已售罄'}]}]
       }
     },
     asyncData ({ params }) {
@@ -155,7 +155,7 @@
   @import '../../assets/css/style.scss';
   .millsList{
     width: 100%;
-    overflow: hidden;
+    // overflow: hidden;
     margin:0 auto;
     background: #f6f7f9;
     margin-top: 20px;
