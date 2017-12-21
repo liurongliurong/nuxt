@@ -20,7 +20,8 @@
           </div>
           <div class="items">
             <div class="item" v-for="item,d in items">
-              <p class="price">{{n[d]}}{{item.unit}}</p>
+              <p class="price" v-if="d==='buyed_amount'">{{n.amount-n.buyed_amount}}{{item.unit}}</p>
+              <p class="price" v-else>{{n[d]}}{{item.unit}}</p>
               <p class="title">{{item.title}}</p>
             </div>
           </div>
