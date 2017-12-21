@@ -262,13 +262,14 @@
     .popup{
       .agreement{
         height:calc(90vh - 30px);
+        padding:0;
         #accept1{
           height: 50px;
           width: 100%;
           text-align: center;
           position: relative;
           top: 10px;
-          padding-left: 340px;
+          padding-left: 250px;
           input{
             position: relative;
             vertical-align: middle;
@@ -282,12 +283,17 @@
         }
         h2{
           text-align: center;
+          height: 50px;
+          background: #f3f9ff;
+          line-height: 50px;
         }
         .box_content{
           width: 100%;
           height: 650px !important;
           overflow: auto;
           margin-top: 20px;
+          padding-left:15px;
+          padding-right: 15px;
           p{
             text-indent: 0.2rem;
           }

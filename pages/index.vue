@@ -50,9 +50,13 @@
           <h3>携手共赢， 与全球合作伙伴共建算力生态</h3>
           <p>精诚合作共享资源， 凝心聚力协调发展， 共筑算力产业</p>
           <div class="list">
-            <div class="item" v-for="i in 7" v-if="i!==2">
-                <div :class="'img img'+i"></div>
-                <div :class="'img_hover img_hover'+i"></div>
+            <div class="item" v-for="k, i in link">
+                <div :class="'img img'+(i+1)" v-if="i===0"></div>
+                <div :class="'img img'+(3)" v-else-if="i===2"></div>
+                <div :class="'img img'+(i+1)" v-else-if="i>2"></div>
+                <div :class="'img_hover img_hover'+(i+1)" v-if="i===0"></div>
+                <div :class="'img_hover img_hover'+(3)" v-else-if="i==2"></div>
+                <div :class="'img_hover img_hover'+(i+1)" v-else-if="i>2"></div>
             </div>
           </div>
         </div>
@@ -129,7 +133,7 @@
       return {
         nav: [{title: '品牌矿机', desc: '无忧购买矿机', url: '/minerShop/miner/1'}, {title: '云算力', desc: '掌握产业动态', url: '/minerShop/miner/2'}, {title: 'BDC托管', desc: '多个BDC中心', url: '/bdc'}, {title: '产业资讯', desc: '掌握产业动态', url: '/quickNews'}],
         data: [1, 1, 1],
-        // link: [{route: 'http://www.tsinghua-zj.edu.cn/'}, {route: 'http://www.gosun.com/'}, {route: 'http://www.enjoyor.cc/'}, {route: 'https://canaan.io/'}, {route: 'http://www.ebang.com.cn/'}, {route: 'https://www.suanlibao.com/'}],
+        link: [{route: 'http://www.tsinghua-zj.edu.cn/'}, {route: 'http://www.gosun.com/'}, {route: 'http://www.enjoyor.cc/'}, {route: 'https://canaan.io/'}, {route: 'http://www.ebang.com.cn/'}, {route: 'https://www.suanlibao.com/'}, {toute: ''}],
         newsNav: [{title: '热点快讯·不止于此', desc: '开启算力新篇章'}, {title: '实时交易信息', desc: '前往了解更多'}, {title: '挖矿币种资料', desc: '前往了解更多'}],
         ad: {title: '算力驱动未来，信任链接天下', desc: '全球算力产业链资源整合，基于区块链的分布式算力输出平台', items: [{img1: require('@/assets/images/home/feature1.png')}, {img1: require('@/assets/images/home/feature2.png')}, {img1: require('@/assets/images/home/feature3.png')}, {img1: require('@/assets/images/home/feature4.png')}]},
         suanLi: [{title: 'SHA256比特币算力', desc: 'Bitcoin数字货币算力', bardesc: ''}, {title: '卷积神经算法算力', desc: '为CNN卷积神经', bardesc: '网络提供分布式加速服务'}, {title: 'EquiHash零币算力', desc: 'ZeroCASH提供隐私保护', bardesc: '及零知识证明的基础算力'}, {title: '智能合约算力', desc: '全球贸易智能合约', bardesc: '服务的分布式基础算力'}, {title: 'Curecoin算力', desc: '蛋白质折叠计算，', bardesc: '生化反应模型，用于发现新药'}, {title: '游戏币兑换算力', desc: '全球游戏产业', bardesc: '虚拟货币通用兑换算力'}, {title: 'Ethash以太算力', desc: '以太坊网络', bardesc: 'ETC，ETH算力'}, {title: '公证算力', desc: '提供区块链公证服务', bardesc: '存证保全的基础算力'}],
@@ -642,6 +646,9 @@
             .img_hover6{
               background: url('~assets/images/partner.png') -180px -333px;
             }
+          }
+          :nth-child(2){
+            display:none;
           }
         }
       }

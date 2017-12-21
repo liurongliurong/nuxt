@@ -97,7 +97,7 @@
           {name: 'dep_tel', type: 'text', title: '手机号码', placeholder: '请输入手机号码', tips: '请输入11位手机号', pattern: '^1[3578][0-9]{9}$'},
           {name: 'code', type: 'text', title: '手机验证码', placeholder: '手机验证码', addon: true, tips: '请输入6位数字', pattern: '^[0-9]{6}$'},
           {name: 'dep_bdc', type: 'select', title: '选择BDC'},
-          {name: 'dep_type', type: 'text', title: '服务器类型', placeholder: '请输入算力服务器类型'},
+          {name: 'dep_type', type: 'text', title: '服务器型号', placeholder: '请输入算力服务器型号'},
           {name: 'dep_number', type: 'text', title: '服务器数量', placeholder: '输入托管算力服务器数量', tips: '请输入整数', pattern: '^[0-9]+$', maxlength: 5}
         ],
         bcdParamsLists: [
