@@ -61,7 +61,7 @@
       <!-- addon -->
       <template v-if="f.addon">
         <canvas id="code" width="90" height="40" v-if="f.addon===1" @click="changeCode"></canvas>
-        <div class="count_btn btn" v-if="f.addon===2" @click="getCode">{{str}}</div>
+        <div class="count_btn btn" v-if="f.addon===2" @click="getCode(f.checkData)">{{str}}</div>
       </template>
       <!-- tips -->
       <span class="tips" :title="f.pattern&&check[f.pattern].tips" :error="(f.pattern&&check[f.pattern].error)||f.error" :tips="f.placeholder" :success="f.pattern&&check[f.pattern].success" v-if="!f.edit"></span>
@@ -117,7 +117,7 @@
         var ele = document.querySelector('#code')
         localStorage.setItem('code', api.createCode(ele))
       },
-      getCode () {
+      getCode (str) {
         var form = document.querySelector('.form')
         var ele = document.querySelector('.count_btn')
         var telEle = form.dep_tel || form.mobile
@@ -132,9 +132,25 @@
           telEle.focus()
           return false
         }
-        if (imgCode && api.checkCode(imgCode)) {
-          imgCode.focus()
-          return false
+        if (imgCode) {
+          if (imgCode.value && imgCode.value.toLowerCase() !== localStorage.getItem('code').toLowerCase()) {
+            api.setTips(imgCode, 'error')
+            imgCode.focus()
+            return false
+          }
+          if (!imgCode.value) {
+            api.setTips(imgCode, 'null')
+            imgCode.focus()
+            return false
+          }
+        }
+        if (str) {
+          var that = this.$parent.$parent
+          var money = that.detail.one_amount_value * that.number
+          if (+str < money) {
+            api.tips('余额不足，请先充值', this.isMobile)
+            return false
+          }
         }
         if (ele.getAttribute('disabled') === 'true') return false
         util.post('send_code', {sign: api.serialize({token: this.token, mobile: form.dep_tel ? form.dep_tel.value : form.mobile.value})}).then(res => {

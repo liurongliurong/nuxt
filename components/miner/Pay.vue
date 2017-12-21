@@ -77,25 +77,25 @@
         </div>
         <div class="order_msg order_pay">
           <h3 class="title">支付订单信息</h3>
-          <div :class="['pay_text',{active:payNo===1}]">
-            <label class="pay_value">
-              <input type="radio" name="payType" @click="setValue('payNo',1)" checked>
-              <span class="yue">账户余额{{$parent.balance}}元</span>
-            </label>
-            <div class="pay_info">
-              <span>金额不足，可先</span>
-              <a href="javascript:;" @click="goRecharge('/user/recharge')">充值</a>
-            </div>
-          </div>
           <div :class="['pay_text',{active:payNo===2}]">
             <label class="pay_value">
-              <input type="radio" name="payType" @click="setValue('payNo',2)">
+              <input type="radio" name="payType" @click="setValue('payNo',2)" checked>
               <span class="zhifubao">支付宝</span>
             </label>
             <div class="pay_info">
               <span>支付</span>
               <span class="money" style="font-size:16px;">{{(page==='minerShop'?totalPrice:$parent.detail.total_price)|format}}</span>
               <span>元</span>
+            </div>
+          </div>
+          <div :class="['pay_text',{active:payNo===1}]">
+            <label class="pay_value">
+              <input type="radio" name="payType" @click="setValue('payNo',1)">
+              <span class="yue">账户余额{{$parent.balance}}元</span>
+            </label>
+            <div class="pay_info">
+              <span>金额不足，可先</span>
+              <a href="javascript:;" @click="goRecharge('/user/recharge')">充值</a>
             </div>
           </div>
           <form class="form payForm" action="" @submit.prevent="pay" novalidate>
@@ -218,14 +218,14 @@
     },
     data () {
       return {
-        proData1: {product_name: {title: '矿机名称', unit: ''}, one_amount_value: {title: '每台服务器价格', unit: '元'}, number: {title: '购买服务器数量', unit: '台'}},
-        proData2: {name: {title: '矿机名称', unit: ''}, one_amount_value: {title: '每台服务器价格', unit: '元'}, number: {title: '购买服务器数量', unit: '台'}, hash: {title: '每台服务器算力', unit: 'T'}},
+        proData1: {product_name: {title: '矿机名称', unit: ''}, one_amount_value: {title: '矿机单价', unit: '元'}, number: {title: '购买数量', unit: '台'}},
+        proData2: {name: {title: '矿机名称', unit: ''}, one_amount_value: {title: '矿机单价', unit: '元'}, number: {title: '购买数量', unit: '台'}, hash: {title: '每台算力', unit: 'T'}},
         proText: {hashType: '算力类型', hash: '每台矿机算力', incomeType: '结算方式'},
-        cloudMinerNav: {output: {title: '今日每T预期收益', unit: 'btc/T/天'}, total_electric_fee: {title: '每日电费支出约', unit: 'btc/台/天'}, batch_area: {title: '批次所在区域', unit: ''}},
+        cloudMinerNav: {output: {title: '预期收益', unit: 'btc/T/天'}, total_electric_fee: {title: '预计支出费用', unit: 'btc/台/天'}, batch_area: {title: '批次所在区域', unit: ''}},
         mobileNav1: {one_amount_value: {title: '每台服务器价格', unit: '元'}, number: {title: '购买服务器数量', unit: '台'}, batch_area: {title: '批次所在区域', unit: ''}},
         mobileNav2: {one_amount_value: {title: '每台服务器价格', unit: '元'}, number: {title: '购买服务器数量', unit: '台'}, hash: {title: '每台服务器算力', unit: 'T'}},
-        thead: [{title: '选择'}, {title: '分期金额（元）'}, {title: '分期期数'}, {title: '手续费率 （%）'}, {title: '每期应还（元）'}, {title: '每期手续费（元）'}],
-        form: [{name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
+        thead: [{title: '选择'}, {title: '分期金额（元）'}, {title: '分期期数'}, {title: '手续费率'}, {title: '每期应还（元）'}, {title: '每期手续费（元）'}],
+        form: [{name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', checkData: 'balance'}],
         address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}, {name: 'is_default', type: 'radio', title: '是否设为默认地址'}],
         tips: '请同意服务条款',
         totalPrice: 0,
@@ -237,7 +237,7 @@
         addressData: [],
         addressObject: {},
         addressForm: {},
-        payNo: 1,
+        payNo: 2,
         rate: 3,
         isFixTop: false,
         timer: 0,
@@ -713,8 +713,7 @@
                 height:25px;
                 &:before{
                   font-family:"iconfont" !important;
-                  font-size: 26px;
-                  padding-right:8px;
+                  font-size: 20px;
                   line-height: 25px;
                   position: relative;
                   vertical-align: bottom;

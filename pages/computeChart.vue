@@ -36,6 +36,7 @@
   import util from '@/util'
   import echarts from 'echarts/lib/echarts'
   import 'echarts/lib/chart/line'
+  import 'echarts/lib/component/title'
   import 'echarts/lib/component/tooltip'
   import pageFrame from '@/components/computeNews/pageFrame'
   export default {
@@ -138,7 +139,7 @@
     mounted () {
       var self = this
       util.post('showMiningPoolData', {sign: 'token=0'}).then(function (data) {
-        data.data.diff_history.slice(0, 70).forEach((v, k) => {
+        data.data.diff_history.slice(0, 250).forEach((v, k) => {
           self.data1.push({name: v._id, value: [v.timestamp, v.difficulty]})
           self.data2.push({name: v._id, value: [v.timestamp, v.avg_network_hashrate[0], v.avg_network_hashrate[1]]})
         })
