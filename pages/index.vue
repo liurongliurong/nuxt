@@ -1,8 +1,5 @@
 <template>
   <article>
-    <!-- <div>
-      <MyData></MyData>
-    </div> -->
     <article class="home" v-if="isMobile===0">
       <Swiper :pagination-visible="true" :loop="true" :autoPlay="5000"></Swiper>
       <div class="home_text">
