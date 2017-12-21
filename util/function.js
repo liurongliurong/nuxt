@@ -181,7 +181,6 @@ api.checkFiled = (ele, form) => {
     api.setTips(ele, 'invalid')
     return false
   } else if ((ele.name === 'imgCode' && ele.value && (ele.value.toLowerCase() !== localStorage.getItem('code').toLowerCase())) || (ele.name === 'password1' && ele.value !== form.password.value) || (ele.name === 'trade_password1' && ele.value !== form.trade_password.value)) {
-    console.log(111)
     api.setTips(ele, 'error')
     return false
   } else {
