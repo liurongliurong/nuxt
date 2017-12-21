@@ -64,7 +64,7 @@
       <div class="fromone">
         <label>币价</label>
         <div class="rightblock">
-            <input type="text" value="CoinPrice" class="cover cover1" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" onblur="this.value=this.value.replace(/[^\d\.]/g,'')" id="input6" v-model="CoinPrice"/>
+            <input type="text" :value="CoinPrice" class="cover cover1" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" onblur="this.value=this.value.replace(/[^\d\.]/g,'')" id="input6" v-model="CoinPrice"/>
             <span>¥/BTC</span>
         </div>
         <span class="biao block6">请输入单台矿机价格</span>
@@ -129,6 +129,7 @@
 <script>
   import util from '@/util/index'
   import api from '@/util/function'
+  import { mapState } from 'vuex'
   export default {
     data () {
       return {
@@ -137,7 +138,7 @@
         MillWorkforce: '9',
         MillPower: '1300',
         ElectricCharge: '0.32',
-        CoinPrice: '71000',
+        CoinPrice: '',
         message7: '0.33',
         message8: '',
         typebi: '¥',
@@ -170,9 +171,27 @@
         this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
         start = this.timedays()
         end = this.timedays1()
+      },
+      getData () {
+        if (this.token !== 0) {
+          var self = this
+          util.post('showCoinData', {sign: api.serialize({token: this.token})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.CoinPrice = res[0].price
+              self.message8 = res[0].output.split(' ')[0]
+            })
+          }).catch(res => {
+            console.log(res)
+          })
+        } else {
+          setTimeout(() => {
+            this.getData()
+          }, 5)
+        }
       }
     },
     mounted () {
+      this.getData()
       var self = this
       util.post('showDifficulty', {sign: api.serialize({token: 0})}).then(function (res) {
         api.checkAjax(self, res, () => {
@@ -189,6 +208,9 @@
       this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
     },
     computed: {
+      ...mapState({
+        token: state => state.info.token
+      }),
       timedays: function () {
         var date = new Date()
         var year = date.getFullYear()

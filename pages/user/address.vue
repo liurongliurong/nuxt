@@ -1,7 +1,7 @@
 <template>
   <section class="address">
     <div class="pc_box">
-      <h2>地址管理</h2>
+      <h2>地址管理<div class="address_btn" @click="openMask">添加新地址</div></h2>
       <div class="address_box">
         <div class="item" v-for="a,k in data">
           <span class="address_item">{{a.province_name+a.city_name+a.area_name+a.area_details+'('+a.post_user+' 收) '+a.post_mobile}}</span>
@@ -10,7 +10,6 @@
           <span class="set_default" @click="openMask(k)">编辑</span>
           <span class="set_default" @click="deleteAddress(a.id,k)">删除</span>
         </div>
-        <div class="address_btn" @click="openMask">添加新地址</div>
       </div>
     </div>
     <div class="mobile_box">
@@ -197,18 +196,24 @@
       padding:0 15px;
       h2{
         padding:0 15px !important;
+        margin-bottom: 20px !important;
+        @include address_data
+        .address_btn{
+          height: 40px;
+          line-height: 30px;
+          float:right;
+          position: relative;
+          top: -20px;
+        }
       }
       .address_box{
-        @include address_data
         .item{
-          padding:10px 40px;
+          padding:20px 40px;
+          background: #f7f8fa;
           cursor: initial;
           .address_item{
             width:70%;
           }
-        }
-        .address_btn{
-          margin-left:40px;
         }
       }
       @include mobile_hide
