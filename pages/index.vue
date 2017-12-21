@@ -39,7 +39,7 @@
           <div class="home_map_data">
             <div class="item" v-for="m,k in mapData">
               <span class="item_name">{{m.title}}</span>
-              <span class="item_value">{{computeData[m.name]+' '+m.unit}}</span>
+              <span class="item_value">{{computeData[m.name] +' '+m.unit}}</span>
             </div>
           </div>
           <DataMap class="data_chart"></DataMap>
@@ -132,8 +132,10 @@
         newsNav: [{title: '热点快讯·不止于此', desc: '开启算力新篇章'}, {title: '实时交易信息', desc: '前往了解更多'}, {title: '挖矿币种资料', desc: '前往了解更多'}],
         ad: {title: '算力驱动未来，信任链接天下', desc: '全球算力产业链资源整合，基于区块链的分布式算力输出平台', items: [{img1: require('@/assets/images/home/feature1.png')}, {img1: require('@/assets/images/home/feature2.png')}, {img1: require('@/assets/images/home/feature3.png')}, {img1: require('@/assets/images/home/feature4.png')}]},
         suanLi: [{title: 'SHA256比特币算力', desc: 'Bitcoin数字货币算力', bardesc: ''}, {title: '卷积神经算法算力', desc: '为CNN卷积神经', bardesc: '网络提供分布式加速服务'}, {title: 'EquiHash零币算力', desc: 'ZeroCASH提供隐私保护', bardesc: '及零知识证明的基础算力'}, {title: '智能合约算力', desc: '全球贸易智能合约', bardesc: '服务的分布式基础算力'}, {title: 'Curecoin算力', desc: '蛋白质折叠计算，', bardesc: '生化反应模型，用于发现新药'}, {title: '游戏币兑换算力', desc: '全球游戏产业', bardesc: '虚拟货币通用兑换算力'}, {title: 'Ethash以太算力', desc: '以太坊网络', bardesc: 'ETC，ETH算力'}, {title: '公证算力', desc: '提供区块链公证服务', bardesc: '存证保全的基础算力'}],
-        mapData: [{title: '全网算力', name: 'hashrate', unit: 'PH/s'}, {title: '当前全网困难度', name: 'difficulty', unit: 'T'}],
-        computeData: {}
+        mapData: [{title: '全网算力', name: 'hashrate', unit: 'PH/s'}, {title: '全网困难度', name: 'difficulty', unit: 'T'}],
+        computeData: {},
+        computeRealData: {},
+        timer: 0
       }
     },
     // asyncData () {
@@ -160,8 +162,37 @@
         .then((res) => {
           api.checkAjax(this, res, () => {
             this.computeData = res
+            this.computeRealData = {hashrate:res.hashrate, difficulty: res.difficulty}
+            this.numberAnimate()
           })
         })
+      },
+      randomNumber (number) {
+        number = number.split('').map((v) => {
+          if (v !== ',') {
+            return Math.floor(Math.random() * 9)
+          } else {
+            return v
+          }
+        })
+        return number.join('')
+      },
+      numberAnimate () {
+        setTimeout(() => {
+          this.timer++
+          if (this.timer <= 20) {
+            this.computeData.hashrate = this.randomNumber(this.computeData.hashrate)
+            this.computeData.difficulty = this.randomNumber(this.computeData.difficulty)
+            this.numberAnimate()
+          } else {
+            this.timer = 0
+            this.computeData.hashrate = this.computeRealData.hashrate
+            this.computeData.difficulty = this.computeRealData.difficulty
+            setTimeout(() => {
+              this.numberAnimate()
+            }, 10000)
+          }
+        }, 50)
       }
     },
     mounted () {

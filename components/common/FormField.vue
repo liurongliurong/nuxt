@@ -8,8 +8,9 @@
       <template v-if="!f.edit">
         <!-- input -->
         <template v-if="f.type!=='select'">
-          <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :value="$parent[f.value]&&$parent[f.value].card_no" v-if="f.value==='bank_card'" :title="f.pattern&&check[f.pattern].tips">
+          <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :value="$parent[f.value]&&$parent[f.value].card_no" :title="f.pattern&&check[f.pattern].tips" v-if="f.value==='bank_card'">
           <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" @change="($parent.onChange&&$parent.onChange($event,f.name,f.tipsUnit))||($parent.$parent.onChange&&$parent.$parent.onChange($event,f.name,f.tipsUnit))" :isChange="f.isChange" :title="f.pattern&&check[f.pattern].tips" :maxlength="f.len" v-else-if="f.changeEvent">
+          <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" @input="$parent.onFocus" :pattern="f.pattern&&check[f.pattern].code" :title="f.pattern&&check[f.pattern].tips" v-else-if="f.focusEvent">
           <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :isChange="f.isChange" :title="f.pattern&&check[f.pattern].tips" :maxlength="f.len" v-else>
         </template>
         <!-- select -->
@@ -63,7 +64,11 @@
         <div class="count_btn btn" v-if="f.addon===2" @click="getCode">{{str}}</div>
       </template>
       <!-- tips -->
-      <span :title="f.pattern&&check[f.pattern].tips" :error="(f.pattern&&check[f.pattern].error)||f.error" :tips="f.placeholder" :success="f.pattern&&check[f.pattern].success" v-if="!f.edit"></span>
+      <span class="tips" :title="f.pattern&&check[f.pattern].tips" :error="(f.pattern&&check[f.pattern].error)||f.error" :tips="f.placeholder" :success="f.pattern&&check[f.pattern].success" v-if="!f.edit"></span>
+      <!-- password level -->
+      <div class="password_level" v-if="f.focusEvent">
+        <span class="item" v-for="i in 3"></span>
+      </div>
     </div>
   </div>
 </template>
@@ -113,9 +118,19 @@
         var form = document.querySelector('.form')
         var ele = document.querySelector('.count_btn')
         var telEle = form.dep_tel || form.mobile
+        var imgCode = form.imgCode
         var isTel = api.checkCode(telEle)
         if (isTel) {
           telEle.focus()
+          return false
+        }
+        if (telEle.getAttribute('data-error') === 'true') {
+          api.setTips(telEle, 'error')
+          telEle.focus()
+          return false
+        }
+        if (imgCode && api.checkCode(imgCode)) {
+          imgCode.focus()
           return false
         }
         if (ele.getAttribute('disabled') === 'true') return false

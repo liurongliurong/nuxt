@@ -196,7 +196,7 @@
     &.frame_header{
       .box{
         .logo{
-          background: url('~assets/images/css_sprites.png') -170px -364px;
+          background: url('~assets/images/mobile/logo3.png');
         }
         nav .item{
           a{

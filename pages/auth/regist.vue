@@ -175,7 +175,7 @@
     },
     data () {
       return {
-        form: [{name: 'mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号', pattern: 'tel'}, {name: 'imgCode', type: 'text', title: '图形验证', placeholder: '请输入图形验证码', addon: 1, pattern: 'imgCode'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}, {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password'}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}],
+        form: [{name: 'mobile', type: 'text', title: '手机号码', error: '该用户已存在', placeholder: '请输入手机号', pattern: 'tel', changeEvent: true}, {name: 'imgCode', type: 'text', title: '图形验证', placeholder: '请输入图形验证码', addon: 1, pattern: 'imgCode'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}, {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password', focusEvent: true}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}],
         show: false
       }
     },
@@ -204,6 +204,25 @@
       },
       closeEdit () {
         this.show = false
+      },
+      onChange (e) {
+        var ele = e.target
+        var value = ele.value
+        var re = new RegExp('^1[34578][0-9]{9}$')
+        var self = this
+        if (value && re.test(value)) {
+          util.post('checkMobile', {sign: 'token=0&mobile=' + value}).then(res => {
+            if (res.code === '2000') {
+              ele.setAttribute('data-status', 'error')
+              ele.setAttribute('data-error', true)
+            } else {
+              ele.setAttribute('data-error', false)
+            }
+          })
+        }
+      },
+      onFocus (e) {
+        
       }
     },
     computed: {

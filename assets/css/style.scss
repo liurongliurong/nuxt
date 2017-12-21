@@ -252,7 +252,7 @@
         border-right:1px solid $border;
         @include mobile_hide
       }
-      &:last-child{
+      &.tips{
         &:before{
           @include position(2,0,auto,auto)
           @include block(20)
@@ -275,6 +275,24 @@
         @include mobile_hide
       }
     }
+    .password_level{
+      @include position(9,0,5,auto)
+      left:110%;
+      @include flex
+      .item{
+        width:80px;
+        height:16px;
+        &:first-child{
+          background: #abdca6;
+        }
+        &:nth-child(2){
+          background: $green;
+        }
+        &:nth-child(3){
+          background: #26941c;
+        }
+      }
+    }
     input,.sel,.select{
       height:50px;
       line-height:32px;
@@ -288,13 +306,13 @@
         border-color:$blue
       }
       &,&[data-status='valid']{
-        & ~ span{
+        & ~ span.tips{
           display:none
         }
       }
       &[data-status='invalid'],&[data-status='null'],&[data-status='error'],&[data-status='success']{
         border-color:$red;
-        & ~ span{
+        & ~ span.tips{
           display:block
         }
       }
@@ -302,7 +320,7 @@
         border-color:$blue_border;
       }
       &[data-status='error']{
-        & ~ span{
+        & ~ span.tips{
           &:after{
             content:attr(error)
           }
