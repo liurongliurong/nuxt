@@ -116,8 +116,8 @@
         @include flex
         .logo{
           display: inline-block;
-          width: 140px;
-          height: 29px;
+          width:178px;
+          height:36px;
           margin-right:60px;
         }
         nav{
@@ -184,7 +184,7 @@
         background: rgba(0,0,0,.8);
       }
       .box .logo{
-        background: url('~assets/images/css_sprites.png') -10px -364px;
+        background: url('~assets/images/mobile/logo3.png');
       }
       a{
         color:$white
@@ -196,11 +196,11 @@
     &.frame_header{
       .box{
         .logo{
-          background: url('~assets/images/mobile/logo3.png');
+          background: url('~assets/images/mobile/logo2.png');
         }
         nav .item{
           a{
-            color:$text;
+            color:#7988A7;
           }
           &.active a::after,&:hover a::after{
             color: balck;
@@ -208,7 +208,7 @@
         }
         .side_nav{
           a{
-            color:$text;
+            color:#7988A7;
           }
           .text{
             color:$light_text;
@@ -229,7 +229,7 @@
     &.web_box{
       background: #242528;
       .box .logo{
-        background: url('~assets/images/css_sprites.png') -10px -364px;
+        background: url('~assets/images/mobile/logo3.png');
       }
       .box nav .item a,.box .side_nav a,.box .side_nav a.tel{
         color:#fff

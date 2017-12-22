@@ -36,9 +36,9 @@
               </div>
               <p class="miner_number">库存{{$parent.leftNum}}台</p>
             </div>
-            <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" v-if="$parent.detail.status===1" @click="checkPay">立即购买</button>
-            <button class="btn" disabled v-else-if="$parent.detail.status===2" style="background:#c3bbba;">已售罄</button>
+            <button class="btn" disabled v-if="$parent.detail.status===2">已售罄</button>
             <button class="btn" disabled v-else-if="$parent.detail.status===3">产品撤销</button>
+            <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" @click="checkPay" :disabled="$parent.detail.status===4" v-if>立即购买</button>
           </div>
         </div>
         <div class="items cloud_miner" v-if="params2!=='1'">
@@ -51,7 +51,6 @@
               {{$parent.detail.product_name}}
               <span>{{$parent.str[$parent.detail.status]}}</span>
             </h4>
-            <p class="white" v-if="params2==='2'">可使用算力分期</p>
             <div class="product_data">
               <template v-for="d,k in proData" v-if="k!=='product_name'">
                 <div class="item">
@@ -70,7 +69,12 @@
               </div>
             </div>
             <div class="progress_price">
-              <span class="one">当前进度 {{((parseInt($parent.detail.buyed_amount)/parseInt($parent.detail.amount))*100).toFixed(2)}}%</span>
+              <template v-if="((parseInt($parent.detail.buyed_amount)/parseInt($parent.detail.amount)) * 100) >= 99">
+                <span class="one">当前进度 {{((0.99) * 100).toFixed(0)}}%</span>
+              </template>
+              <template v-else>
+                <span class="one">当前进度 {{((parseInt($parent.detail.buyed_amount)/parseInt($parent.detail.amount)) * 100).toFixed(0)}}%</span>
+              </template>
               <span class="two">剩余可售 {{$parent.leftNum}}台</span>
             </div>
           </div>
@@ -83,16 +87,17 @@
             <div class="price_text1">总算力：<span class="money">{{$parent.totalHash|format}}T</span></div>
             <div class="price_text1">需支付：<span class="money">{{$parent.totalPrice|format}}元</span></div>
             <button class="btn" disabled v-if="$parent.leftStatus||$parent.detail.status===7">已售罄</button>
-            <button class="btn" disabled v-else-if="$parent.detail.status===4">暂不能购买</button>
-            <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" @click="checkPay($event, false)" v-else>立即购买</button>
+            <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" @click="checkPay($event, false)" v-else :disabled="$parent.detail.status===4">立即购买</button>
             <button class="btn loan_btn" @click="checkPay($event, true)" v-if="$parent.detail.status!==4&&params2==='2'&&!$parent.leftStatus">分期购买</button>
           </div>
         </div>
       </div>
       <div class="product_info">
         <template v-if="params2!=='1'">
-          <div class="info_ul">
-            <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in infolists" @click="tabs(m,d.name)">{{d.title}}</div>
+          <div :class="['info_ul', {fix_top:isFixTop}]">
+            <div class="info_box">
+              <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in infolists" @click="tabs(m,d.name)">{{d.title}}</div>
+            </div>
           </div>
           <div class="content_items">
             <div class="product_img">
@@ -123,8 +128,10 @@
           </div>
         </template> 
         <template v-else> 
-          <div class="info_ul">
-            <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in infolist" @click="tabs(m,d.name)">{{d.title}}</div>
+          <div :class="['info_ul', {fix_top:isFixTop}]">
+            <div class="info_box">
+              <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in infolist" @click="tabs(m,d.name)">{{d.title}}</div>
+            </div>
           </div>
           <div class="content_items">
             <div class="product_img">
@@ -216,8 +223,7 @@
         </div>
         <div class="mobile_btn">
           <button disabled v-if="$parent.leftStatus||$parent.detail.status===7">已售罄</button>
-          <button disabled v-else-if="$parent.detail.status===4">暂不能购买</button>
-          <button @click="openMask" v-else>立即购买</button>
+          <button @click="openMask" :disabled="$parent.detail.status===4" v-else>立即购买</button>
         </div>
       </template>
       <template v-else>
@@ -250,10 +256,9 @@
           </div>
         </div>
         <div class="mobile_btn">
-          <button @click="openMask" v-if="$parent.detail.status===1">立即购买</button>
-          <button disabled v-else-if="$parent.detail.status===2">已售罄</button>
-          <button disabled v-else-if="$parent.detail.status===3">已撤销</button>
-          <button disabled v-else>暂不能购买</button>
+          <button disabled v-if="$parent.detail.status===2">已售罄</button>
+          <button disabled v-else-if="$parent.detail.status===3">产品撤销</button>
+          <button @click="openMask" :disabled="$parent.detail.status===4" v-else>立即购买</button>
         </div>
       </template>
       <div class="popup" v-if="sheetVisible">
@@ -305,7 +310,7 @@
     },
     data () {
       return {
-        proData: {one_amount_value: {title: '每台服务器价格', unit: '元'}, hash: {title: '每台服务器算力', unit: 'T'}, amount: {title: '服务器总台数', unit: '台'}},
+        proData: {one_amount_value: {title: '每台价格', unit: '元'}, hash: {title: '每台算力', unit: 'T'}, amount: {title: '出售总数', unit: '台'}},
         proText: {hashType: '算力类型', status: '购买类型', incomeType: '结算方式'},
         infolists: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: '矿场相册'}],
         infolist: [{name: 'MInerBrief', title: '产品介绍'}, {name: 'MinerAdvantage', title: '产品参数'}, {name: 'prProtocolSpeciaification', title: '补充说明'}],
@@ -318,7 +323,8 @@
         active: 0,
         detail: {},
         params1: '',
-        params2: ''
+        params2: '',
+        isFixTop: false
       }
     },
     methods: {
@@ -356,11 +362,27 @@
       },
       tabs (k, name) {
         this.contentShow = k
-        // location.href = '#' + name
-        scrollTo(0, 600 * k)
+        if (k === 0) {
+          scrollTo(0, 500)
+        } else if (k === 1) {
+          scrollTo(0, 1200)
+        } else if (k === 2) {
+          scrollTo(0, 1600)
+        } else if (k === 3) {
+          scrollTo(0, 2000)
+        }
+      },
+      fixTop () {
+        var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
+        if (scrollTop > 500) {
+          this.isFixTop = true
+        } else {
+          this.isFixTop = false
+        }
       }
     },
     mounted () {
+      window.addEventListener('scroll', this.fixTop, false)
       var p = localStorage.getItem('params')
       if (p) {
         p = JSON.parse(p)
@@ -455,7 +477,7 @@
         h4{
           color: #666666;
           font-weight: 800;
-          font-size: 14px;
+          font-size: 22px;
           line-height: 0;
           margin-top: 10px;
           .red{
@@ -467,6 +489,8 @@
             font-weight:100;
             color:white;
             margin-right: 10px;
+            position: relative;
+            top: -4px;
           }
           .gray{
             display:inline-block;
@@ -493,7 +517,7 @@
           .right_miner{
             color: #ea2c2c;
             font-weight: 800;
-            font-size: 14px;
+            font-size: 21px;
             em{
               font-size: 24px;
             }
@@ -510,7 +534,7 @@
         }
         .right_miner{
           color: #121212;
-          font-size: 12px;
+          font-size: 14px;
           em{
             font-style: normal;
             font-size: 14px;
@@ -591,6 +615,10 @@
           &.over:before{
             content:'您输入的数量已超出库存';
           }
+          &:disabled{
+            // opacity: 0.7;
+            background: #b5b0af;
+          }
         }
       }
     }
@@ -665,7 +693,7 @@
             text-align: right;
           }
           :nth-child(3) .item_word{
-             padding-left: 100px;
+             padding-left: 90px;
           }
           :nth-child(2) .tips{
             padding-left: 60px;
@@ -761,7 +789,8 @@
           color: white;
           font-size: 18px;
           &:disabled{
-            background: $border;
+            // opacity: 0.7;
+            background: #b5b0af;
           }
           &.buy_btn{
             position: relative;
@@ -798,6 +827,7 @@
         border-bottom:1px solid #e5e5e5;
         width: 100%;
         overflow: hidden;
+        transition: all .3s;
         .info_li{
           cursor:pointer;
           float: left;
@@ -818,6 +848,17 @@
             color: #327fff;
             border-bottom: 2px solid #327fff;
             box-sizing: border-box;
+          }
+        }
+        &.fix_top{
+          position: fixed;
+          left:0;
+          top:0;
+          z-index: 10;
+          background: #fff;
+          .info_box{
+            @include main
+            padding:0 98px;
           }
         }
       }

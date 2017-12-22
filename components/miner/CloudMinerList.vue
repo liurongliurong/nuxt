@@ -5,22 +5,22 @@
       <div class="data">
         <template v-if="!isMobile">
           <div :class="['item', {'disabled': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]" v-for="d,k in $parent.cloudMinerDate" @click="goPay(d.id, d.sell_type)" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">
-            <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span><span class="sell_type gray" v-if="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">售罄</span></h3>
+            <h3 :class="[{'barnum3': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]">{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span><span class="sell_type gray" v-if="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">已售罄</span></h3>
             <div class="info_box">
               <template v-for="n,i in dataNav">
                 <div class="info" v-if="i==='leftNum'">
                   <div class="text">
-                    <span class="num">{{d.amount-d.buyed_amount}}</span>
-                    <span>{{n.unit}}</span>
+                    <span :class="['num', {'barnum': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]">{{d.amount-d.buyed_amount}}</span>
+                    <span :class="[{'barnum1': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]">{{n.unit}}</span>
                   </div>
-                  <p>{{n.title}}</p>
+                  <p :class="[{'barnum2': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]">{{n.title}}</p>
                 </div>
                 <div class="info" v-else>
                   <div class="text">
-                    <span class="num">{{d[i]}}</span>
-                    <span>{{n.unit}}</span>
+                    <span :class="['num', {'barnum': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]">{{d[i]}}</span>
+                    <span :class="[{'barnum1': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]">{{n.unit}}</span>
                   </div>
-                  <p>{{n.title}}</p>
+                  <p :class="[{'barnum2': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]">{{n.title}}</p>
                 </div>
                 <div class="line"></div>
               </template>
@@ -196,6 +196,9 @@
           h3{
             font-size: 18px;
             margin-bottom:10px;
+            &.barnum3{
+              color: #999;
+            }
             .icon_currency{
               margin-left:5px;
             }
@@ -225,8 +228,15 @@
           .info_box{
             @include flex(space-between)
             .info{
+              width:10%;
               .text .num{
                 font-size: 24px;
+              }
+              .barnum, .barnum1{
+                color: #999 !important;
+              }
+              .barnum2{
+                color: #c3bebe !important;
               }
               &:first-child{
                 .text{
@@ -272,21 +282,9 @@
               cursor: pointer;
             }
             .btn.disabled{
-               background: #e4e4e4;
+               background: none;
                border:0;
                color: #999;
-            }
-          }
-          &.disabled{
-            background: #f5f3f3;
-            .info_box{
-              :nth-child(1){
-                .text{
-                  span{
-                    color: black;
-                  }
-                }
-              }
             }
           }
         }
