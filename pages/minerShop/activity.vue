@@ -1,12 +1,12 @@
 <template>
   <div class="activity_box">
-    <div class="bg_box">
+    <div class="bg_box" v-if="!isMobile">
       <img :src="require('@/assets/images/swiper/5_1.jpg')"/>
     </div>
-    <div class="mobile_bg_box">
+    <div class="mobile_bg_box" v-else>
       <img :src="require('@/assets/images/swiper/mobile4.jpg')" alt="">
     </div>
-    <div class="buy_form">
+    <div class="buy_form" v-if="!isMobile">
       <div class="form_bg">
         <img :src="require('@/assets/images/buy_bg.png')" alt="">
         <div class="buy_title">
@@ -39,7 +39,7 @@
         </div>
       </div>
     </div>
-    <div class="mobile_form">
+    <div class="mobile_form" v-else>
       <h1>{{data.name}}</h1>
       <div class="sideone">
         <div class="flexone">
@@ -70,7 +70,7 @@
       <button class="submit" @click="gobuy(1)">立即支付</button>
       <label for="accept">
         <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
-        <span @click="openContract(1, 1)">阅读并接受<a href="javascript:;" style="color:blue;">《矿机销售协议》</a></span>
+        <span @click="openContract(1)">阅读并接受<a href="javascript:;">《矿机销售协议》</a></span>
         <span class="select_accept">{{tips}}</span>
       </label>
       <div class="imagesall">
@@ -93,7 +93,7 @@
       </div>
       <p class="tel">咨询电话： 0571-28031736</p>
     </div>
-    <div class="activity_img">
+    <div class="activity_img" v-if="!isMobile">
       <h4>产品简介</h4>
       <p>翼比特E9+矿机采用亿绑最新自助研发的14nm芯片，算力均值可达9TH/S，能耗比145W/T。低功耗、高算力，采用独立散热片，散热更好。散热片采用最新粘合技术，外壳材质更坚固，为您的矿机提供更好的保护，为全球的矿工带来高效益。</p>
       <h4>官方参数</h4>
@@ -117,17 +117,6 @@
       </div>
     </div>
     <MyMask :form="form[nowForm]" :title="title" :contract="contract" v-if="edit"></MyMask>
-    <div class="popup" v-if="mobileEdit">
-      <div class="close" @click="closeEdit(1)">
-        <span class="icon"></span>
-      </div>
-      <div class="agreement" v-if="contract" v-html="contract"></div>
-      <form class="form" @submit.prevent="submit" novalidate v-else>
-        <FormField :form="form[nowForm]"></FormField>
-        <button name="btn">提交</button>
-      </form>
-    </div>
-    <div class="popup_mask" v-if="mobileEdit"></div>
   </div>
 </template>
 
@@ -153,14 +142,12 @@
         tips: '',
         accept: false,
         edit: 0,
-        mobileEdit: false,
         title: '',
         contract: '',
         content: '',
         card_type: '中国大陆身份证',
         nowForm: 'auth',
-        addressData: '',
-        isMobile: false
+        addressData: ''
       }
     },
     methods: {
@@ -175,9 +162,8 @@
         this.totalHash = this.number * this.data.hash
         this.totalPrice = this.number * this.data.one_amount_value
       },
-      openContract (n, mobile) {
-        this.isMobile = mobile
-        this.openMask(mobile, n)
+      openContract (n) {
+        this.openMask(n)
         document.body.style.overflow = 'hidden'
         if (n === 1) {
           this.contract = this.content
@@ -192,8 +178,7 @@
           this.title = '收货地址'
         }
       },
-      gobuy (mobile) {
-        this.isMobile = mobile
+      gobuy () {
         // if (this.data.num < 1) {
         //   api.tips('您已超过购买限制', this.isMobile)
         //   return false
@@ -205,20 +190,20 @@
           return false
         }
         if (!this.true_name) {
-          this.openContract(2, mobile)
+          this.openContract(2)
           return false
         }
         if (!this.addressData) {
-          this.openContract(3, mobile)
+          this.openContract(3)
           return false
         }
         var ele = document.querySelector('#accept')
         if (!this.number) {
-          this.check(ele, '请填写数量', mobile)
+          this.check(ele, '请填写数量')
           return false
         }
         if (!(ele.checked || this.accept)) {
-          this.check(ele, '请同意服务条款', mobile)
+          this.check(ele, '请同意服务条款')
           return false
         }
         var callbackUrl = location.protocol + '//' + location.host + '/'
@@ -227,7 +212,7 @@
         util.post('saveMiner', {sign: api.serialize(Object.assign(this.addressData, data))}).then(function (res) {
           api.checkAjax(self, res, () => {
             res.subject = encodeURIComponent(res.subject)
-            if (mobile) {
+            if (this.isMobile) {
               res = Object.assign(res, {is_mobile: 1})
             } else {
               res = Object.assign(res, {is_mobile: 0})
@@ -240,13 +225,9 @@
           })
         })
       },
-      closeEdit (mobile) {
+      closeMask () {
         document.body.style.overflow = 'auto'
-        if (mobile) {
-          this.mobileEdit = false
-        } else {
-          this.edit = ''
-        }
+        this.edit = ''
       },
       check (ele, str) {
         // if (this.data.num < 1) {
@@ -271,7 +252,7 @@
         if (this.nowForm === 'address') {
           this.addressData = data
           api.tips('收货地址已提交，点击“立即支付”完成购买', this.isMobile)
-          this.closeEdit(this.isMobile)
+          this.closeMask(this.isMobile)
         } else {
           var val = 'true_name'
           var tipsStr = '实名认证已提交，请您耐心等待几秒即可看到认证结果'
@@ -287,7 +268,7 @@
                   self.openContract(3, self.isMobile)
                 })
               }, 7000)
-              self.closeEdit(self.isMobile)
+              self.closeMask(self.isMobile)
             })
           })
         }
@@ -305,13 +286,9 @@
           })
         })
       },
-      openMask (mobile, n) {
+      openMask (n) {
         window.scroll(0, 0)
-        if (mobile) {
-          this.mobileEdit = true
-        } else {
-          this.edit = n
-        }
+        this.edit = n
       },
       setAssept (e) {
         this.accept = e.target.checked
@@ -353,10 +330,6 @@
     background: #151136;
     .bg_box{
       @include bg(1920,520px,#110d30)
-      @include mobile_hide
-    }
-    .mobile_bg_box{
-      @include mobile_show
     }
     .buy_form{
       height:530px;
@@ -437,10 +410,8 @@
           width:360px;
         }
       }
-      @include mobile_hide
     }
     .mobile_form{
-      @include mobile_show
       background: #151136;
       h1{
         width: 100%;
@@ -632,11 +603,13 @@
         span:nth-child(2){
           display: inline-block;
           vertical-align: middle;
+          margin-left:5px;
+          a{
+            color:$blue
+          }
         }
         @include accept_label
-        &, & a{
-          color:#fff;
-        }
+        color:#fff;
         input{
           @include checkbox(18,2px)
           background: #fff;
@@ -654,7 +627,6 @@
       }
     }
     .activity_img{
-      @include mobile_hide
       @include main
       padding:65px 0;
       h4{
@@ -725,8 +697,5 @@
         border-bottom: 1px solid $border;
       }
     }
-  }
-  hr{
-    display:none;
   }
 </style>

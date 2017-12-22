@@ -44,19 +44,22 @@
       </li>
     </ul>
     <div class="popup" v-if="showModal">
-      <div class="close" @click="closeEdit()">
-        <span class="icon"></span>
-      </div>
-      <form class="form" @submit.prevent="submit" novalidate v-if="edit===1" style="box-sizing:border-box;margin-top:1rem;">
-        <FormField :form="GetIncome"></FormField>
-        <p>手续费：0.002btc</p>
-        <button name="btn">提交</button>
-      </form>
-      <div class="popup_chart" v-if="edit===2">
-        <IncomeChart></IncomeChart>
+      <div class="popup_con">
+        <div class="popup_title">
+          <span v-if="edit===1">提取收益</span>
+          <span v-if="edit===2">收益图表</span>
+          <span class="icon_close" @click="closeEdit"></span>
+        </div>
+        <form class="form" @submit.prevent="submit" novalidate v-if="edit===1">
+          <FormField :form="GetIncome"></FormField>
+          <p>手续费：0.002btc</p>
+          <button name="btn">提交</button>
+        </form>
+        <div class="popup_chart" v-if="edit===2">
+          <IncomeChart></IncomeChart>
+        </div>
       </div>
     </div>
-    <div class="popup_mask" v-if="showModal"></div>
   </section>
 </template>
 
