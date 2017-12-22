@@ -1,8 +1,8 @@
 <template>
   <div class="millsList">
     <h2>
-      热门矿机推荐
-      <span>保全网提供全流程区块链存证、保全业务</span>
+      <span class="one">热门矿机推荐</span>
+      <span class="two">保全网提供全流程区块链存证、保全业务</span>
       <router-link class="get_more" to="/minerShop/miner/1">更多矿机热门 ></router-link>
     </h2>
     <div class="mill">
@@ -160,9 +160,12 @@
       width: 1180px;
       margin:0 auto;
       margin-bottom: 20px;
-      color: #002059;
       text-align: left;
-      span{
+      .one{
+        font-size: 28px !important;
+        color: #002059;
+      }
+      .two{
         font-size: 18px !important;
         color: #002059;
         margin-left: 50px !important;
@@ -171,6 +174,7 @@
         float: right;
         font-size: 18px;
         color: #327fff;
+        padding-top: 10px;
       }
     }
     .mill{

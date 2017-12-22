@@ -138,14 +138,6 @@
         timer: 0
       }
     },
-    // asyncData () {
-      // let {data} = await util.post('showTopMiner', {sign: 'token=0'})
-      // return { list: data }
-      // return util.post('showTopMiner', {sign: 'token=0'}).then(function (res) {
-      //   console.log(res)
-      //   // return { list: 123 }
-      // })
-    // },
     methods: {
       goMobile () {
         if (api.checkEquipment()) {
