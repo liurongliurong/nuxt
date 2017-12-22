@@ -69,7 +69,12 @@
               </div>
             </div>
             <div class="progress_price">
-              <span class="one">当前进度 {{((parseInt($parent.detail.buyed_amount)/parseInt($parent.detail.amount))*100).toFixed(2)}}%</span>
+              <template v-if="((parseInt($parent.detail.buyed_amount)/parseInt($parent.detail.amount)) * 100) >= 99">
+                <span class="one">当前进度 {{((0.99) * 100).toFixed(0)}}%</span>
+              </template>
+              <template v-else>
+                <span class="one">当前进度 {{((parseInt($parent.detail.buyed_amount)/parseInt($parent.detail.amount)) * 100).toFixed(0)}}%</span>
+              </template>
               <span class="two">剩余可售 {{$parent.leftNum}}台</span>
             </div>
           </div>
@@ -472,7 +477,7 @@
         h4{
           color: #666666;
           font-weight: 800;
-          font-size: 16px;
+          font-size: 22px;
           line-height: 0;
           margin-top: 10px;
           .red{
@@ -484,6 +489,8 @@
             font-weight:100;
             color:white;
             margin-right: 10px;
+            position: relative;
+            top: -4px;
           }
           .gray{
             display:inline-block;
@@ -510,7 +517,7 @@
           .right_miner{
             color: #ea2c2c;
             font-weight: 800;
-            font-size: 14px;
+            font-size: 21px;
             em{
               font-size: 24px;
             }
@@ -527,7 +534,7 @@
         }
         .right_miner{
           color: #121212;
-          font-size: 12px;
+          font-size: 14px;
           em{
             font-style: normal;
             font-size: 14px;
@@ -609,7 +616,8 @@
             content:'您输入的数量已超出库存';
           }
           &:disabled{
-            opacity: 0.7;
+            // opacity: 0.7;
+            background: #b5b0af;
           }
         }
       }
@@ -770,7 +778,8 @@
           color: white;
           font-size: 18px;
           &:disabled{
-            opacity: 0.7;
+            // opacity: 0.7;
+            background: #b5b0af;
           }
           &.buy_btn{
             position: relative;

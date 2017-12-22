@@ -1,8 +1,5 @@
 <template>
   <article>
-    <!-- <div>
-      <MyData></MyData>
-    </div> -->
     <article class="home" v-if="isMobile===0">
       <Swiper :pagination-visible="true" :loop="true" :autoPlay="5000"></Swiper>
       <div class="home_text">
@@ -14,7 +11,9 @@
           </div>
         </div>
       </div>
+      <minner-list></minner-list>
       <MyData></MyData>
+      <!-- <data-list></data-list> -->
       <div class="home_title">
         <div class="main">
           <h1>{{ad.title}}</h1>

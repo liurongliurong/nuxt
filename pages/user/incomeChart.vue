@@ -36,7 +36,12 @@
         // }
         myChart.setOption({
           tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            formatter: function (params) {
+              console.log(params)
+              // params = params[0]
+              return '日期 ： ' + params[0].name + '<br/>收益 ：' + params[0].data + ' btc'
+            }
           },
           // legend: {
           //   right: 10,
