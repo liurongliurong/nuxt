@@ -294,7 +294,6 @@ export default {
       justify-content: center;
 
       .item {
-        line-height: 0.3rem;
         margin-bottom: 0.3rem;
         .title {
           font-size: 0.3rem;
@@ -303,6 +302,7 @@ export default {
         }
         .content {
           font-size: 0.26rem;
+          line-height: 0.4rem;
           color: #b0ccff;
         }
       }
