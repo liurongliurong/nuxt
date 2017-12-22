@@ -36,5 +36,6 @@ module.exports = {
       '/webInfo/list/website',
       '/webInfo/list/product'
     ]
-  }
+  },
+  plugins: ['~plugins/fullpage']
 }
