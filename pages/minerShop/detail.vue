@@ -147,6 +147,7 @@
       }
     },
     mounted () {
+      window.scrollTo(0,0)
       var p = localStorage.getItem('params')
       if (p) {
         p = JSON.parse(p)
