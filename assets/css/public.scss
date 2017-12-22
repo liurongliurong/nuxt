@@ -7,7 +7,7 @@ body {
   font-family: "Microsoft Yahei";
   color: $text;
 }
-body,div,aside,section,article,h1,h2,h3,h4,h5,h6,p,span,input,textarea,button,ul,li,a{
+body,div,aside,section,article,h1,h2,h3,h4,h5,h6,p,span,input,textarea,button,ul,li,a,form{
   margin:0;
   padding:0;
   box-sizing: border-box
@@ -126,50 +126,110 @@ input::-webkit-input-placeholder {
   }
 // popup
   .popup{
+    @include position
     position: fixed;
-    background: #fff;
-    top: 50%;
-    left: 50%;
-    bottom:auto;
-    right:auto;
-    width:60vw;
-    max-height:70vh;
-    backface-visibility: hidden;
-    transition: .2s ease-out;
-    transform: translate3d(-50%,-50%,0);
-    backface-visibility: hidden;
+    background: rgba(0,0,0,.5);
     z-index: 1000001;
-    .close{
-      @include close
-      top:5px;
-      right:12px;
-    }
-    .form{
-      box-sizing:border-box;
-      margin-top:1rem;
-      @include form(v)
-    }
-    .agreement,.form{
-      padding:15px;
-    }
-    .agreement{
-      height:calc(90vh - 30px);
+    .popup_con{
+      position: absolute;
+      top:50%;
+      left:50%;
+      width:680px;
+      // height:646px;
+      margin-left:-340px;
+      margin-top:-323px;
+      background: $white;
+      .popup_title{
+        position: relative;
+        text-align: center;
+        height: 50px;
+        background: #f3f9ff;
+        line-height: 50px;
+        .icon_close{
+          @include close
+          top:15px;
+        }
+      }
+      .popup_body{
+        width: 100%;
+        height: 550px;
+        overflow-y: auto;
+        padding:15px;
+        p{
+          text-indent: 0.2rem;
+        }
+        .foot{
+          font-size: 16px;
+        }
+      }
+      .popup_foot{
+        text-align: center;
+        border-top:1px solid $border;
+        line-height: 3;
+        color:$blue;
+        input{
+          vertical-align: middle;
+          -webkit-transition: all .2s linear;
+          @include checkbox(18,0)
+          margin-right:5px;
+        }
+      }
+      .form{
+        padding:40px 130px;
+        @include form(v)
+        &.card_form .input{
+          span{
+            &:first-child {
+              width: 120px;
+              text-align: right;
+            }
+            &:nth-child(2) {
+              left: 135px
+            }
+          }
+          input,.sel,.select{
+            padding-left:185px
+          }
+        }
+        .fee{
+          font-size: 12px;
+          color: $light_black;
+          margin-left:5px
+        }
+      }
     }
     @media screen and (max-width: $mobile) {
-      width:100vw;
-      top: auto;
-      bottom:0;
-      max-height:80vh;
-      transform: translate3d(-50%,0,0);
+      .popup_con{
+        width:100vw;
+        margin:0;
+        top: auto;
+        bottom:0;
+        left:0;
+        height:auto;
+        max-height:80vh;
+        .popup_title{
+          font-size: 0.7rem;
+        }
+        .popup_body{
+          padding:0.5rem;
+          font-size: 0.5rem;
+          max-height:64vh;
+          table td{
+            padding:0 !important;
+            p{
+              text-indent: 0 !important;
+            }
+          }
+        }
+        .form{
+          padding:0.5rem;
+          margin-top:1rem;
+          &.card_form .input{
+            input,.sel,.select{
+              padding-left:10px
+            }
+          }
+        }
+      }
     }
-  }
-  .popup_mask{
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.5;
-    background: #000;
-    z-index: 1000000
   }

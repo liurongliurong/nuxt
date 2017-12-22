@@ -40,7 +40,7 @@
     </div>
     <div class="mask" v-if="edit">
       <div class="form_box">
-        <div class="close" @click="closeEdit()">
+        <div class="close" @click="closeMask()">
           <span class="icon"></span>
           <span>关闭</span>
         </div>
@@ -59,6 +59,7 @@
     </div>
   </section>
 </template>
+
 <script>
   import api from '@/util/function'
   import util from '@/util'
@@ -97,7 +98,7 @@
         window.scroll(0, 0)
         document.body.style.overflow = 'hidden'
       },
-      closeEdit () {
+      closeMask () {
         this.edit = false
         document.body.style.overflow = 'auto'
       },
@@ -204,6 +205,7 @@
     }
   }
 </script>
+
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .lp_center{

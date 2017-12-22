@@ -1,6 +1,6 @@
 <template>
   <section class="address">
-    <div class="pc_box">
+    <div class="pc_box" v-if="!isMobile">
       <h2>地址管理<div class="address_btn" @click="openMask">添加新地址</div></h2>
       <div class="address_box">
         <div class="item" v-for="a,k in data">
@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <div class="mobile_box">
+    <div class="mobile_box" v-else>
       <div class="address_box">
         <div class="item" v-for="a,k in data">
           <div class="address_desc" @click="selectAddress(k)">
@@ -36,24 +36,14 @@
       <div class="nodata_img"></div>
       <p>暂无列表信息</p>
     </div>
-    <MyMask :form="address" :val="addressData" v-if="show"></MyMask>
-    <div class="popup" v-if="mobileEdit">
-      <div class="close" @click="closeEdit">
-        <span class="icon"></span>
-      </div>
-      <form class="form" @submit.prevent="submit" novalidate>
-        <AddressInput :form="address" :val="addressData"></AddressInput>
-        <button name="btn">确认提交</button>
-      </form>
-    </div>
-    <div class="popup_mask" @click="mobileEdit=!mobileEdit" v-if="mobileEdit"></div>
+    <MyMask :form="address" :val="addressData" :title="addressData.id?'编辑地址':'新增地址'" v-if="show"></MyMask>
   </section>
 </template>
 
 <script>
   import util from '@/util'
   import api from '@/util/function'
-  import MyMask from '@/components/common/AddressMask'
+  import MyMask from '@/components/common/Mask'
   import FormField from '@/components/common/FormField'
   import AddressInput from '@/components/common/AddressInput'
   import { mapState } from 'vuex'
@@ -66,8 +56,7 @@
         address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}, {name: 'is_default', type: 'radio', title: '是否设为默认地址'}],
         data: [],
         addressData: {},
-        show: false,
-        mobileEdit: false
+        show: false
       }
     },
     methods: {
@@ -106,7 +95,7 @@
           api.checkAjax(self, res, () => {
             self.fetchData()
             api.tips(strTips, self.isMobile)
-            self.closeEdit(self.isMobile)
+            self.closeMask()
           }, form.btn)
         })
       },
@@ -130,21 +119,9 @@
         this.addressData = {}
         window.scroll(0, 0)
         document.body.style.overflow = 'hidden'
-        if (this.isMobile) {
-          this.mobileEdit = true
-        } else {
-          this.show = true
-        }
+        this.show = true
         if (this.data[k]) {
           this.addressData = this.data[k]
-        }
-      },
-      closeEdit (mobile) {
-        document.body.style.overflow = 'auto'
-        if (this.isMobile) {
-          this.mobileEdit = false
-        } else {
-          this.show = false
         }
       },
       fetchData () {
@@ -194,10 +171,10 @@
   .address{
     .pc_box{
       padding:0 15px;
+      @include address_data
       h2{
         padding:0 15px !important;
         margin-bottom: 20px !important;
-        @include address_data
         .address_btn{
           height: 40px;
           line-height: 30px;
@@ -216,7 +193,6 @@
           }
         }
       }
-      @include mobile_hide
     }
     .mobile_box{
       .address_box{
@@ -269,7 +245,6 @@
           @include button($orange)
         }
       }
-      @include mobile_show
     }
     @include nodata
   }
