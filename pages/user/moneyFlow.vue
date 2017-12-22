@@ -159,7 +159,7 @@
           })
         })
       },
-      closeEdit () {
+      closeMask () {
         this.edit = ''
         document.body.style.overflow = 'auto'
       },
@@ -191,7 +191,7 @@
         var self = this
         util.post('withdraw', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
-            self.closeEdit()
+            self.closeMask()
             api.tips('提现成功', self.isMobile)
           }, form.btn)
         })

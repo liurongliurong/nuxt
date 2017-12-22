@@ -3,45 +3,30 @@
     <div class="pc_box" v-if="!isMobile">
       <h2>账户管理</h2>
       <Setting :nav="nav" type="account"></Setting>
-      <MyMask :form="form[edit]" :title="title" v-if="edit"></MyMask>
     </div>
     <div class="mobile_box" v-else>
       <div class="list">
-        <div class="item" v-for="k in 2" @click="setInfo(list[k-1].name,menu[k-1].status)">
-          <span>{{list[k-1]&&list[k-1].title}}</span>
+        <div class="item" v-for="k in 4" @click="setInfo(k-1,nav[k-1].name,menu[k-1].status)">
+          <span>{{nav[k-1]&&nav[k-1].title}}</span>
           <i v-if="k===1">{{mobile|format}}</i>
-          <i v-else>{{!menu[k-1].status?'去认证':true_name.truename+'：'+true_name.idcard|format}}</i>
-        </div>
-      </div>
-      <div class="list">
-        <div class="item" v-for="k in 2" @click="setInfo(list[k+1].name,menu[k+1].status)">
-          <span>{{list[k+1]&&list[k+1].title}}</span>
-          <i v-if="list[k+1].name==='card'&&bank_card&&bank_card.open_bank">{{bank_card&&bank_card.card_no|format}}</i>
-          <i v-else-if="list[k+1].name==='login'">修改<em></em></i>
+          <i v-else-if="nav[k-1].name==='login'">修改<em></em></i>
+          <i v-else-if="k===2">{{!menu[k-1].status?'去认证':true_name.truename+'：'+true_name.idcard|format}}</i>
+          <i v-else-if="nav[k-1].name==='card'&&bank_card&&bank_card.open_bank">{{bank_card&&bank_card.card_no|format}}</i>
           <i v-else>设置<em></em></i>
         </div>
         <div class="compute_address item">
-          <div class="compute_address_title" @click="setInfo(list[4].name,menu[4].setting)">
-            <span>{{list[4]&&list[4].title}}</span>
+          <div class="compute_address_title" @click="setInfo(4,nav[4].name,menu[4].setting)">
+            <span>{{nav[4]&&nav[4].title}}</span>
             <i>设置<em></em></i>
           </div>
-          <div class="compute_address_box" v-for="a in address" @click="setInfo((list[4]&&list[4].name),menu[4].setting,a.product_hash_type)">
+          <div class="compute_address_box" v-for="a in address" @click="setInfo(4,(nav[4]&&nav[4].name),menu[4].setting,a.product_hash_type)">
             <div class="val">{{a.product_hash_type+'地址: '+a.address|format}}</div>
             <div class="opr">修改</div>
           </div>
         </div>
       </div>
-      <div class="popup" position="bottom" v-if="showModal">
-        <div class="close" @click="closeEdit(1)">
-          <span class="icon"></span>
-        </div>
-        <form class="form" @submit.prevent="submit($event,1)" novalidate style="box-sizing:border-box;margin-top:1rem;padding-bottom:2rem;">
-          <FormField :form="form[edit]"></FormField>
-          <button name="btn">提交</button>
-        </form>
-      </div>
-      <div class="popup_mask" v-if="showModal"></div>
     </div>
+    <MyMask :form="form[edit]" :title="title" v-if="edit"></MyMask>
   </section>
 </template>
 <script>
@@ -66,14 +51,12 @@
           {title: '绑定银行卡', desc: '绑定银行卡之后才能进行充值、购买和提现等操作。', text: '', name: 'card'},
           {title: '算力收益地址', desc: '请选择算力类型并设置算力地址。', text: '', name: 'address'}
         ],
-        list: [{name: 'tel', title: '用户名'}, {name: 'auth', title: '实名认证'}, {name: 'card', title: '银行卡'}, {name: 'login', title: '登录密码'}, {name: 'address', title: '算力收益地址'}],
         form: {
           auth: [{name: 'truename', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true}, {name: 'idcard', type: 'text', title: '证件号码', placeholder: '请输入您的证件号码', pattern: 'idCard'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
           card: [{name: 'card_no', type: 'text', title: '银行卡号', placeholder: '请输入银行卡号', pattern: 'bankCard', changeEvent: true}, {name: 'open_bank', type: 'text', title: '开户银行', placeholder: '自动识别或手动输入开户银行', isChange: true}, {name: 'bank_branch', type: 'text', title: '开户支行', placeholder: '请输入开户支行名称', isChange: true}, {name: 'bank', type: 'select', title: '开户行地址', isChange: true}, {name: 'mobile', type: 'text', title: '银行预留手机号', placeholder: '请输入银行预留手机号', pattern: 'tel'}, {name: 'code', type: 'text', title: '手机验证码', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
           address: [{name: 'product_hash_type', type: 'select', title: '算力类型', option: []}, {name: 'address', type: 'text', title: '算力地址', placeholder: '请输入对应算力地址', pattern: 'computeAddress'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
           login: [{name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}, {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password'}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}]
         },
-        showModal: false,
         edit: '',
         title: '',
         product_hash_type: '',
@@ -81,9 +64,9 @@
       }
     },
     methods: {
-      submit (e, mobile) {
+      submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, this, mobile)
+        var data = api.checkFrom(form, this, this.isMobile)
         var url = ''
         var callbackUrl = ''
         var val = ''
@@ -133,19 +116,15 @@
             } else if (self.edit === 'address') {
               self.requestData(callbackUrl, sendData, val)
             }
-            self.closeEdit()
+            self.closeMask()
           })
         })
       },
-      closeEdit () {
-        if (this.isMobile) {
-          var form = document.querySelector('.form')
-          api.clearForm(form)
-          this.showModal = false
-        } else {
-          this.edit = ''
-          document.body.style.overflow = 'auto'
-        }
+      closeMask () {
+        var form = document.querySelector('.form')
+        api.clearForm(form)
+        this.edit = ''
+        document.body.style.overflow = 'auto'
       },
       requestData (url, sendData, val, callback) {
         var self = this
@@ -172,9 +151,9 @@
           }
         }
       },
-      setInfo (k, s, n) {
+      setInfo (i, k, s, n) {
+        this.title = this.nav[i].title
         if (k === 'tel' || (k === 'auth' && s)) return false
-        this.showModal = true
         this.edit = k
         if (k === 'address') {
           if (n) {
@@ -211,11 +190,7 @@
 <style lang="scss">
   @import '~assets/css/style.scss';
   .account{
-    .pc_box{
-      @include mobile_hide
-    }
     .mobile_box{
-      @include mobile_show
       width: 100%;
       height: 100%;
       background: #f5f5f9;

@@ -33,16 +33,18 @@
     <button @click="logout">退出</button>
     <div class="null"></div>
     <div class="popup" v-if="showModal">
-      <div class="close" @click="closeEdit()">
-        <span class="icon"></span>
+      <div class="popup_con">
+        <div class="popup_title">
+          <span>提现</span>
+          <span class="icon_close" @click="closeEdit"></span>
+        </div>
+        <form class="form" @submit.prevent="submit" novalidate>
+          <FormField :form="Withdrawals"></FormField>
+          <p>手续费：{{total_price * fee|decimal}}元<span class="fee">({{fee*100+'%'}})</span></p>
+          <button name="btn">提交</button>
+        </form>
       </div>
-      <form class="form" @submit.prevent="submit" novalidate  style="box-sizing:border-box;margin-top:1rem;">
-        <FormField :form="Withdrawals"></FormField>
-        <p>手续费：{{total_price * fee|decimal}}元<span class="fee">({{fee*100+'%'}})</span></p>
-        <button name="btn">提交</button>
-      </form>
     </div>
-    <div class="popup_mask" v-if="showModal"></div>
   </div>
 </template>
 

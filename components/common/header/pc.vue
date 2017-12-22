@@ -117,7 +117,7 @@
         .logo{
           display: inline-block;
           width:178px;
-          height:36px;
+          height:37px;
           margin-right:60px;
         }
         nav{

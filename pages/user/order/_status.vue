@@ -144,18 +144,7 @@
         <p>暂无列表信息</p>
       </div>
     </div>
-    <div class="popup" v-if="showModal">
-      <div class="close" @click="closeEdit()">
-        <span class="icon"></span>
-      </div>
-      <form class="form" @submit.prevent="submit" novalidate>
-        <FormField :form="form['sold']"></FormField>
-        <p>手续费：{{total_price * fee|format}}元<span class="fee">({{fee*100+'%'}})</span></p>
-        <button name="btn">提交</button>
-      </form>
-    </div>
-    <div class="popup_mask" v-if="showModal"></div>
-    <MyMask :form="form[edit]" :title="editText" v-if="showMask"></MyMask>
+    <MyMask :form="form[edit]" :title="editText" v-if="edit"></MyMask>
   </section>
 </template>
 
@@ -198,9 +187,7 @@
         fee: 0,
         showImg: false,
         showtype: false,
-        nowEdit: 0,
-        showModal: false,
-        showMask: false
+        nowEdit: 0
       }
     },
     asyncData ({ params }) {
@@ -261,12 +248,7 @@
               window.scroll(0, 0)
               document.body.style.overflow = 'hidden'
               self.edit = str
-              if (self.isMobile) {
-                self.showModal = true
-              } else {
-                self.editText = title
-                self.showMask = true
-              }
+              self.editText = title
               if (str === 'sold') {
                 self.one_amount_value = res.one_amount_value
                 self.amount = res.show_miner
@@ -304,12 +286,7 @@
           })
         })
       },
-      closeEdit () {
-        if (this.isMobile) {
-          this.showModal = false
-        } else {
-          this.showMask = false
-        }
+      closeMask () {
         this.edit = ''
         document.body.style.overflow = 'auto'
       },
@@ -338,7 +315,7 @@
         var self = this
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
-            self.closeEdit()
+            self.closeMask()
             api.tips(tipsStr, self.isMobile, () => {
               self.fetchData()
             })

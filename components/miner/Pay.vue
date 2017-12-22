@@ -158,10 +158,6 @@
             <span>支付方式</span>
             <span>{{payNo===1?'余额支付':'支付宝'}}</span>
           </div>
-          <!-- <div class="pay_item pay_input" v-if="payNo===1">
-            <span>交易密码</span>
-            <input type="password" name="password" placeholder="请输入交易密码" @blur="test"></input>
-          </div> -->
           <input type="hidden" name="mobile" :value="mobile">
           <FormField :form="form" class="form" v-if="payNo===1"></FormField>
         </div>
@@ -177,27 +173,36 @@
     </div>
     <MyMask :form="address" :title="title" :contract="contract" :val="addressForm" v-if="edit&&!isMobile"></MyMask>
     <div class="popup" v-if="isMobile&&mobileEdit">
-      <div class="close" @click="closeMask">
-        <span class="icon"></span>
-      </div>
-      <div class="agreement" v-html="contract" v-if="contract"></div>
-      <div class="mobile_pay_type" v-else>
-        <div class="mobile_pay_title">选择支付方式</div>
-        <div :class="['pay_item', {active:payNo===1}]" @click="setPay(1)">
-          <div>
-            <span>可用余额</span>
-            <span class="val">{{$parent.balance}}元</span>
-          </div>
-          <router-link to="/mobile/recharge">充值</router-link>
+      <div class="popup_con">
+        <div class="popup_title">
+          <span>{{contract?'矿机协议':'选择支付方式'}}</span>
+          <span class="icon_close" @click="closeMask"></span>
         </div>
-        <div :class="['pay_item', {active:payNo===2}]" @click="setPay(2)">
-          <div>
-            <span>支付宝支付</span>
+        <template v-if="contract">
+          <div class="popup_body" v-html="contract"></div>
+          <div class="popup_foot">
+            <label for="accept1" @click="userAgreement">
+              <input type="checkbox" id="accept1">
+              <span>同意并继续</span>
+            </label>
+          </div>
+        </template>
+        <div class="mobile_pay_type" v-else>
+          <div :class="['pay_item', {active:payNo===2}]" @click="setPay(2)">
+            <div>
+              <span>支付宝支付</span>
+            </div>
+          </div>
+          <div :class="['pay_item', {active:payNo===1}]" @click="setPay(1)">
+            <div>
+              <span>可用余额</span>
+              <span class="val">{{$parent.balance}}元</span>
+            </div>
+            <router-link to="/mobile/recharge">充值</router-link>
           </div>
         </div>
       </div>
     </div>
-    <div class="popup_mask" @click="mobileEdit=!mobileEdit" v-if="isMobile&&mobileEdit"></div>
   </section>
 </template>
 
@@ -206,7 +211,7 @@
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import FormField from '@/components/common/FormField'
-  import MyMask from '@/components/common/AddressMask'
+  import MyMask from '@/components/common/Mask'
   export default {
     props: {
       page: {
@@ -478,6 +483,11 @@
       goRecharge (url) {
         this.$store.commit('SET_URL', this.$route.path)
         this.$router.push({path: url})
+      },
+      userAgreement () {
+        this.closeMask()
+        var accept = document.querySelector('#accept')
+        accept.checked = true
       }
     },
     mounted () {
@@ -495,20 +505,6 @@
         }
       } else {
         this.totalPrice = this.$parent.detail.total_price
-      }
-      if (this.$parent.show) {
-        // var self = this
-        // util.post('getRate', {sign: api.serialize({token: this.token, rate_name: this.rate})}).then(function (res) {
-        //   api.checkAjax(self, res, () => {
-        //     console.log(res)
-        //   })
-        // })
-        // var loanAmount = this.detail.one_amount_value * this.number / 2
-        // util.post('getLoanDetail', {sign: api.serialize({token: this.token, rate_name: this.rate, loan_money: loanAmount})}).then(function (res) {
-        //   api.checkAjax(self, res, () => {
-        //     console.log(res)
-        //   })
-        // })
       }
       if (this.addressObj.id) {
         this.addressObject = this.addressObj
@@ -744,7 +740,7 @@
           form{
             padding:15px;
             @include form(v);
-            width:340px;
+            width:400px;
             margin:30px auto 0 auto;
             .input,.input input{
               line-height: 1.5;
@@ -948,19 +944,11 @@
     }
     .popup{
       .mobile_pay_type{
-        padding:15px 0;
         color: $text;
-        .mobile_pay_title{
-          text-align: center;
-          font-size: 0.55rem;
-          border-bottom:1px solid $border;
-          padding-bottom:15px
-        }
         .pay_item{
           padding:0 15px;
           @include flex(space-between)
           line-height: 50px;
-          border-bottom:1px solid $border;
           span.val{
             color:$light_text;
             margin-left:15px;
@@ -976,6 +964,9 @@
               border-color:$orange;
               left:80%;
             }
+          }
+          &:not(:last-child){
+            border-bottom:1px solid $border;
           }
         }
       }

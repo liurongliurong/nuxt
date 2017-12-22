@@ -145,7 +145,9 @@ api.validityForm = (form, obj, ismobile) => {
       }
     } else {
       api.errorTip(ele, ele.placeholder, ismobile, obj)
-      api.setTips(ele, 'null')
+      if (!ismobile) {
+        api.setTips(ele, 'null')
+      }
       icon = 2
       n = i
       break

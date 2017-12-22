@@ -109,7 +109,6 @@
             </div>
             <div class="content_item" :id="d.name" v-for="d,m in infolists">
               <h2 v-if="m!==0">{{d.title}}</h2>
-              <!-- <div class="content_con" v-html="$parent.detail[d.name]" v-if=""></div> -->
               <div class="content_con" v-html="$parent.detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
               <div class="content_con" v-else-if="d.name==='product_photos'">
                  <img :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos">
@@ -261,8 +260,8 @@
           <button @click="openMask" :disabled="$parent.detail.status===4" v-else>立即购买</button>
         </div>
       </template>
-      <div class="popup" v-if="sheetVisible">
-        <div class="buy_box">
+      <div class="popup" v-if="sheetVisible" @click="closeMask">
+        <div class="popup_con buy_box">
           <div class="img_text">
             <div class="popup_img">
               <img :src="$parent.detail.product_img||$parent.detail.minerPicture" alt="">
@@ -294,7 +293,6 @@
           </div>
         </div>
       </div>
-      <div class="popup_mask" @click="sheetVisible=!sheetVisible" v-if="sheetVisible"></div>
     </div>
   </section>
 </template>
@@ -358,7 +356,16 @@
         this.$parent.goPay(e, sh)
       },
       openMask () {
+        document.body.style.overflow = 'hidden'
+        window.scroll(0, 0)
         this.sheetVisible = true
+      },
+      closeMask (e) {
+        var popup = document.querySelector('.popup')
+        if (e.target === popup) {
+          document.body.style.overflow = 'auto'
+          this.sheetVisible = false
+        }
       },
       tabs (k, name) {
         this.contentShow = k
