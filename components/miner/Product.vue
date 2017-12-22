@@ -109,7 +109,6 @@
             </div>
             <div class="content_item" :id="d.name" v-for="d,m in infolists">
               <h2 v-if="m!==0">{{d.title}}</h2>
-              <!-- <div class="content_con" v-html="$parent.detail[d.name]" v-if=""></div> -->
               <div class="content_con" v-html="$parent.detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
               <div class="content_con" v-else-if="d.name==='product_photos'">
                  <img :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos">
