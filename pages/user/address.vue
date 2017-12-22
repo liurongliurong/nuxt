@@ -187,6 +187,7 @@
         .item{
           padding:20px 40px;
           background: #f7f8fa;
+          margin-bottom: 20px;
           cursor: initial;
           .address_item{
             width:70%;

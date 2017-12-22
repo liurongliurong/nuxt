@@ -69,7 +69,12 @@
               </div>
             </div>
             <div class="progress_price">
-              <span class="one">当前进度 {{((parseInt($parent.detail.buyed_amount)/parseInt($parent.detail.amount))*100).toFixed(2)}}%</span>
+              <template v-if="((parseInt($parent.detail.buyed_amount)/parseInt($parent.detail.amount)) * 100) >= 99">
+                <span class="one">当前进度 {{((0.99) * 100).toFixed(0)}}%</span>
+              </template>
+              <template v-else>
+                <span class="one">当前进度 {{((parseInt($parent.detail.buyed_amount)/parseInt($parent.detail.amount)) * 100).toFixed(0)}}%</span>
+              </template>
               <span class="two">剩余可售 {{$parent.leftNum}}台</span>
             </div>
           </div>
@@ -107,7 +112,7 @@
               <!-- <div class="content_con" v-html="$parent.detail[d.name]" v-if=""></div> -->
               <div class="content_con" v-html="$parent.detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
               <div class="content_con" v-else-if="d.name==='product_photos'">
-                 <img :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos"> 
+                 <img :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos">
               </div>
               <div class="params_table" v-else>
                 <table border="1" cellspacing="0">
@@ -121,8 +126,8 @@
               </div>
             </div>
           </div>
-        </template> 
-        <template v-else> 
+        </template>
+        <template v-else>
           <div :class="['info_ul', {fix_top:isFixTop}]">
             <div class="info_box">
               <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in infolist" @click="tabs(m,d.name)">{{d.title}}</div>
@@ -151,7 +156,7 @@
               </div>
             </div>
           </div>
-        </template> 
+        </template>
       </div>
     </template>
     <div class="mobile_box" v-else-if="isMobile===1">
@@ -201,7 +206,7 @@
               <h2 v-if="m!==0">{{d.title}}</h2>
               <div class="content_conmobile" v-html="$parent.detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
               <div class="content_conmobile" v-else-if="d.name==='product_photos'">
-                 <img :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos"> 
+                 <img :src="$parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in $parent.detail.has_product_miner_base&&$parent.detail.has_product_miner_base.product_photos">
               </div>
               <div class="params_tablemobile" v-else>
                 <table border="1" cellspacing="0">
@@ -480,7 +485,7 @@
         h4{
           color: #666666;
           font-weight: 800;
-          font-size: 16px;
+          font-size: 22px;
           line-height: 0;
           margin-top: 10px;
           .red{
@@ -492,6 +497,8 @@
             font-weight:100;
             color:white;
             margin-right: 10px;
+            position: relative;
+            top: -4px;
           }
           .gray{
             display:inline-block;
@@ -518,7 +525,7 @@
           .right_miner{
             color: #ea2c2c;
             font-weight: 800;
-            font-size: 14px;
+            font-size: 21px;
             em{
               font-size: 24px;
             }
@@ -535,7 +542,7 @@
         }
         .right_miner{
           color: #121212;
-          font-size: 12px;
+          font-size: 14px;
           em{
             font-style: normal;
             font-size: 14px;
@@ -617,7 +624,8 @@
             content:'您输入的数量已超出库存';
           }
           &:disabled{
-            opacity: 0.7;
+            // opacity: 0.7;
+            background: #b5b0af;
           }
         }
       }
@@ -626,7 +634,7 @@
       .cloud_miner_left{
         width: 722px;
         height: 100%;
-        padding-top: 56px;
+        padding-top: 53px;
         padding-left: 98px;
         box-sizing: border-box;
         float: left;
@@ -663,43 +671,32 @@
           width: 550px;
           height: 60px;
           margin-top: 30px;
-          .item{
-            width: 33.3%;
-            text-align: center;
-            float: left;
-            height: 100%;
-            .item_word{
-              text-align: left;
-              .num{
-                color: #333;
-                font-size: 30px;
+          display: flex;
+          justify-content: space-between;
+          aligns-item: center;
+
+          .item {
+            display: flex;
+            justify: flex-start;
+            flex-direction: column;
+
+            .num {
+              color: #333;
+              font-size: 30px;
+            }
+            .unit {
+              margin-left: 7px;
+            }
+
+            &:nth-of-type(1) {
+              .num {
+                color: #f00;
+                font-weight: 800;
+              }
+              .unit {
+                color: #f00;
               }
             }
-            p{
-              text-align: left;
-            }
-            .tips{
-              color:#666666; 
-            }
-          }
-          :nth-child(1) .item_word .num{
-            color: red;
-            font-weight: 800;
-          }
-          :nth-child(1) .item_word .unit{
-            color: red;
-          }
-          :nth-child(3) .tips{
-            text-align: right;
-          }
-          :nth-child(3) .item_word{
-             padding-left: 90px;
-          }
-          :nth-child(2) .tips{
-            padding-left: 60px;
-          }
-          :nth-child(2) .item_word{
-            padding-left: 60px;
           }
         }
         .press{
@@ -789,7 +786,8 @@
           color: white;
           font-size: 18px;
           &:disabled{
-            opacity: 0.7;
+            // opacity: 0.7;
+            background: #b5b0af;
           }
           &.buy_btn{
             position: relative;
@@ -810,7 +808,7 @@
             margin-top: 12px;
           }
         }
-            
+
       }
     }
     .product_info{

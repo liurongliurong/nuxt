@@ -83,46 +83,46 @@
         <input type="datetime-local" :value="timedays1" class="cover el-range-input" name="timeend" :min="timedays"/>
       </div>
       <button class="button" name="btn">计算</button>
-     </form>
-     <h2>预期利润概览</h2>
-     <div class="total">
-         <p>
-            <span class="p_left">总利润</span>
-            <span class="p_right">{{typebi}} {{((((message8 * CoinPrice * MillWorkforce) - ((MillPower / 1000) * 24 * MillNumber)) * timeall)).toFixed(2)}}</span>
-         </p>
-         <p>
-            <span class="p_left">总收入</span>
-            <span class="p_right">{{typebi}} {{(((message8 * CoinPrice * MillWorkforce)) * timeall).toFixed(2)}}</span>
-         </p>
-         <p>
-            <span class="p_left">总电费</span>
-            <span class="p_right">{{typebi}} {{((MillPower / 1000) * 24 * MillNumber * timeall).toFixed(2)}}</span>
-         </p>
-         <p>
-            <span class="p_left">总矿机成本</span>
-            <span class="p_right">{{typebi}} {{IndividualMillPrice * MillNumber}}</span>
-         </p>
-         <p>
-            <span class="p_left">每T价格</span>
-            <span class="p_right">{{typebi}} {{(IndividualMillPrice / MillWorkforce).toFixed(2)}}</span>
-         </p>
-         <p>
-            <span class="p_left">投资回报率</span>
-            <span class="p_right">{{(((((message8 * CoinPrice * MillWorkforce) - ((MillPower / 1000) * 24 * MillNumber)) * timeall)) / (IndividualMillPrice * MillNumber)).toFixed(2)}} %</span>
-         </p>
-         <p>
-            <span class="p_left">当前每日收入</span>
-            <span class="p_right">{{typebi}} {{(message8 * CoinPrice * MillWorkforce).toFixed(2)}}</span>
-         </p>
-         <p>
-            <span class="p_left">当前每日电费</span>
-            <span class="p_right">{{typebi}} {{((MillPower / 1000) * 24 * MillNumber).toFixed(2)}}</span>
-         </p>
-         <p>
-            <span class="p_left">当前每日利润</span>
-            <span class="p_right">{{typebi}} {{((message8 * CoinPrice * MillWorkforce) - ((MillPower / 1000) * 24 * MillNumber)).toFixed(2)}}</span>
-         </p>
-     </div>
+    </form>
+      <h2>预期利润概览</h2>
+      <div class="total">
+        <p>
+          <span class="p_left">总利润</span>
+          <span class="p_right">{{typebi}} {{((((message8 * CoinPrice * MillWorkforce) - ((MillPower / 1000) * 24 * MillNumber)) * timeall)).toFixed(2)}}</span>
+        </p>
+        <p>
+          <span class="p_left">总收入</span>
+          <span class="p_right">{{typebi}} {{(((message8 * CoinPrice * MillWorkforce)) * timeall).toFixed(2)}}</span>
+        </p>
+        <p>
+          <span class="p_left">总电费</span>
+          <span class="p_right">{{typebi}} {{((MillPower / 1000) * 24 * MillNumber * timeall).toFixed(2)}}</span>
+        </p>
+        <p>
+          <span class="p_left">总矿机成本</span>
+          <span class="p_right">{{typebi}} {{IndividualMillPrice * MillNumber}}</span>
+        </p>
+        <p>
+          <span class="p_left">每T价格</span>
+          <span class="p_right">{{typebi}} {{(IndividualMillPrice / MillWorkforce).toFixed(2)}}</span>
+        </p>
+        <p>
+          <span class="p_left">投资回报率</span>
+          <span class="p_right">{{(((((message8 * CoinPrice * MillWorkforce) - ((MillPower / 1000) * 24 * MillNumber)) * timeall)) / (IndividualMillPrice * MillNumber)).toFixed(2)}} %</span>
+        </p>
+        <p>
+          <span class="p_left">当前每日收入</span>
+          <span class="p_right">{{typebi}} {{(message8 * CoinPrice * MillWorkforce).toFixed(2)}}</span>
+        </p>
+        <p>
+          <span class="p_left">当前每日电费</span>
+          <span class="p_right">{{typebi}} {{((MillPower / 1000) * 24 * MillNumber).toFixed(2)}}</span>
+        </p>
+        <p>
+          <span class="p_left">当前每日利润</span>
+          <span class="p_right">{{typebi}} {{((message8 * CoinPrice * MillWorkforce) - ((MillPower / 1000) * 24 * MillNumber)).toFixed(2)}}</span>
+        </p>
+      </div>
   </div>
 </template>
 
@@ -145,7 +145,10 @@
         difficulty: '',
         totallist: [{title: '总利润', prev: '¥'}, {title: '总收入', prev: '¥'}, {title: '总电费', prev: '¥'}, {title: '总矿机成本', prev: '¥'}, {title: '每T价格', prev: '¥'}, {title: '投资回报率', next: '%'}, {title: '当前每日收入', prev: '¥'}, {title: '当前每日电费', prev: '¥'}, {title: '当前每日利润', prev: '¥'}],
         option: [{name: 'CNY - ¥'}, {name: 'USD - $'}],
-        timeall: ''
+        timeall: '',
+        flag: false,
+        oldStart: '',
+        oldEnd: ''
       }
     },
     methods: {
@@ -163,14 +166,13 @@
         this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
       },
       submit (e) {
+        this.flag = true
         var form = e.target
-        var start = form.timestart.value
-        var end = form.timeend.value
-        var d1 = new Date(start)
-        var d2 = new Date(end)
+        this.oldStart = form.timestart.value
+        this.oldEnd = form.timeend.value
+        var d1 = new Date(this.oldStart)
+        var d2 = new Date(this.oldEnd)
         this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
-        start = this.timedays()
-        end = this.timedays1()
       },
       getData () {
         if (this.token !== 0) {
@@ -188,6 +190,30 @@
             this.getData()
           }, 5)
         }
+      },
+      getTimeDays (addDay) {
+        addDay = addDay || 0
+        var date = new Date()
+        var year = date.getFullYear()
+        var month = date.getMonth() + 1
+        month = (month.length === 1) && ('0' + month) || month
+        var day = date.getDate() + addDay
+        day = (day.length === 1) && ('0' + day) || day
+        var hour = date.getHours()
+        hour = (hour.length === 1) && ('0' + hour) || hour
+        var minute = date.getMinutes()
+        if (minute.length === 1) {
+          minute = '0' + minute
+        } else {
+          minute = '' + minute
+        }
+        var second = date.getSeconds()
+        if (second.length === 1) {
+          second = '0' + second
+        } else {
+          second = '' + second
+        }
+        return year + '-' + month + '-' + day + 'T' + hour + ':' + minute
       }
     },
     mounted () {
@@ -212,50 +238,16 @@
         token: state => state.info.token
       }),
       timedays: function () {
-        var date = new Date()
-        var year = date.getFullYear()
-        var month = date.getMonth() + 1
-        month = (month.length === 1) && ('0' + month) || month
-        var day = date.getDate()
-        day = (day.length === 1) && ('0' + day) || day
-        var hour = date.getHours()
-        hour = (hour.length === 1) && ('0' + hour) || hour
-        var minute = date.getMinutes()
-        if (minute.length === 1) {
-          minute = '0' + minute
-        } else {
-          minute = '' + minute
+        if (!this.flag) {
+          return this.getTimeDays()
         }
-        var second = date.getSeconds()
-        if (second.length === 1) {
-          second = '0' + second
-        } else {
-          second = '' + second
-        }
-        return year + '-' + month + '-' + day + 'T' + hour + ':' + minute
+        return this.oldStart
       },
       timedays1: function () {
-        var date = new Date()
-        var year = date.getFullYear()
-        var month = date.getMonth() + 1
-        month = (month.length === 1) && ('0' + month) || month
-        var day = date.getDate() + 1
-        day = (day.length === 1) && ('0' + day) || day
-        var hour = date.getHours()
-        hour = (hour.length === 1) && ('0' + hour) || hour
-        var minute = date.getMinutes()
-        if (minute.length === 1) {
-          minute = '0' + minute
-        } else {
-          minute = '' + minute
+        if (!this.flag) {
+          return this.getTimeDays(1)
         }
-        var second = date.getSeconds()
-        if (second.length === 1) {
-          second = '0' + second
-        } else {
-          second = '' + second
-        }
-        return year + '-' + month + '-' + day + 'T' + hour + ':' + minute
+        return this.oldEnd
       }
     }
   }
