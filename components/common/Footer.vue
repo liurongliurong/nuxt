@@ -97,7 +97,7 @@
     },
     methods: {
       goPage (link) {
-        if (this.token || link === 'index') {
+        if (this.token || link === 'mobileIndex') {
           this.$router.push({name: link})
         } else {
           this.$router.push({name: 'auth-login'})

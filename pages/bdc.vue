@@ -96,8 +96,8 @@
           {name: 'dep_name', type: 'text', title: '申请人', placeholder: '请输入您的姓名'},
           {name: 'dep_tel', type: 'text', title: '手机号码', placeholder: '请输入手机号码', tips: '请输入11位手机号', pattern: '^1[3578][0-9]{9}$'},
           {name: 'code', type: 'text', title: '手机验证码', placeholder: '手机验证码', addon: true, tips: '请输入6位数字', pattern: '^[0-9]{6}$'},
-          {name: 'dep_bdc', type: 'select', title: '选择BDC'},
-          {name: 'dep_type', type: 'text', title: '服务器类型', placeholder: '请输入算力服务器类型'},
+          {name: 'dep_bdc_id', type: 'select', title: '选择BDC'},
+          {name: 'dep_type', type: 'text', title: '服务器型号', placeholder: '请输入算力服务器类型'},
           {name: 'dep_number', type: 'text', title: '服务器数量', placeholder: '输入托管算力服务器数量', tips: '请输入整数', pattern: '^[0-9]+$', maxlength: 5}
         ],
         bcdParamsLists: [
@@ -108,6 +108,10 @@
           {name: '所在区域', field: 'bdc_address', value: ''}
         ],
         text: 'BDC是平台整合优质品牌商与分销商，通过平台的优势及服务以吸引广大消费者的一种形式，算力网通过自身的优势整合筛选出行业内优质合规的BDC机房，算力服务器生产商，为算力爱好者提供算力服务器托管，算力服务器采购，算力服务器租赁等服务，打通算力及衍生商品产业链的完整交易，做到平台，供应商，消费者三方互惠互利。',
+        article: {
+          title: 'Blockchain Data Center',
+          text: '<i>BDC</i>是平台整合优质品牌商与分销商，通过平台的优势及服务以吸引广大消费者的一种形式，算力网通过自身的优势整合筛选出行业内<i>优质合规的BDC机房</i>，算力服务器生产商，为算力爱好者<i>提供算力服务器托管</i>，算力服务器采购，算力服务器租赁等服务，打通算力及衍生商品产业链的完整交易，做到<i>平台，供应商，消费者三方互惠互利</i>。'
+        },
         list: [],
         tips: '',
         success: false,
