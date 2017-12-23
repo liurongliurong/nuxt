@@ -18,20 +18,20 @@
           <h3 class="title">确认订单信息</h3>
           <div class="order_detail">
             <div class="order_detail_info1">
-              <template v-for="d,k in params2==='1'?proData2:proData1">
+              <template v-for="d in params2==='1'?proData2:proData1">
                 <div class="item">
-                  <p class="value" v-if="k==='number'&&page==='minerShop'"><span>{{$parent.number}}{{d.unit}}</span></p>
-                  <p class="value" v-else-if="k==='number'&&page!=='minerShop'"><span>{{$parent.detail.hash}}{{d.unit}}</span></p>
-                  <p class="value" v-else><span>{{$parent.detail[k]}}{{d.unit}}</span></p>
-                  <p>{{d.title}}</p>
+                  <p class="value" v-if="d==='number'&&page==='minerShop'"><span>{{$parent.number}}{{params[d].unit}}</span></p>
+                  <p class="value" v-else-if="d==='number'&&page!=='minerShop'"><span>{{$parent.detail.hash}}{{params[d].unit}}</span></p>
+                  <p class="value" v-else><span>{{$parent.detail[d]}}{{params[d].unit}}</span></p>
+                  <p>{{params[d].title}}</p>
                 </div>
                 <div class="line"></div>
               </template>
             </div>
             <div class="order_detail_info2" v-if="params2!=='1'">
-              <div class="item" v-for="t,k in proText">{{t}}：
-                <span class="value" v-if="k==='hash'">{{$parent.detail[k]}}T</span>
-                <span class="value" v-else>{{$parent.detail[k]}}</span>
+              <div class="item" v-for="t in proText">{{params[t].title}}：
+                <span class="value" v-if="t==='hash'">{{$parent.detail[t]}}T</span>
+                <span class="value" v-else>{{$parent.detail[t]}}</span>
               </div>
             </div>
           </div>
@@ -39,9 +39,9 @@
         <div class="order_msg miner_info" v-if="params2!=='1'">
           <h3 class="title">挖矿收益信息</h3>
           <div class="miner_info_detail">
-            <div class="item" v-for="n,k in cloudMinerNav">
-              <span class="info_left">{{n.title}}</span>
-              <span class="info_right">{{$parent.detail[k]||'暂无'}}<em>{{n.unit}}</em></span>
+            <div class="item" v-for="n in cloudMinerNav">
+              <span class="info_left">{{params[n].title}}</span>
+              <span class="info_right">{{$parent.detail[n]||'暂无'}}<em>{{params[n].unit}}</em></span>
             </div>
           </div>
         </div>
@@ -139,11 +139,11 @@
         <span class="val">{{totalPrice}}元</span>
       </div>
       <div class="confirm_info">
-        <div class="item" v-for="m,k in params2 === '1'?mobileNav2:mobileNav1">
-          <span>{{m.title}}</span>
-          <span v-if="k==='number'&&page==='minerShop'">{{$parent.number}}{{m.unit}}</span>
-          <span v-else-if="k==='number'&&page!=='minerShop'">{{$parent.detail.hash}}{{m.unit}}</span>
-          <span v-else>{{$parent.detail[k]}}{{m.unit}}</span>
+        <div class="item" v-for="m in params2 === '1'?mobileNav2:mobileNav1">
+          <span>{{params[m].title}}</span>
+          <span v-if="m==='number'&&page==='minerShop'">{{$parent.number}}{{params[m].unit}}</span>
+          <span v-else-if="m==='number'&&page!=='minerShop'">{{$parent.detail.hash}}{{params[m].unit}}</span>
+          <span v-else>{{$parent.detail[m]}}{{params[m].unit}}</span>
         </div>
       </div>
       <div class="confirm_info confirm_info2" v-if="params2==='1'">
@@ -223,12 +223,13 @@
     },
     data () {
       return {
-        proData1: {product_name: {title: '矿机名称', unit: ''}, one_amount_value: {title: '矿机单价', unit: '元'}, number: {title: '购买数量', unit: '台'}},
-        proData2: {name: {title: '矿机名称', unit: ''}, one_amount_value: {title: '矿机单价', unit: '元'}, number: {title: '购买数量', unit: '台'}, hash: {title: '每台算力', unit: 'T'}},
-        proText: {hashType: '算力类型', hash: '每台矿机算力', incomeType: '结算方式'},
-        cloudMinerNav: {output: {title: '预期收益', unit: 'btc/T/天'}, total_electric_fee: {title: '预计支出费用', unit: 'btc/台/天'}, batch_area: {title: '批次所在区域', unit: ''}},
-        mobileNav1: {one_amount_value: {title: '每台服务器价格', unit: '元'}, number: {title: '购买服务器数量', unit: '台'}, batch_area: {title: '批次所在区域', unit: ''}},
-        mobileNav2: {one_amount_value: {title: '每台服务器价格', unit: '元'}, number: {title: '购买服务器数量', unit: '台'}, hash: {title: '每台服务器算力', unit: 'T'}},
+        params: {name: {title: '矿机名称', unit: ''}, one_amount_value: {title: '矿机单价', unit: '元'}, number: {title: '购买数量', unit: '台'}, hash: {title: '每台算力', unit: 'T'}, hashType: {title: '算力类型', unit: ''}, incomeType: {title: '结算方式', unit: ''}, output: {title: '预期收益', unit: 'btc/T/天'}, total_electric_fee: {title: '预计支出费用', unit: 'btc/台/天'}, batch_area: {title: '批次所在区域', unit: ''}},
+        proData1: ['product_name', 'one_amount_value', 'number'],
+        proData2: ['name', 'one_amount_value', 'number', 'hash'],
+        proText: ['hashType', 'hash', 'incomeType'],
+        cloudMinerNav: ['output', 'total_electric_fee', 'batch_area'],
+        mobileNav1: ['one_amount_value', 'number', 'batch_area'],
+        mobileNav2: ['one_amount_value', 'number', 'hash'],
         thead: [{title: '选择'}, {title: '分期金额（元）'}, {title: '分期期数'}, {title: '手续费率'}, {title: '每期应还（元）'}, {title: '每期手续费（元）'}],
         form: [{name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', checkData: 'balance'}],
         address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}, {name: 'is_default', type: 'radio', title: '是否设为默认地址'}],

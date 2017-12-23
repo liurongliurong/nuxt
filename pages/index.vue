@@ -13,7 +13,6 @@
       </div>
       <minner-list></minner-list>
       <MyData></MyData>
-      <!-- <data-list></data-list> -->
       <div class="home_title">
         <div class="main">
           <h1>{{ad.title}}</h1>
