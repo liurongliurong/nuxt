@@ -4,7 +4,7 @@
       <div class="page-1 page-common">
         <img class="logo" src="../assets/images/mobile/index/logo.png"/>
         <p class="main-slogen">算力驱动未来&nbsp;&nbsp;&nbsp;信任链接天下</p>
-        <p class="title" v-animate="{value: 'flipInX', delay: 0}">全球算力产业综合服务平台</p>
+        <p class="title">全球算力产业综合服务平台</p>
         <div class="main">
           <div class="page-number">
             <hr/>
@@ -37,7 +37,7 @@
           </div>
           <img class="gif" src="../assets/images/mobile/index/2.gif"/>
         </div>
-        <div class="article" v-animate="{value: 'bounceInDown', delay: 0}">
+        <div class="article">
           <div class="item" v-for="item in page2Text">
             <p>
               <span class="title">{{item.title}}&nbsp;&nbsp;</span>
@@ -63,7 +63,7 @@
           </div>
           <img class="gif" src="../assets/images/mobile/index/3.gif"/>
         </div>
-        <div class="article" v-animate="{value: 'flipInX', delay: 0}">
+        <div class="article">
           <div class="item" v-for="item in page3Text">
             <p class="title">{{item}}</p>
           </div>
@@ -89,7 +89,7 @@
           <p class="content">基于算力平台对外进行输出各类算力服务</p>
         </div>
         <div class="link-list" v-animate="{value: 'bounceInLeft', delay: 0}">
-          <nuxt-link v-for="item in page4Text" class="item" :to="item.link">
+          <nuxt-link v-for="item,k in page4Text" class="item" :to="item.link" :key="k">
             <div class="word">
               <p class="title">{{item.title}}</p>
               <p class="sub">{{item.sub}}</p>

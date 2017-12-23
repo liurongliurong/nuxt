@@ -191,7 +191,7 @@
       <template v-if="params2!=='1'">
         <div class="mobile_product_info">
           <div class="info_ulmobile">
-            <div :class="['info_limobile',{'active': contentShow===m}]" v-for="d,m in infolists" @click="tabs(m,d.name)">{{d.title}}</div>
+            <div class="info_limobile">产品介绍</div>
           </div>
           <div class="content_itemsmobile">
             <div class="product_img">
@@ -199,7 +199,6 @@
               <div class="pro_slogan">{{detail.has_product_miner_base && detail.has_product_miner_base.slogan}}</div>
               <div class="pro_resume">{{detail.has_product_miner_base && detail.has_product_miner_base.resume}}</div>
               <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
-              <!-- <img class="params_img" :src="detail.ActivityPicture" alt=""> -->
             </div>
             <div class="content_itemmobile" :id="d.name" v-for="d,m in infolists">
               <h2 v-if="m!==0">{{d.title}}</h2>
@@ -228,7 +227,7 @@
       <template v-else>
         <div class="mobile_product_info">
           <div class="info_ulmobile">
-            <div :class="['info_limobile',{'active': contentShow===m}]" v-for="d,m in infolist" @click="tabs(m,d.name)">{{d.title}}</div>
+            <div class="info_limobile">产品介绍</div>
           </div>
           <div class="content_itemsmobile">
             <div class="product_img">
@@ -236,7 +235,6 @@
               <div class="pro_slogan">{{detail.miner_list&&detail.miner_list.slogan}}</div>
               <div class="pro_resume">{{detail.miner_list&&detail.miner_list.resume}}</div>
               <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
-              <!-- <img class="params_img" :src="detail.ActivityPicture" alt=""> -->
             </div>
             <div class="content_itemmobile" :id="d.name" v-for="d,m in infolist">
               <h2 v-if="m!==0">{{d.title}}</h2>
@@ -486,7 +484,6 @@
       }
       this.getData()
       window.addEventListener('scroll', this.fixTop, false)
-      this.tabs(0)
     },
     computed: {
       ...mapState({
@@ -1302,11 +1299,6 @@
           }
         }
       }
-    }
-  }
-  @media  screen and (max-width: 600px) {
-    .product{
-       padding-bottom:0;
     }
   }
 </style>

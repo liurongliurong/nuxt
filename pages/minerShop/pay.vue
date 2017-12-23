@@ -20,8 +20,7 @@
             <div class="order_detail_info1">
               <template v-for="d in params2==='1'?proData2:proData1">
                 <div class="item">
-                  <p class="value" v-if="d==='number'"><span>{{detail.hash}}{{params[d].unit}}</span></p>
-                  <p class="value" v-else><span>{{detail[d]}}{{params[d].unit}}</span></p>
+                  <p class="value"><span>{{detail[d]}}{{params[d].unit}}</span></p>
                   <p>{{params[d].title}}</p>
                 </div>
                 <div class="line"></div>
@@ -234,7 +233,7 @@
         contract: '',
         addressShowData: [],
         addressData: [],
-        addressObject: {},
+        addressObject: {id: ''},
         addressForm: {},
         payNo: 2,
         rate: 3,
@@ -282,6 +281,7 @@
           callbackUrl += '/user/'
         }
         if (this.params2 === '1') {
+          console.log(this.addressObject)
           if (!this.addressObject.id) {
             this.tip('请添加地址', ff.accept)
             return false
@@ -473,6 +473,7 @@
             this.addressObject = this.addressObj
           } else if (this.params2 === '1') {
             this.getAddress()
+            console.log(this.addressObject)
           }
           var url = ''
           var data = {token: this.token, num: this.number}
