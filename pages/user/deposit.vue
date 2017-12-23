@@ -1,63 +1,21 @@
 <template>
-  <section class="order">
-    <div class="order_title">
-      <div class="text">
-        <span class="text_title">托管信息</span>
+  <section class="deposit">
+    <h2>托管信息</h2>
+    <div class="deposit_list" v-for="i,n in item">
+      <h3>{{'托管项目'+(n+1)}}</h3>
+      <div class="detail_table">
+        <div class="item" v-for="d,k in nav">
+          <div class="item_title">{{d.title}}</div>
+          <div class="item_value" v-if="d.name==='time'">{{i.deposit_start_time+"~"+i.deposit_end_time}}</div>
+          <div class="item_value" v-else-if="d.name==='wallet_address'">{{i[d.name]|address}}</div>
+          <a class="item_value" target="_blank" v-else-if="d.name==='contract_copy_picture'" :href="i[d.name]">查看合同</a>
+          <div class="item_value" v-else>{{i[d.name]+d.unit}}</div>
+        </div>
       </div>
     </div>
-    <div class="order_box">
-      <table>
-        <thead>
-          <tr>
-            <th>算力服务器</th>
-            <template v-if="$route.params.status==='0'">
-              <th>分期金额</th>
-              <th>手续费率</th>
-              <th>分期期限</th>
-              <th>已还期数</th>
-              <th>分期时间</th>
-            </template>
-            <template v-else>
-              <th>分期金额</th>
-              <th>手续费率</th>
-              <th>分期期限</th>
-              <th>已还期数</th>
-              <th>分期时间</th>
-            </template>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="d,k in item">
-            <template v-if="status===0">
-              <td>{{d.product_name}}<i :class="'icon_currency '+d.product_hash_type"></i></td>
-              <td>{{d.loan_money}}</td>
-              <td>{{d.fee_value * 100}}%</td>
-              <td>{{d.loan_deadline}}</td>
-              <td>{{d.complete_number}}</td>
-              <td>{{d.loan_start_time}}</td>
-              <td>
-                <a href="javascript:;" class="blue">查看详情</a>
-              </td>
-            </template>
-            <template v-if="status===1">
-              <td>{{d.product_name}}<i :class="'icon_currency '+d.hash_type_name"></i></td>
-              <td>{{d.loan_money}}</td>
-              <td>{{d.fee_value}}%</td>
-              <td>{{d.loan_deadline}}</td>
-              <td>{{d.complete_number}}</td>
-              <td>{{d.loan_start_time}}</td>
-              <td>
-                <a href="javascript:;" class="blue">查看详情</a>
-              </td>
-            </template>
-          </tr>
-        </tbody>
-      </table>
-      <div class="nodata" v-if="showImg">
-        <div class="nodata_img"></div>
-        <p>暂无列表信息</p>
-      </div>
+    <div class="nodata" v-if="!item.length">
+      <div class="nodata_img"></div>
+      <p>暂无数据</p>
     </div>
   </section>
 </template>
@@ -69,8 +27,10 @@
   export default {
     data () {
       return {
-        item: '',
-        showImg: false
+        item: [],
+        showImg: false,
+        nav: [{name: 'dep_name', title: '托管人姓名', unit: ''}, {name: 'dep_tel', title: '联系方式', unit: ''}, {name: 'dep_type', title: '矿机型号', unit: ''}, {name: 'dep_number', title: '托管数量', unit: '台'}, {name: 'computing_power', title: '算力', unit: 'T/台'}, {name: 'power', title: '功率', unit: 'w/台'}, {name: 'electric_charge', title: '电费', unit: '元/度'}, {name: 'deposit_fee', title: '托管费', unit: '元/台'}, {name: 'process_fee', title: '手续费', unit: '%'}, {name: 'mine_pool', title: '矿池', unit: ''}, {name: 'wallet_address', title: '钱包地址', unit: ''}, {name: 'bdc_name', title: 'BDC', unit: ''}, {name: 'storage_location', title: '库位', unit: ''}, {name: 'run_time', title: '运行时间', unit: ''}, {name: 'time',title: '托管时间', unit: ''}, {name: 'deposit_money', title: '押金', unit: '万元'}, {name: 'status', title: '状态', unit: ''}, {name: 'contract_copy_picture', title: '合同', unit: ''}],
+        status: {1: '未处理', 2: '已联系', 3: '已签署', 4: '已发货', 5: '已运行', 6: '提交中', 7: '审核成功', 8: '审核失败'}
       }
     },
     methods: {
@@ -100,114 +60,24 @@
       })
     },
     filters: {
-      format: api.decimal
+      format: api.decimal,
+      address: api.telReadable
     }
   }
 </script>
 
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
-  .order{
-    .order_title{
-      @include gap(25,h)
-      padding-top:15px;
-      border-bottom: 1px solid $border;
-      .text{
-        @include select_list
-        margin-bottom:30px;
-      }
-      nav{
+  .deposit{
+    padding:0 15px;
+    .detail_table{
+      @include detail
+      .item{
         a{
-          @include gap(10,h)
-          display: inline-block;
-          padding-bottom:10px;
-          border-bottom: 3px solid transparent;
-          color:#6b7d90;
-          & + a{
-            margin-left:30px
-          }
-          &:hover,&.nuxt-link-active{
-            border-color:#7e92a8
-          }
+          color:$blue
         }
       }
     }
-    .order_box{
-      padding:20px 25px;
-      table{
-        width: 100%;
-        text-align: center;
-        thead{
-          tr{
-            border-bottom:1px solid $border;
-            background: #f7f8fa;
-            color: $light_text;
-            border-top:1px solid $border;
-            border-bottom:0;
-            th{
-              font-size: 12px;
-              font-weight: normal;
-              line-height: 50px;
-            }
-          }
-        }
-        tbody{
-          tr{
-            border-bottom:1px solid $border;
-            td{
-              line-height:54px;
-              i.icon_currency{
-                vertical-align: sub;
-                margin-left:5px
-              }
-              .nuxt-link-active{
-                background: #327fff;
-                color:white;
-              }
-              &:last-child{
-                width:186px;
-                button,a{
-                  line-height: 34px;
-                  @include gap(15,h)
-                }
-                button{
-                  @include button($blue)
-                  margin-right:5px;
-                  &.sold{
-                    margin-bottom:8px
-                  }
-                  &:disabled{
-                    background: #759fe4;
-                    border-color:#759fe4;
-                    cursor: no-drop;
-                  }
-                }
-                a{
-                  display: block;
-                  margin: 0 auto;
-                  width: 88px;
-                  height: 36px !important;
-                  padding:0;
-                  @include button($blue,border)
-                  border-radius: 5px;
-                  .btn:not(:disabled){
-                    @include button($orange)
-                    cursor: pointer;
-                  }
-                }
-              }
-            }
-            &:hover{
-              background: #f7f8fa;
-            }
-            &:hover .blue{
-              background: #327fff;
-              color:white;
-            }
-          }
-        }
-      }
-      @include nodata
-    }
+    @include nodata
   }
 </style>

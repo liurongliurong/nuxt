@@ -45,10 +45,10 @@
             </p>
           </div>
         </div>
-        <div class="footer">
+        <!-- <div class="footer">
           <a class="button" @click="jump()">跳过</a>
           <p class="introduce">Clould mining<i>|</i>Miner<i>|</i>Escrow</p>
-        </div>
+        </div> -->
       </div>
       <div class="page-3 page-common">
         <img class="logo" src="../assets/images/mobile/index/logo.png"/>
@@ -77,7 +77,7 @@
       <div class="page-4 page-common">
         <header>
           <img class="logo" src="../assets/images/mobile/index/logo.png" />
-          <div class="login">
+          <div class="login" v-if="token === 0">
             <nuxt-link to="/auth/regist">注册</nuxt-link>
             <span>|</span>
             <nuxt-link to="/auth/login">登录</nuxt-link>
@@ -103,6 +103,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Home',
   data () {
@@ -146,6 +148,11 @@ export default {
     jump () {
       this.opts = Object.assign({}, this.opts, {start: 3})
     }
+  },
+  computed: {
+    ...mapState({
+      token: state => state.info.token
+    })
   }
 }
 </script>
@@ -326,7 +333,7 @@ export default {
       .title {
         font-size: 0.3rem;
         color: #b0ccff;
-        margin-bottom: 0.28rem;
+        margin-bottom: 0.18rem;
       }
     }
     .footer {
