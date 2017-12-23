@@ -70,7 +70,7 @@
     <div class="bdc-lists">
       <div class="card" v-for="item in list">
         <span class="title">-{{item.bdc_name}}-</span>
-        <img :src="item.bdc_img">
+        <img :src="item.bdc_img_arr[0]">
         <div v-for="params in item.params" class="line">
           <span class="name">{{params.name}}</span>
           <span class="value">{{params.value}}</span>
@@ -326,7 +326,7 @@
             height:30px;
             line-height:30px;
             text-align: center;
-            color:$red;
+            color:white;
             font-size: 12px;
           }
           .btn{

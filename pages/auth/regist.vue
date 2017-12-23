@@ -154,6 +154,7 @@
   import { mapState } from 'vuex'
   import util from '@/util/index'
   import api from '@/util/function'
+  import md5 from 'js-md5'
   import MyMask from '@/components/common/Mask'
   import FormField from '@/components/common/FormField'
   export default {
@@ -176,6 +177,8 @@
           form.accept.setAttribute('data-status', 'invalid')
           return false
         }
+        data.password = md5(data.password)
+        data.password1 = md5(data.password1)
         form.btn.setAttribute('disabled', true)
         var self = this
         util.post('/register', {sign: api.serialize(Object.assign(data, {token: 0}))}).then(res => {

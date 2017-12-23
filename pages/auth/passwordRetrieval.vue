@@ -21,6 +21,7 @@
 <script>
   import util from '@/util/index'
   import api from '@/util/function'
+  import md5 from 'js-md5'
   import { mapState } from 'vuex'
   import FormField from '@/components/common/FormField'
   export default {
@@ -56,6 +57,8 @@
           })
         } else {
           form.btn.setAttribute('disabled', true)
+          data.password = md5(data.password)
+          data.password1 = md5(data.password1)
           util.post('forgitPwd', {sign: api.serialize(Object.assign(data, {token: this.token, valid_code: this.valid_code, code_id: this.code_id, mobile: this.mobile}))}).then(res => {
             api.checkAjax(self, res, () => {
               api.tips('重置密码成功', self.isMobile, () => {

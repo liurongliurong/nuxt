@@ -25,6 +25,7 @@
 
 <script>
   import util from '@/util/index'
+  import md5 from 'js-md5'
   import api from '@/util/function'
   import FormField from '@/components/common/FormField'
   import { mapState } from 'vuex'
@@ -43,6 +44,7 @@
         var form = document.querySelector('.form')
         var data = api.checkFrom(form, this, api.checkEquipment())
         if (!data) return false
+        data.password = md5(data.password)
         var self = this
         form.btn.setAttribute('disabled', true)
         util.post('login', {sign: api.serialize(Object.assign(data, {token: 0}))}).then(res => {
