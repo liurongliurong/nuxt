@@ -135,7 +135,6 @@ input::-webkit-input-placeholder {
       top:50%;
       left:50%;
       width:680px;
-      // height:646px;
       margin-left:-340px;
       margin-top:-323px;
       background: $white;
@@ -145,6 +144,7 @@ input::-webkit-input-placeholder {
         height: 50px;
         background: #f3f9ff;
         line-height: 50px;
+        font-size: 18px;
         .icon_close{
           @include close
           top:15px;

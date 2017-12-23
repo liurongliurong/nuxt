@@ -506,20 +506,6 @@
       } else {
         this.totalPrice = this.$parent.detail.total_price
       }
-      if (this.$parent.show) {
-        // var self = this
-        // util.post('getRate', {sign: api.serialize({token: this.token, rate_name: this.rate})}).then(function (res) {
-        //   api.checkAjax(self, res, () => {
-        //     console.log(res)
-        //   })
-        // })
-        // var loanAmount = this.detail.one_amount_value * this.number / 2
-        // util.post('getLoanDetail', {sign: api.serialize({token: this.token, rate_name: this.rate, loan_money: loanAmount})}).then(function (res) {
-        //   api.checkAjax(self, res, () => {
-        //     console.log(res)
-        //   })
-        // })
-      }
       if (this.addressObj.id) {
         this.addressObject = this.addressObj
       } else if (this.params2 === '1') {
@@ -754,7 +740,7 @@
           form{
             padding:15px;
             @include form(v);
-            width:340px;
+            width:400px;
             margin:30px auto 0 auto;
             .input,.input input{
               line-height: 1.5;
