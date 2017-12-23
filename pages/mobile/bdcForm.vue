@@ -25,7 +25,7 @@
     data () {
       return {
         option: {'title': '请选择BDC'},
-        form: [{name: 'dep_name', type: 'text', title: '申请人', placeholder: '请输入您的姓名', isChange: true}, {name: 'dep_tel', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'code', type: 'text', title: '手机验证码', placeholder: '手机验证码', addon: 2, pattern: 'telCode'}, {name: 'dep_bdc', type: 'select', title: '选择BDC', option: ['内蒙古BDC'], isChange: true}, {name: 'dep_type', type: 'text', title: '服务器类型', placeholder: '请输入算力服务器类型', isChange: true}, {name: 'dep_number', type: 'text', title: '服务器数量', placeholder: '输入托管算力服务器数量', pattern: 'int', maxlength: 5}]
+        form: [{name: 'dep_name', type: 'text', title: '申请人', placeholder: '请输入您的姓名', isChange: true}, {name: 'dep_tel', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'code', type: 'text', title: '手机验证码', placeholder: '手机验证码', addon: 2, pattern: 'telCode'}, {name: 'dep_bdc_id', type: 'select', title: '选择BDC', option: [], selectVal: true}, {name: 'dep_type', type: 'text', title: '服务器类型', placeholder: '请输入算力服务器类型', isChange: true}, {name: 'dep_number', type: 'text', title: '服务器数量', placeholder: '输入托管算力服务器数量', pattern: 'int', maxlength: 5}]
       }
     },
     methods: {
@@ -43,6 +43,16 @@
           }, form.btn)
         })
       }
+    },
+    mounted () {
+      let self = this
+      util.post('bdcinfoList', {sign: 'token=0'}).then(function (data) {
+        var options = []
+        for (let i = 0, len = data.length; i < len; i++) {
+          options[i] = {id: data[i].id, item: data[i].bdc_name}
+        }
+        self.form[3].option = options
+      })
     },
     computed: {
       ...mapState({

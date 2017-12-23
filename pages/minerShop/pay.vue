@@ -1,6 +1,6 @@
 <template>
   <section class="pay">
-    <div class="pc_box" v-if="!isMobile">
+    <div class="pc_box" v-if="isMobile===0">
       <div class="left_box">
         <div class="order_msg address_msg" v-if="params2==='1'">
           <h3 class="title">选择收货地址</h3>
@@ -124,9 +124,9 @@
         </div>
       </div>
     </div>
-    <div class="mobile_box" v-else>
+    <div class="mobile_box" v-else-if="isMobile===1">
       <div class="mobile_address" v-if="params2==='1'">
-        <div class="address_box" @click="selectAddress" v-if="addressObject">
+        <div class="address_box" @click="selectAddress" v-if="addressObject.id">
           <h3 :class="{active:addressObject.is_default}">收货人地址：{{addressObject.post_user+'  '+addressObject.post_mobile}}</h3>
           <p>{{addressObject.province_name+addressObject.city_name+addressObject.area_name+addressObject.area_details}}</p>
         </div>

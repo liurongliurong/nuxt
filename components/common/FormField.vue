@@ -22,6 +22,9 @@
             <template v-if="f.name==='product_hash_type'">
               <option :value="v.name" v-for="v,k in hashType">{{v.name}}</option>
             </template>
+            <template v-else-if="f.selectVal">
+              <option :value="v.id" v-for="v,k in f.option">{{v.item}}</option>
+            </template>
             <template v-else>
               <option :value="v" v-for="v,k in f.option">{{v}}{{f.unit}}</option>
             </template>
