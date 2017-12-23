@@ -333,7 +333,7 @@ export default {
       .title {
         font-size: 0.3rem;
         color: #b0ccff;
-        margin-bottom: 0.28rem;
+        margin-bottom: 0.18rem;
       }
     }
     .footer {
