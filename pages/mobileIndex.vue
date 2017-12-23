@@ -89,7 +89,7 @@
           <p class="content">基于算力平台对外进行输出各类算力服务</p>
         </div>
         <div class="link-list" v-animate="{value: 'bounceInLeft', delay: 0}">
-          <nuxt-link v-for="item in page4Text" class="item" :to="item.link">
+          <nuxt-link v-for="item,k in page4Text" class="item" :to="item.link" :key="k">
             <div class="word">
               <p class="title">{{item.title}}</p>
               <p class="sub">{{item.sub}}</p>

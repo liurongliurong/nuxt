@@ -305,7 +305,7 @@
     }
     input.level1 ~ .password_level{
       .item:first-child{
-        background: #ff6c59;
+        background: #FF5F2D;
       }
       &:after{
         content:'低'
@@ -313,7 +313,7 @@
     }
     input.level2 ~ .password_level{
       .item:first-child,.item:nth-child(2){
-        background: #ffba19;
+        background: #FFA31E;
       }
       &:after{
         content:'中'
@@ -321,7 +321,7 @@
     }
     input.level3 ~ .password_level{
       .item{
-        background: #68cb0f;
+        background: #8DC420;
       }
       &:after{
         content:'高'
