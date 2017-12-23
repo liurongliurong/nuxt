@@ -288,10 +288,7 @@ export default {
               color: #333333;
             }
             &:hover {
-              top: -3px;
-              z-index: 100;
-              border:1px solid #bfbfbf;
-              box-shadow: 5px 5px 3px #ddd;
+              box-shadow:#ddd 0 0 10px;
             }
           }
         }

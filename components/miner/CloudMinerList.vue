@@ -17,7 +17,8 @@
                 </div>
                 <div class="info" v-else>
                   <div class="text">
-                    <span :class="['num', {'barnum': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]">{{d[i]}}</span>
+                    <span :class="['num', {'barnum': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]" v-if="i==='hashtype'">{{d[i].name}}</span>
+                    <span :class="['num', {'barnum': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]" v-else>{{d[i]}}</span>
                     <span :class="[{'barnum1': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]">{{n.unit}}</span>
                   </div>
                   <p :class="[{'barnum2': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]">{{n.title}}</p>
@@ -39,7 +40,7 @@
         <template v-else>
           <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
             <div class="item" v-for="d,k in cloudMinerDate" @click="goPay(d.id, d.sell_type)" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">
-              <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span><span class="sell_type gray" v-if="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">售罄</span></h3>
+              <h3>{{page==='compute'?d.product_name:d.name}}<span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span><span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span><span class="sell_type gray" v-if="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">已售罄</span></h3>
               <div class="mobile_info_box">
                 <div class="mobile_info">
                   <h4>每台单价<span><b>{{d.one_amount_value}}</b>元</span></h4>
@@ -92,7 +93,7 @@
     data () {
       return {
         sortNav2: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热'}, {code: 5, title: '热销'}, {code: 7, title: '已售罄'}]}],
-        dataNav: {'one_amount_value': {title: '每台单价', unit: '元'}, 'hash': {title: '每台算力', unit: 'T'}, 'buyed_amount': {title: '出售总数', unit: '台'}, 'leftNum': {title: '剩余可售', unit: '台'}},
+        dataNav: {'buyed_amount': {title: '出售总数', unit: '台'}, 'one_amount_value': {title: '每台单价', unit: '元'}, 'hash': {title: '每台算力', unit: 'T'}, 'power': {title: '功耗', unit: 'T'}, 'hashtype': {title: '算力类型', unit: ''}, 'leftNum': {title: '剩余数量', unit: '台'}},
         str: {4: '预热', 5: '预售'},
         loading: false,
         showcontent: false,
@@ -218,6 +219,7 @@
               &.gray{
                 border:1px solid #999;
                 color: #999;
+                background: none;
               }
               &.active{
                 border-color:$blue;
@@ -228,7 +230,8 @@
           .info_box{
             @include flex(space-between)
             .info{
-              width:10%;
+              width:12%;
+              padding-left: 18px;
               .text .num{
                 font-size: 24px;
               }

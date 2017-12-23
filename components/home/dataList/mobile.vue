@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile_data">
+  <div class="mobile_data" v-if="$parent.total">
     <h2>一 矿机抢购 一 <router-link to="/minerShop/miner/1">更多矿机 ></router-link></h2>
     <div class="mobile_listdata">
       <div class="mobile_list_box">

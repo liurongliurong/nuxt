@@ -63,9 +63,9 @@
         if (this.$route.name !== 'index') return false
         var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
         if (scrollTop > 0) {
-          this.$refs.bar.style.display = 'block'
+          document.getElementsByClassName('side_bar')[0].style.display = 'block'
         } else {
-          this.$refs.bar.style.display = 'none'
+          document.getElementsByClassName('side_bar')[0].style.display = 'none'
         }
       }
     }
