@@ -10,12 +10,10 @@
     "animate.css": "^3.5.2",
     "axios": "^0.17.0",
     "echarts": "^3.7.2",
-    "element-ui": "^2.0.7",
     "js-md5": "^0.7.2",
     "mint-ui": "^2.2.12",
     "nuxt": "^1.0.0-rc11",
     "qs": "^6.5.1",
-    "vue-baidu-map": "^0.18.4",
     "vue-fullpage": "^2.0.5"
   },
   "devDependencies": {

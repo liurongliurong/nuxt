@@ -20,9 +20,8 @@
             <div class="order_detail_info1">
               <template v-for="d in params2==='1'?proData2:proData1">
                 <div class="item">
-                  <p class="value" v-if="d==='number'&&page==='minerShop'"><span>{{$parent.number}}{{params[d].unit}}</span></p>
-                  <p class="value" v-else-if="d==='number'&&page!=='minerShop'"><span>{{$parent.detail.hash}}{{params[d].unit}}</span></p>
-                  <p class="value" v-else><span>{{$parent.detail[d]}}{{params[d].unit}}</span></p>
+                  <p class="value" v-if="d==='number'"><span>{{detail.hash}}{{params[d].unit}}</span></p>
+                  <p class="value" v-else><span>{{detail[d]}}{{params[d].unit}}</span></p>
                   <p>{{params[d].title}}</p>
                 </div>
                 <div class="line"></div>
@@ -30,8 +29,8 @@
             </div>
             <div class="order_detail_info2" v-if="params2!=='1'">
               <div class="item" v-for="t in proText">{{params[t].title}}：
-                <span class="value" v-if="t==='hash'">{{$parent.detail[t]}}T</span>
-                <span class="value" v-else>{{$parent.detail[t]}}</span>
+                <span class="value" v-if="t==='hash'">{{detail[t]}}T</span>
+                <span class="value" v-else>{{detail[t]}}</span>
               </div>
             </div>
           </div>
@@ -41,11 +40,11 @@
           <div class="miner_info_detail">
             <div class="item" v-for="n in cloudMinerNav">
               <span class="info_left">{{params[n].title}}</span>
-              <span class="info_right">{{$parent.detail[n]||'暂无'}}<em>{{params[n].unit}}</em></span>
+              <span class="info_right">{{detail[n]||'暂无'}}<em>{{params[n].unit}}</em></span>
             </div>
           </div>
         </div>
-        <div class="order_msg hire_purchase" v-show="$parent.show">
+        <div class="order_msg hire_purchase" v-show="detail.isLoan">
           <h3 class="title">分期购买计划</h3>
           <div class="order_detail">
             <table border="0">
@@ -84,14 +83,14 @@
             </label>
             <div class="pay_info">
               <span>支付</span>
-              <span class="money" style="font-size:16px;">{{(page==='minerShop'?totalPrice:$parent.detail.total_price)|format}}</span>
+              <span class="money" style="font-size:16px;">{{totalPrice|format}}</span>
               <span>元</span>
             </div>
           </div>
           <div :class="['pay_text',{active:payNo===1}]">
             <label class="pay_value">
               <input type="radio" name="payType" @click="setValue('payNo',1)">
-              <span class="yue">账户余额{{$parent.balance}}元</span>
+              <span class="yue">账户余额{{balance}}元</span>
             </label>
             <div class="pay_info">
               <span>金额不足，可先</span>
@@ -103,7 +102,7 @@
             <FormField :form="form" class="form" v-if="payNo===1"></FormField>
              <label for="accept">
               <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
-              <span @click="openMask(1)" style="margin-left:10px;">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机{{page === 'minerShop'? '销售':'转让'}}协议》</a><template v-if="params2!=='1'">和<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
+              <span @click="openMask(1)" style="margin-left:10px;">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机销售协议》</a><template v-if="params2!=='1'">和<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
               <span class="select_accept">{{tips}}</span>
             </label> 
             <button name="btn">确认支付</button>
@@ -114,15 +113,15 @@
         <div class="order_title">订单信息</div>
         <div class="item">
           <span>总算力</span>
-          <span style="font-size:13px;">{{$parent.number*$parent.detail.hash}}T</span>
+          <span style="font-size:13px;">{{number*detail.hash}}T</span>
         </div>
-        <div class="item" v-if="$parent.show">
+        <div class="item" v-if="detail.isLoan">
           <span>总金额</span>
           <span class="price">￥{{totalPrice*2|format}}元</span>
         </div>
         <div class="item">
           <span>支付金额</span>
-          <span class="price" style="font-size:16px;">￥{{(page==='minerShop'?totalPrice:$parent.detail.total_price)|format}}元</span>
+          <span class="price" style="font-size:16px;">￥{{totalPrice|format}}元</span>
         </div>
       </div>
     </div>
@@ -141,9 +140,8 @@
       <div class="confirm_info">
         <div class="item" v-for="m in params2 === '1'?mobileNav2:mobileNav1">
           <span>{{params[m].title}}</span>
-          <span v-if="m==='number'&&page==='minerShop'">{{$parent.number}}{{params[m].unit}}</span>
-          <span v-else-if="m==='number'&&page!=='minerShop'">{{$parent.detail.hash}}{{params[m].unit}}</span>
-          <span v-else>{{$parent.detail[m]}}{{params[m].unit}}</span>
+          <span v-if="m==='number'">{{number}}{{params[m].unit}}</span>
+          <span v-else>{{detail[m]}}{{params[m].unit}}</span>
         </div>
       </div>
       <div class="confirm_info confirm_info2" v-if="params2==='1'">
@@ -164,7 +162,7 @@
         <div class="mobile_btn">
            <label for="accept">
             <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
-            <span @click="openMask(1)" style="margin-left:10px;">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机{{page === 'minerShop'? '销售':'转让'}}协议》</a><template v-if="params2!=='1'">、<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
+            <span @click="openMask(1)" style="margin-left:10px;">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机销售协议》</a><template v-if="params2!=='1'">、<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
             <span class="select_accept">{{tips}}</span>
           </label> 
           <button name="btn">确认支付</button>
@@ -196,7 +194,7 @@
           <div :class="['pay_item', {active:payNo===1}]" @click="setPay(1)">
             <div>
               <span>可用余额</span>
-              <span class="val">{{$parent.balance}}元</span>
+              <span class="val">{{balance}}元</span>
             </div>
             <router-link to="/mobile/recharge">充值</router-link>
           </div>
@@ -213,18 +211,13 @@
   import FormField from '@/components/common/FormField'
   import MyMask from '@/components/common/Mask'
   export default {
-    props: {
-      page: {
-        type: String
-      }
-    },
     components: {
       FormField, MyMask
     },
     data () {
       return {
         params: {name: {title: '矿机名称', unit: ''}, one_amount_value: {title: '矿机单价', unit: '元'}, number: {title: '购买数量', unit: '台'}, hash: {title: '每台算力', unit: 'T'}, hashType: {title: '算力类型', unit: ''}, incomeType: {title: '结算方式', unit: ''}, output: {title: '预期收益', unit: 'btc/T/天'}, total_electric_fee: {title: '预计支出费用', unit: 'btc/台/天'}, batch_area: {title: '批次所在区域', unit: ''}},
-        proData1: ['product_name', 'one_amount_value', 'number'],
+        proData1: ['name', 'one_amount_value', 'number'],
         proData2: ['name', 'one_amount_value', 'number', 'hash'],
         proText: ['hashType', 'hash', 'incomeType'],
         cloudMinerNav: ['output', 'total_electric_fee', 'batch_area'],
@@ -248,7 +241,10 @@
         isFixTop: false,
         timer: 0,
         params1: '',
-        params2: ''
+        params2: '',
+        detail: {},
+        balance: '',
+        number: 0
       }
     },
     methods: {
@@ -260,7 +256,7 @@
         if (this.payNo === 1) {
           var val = ff.code.value
           data = Object.assign({code: val, mobile: ff.mobile.value}, data)
-          if (this.totalPrice > this.$parent.balance) {
+          if (this.totalPrice > this.balance) {
             this.tip('余额不足，请充值', ff.accept)
             return false
           }
@@ -295,27 +291,21 @@
           if (this.payNo === 2) {
             data = Object.assign({url: callbackUrl, mode: '2'}, data)
           }
-          data = Object.assign({post_id: this.addressObject.id, user_id: this.user_id, miner_id: this.params1, number: this.$parent.number}, data)
+          data = Object.assign({post_id: this.addressObject.id, user_id: this.user_id, miner_id: this.params1, number: this.number}, data)
         } else {
-          if (this.page === 'minerShop') {
-            callbackUrl += 'order/0'
-            if (this.$parent.show) {
-              url = 'productMallLoan'
-              if (this.payNo === 2) {
-                data = Object.assign({url: callbackUrl, mode: '3'}, data)
-              }
-              data = Object.assign({product_id: this.params1, rate_name: this.rate, num: this.$parent.number}, data)
-            } else {
-              url = 'productMall'
-              if (this.payNo === 2) {
-                data = Object.assign({url: callbackUrl, mode: '1'}, data)
-              }
-              data = Object.assign({product_id: this.params1, num: this.$parent.number, user_id: this.user_id}, data)
+          callbackUrl += 'order/0'
+          if (this.detail.isLoan) {
+            url = 'productMallLoan'
+            if (this.payNo === 2) {
+              data = Object.assign({url: callbackUrl, mode: '3'}, data)
             }
+            data = Object.assign({product_id: this.params1, rate_name: this.rate, num: this.number}, data)
           } else {
-            url = 'doTransfer_Hashrate'
-            data = Object.assign({user_id: this.user_id, transfer_order_id: this.params1, num: this.$parent.number}, data)
-            callbackUrl = 'order/1'
+            url = 'productMall'
+            if (this.payNo === 2) {
+              data = Object.assign({url: callbackUrl, mode: '1'}, data)
+            }
+            data = Object.assign({product_id: this.params1, num: this.number, user_id: this.user_id}, data)
           }
         }
         var self = this
@@ -335,7 +325,7 @@
           this.edit = true
         }
         if (n === 1) {
-          this.contract = this.$parent.content1 ? this.$parent.content + '<br>' + this.$parent.content1 : this.$parent.content
+          this.contract = this.content1 ? this.content + '<br>' + this.content1 : this.content
           this.title = '协议详情'
           this.accept = true
         } else if (n === 2) {
@@ -360,29 +350,12 @@
       },
       paySuccess (url, data) {
         var str = '恭喜您购买成功！'
-        if (this.isMobile) {
-          if (this.payNo === 2) {
-            this.alipay(url, data)
-          } else {
-            // if (this.params2 === '1') {
-            //   this.$parent.next = 2
-            // } else {}
-            api.tips(str, 1)
-            setTimeout(() => {
-              this.$router.push({path: url})
-            }, 3000)
-          }
+        if (this.payNo === 2) {
+          this.alipay(url, data)
         } else {
-          if (this.payNo === 2) {
-            this.alipay(url, data)
-          } else {
-            // if (this.params2 === '1') {
-            //   this.$parent.next = 2
-            // } else {}
-            api.tips(str, this.isMobile, () => {
-              this.$router.push({path: url})
-            })
-          }
+          api.tips(str, this.isMobile, () => {
+            this.$router.push({path: url})
+          })
         }
       },
       alipay (url, data) {
@@ -392,7 +365,7 @@
         }
         var self = this
         data.subject = encodeURIComponent(data.subject)
-        util.post('alipay_wap', {sign: api.serialize(Object.assign({is_mobile: +this.isMobile, url: url, token: self.$parent.token}, data))}).then((resData) => {
+        util.post('alipay_wap', {sign: api.serialize(Object.assign({is_mobile: +this.isMobile, url: url, token: self.token}, data))}).then((resData) => {
           api.checkAjax(self, resData, () => {
             location.href = resData.url
           })
@@ -413,7 +386,7 @@
         var data = api.checkFrom(form, this, this.isMobile)
         if (!data) return false
         data.is_default = 1
-        data.token = this.$parent.token
+        data.token = this.token
         var self = this
         util.post('addAddress', {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
@@ -425,7 +398,7 @@
       },
       getAddress () {
         var self = this
-        util.post('showAddress', {sign: api.serialize({token: this.$parent.token, user_id: this.$parent.user_id})}).then(function (res) {
+        util.post('showAddress', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.addressData = res
             self.addressShowData = self.addressData.slice(0, 3)
@@ -444,7 +417,7 @@
       },
       selectAddress (k) {
         if (this.isMobile) {
-          this.$store.commit('SET_ADDRESS', {url: this.params1 + '/' + this.params2, num: this.$parent.number})
+          this.$store.commit('SET_ADDRESS', {url: this.params1 + '/' + this.params2, num: this.number})
           this.$router.push({path: '/mobile/address?select'})
         } else {
           this.addressObject = this.addressShowData[k]
@@ -452,7 +425,7 @@
       },
       setDefault (id) {
         var self = this
-        util.post('setDefault', {sign: api.serialize({token: this.$parent.token, post_id: id})}).then(function (res) {
+        util.post('setDefault', {sign: api.serialize({token: this.token, post_id: id})}).then(function (res) {
           api.checkAjax(self, res, () => {
             api.tips('设置成功', self.isMobile)
             self.getAddress()
@@ -489,29 +462,70 @@
         this.closeMask()
         var accept = document.querySelector('#accept')
         accept.checked = true
+      },
+      pageInit () {
+        if (this.token && this.number) {
+          this.totalPrice = this.detail.one_amount_value * +this.number
+          if (this.detail.isLoan) {
+            this.totalPrice /= 2
+          }
+          if (this.addressObj.id) {
+            this.addressObject = this.addressObj
+          } else if (this.params2 === '1') {
+            this.getAddress()
+          }
+          var url = ''
+          var data = {token: this.token, num: this.number}
+          if (this.params2 === '1') {
+            url = 'buy_miner'
+            data = Object.assign({miner_id: this.params1}, data)
+          } else {
+            url = 'productOrder'
+            data = Object.assign({product_id: this.params1}, data)
+          }
+          var self = this
+          util.post(url, {sign: api.serialize(data)}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.balance = res.balance
+              if (res.output) {
+                self.detail.output = res.output
+                self.detail.total_electric_fee = res.total_electric_fee
+              }
+              if (self.params2 === '2') {
+                self.content = res.part_content
+              } else {
+                self.content = res.content
+              }
+              if (self.params2 !== '1') {
+                self.content1 = res.content1
+              }
+            })
+          })
+        } else {
+          setTimeout(() => {
+            this.pageInit()
+          }, 5)
+        }
       }
     },
     mounted () {
       window.addEventListener('scroll', this.fixTop, false)
       var p = localStorage.getItem('params')
+      var p2 = localStorage.getItem('buy_info')
       if (p) {
         p = JSON.parse(p)
         this.params1 = p[0]
         this.params2 = p[1]
-      }
-      if (this.page === 'minerShop') {
-        this.totalPrice = this.$parent.detail.one_amount_value * +this.$parent.number
-        if (this.$parent.show) {
-          this.totalPrice /= 2
-        }
       } else {
-        this.totalPrice = this.$parent.detail.total_price
+        this.$router.push({path: '/minerShop/detail'})
       }
-      if (this.addressObj.id) {
-        this.addressObject = this.addressObj
-      } else if (this.params2 === '1') {
-        this.getAddress()
+      if (p2) {
+        this.detail = JSON.parse(p2)
+        this.number = this.detail.number
+      } else {
+        this.$router.push({path: '/minerShop/detail'})
       }
+      this.pageInit()
     },
     filters: {
       format: api.decimal

@@ -145,9 +145,9 @@
           }
         }
         if (str) {
-          var that = this.$parent.$parent
+          var that = this.$parent
           var money = that.detail.one_amount_value * that.number
-          if (+str < money) {
+          if (+that.balance < money) {
             api.tips('余额不足，请先充值', this.isMobile)
             return false
           }

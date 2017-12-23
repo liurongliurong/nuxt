@@ -167,8 +167,7 @@
       }
     }
     .form{
-      margin: 0 auto 20px auto;
-      padding:20px 130px;
+      margin: 20px auto;
       @include form(v)
       width:450px;
       .input{
