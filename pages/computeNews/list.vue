@@ -1,6 +1,6 @@
 <template>
   <pageFrame isComponent="true">
-    <WebInfoList class="currency_right"></WebInfoList>
+    <WebInfoList class="currency_right" style="min-height:900px;"></WebInfoList>
   </pageFrame>
 </template>
 

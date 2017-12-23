@@ -1,7 +1,7 @@
 <template>
   <pageFrame isComponent="true">
     <template v-if="isMobile === 0">
-      <div class="museum_right1" style="padding-bottom: 60px !important;">
+      <div class="museum_right1" style="padding-bottom: 60px !important;min-height:900px;">
         <h1 style="position:relative;">矿机制造商<span class="icon iconfont icon-jiantou" style="transform:rotate(90deg);position:absolute;top:3px;"></span></h1>
         <div class="museum_lists1" v-for="n, k in museum" :key="k">
           <div class="museuming1"><img :src="n.image"/></div>
@@ -136,7 +136,7 @@
 <style lang="scss">
   .museum_right1{
     float: left;
-    width: 1002px;
+    width: 1110px;
     background: white;
     padding:32px 62px 0 62px;
     box-sizing: border-box;
