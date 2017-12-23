@@ -139,13 +139,13 @@
           this.tips = ff[data.n].title
           return false
         }
-        util.post('depositMessage', {sign: api.serialize({token: this.token, dep_name: encodeURIComponent(ff.dep_name.value), dep_tel: ff.dep_tel.value, dep_bdc: encodeURIComponent(ff.dep_bdc.value), dep_type: encodeURIComponent(ff.dep_type.value), dep_number: ff.dep_number.value, code: ff.code.value})}).then(function (res) {
-          if (!res.code) {
+        util.post('depositMessage', {sign: api.serialize({token: this.token, dep_name: encodeURIComponent(ff.dep_name.value), dep_tel: ff.dep_tel.value, dep_bdc_id: ff.dep_bdc_id.value, dep_type: encodeURIComponent(ff.dep_type.value), dep_number: ff.dep_number.value, code: ff.code.value})}).then(function (res) {
+          api.checkAjax(self, res, () => {
             self.success = true
             setTimeout(function () {
               window.location.reload()
             }, 3000)
-          }
+          })
         })
       },
       test (e) {
