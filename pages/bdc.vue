@@ -45,7 +45,7 @@
         <div class="pc_box">
           <div class="header">{{item.bdc_name}}</div>
           <div class="overflow">
-            <img class="float_left" :src="item.bdc_img" alt="">
+            <img class="float_left" :src="item.bdc_img_arr[0]" alt="">
             <div class="float_left tip">
               <div class="line"v-for="params in item.params">
                 <span>{{params.name}}</span>
@@ -83,12 +83,10 @@
     </div>
   </div>
 </template>
-
 <script>
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
-
   export default {
     data () {
       return {
@@ -139,13 +137,13 @@
           this.tips = ff[data.n].title
           return false
         }
-        util.post('depositMessage', {sign: api.serialize({token: this.token, dep_name: encodeURIComponent(ff.dep_name.value), dep_tel: ff.dep_tel.value, dep_bdc: encodeURIComponent(ff.dep_bdc.value), dep_type: encodeURIComponent(ff.dep_type.value), dep_number: ff.dep_number.value, code: ff.code.value})}).then(function (res) {
-          if (!res.code) {
+        util.post('depositMessage', {sign: api.serialize({token: this.token, dep_name: encodeURIComponent(ff.dep_name.value), dep_tel: ff.dep_tel.value, dep_bdc_id: ff.dep_bdc_id.value, dep_type: encodeURIComponent(ff.dep_type.value), dep_number: ff.dep_number.value, code: ff.code.value})}).then(function (res) {
+          api.checkAjax(self, res, () => {
             self.success = true
             setTimeout(function () {
               window.location.reload()
             }, 3000)
-          }
+          })
         })
       },
       test (e) {
@@ -203,7 +201,6 @@
     }
   }
 </script>
-
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .bdc{
@@ -530,12 +527,10 @@
     .introduce {
       width: 100%;
       position: relative;
-
       .content {
         padding: 0 15px;
         position: absolute;
         bottom: 0;
-
         .title {
           text-align: center;
           font-size: 18px;
@@ -543,40 +538,33 @@
           color: #fff;
           font-weight: bold;
         }
-
         .text {
           padding: 0 10px;
           line-height: 26px;
           color: #bfbfbf;
-
           i {
             color: #ff9f00;
           }
         }
       }
     }
-
     .bdc-lists {
       width: 100%;
       height: auto;
       padding: 45px 15px 0 15px;
       background: #13141f;
       margin-bottom: -61px;
-
       .card {
         @include flex(center, center, column);
         margin-bottom: 20px;
-
         .title {
           color: #fff;
           font-size: 18px;
           line-height: 45px;
         }
-
         img {
           margin: 20px 0;
         }
-
         .line {
           width: 100%;
           line-height: 45px;
@@ -585,7 +573,6 @@
           @include flex(space-between, center);
           font-size: 15px;
           border-bottom: solid 1px #3a3a3a;
-
           .name {
             color: #fff;
           }
@@ -594,7 +581,6 @@
           }
         }
       }
-
       .apply {
         height: 43px;
         line-height: 43px;
@@ -612,7 +598,6 @@
           color: #1b1b1b;
         }
       }
-
       .tips {
         text-align: center;
         padding-bottom: 20px;
