@@ -326,7 +326,7 @@
             height:30px;
             line-height:30px;
             text-align: center;
-            color:$red;
+            color:white;
             font-size: 12px;
           }
           .btn{
