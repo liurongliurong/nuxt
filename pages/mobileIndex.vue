@@ -130,9 +130,9 @@ export default {
       ],
       page3Text: ['用电合规电力稳定', '专业团队安全可靠', '信息透明收益透明', '全程存证合法有效'],
       page4Text: [
-        {title: '云算力', sub: 'CLOUD MINING', link: '/minerShop/miner/2'},
-        {title: '品牌矿机', sub: 'MINER', link: '/minerShop/miner/1'},
-        {title: 'BDC托管', sub: 'BDC ESCROW', link: '/bdc'}
+        {title: '云算力', sub: 'CLOUD MINING', link: 'minerShop/miner/2'},
+        {title: '品牌矿机', sub: 'MINER', link: 'minerShop/miner/1'},
+        {title: 'BDC托管', sub: 'BDC ESCROW', link: 'bdc'}
       ]
     }
   },
