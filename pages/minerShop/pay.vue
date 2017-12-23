@@ -233,7 +233,7 @@
         contract: '',
         addressShowData: [],
         addressData: [],
-        addressObject: {id: ''},
+        addressObject: {},
         addressForm: {},
         payNo: 2,
         rate: 3,
@@ -248,6 +248,7 @@
     },
     methods: {
       pay (e) {
+        console.log(this.addressObject, this.addressForm)
         var ff = e.target
         var url = ''
         var callbackUrl = ''
@@ -402,7 +403,7 @@
           api.checkAjax(self, res, () => {
             self.addressData = res
             self.addressShowData = self.addressData.slice(0, 3)
-            self.addressObject = self.addressShowData[0]
+            self.addressObject = self.addressShowData[0] || {}
           })
         })
       },
@@ -473,7 +474,6 @@
             this.addressObject = this.addressObj
           } else if (this.params2 === '1') {
             this.getAddress()
-            console.log(this.addressObject)
           }
           var url = ''
           var data = {token: this.token, num: this.number}
