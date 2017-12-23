@@ -1,10 +1,10 @@
 <template>
-  <div class="millsList">
-    <h2>
+  <div class="millsList" v-if="total">
+    <h5>
       <span class="one">热门矿机推荐</span>
       <span class="two">保全网提供全流程区块链存证、保全业务</span>
       <router-link class="get_more" to="/minerShop/miner/1">更多矿机热门 ></router-link>
-    </h2>
+    </h5>
     <div class="mill">
       <div v-for="n,k in minerData" class="listmill">
         <a href="javascript:;" @click="goPay(n.id)">
@@ -49,7 +49,8 @@
         items: {'one_amount_value': {title: '矿机单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'buyed_amount': {title: '剩余数量', unit: '台'}},
         nav: {'name': {title: '矿机名称', unit: ''}, 'amount': {title: '总数量', unit: '台'}, 'one_amount_value': {title: '单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'left_num': {title: '剩余数量', unit: '台'}},
         list: [],
-        minerData: []
+        minerData: [],
+        total: ''
       }
     },
     methods: {
@@ -63,6 +64,7 @@
       util.post('showTopMiner', {sign: api.serialize({token: this.token})}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.minerData = res
+          self.total = res.length
         })
       }).catch(res => {
         console.log(res)
@@ -156,10 +158,10 @@
     margin:0 auto;
     background: #f6f7fb;
     margin-top: 0 !important;
-    h2{
-      width: 1180px;
+    h5{
+      width: 1180px !important;
       margin:0 auto;
-      margin-bottom: 20px;
+      margin-bottom: 20px !important;
       text-align: left;
       .one{
         font-size: 28px !important;
