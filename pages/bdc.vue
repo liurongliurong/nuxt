@@ -45,7 +45,7 @@
         <div class="pc_box">
           <div class="header">{{item.bdc_name}}</div>
           <div class="overflow">
-            <img class="float_left" :src="item.bdc_img" alt="">
+            <img class="float_left" :src="item.bdc_img_arr[0]" alt="">
             <div class="float_left tip">
               <div class="line"v-for="params in item.params">
                 <span>{{params.name}}</span>
