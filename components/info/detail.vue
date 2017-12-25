@@ -23,7 +23,26 @@
       }
     },
     methods: {
-      clickcontent (type) {
+      contentDetail () {
+        var self = this
+        var url = ''
+        if (this.$route.name === 'digitalCurrency') {
+          url = 'showCoinInfoDetail'
+          util.post(url, {sign: 'token=0&coin_id=' + this.params1}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.content = res
+            })
+          })
+        } else {
+          url = 'content'
+          util.post(url, {sign: 'token=0&news_id=' + this.params1}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.content = res
+            })
+          })
+        }
+      },
+     clickcontent (type) {
         let id_lists = JSON.parse(localStorage.getItem('all_id'))
         for (let i = 0; i < id_lists.length; i++) {
           if (this.params1 === id_lists[i].id) {
@@ -39,43 +58,26 @@
             break
           }
         }
-        this.getContent()
-      },
-      getContent () {
-        let url = ''
-        if (this.$route.name === 'digitalCurrency') {
-          url = 'showCoinInfoDetail'
-          util.post(url, {sign: 'token=0&coin_id=' + this.params1})
-          .then(res => {
-            api.checkAjax(this, res, () => {
-              this.content = res
-            })
-          })
-        } else {
-          url = 'content'
-          util.post(url, {sign: 'token=0&news_id=' + this.params1})
-          .then(res => {
-            api.checkAjax(this, res, () => {
-              this.content = res
-            })
-          })
-        }
+        this.contentDetail()
       }
     },
     mounted () {
-      let p = localStorage.getItem('icon_id')
-      let id_lists = JSON.parse(localStorage.getItem('all_id'))
+      var p = localStorage.getItem('icon_id')
+      var id_lists = JSON.parse(localStorage.getItem('all_id'))
+      console.log(id_lists)
       if (p) {
         p = JSON.parse(p)
         this.params1 = p[0]
       }
-      for (let i = 0; i < id_lists.length; i++) {
+      for (var i = 0; i < id_lists.length; i++) {
         if (this.params1 === id_lists[i].id) {
+          console.log(id_lists[i + 1].title)
+          console.log(i)
           this.nextTitle = id_lists[i + 1] ? id_lists[i + 1].title : '没有下一篇了'
           this.prevTitle = id_lists[i - 1] ? id_lists[i - 1].title : '没有上一篇了'
         }
       }
-      this.getContent()
+      this.contentDetail()
     }
   }
 </script>
@@ -126,9 +128,6 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-      }
-      button:disabled{
-        color: #999;
       }
       :nth-child(2){
         text-align: right;
