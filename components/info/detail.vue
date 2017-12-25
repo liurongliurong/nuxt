@@ -23,74 +23,45 @@
       }
     },
     methods: {
-      clickcontent (type) {
-        var p = localStorage.getItem('icon_id')
-        var id_lists = JSON.parse(localStorage.getItem('all_id'))
-        console.log(id_lists)
+      contentDetail () {
         var self = this
         var url = ''
-        if (p) {
-          p = JSON.parse(p)
-          this.params1 = p[0]
+        if (this.$route.name === 'digitalCurrency') {
+          url = 'showCoinInfoDetail'
+          util.post(url, {sign: 'token=0&coin_id=' + this.params1}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.content = res
+            })
+          })
+        } else {
+          url = 'content'
+          util.post(url, {sign: 'token=0&news_id=' + this.params1}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.content = res
+            })
+          })
         }
-        if (type === -1) {
-          for (var i = 0; i < id_lists.length; i++) {
-            if (this.params1 === id_lists[i].id) {
-              this.params1 = id_lists[i - 1] ? id_lists[i - 1].id : this.params1
-              this.prevTitle = id_lists[i - 1] ? id_lists[i - 1].title : '没有上一篇了'
-              this.nextTitle = id_lists[i + 1] ? id_lists[i + 1].title : '没有下一篇了'
-            }
-          }
-          console.log(this.params1, this.prevTitle)
-          // if (this.$route.name === 'digitalCurrency') {
-          //   url = 'showCoinInfoDetail'
-          //   util.post(url, {sign: 'token=0&coin_id=' + this.params1}).then(function (res) {
-          //     api.checkAjax(self, res, () => {
-          //       self.content = res
-          //     })
-          //   })
-          // } else {
-          //   url = 'content'
-          //   util.post(url, {sign: 'token=0&news_id=' + this.params1}).then(function (res) {
-          //     api.checkAjax(self, res, () => {
-          //       self.content = res
-          //     })
-          //   })
-          // }
-        } else if (type === 1) {
-          for (var i = 0; i < id_lists.length; i++) {
-            if (this.params1 === id_lists[i].id) {
-              // index === i
-              console.log(i)
-              // console.log(id_lists[i + 1].title)
+      },
+     clickcontent (type) {
+        let id_lists = JSON.parse(localStorage.getItem('all_id'))
+        for (let i = 0; i < id_lists.length; i++) {
+          if (this.params1 === id_lists[i].id) {
+            if (type === 1) {
               this.params1 = id_lists[i + 1] ? id_lists[i + 1].id : this.params1
-              this.prevTitle = id_lists[i - 1] ? id_lists[i - 1].title : '没有上一篇了'
-              this.nextTitle = id_lists[i + 1] ? id_lists[i + 1].title : '没有下一篇了'
-              break
+              this.prevTitle = id_lists[i] ? id_lists[i].title : '没有上一篇了'
+              this.nextTitle = id_lists[i + 2] ? id_lists[i + 2].title : '没有下一篇了'
+            } else if (type === -1) {
+              this.params1 = id_lists[i - 1] ? id_lists[i - 1].id : this.params1
+              this.prevTitle = id_lists[i - 2] ? id_lists[i - 2].title : '没有上一篇了'
+              this.nextTitle = id_lists[i] ? id_lists[i].title : '没有下一篇了'
             }
+            break
           }
-          console.log(this.params1, this.prevTitle)
-          // if (this.$route.name === 'digitalCurrency') {
-          //   url = 'showCoinInfoDetail'
-          //   util.post(url, {sign: 'token=0&coin_id=' + this.params1}).then(function (res) {
-          //     api.checkAjax(self, res, () => {
-          //       self.content = res
-          //     })
-          //   })
-          // } else {
-          //   url = 'content'
-          //   util.post(url, {sign: 'token=0&news_id=' + this.params1}).then(function (res) {
-          //     api.checkAjax(self, res, () => {
-          //       self.content = res
-          //     })
-          //   })
-          // }
         }
+        this.contentDetail()
       }
     },
     mounted () {
-      var self = this
-      var url = ''
       var p = localStorage.getItem('icon_id')
       var id_lists = JSON.parse(localStorage.getItem('all_id'))
       console.log(id_lists)
@@ -106,22 +77,7 @@
           this.prevTitle = id_lists[i - 1] ? id_lists[i - 1].title : '没有上一篇了'
         }
       }
-      if (this.$route.name === 'digitalCurrency') {
-        url = 'showCoinInfoDetail'
-        util.post(url, {sign: 'token=0&coin_id=' + this.params1}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.content = res
-          })
-        })
-      } else {
-        url = 'content'
-        util.post(url, {sign: 'token=0&news_id=' + this.params1}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.content = res
-
-          })
-        })
-      }
+      this.contentDetail()
     }
   }
 </script>
@@ -172,9 +128,6 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-      }
-      button:disabled{
-        color: #999;
       }
       :nth-child(2){
         text-align: right;
