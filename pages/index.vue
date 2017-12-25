@@ -5,19 +5,18 @@
       <div class="home_text">
         <div class="main">
           <div class="list">
-            <div class="item" v-for="a,k in ad.items">
-              <img :src="a.img1"/>
+            <div class="item" v-for="k in 4">
+              <img :src="require('@/assets/images/home/feature'+k+'.png')"/>
             </div>
           </div>
         </div>
       </div>
-      <minner-list></minner-list>
-      <MyData></MyData>
+      <DataList></DataList>
       <WebInfo></WebInfo>
       <div class="home_title">
         <div class="main">
-          <h1>{{ad.title}}</h1>
-          <p>{{ad.desc}}</p>
+          <h1>算力驱动未来，信任链接天下</h1>
+          <p>全球算力产业链资源整合，基于区块链的分布式算力输出平台</p>
           <div class="list">
             <div class="item" v-for="s,k in suanLi">
               <div class="blurborder">
@@ -70,8 +69,7 @@
 <script>
   import util from '@/util'
   import api from '@/util/function'
-  import MyData from '@/components/home/dataList'
-  import MinnerList from '@/components/home/MinerList'
+  import DataList from '@/components/home/DataList'
   import Swiper from '@/components/common/Swipe'
   import WebInfo from '@/components/home/WebInfo'
   import SideBar from '@/components/home/SideBar'
@@ -79,15 +77,11 @@
   import { mapState } from 'vuex'
   export default {
     components: {
-      Swiper, MyData, WebInfo, SideBar, DataMap, MinnerList
+      Swiper, DataList, WebInfo, SideBar, DataMap
     },
     data () {
       return {
-        nav: [{title: '品牌矿机', desc: '无忧购买矿机', url: '/minerShop/miner/1'}, {title: '云算力', desc: '掌握产业动态', url: '/minerShop/miner/2'}, {title: 'BDC托管', desc: '多个BDC中心', url: '/bdc'}, {title: '产业资讯', desc: '掌握产业动态', url: '/quickNews'}],
-        data: [1, 1, 1],
         link: [{route: 'http://www.tsinghua-zj.edu.cn/'}, {route: 'http://www.gosun.com/'}, {route: 'http://www.enjoyor.cc/'}, {route: 'https://canaan.io/'}, {route: 'http://www.ebang.com.cn/'}, {route: 'https://www.suanlibao.com/'}],
-        newsNav: [{title: '热点快讯·不止于此', desc: '开启算力新篇章'}, {title: '实时交易信息', desc: '前往了解更多'}, {title: '挖矿币种资料', desc: '前往了解更多'}],
-        ad: {title: '算力驱动未来，信任链接天下', desc: '全球算力产业链资源整合，基于区块链的分布式算力输出平台', items: [{img1: require('@/assets/images/home/feature1.png')}, {img1: require('@/assets/images/home/feature2.png')}, {img1: require('@/assets/images/home/feature3.png')}, {img1: require('@/assets/images/home/feature4.png')}]},
         suanLi: [{title: 'SHA256比特币算力', desc: 'Bitcoin数字货币算力', bardesc: ''}, {title: '卷积神经算法算力', desc: '为CNN卷积神经', bardesc: '网络提供分布式加速服务'}, {title: 'EquiHash零币算力', desc: 'ZeroCASH提供隐私保护', bardesc: '及零知识证明的基础算力'}, {title: '智能合约算力', desc: '全球贸易智能合约', bardesc: '服务的分布式基础算力'}, {title: 'Curecoin算力', desc: '蛋白质折叠计算，', bardesc: '生化反应模型，用于发现新药'}, {title: '游戏币兑换算力', desc: '全球游戏产业', bardesc: '虚拟货币通用兑换算力'}, {title: 'Ethash以太算力', desc: '以太坊网络', bardesc: 'ETC，ETH算力'}, {title: '公证算力', desc: '提供区块链公证服务', bardesc: '存证保全的基础算力'}],
         mapData: [{title: '全网算力', name: 'hashrate', unit: 'PH/s'}, {title: '全网困难度', name: 'difficulty', unit: 'T'}],
         computeData: {},
@@ -99,12 +93,10 @@
       goMobile () {
         if (api.checkEquipment()) {
           this.$store.commit('SET_EQUIPMENT', 1)
+          this.$router.replace({path: '/mobileIndex'})
         } else {
           this.$store.commit('SET_EQUIPMENT', 0)
         }
-      },
-      goPage (url, k) {
-        this.$router.push({path: url})
       },
       getComputeData () {
         util.post('showDifficulty', {sign: 'token=0'})
