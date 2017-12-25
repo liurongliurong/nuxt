@@ -9,11 +9,7 @@
             <span class="input_btn iconfont">&#xe63e;</span>
           </div> -->
         </div>
-        <div class="sort_body" v-if="sortNav||sortType">
-          <!-- <div class="item" v-if="sortType">
-            <span>{{sortType.title}}</span>
-            <a :class="{active:$route.params.type==(+k+1)}" href="javascript:;" @click="setType((+k+1))" v-for="s,k in sortType.options">{{s}}</a>
-          </div> -->
+        <div class="sort_body" v-if="sortNav">
           <div class="item" v-for="s,i in sortNav" v-if="sortNav">
             <span>{{s.title}}</span>
             <a href="javascript:;" :class="{active:$parent.status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
@@ -26,9 +22,6 @@
         </div>
       </div>
       <div class="mobile_sort" v-else-if="isMobile">
-        <!-- <div class="type_img" v-if="sortType">
-          <div class="item" @click="setType((+k+1))" v-for="s,k in sortType.options">{{s}}</div>
-        </div> -->
         <div class="mobile_sort_items" v-for="s,i in sortNav" v-if="sortNav">
           <a class="item" href="javascript:;" :class="{active:$parent.status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
         </div>
@@ -53,9 +46,6 @@
       },
       sortNav: {
         type: Array
-      },
-      sortType: {
-        type: Object
       }
     },
     data () {
@@ -77,10 +67,6 @@
         this.$parent.now = 1
         this.$parent.status = n
         this.$parent.fetchData()
-      },
-      setType (k) {
-        this.$parent.status = 0
-        this.$router.push({path: '/minerShop/miner/' + k})
       }
     },
     computed: {
