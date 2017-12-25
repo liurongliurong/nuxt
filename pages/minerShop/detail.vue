@@ -561,8 +561,9 @@
         float: left;
         margin-right: 20px;
         img{
-          width: 100%;
-          height: 323px;
+          width: 50%;
+          // height: 323px;
+          margin-top: 78px;
         }
       }
       .miner_right{

@@ -26,11 +26,11 @@
             <div class="bigimg">
               <img :src="n.image" v-for="n, k in bigimglist" class="teimg"/>
             </div>
-            <div class="bigtab">
+            <!-- <div class="bigtab">
               <div class="bighover" v-for="d,m in bigimglist" :class="{'active': show === m}" @mouseover="hoverwhite(m)">
                 <h5>{{d.title}}</h5>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="bigbottom">
             <div class="numbig" v-for="n, m in miners" :key="m">
