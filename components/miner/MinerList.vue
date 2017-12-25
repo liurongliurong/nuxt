@@ -50,7 +50,11 @@
         </div>
       </div>
       <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
-      <p v-if="showno" class="showno loadmore">暂无数据······</p>
+      <!-- <p v-if="showno" class="showno loadmore">暂无数据······</p> -->
+      <div class="nodata" v-if="showno">
+        <div class="nodata_img"></div>
+        <p>即将上线，敬请期待</p>
+      </div>
     </div>
   </div>
 </template>
@@ -310,22 +314,6 @@
            }
         }
       }
-      .nodata{
-        background: #fff;
-        min-height:500px;
-        padding-top:100px;
-        text-align: center;
-        .nodata_img{
-          display: inline-block;
-          width: 305px;
-          height: 234px;
-          background: url('../../assets/images/css_sprites.png') -10px -10px;
-        }
-        p{
-          color:$light_black;
-          margin-top:15px
-        }
-      }
     }
     .mobileminer{
       width: 100%;
@@ -397,6 +385,22 @@
   @media  screen and (max-width: 600px) {
     .millsList{
       margin-top:0;
+    }
+  }
+  .nodata{
+    background: #fff;
+    min-height:500px;
+    padding-top:100px;
+    text-align: center;
+    .nodata_img{
+      display: inline-block;
+      width: 305px;
+      height: 234px;
+      background: url('../../assets/images/css_sprites.png') -10px -10px;
+    }
+    p{
+      color:$light_black;
+      margin-top:15px
     }
   }
 </style>

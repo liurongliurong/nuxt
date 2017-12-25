@@ -1,5 +1,5 @@
 <template>
-  <section class="product_list">
+  <section class="product_list" style="padding-top:0;">
     <div class="box">
       <slot></slot>
       <div class="data">
@@ -37,6 +37,10 @@
               </template>
             </div>
           </div>
+          <div class="nodata" v-if="$parent.show">
+            <div class="nodata_img"></div>
+            <p>即将上线，敬请期待</p>
+          </div>
         </template>
         <template v-else>
           <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
@@ -65,12 +69,12 @@
             </div>
           </div>
           <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
-          <p v-if="showno" class="showno loadmore">暂无数据······</p>
+          <!-- <p v-if="showno" class="showno loadmore">暂无数据······</p> -->
+          <div class="nodata" v-if="showno">
+            <div class="nodata_img"></div>
+            <p>即将上线，敬请期待</p>
+          </div>
         </template>
-        <div class="nodata" v-if="$parent.show">
-          <div class="nodata_img"></div>
-          <p>即将上线，敬请期待</p>
-        </div>
       </div>
     </div>
   </section>
@@ -294,22 +298,6 @@
           }
         }
       }
-      .nodata{
-        background: #fff;
-        min-height:500px;
-        padding-top:100px;
-        text-align: center;
-        .nodata_img{
-          display: inline-block;
-          width: 305px;
-          height: 234px;
-          background: url('../../assets/images/css_sprites.png') -10px -10px;
-        }
-        p{
-          color:$light_black;
-          margin-top:15px
-        }
-      }
     }
     @media screen and (max-width: $mobile) {
       margin-top:0;
@@ -379,4 +367,20 @@
         text-align: center;
         line-height: 2rem;
     }
+    .nodata{
+        background: #fff;
+        min-height:500px;
+        padding-top:100px;
+        text-align: center;
+        .nodata_img{
+          display: inline-block;
+          width: 305px;
+          height: 234px;
+          background: url('../../assets/images/css_sprites.png') -10px -10px;
+        }
+        p{
+          color:$light_black;
+          margin-top:15px
+        }
+      }
 </style>

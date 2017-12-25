@@ -3,6 +3,10 @@
     <h3>{{content.title}}<a class="button" to="#" onclick="window.history.go(-1)">< 返回</a></h3>
     <!-- <p class="dateline">{{content.dateline}}</p> -->
     <div class="info_detail" v-html="content.content" style="padding:0 50px;"></div>
+    <div class="next_prev">
+      <p @click="clickcontent(-1)">上一篇：<span></span></p>
+      <p @click="clickcontent(1)">上一篇：<span></span></p>
+    </div>
   </section>
 </template>
 
@@ -13,18 +17,32 @@
     data () {
       return {
         content: {},
-        params1: ''
+        params1: '',
+        all_id: ''
+      }
+    },
+    methods: {
+      clickcontent (type) {
+        var id_lists = JSON.parse(localStorage.getItem('all_id'))
+        console.log(id_lists)
       }
     },
     mounted () {
       var self = this
       var url = ''
       var p = localStorage.getItem('icon_id')
+      var id_lists = JSON.parse(localStorage.getItem('all_id'))
+      console.log(id_lists)
       if (p) {
         p = JSON.parse(p)
         this.params1 = p[0]
       } else {
         this.$router.push({path: '/equipments/list'})
+      }
+      for (var i = 0; i < id_lists.length; i++) {
+        if (this.params1 === id_lists[i].id) {
+          
+        }
       }
       if (this.$route.name === 'digitalCurrency') {
         url = 'showCoinInfoDetail'
@@ -38,6 +56,7 @@
         util.post(url, {sign: 'token=0&news_id=' + this.params1}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.content = res
+
           })
         })
       }
