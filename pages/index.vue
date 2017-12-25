@@ -13,6 +13,7 @@
       </div>
       <minner-list></minner-list>
       <MyData></MyData>
+      <WebInfo></WebInfo>
       <div class="home_title">
         <div class="main">
           <h1>{{ad.title}}</h1>
@@ -29,7 +30,6 @@
           </div>
         </div>
       </div>
-      <WebInfo></WebInfo>
       <div class="my_map">
         <div class="main">
           <h1 class="home_item_title">持续扩张的数据中心让跨域体验更流畅</h1>
@@ -215,7 +215,6 @@
       margin-bottom:25px;
     }
     .home_title{
-      margin-top: 48px;
       .main{
         @include main
         @include gap(30,v,margin)

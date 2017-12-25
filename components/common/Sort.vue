@@ -74,7 +74,7 @@
         this.$parent.getList(n)
       },
       setStatus (n) {
-        console.log(n)
+        this.$parent.now = 1
         this.$parent.status = n
         this.$parent.fetchData()
       },
