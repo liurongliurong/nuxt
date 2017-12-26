@@ -25,7 +25,7 @@
       MinerList
     },
     mounted () {
-      this.addressData = this.$parent.addressData[this.$parent.addressNo]
+      // this.addressData = this.$parent.addressData[this.$parent.addressNo]
       var self = this
       util.post('showTopMiner', {sign: api.serialize({token: this.token})}).then(function (res) {
         api.checkAjax(self, res, () => {

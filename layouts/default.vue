@@ -48,6 +48,12 @@
       })
       if (this.$route.name === 'mobileIndex') {
         document.documentElement.style.fontSize = width / 750*100 + 'px'
+        window.addEventListener('orientationchange', () => {
+          document.documentElement.style.fontSize = width / 750*100 + 'px'
+        })
+        window.addEventListener('resize', () => {
+          document.documentElement.style.fontSize = width / 750*100 + 'px'
+        })
       }
       if (api.checkEquipment()) {
         this.$store.commit('SET_EQUIPMENT', 1)
