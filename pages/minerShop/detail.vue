@@ -86,9 +86,9 @@
             </div>
             <div class="price_text1">总算力：<span class="money">{{totalHash|format}}T</span></div>
             <div class="price_text1">需支付：<span class="money">{{totalPrice|format}}元</span></div>
-            <button class="btn" disabled v-if="leftStatus||detail.status===7">已售罄</button>
+            <button class="btn" disabled v-if="detail.status===7">已售罄</button>
             <button :class="['btn buy_btn', {error: buyStatus===1}, {over: buyStatus===2}]" @click="checkPay($event, false)" v-else :disabled="detail.status===4">立即购买</button>
-            <button class="btn loan_btn" @click="checkPay($event, true)" v-if="detail.status!==4&&params2==='2'&&!leftStatus">分期购买</button>
+            <button class="btn loan_btn" @click="checkPay($event, true)" v-if="detail.status!==4&&params2==='2'&&detail.is_loan===1">分期购买</button>
           </div>
         </div>
       </div>

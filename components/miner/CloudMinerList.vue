@@ -8,7 +8,7 @@
         </template>
         <template v-else-if="isMobile===1">
           <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
-            <MobileCloudMinerItem v-for="d,k in cloudMinerDate" :d="d" @click="goPay(d.id, d.sell_type)" :key="k"></MobileCloudMinerItem>
+            <MobileCloudMinerItem v-for="d,k in cloudMinerDate" :d="d" @click="goPay(d.id)" :key="k"></MobileCloudMinerItem>
           </div>
           <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
         </template>
@@ -92,17 +92,8 @@
           this.loading = false
         }
       },
-      goPay (id, selltype) {
-        // var info = JSON(localStorage.getItem('info'))
-        var data = {}
-        if (selltype === 1) {
-          // data = {orderType: '2', orderId: id}
-          localStorage.setItem('params', JSON.stringify([ id, '2']))
-        } else {
-          // data = {orderType: '0', orderId: id}
-          localStorage.setItem('params', JSON.stringify([ id, '0']))
-        }
-        // localStorage.setItem('info', JSON.stringify(Object.assign(info, data)))
+      goPay (id) {
+        localStorage.setItem('params', JSON.stringify([ id, '2']))
         this.$router.push({path: '/' + this.page + '/detail/'})
       }
     },

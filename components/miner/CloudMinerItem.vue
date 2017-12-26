@@ -40,7 +40,7 @@
     },
     data () {
       return {
-        dataNav: {'amount': {title: '出售总数', unit: '台'}, 'one_amount_value': {title: '每台单价', unit: '元'}, 'hash': {title: '每台算力', unit: 'T'}, 'power': {title: '功耗', unit: 'T'}, 'hashtype': {title: '算力类型', unit: ''}, 'leftNum': {title: '剩余数量', unit: '台'}},
+        dataNav: {'amount': {title: '出售总数', unit: '台'}, 'one_amount_value': {title: '每台单价', unit: '元'}, 'hash': {title: '每台算力', unit: 'T'}, 'power': {title: '功耗', unit: 'W/台'}, 'hashtype': {title: '算力类型', unit: ''}, 'leftNum': {title: '剩余数量', unit: '台'}},
         str: {4: '预热', 5: '热销'}
       }
     }
@@ -102,6 +102,18 @@
         background: none;
         border:0;
         color: #999;
+      }
+    }
+    &.disabled{
+      color:$light_black;
+      h3{
+        color:$light_black;
+        .icon_currency{
+          display: none;
+        }
+      }
+      .info_box .info:first-child .text{
+        color:$light_black;
       }
     }
   }

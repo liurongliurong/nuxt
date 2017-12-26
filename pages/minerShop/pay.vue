@@ -354,7 +354,14 @@
           this.alipay(url, data)
         } else {
           api.tips(str, this.isMobile, () => {
-            this.$router.push({path: url})
+            if (this.isMobile) {
+              this.$router.push({path: url})
+            } else {
+              var info = JSON.parse(localStorage.getItem('info'))
+              var data = {payType: this.params2, addressData: this.addressObject}
+              localStorage.setItem('info', JSON.stringify(Object.assign(info, data)))
+              this.$router.push({path: '/minerShop/paySuccess'})
+            }
           })
         }
       },
