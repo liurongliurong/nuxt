@@ -74,7 +74,8 @@
         museum: [],
         showcontent: false,
         content: '',
-        showno: false
+        showno: false,
+        allid: []
       }
     },
     head () {
@@ -92,6 +93,8 @@
         util.post('NewsReviewList', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.list = res.list
+            self.allid = res.id_list
+            localStorage.setItem('all_id', JSON.stringify(self.allid))
             self.showImg = !res.total
             if (self.now > 1) return false
             self.len = Math.ceil(res.total / 5)

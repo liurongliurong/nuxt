@@ -20,7 +20,7 @@
           </div>
         </template>
         <template v-else>
-          <router-link to="/webInfo/issues">帮助</router-link>
+          <router-link to="/webInfo/issues/list">帮助</router-link>
           <router-link to="/webInfo/aboutUs">关于</router-link>
           <template v-if="token===0">
             <router-link to="/auth/login">登录</router-link>

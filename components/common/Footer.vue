@@ -62,7 +62,7 @@
   export default {
     data () {
       return {
-        link: {'关于我们': '/webInfo/aboutUs', '常见问题': '/webInfo/issues'},
+        link: {'关于我们': '/webInfo/aboutUs', '常见问题': '/webInfo/issues/list'},
         service: {'品牌矿机': '/minerShop/miner/1', '云算力': '/minerShop/miner/2', 'BDC托管': '/bdc', '产业资讯': '/industryInformation'},
         partner: [],
         info: {'网站动态': '/webInfo/list/website', '产品公告': '/webInfo/list/product'},
