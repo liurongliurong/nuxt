@@ -1,42 +1,79 @@
 <template>
   <div class="activity_box">
     <div class="bg_box" v-if="!isMobile">
-      <img :src="require('@/assets/images/swiper/5_1.jpg')"/>
+       <img src="../../assets/images/swiper/5_1.jpg"/> 
     </div>
     <div class="mobile_bg_box" v-else>
       <img :src="require('@/assets/images/swiper/mobile4.jpg')" alt="">
     </div>
-    <div class="buy_form" v-if="!isMobile">
-      <div class="form_bg">
-        <img :src="require('@/assets/images/buy_bg.png')" alt="">
-        <div class="buy_title">
-          <b>{{data.name}}</b>
-        </div>
-        <div class="buy_desc">
-          <div class="item" v-for="t,k in text">
-            <div class="item_num">
-              <b>{{data[k]}}</b>
-              <span>{{t.unit}}</span>
+    <div class="body_activity" v-if="!isMobile">
+      <div class="buy_form">
+        <div class="form_bg">
+          <img :src="require('@/assets/images/buy_bg.png')" alt="">
+          <div class="buy_title">
+            <b>{{data.name}}</b>
+          </div>
+          <div class="buy_desc">
+            <div class="item" v-for="t,k in text">
+              <div class="item_num">
+                <b>{{data[k]}}</b>
+                <span>{{t.unit}}</span>
+              </div>
+              <div class="item_desc">{{t.title}}</div>
             </div>
-            <div class="item_desc">{{t.title}}</div>
+          </div>
+          <div class="buy_input">
+            <p>购买数量（台）</p>
+            <div class="input_box">
+              <span @click="changeNum(+number-1)">-</span>
+              <input type="text" v-model="number" name="number" placeholder="请输入购买数量，1台起售" @blur="changeNum(number)">
+              <span @click="changeNum(+number+1)">+</span>
+            </div>
+            <p>总算力：<span>{{totalHash}}T</span></p>
+            <p>需支付：<span>{{totalPrice}}元</span></p>
+            <button @click="gobuy()">立即支付</button>
+            <label for="accept">
+              <input type="checkbox" :value="accept" id="accept" name="accept">
+              <span @click="openContract(1)">阅读并接受<a href="javascript:;"  style="color:blue;">《矿机销售协议》</a></span>
+              <span class="select_accept">{{tips}}</span>
+            </label>
           </div>
         </div>
-        <div class="buy_input">
-          <p>购买数量（台）</p>
-          <div class="input_box">
-            <span @click="changeNum(+number-1)">-</span>
-            <input type="text" v-model="number" name="number" placeholder="请输入购买数量，1台起售" @blur="changeNum(number)">
-            <span @click="changeNum(+number+1)">+</span>
+      </div>
+      <div class="activity_img">
+        <h4>产品简介</h4>
+        <p style="padding-bottom:0;">AvalonMiner 740采用88 x A3212 16纳米芯片，是最新的迦南AvalonMiner，具有7.3可靠的每秒散列速率（RTHS）。</p>
+        <p style="padding-top:28px;">通过将我们的AvalonMiner控制器（另售）连接到单个AUC3（AvalonMiner USB转换器3），您可以连接五个AvalonMiner。为了最大限度地利用，您可以将AvalonMiner控制器连接到4个AUC3设备，每个AUC3设备可以连接到5个AvalonMiners，以同时管理20个AvalonMiner 741达到146 TH / s（RTHS）。</p>
+        <h4>官方参数</h4>
+        <div class="activity_content">
+          <div class="activity_left">
+            <img :src="require('@/assets/images/kuan.jpg')"/>
+            <h6>翼比特矿机E9+</h6>
           </div>
-          <p>总算力：<span>{{totalHash}}T</span></p>
-          <p>需支付：<span>{{totalPrice}}元</span></p>
-          <button @click="gobuy()">立即支付</button>
-          <label for="accept">
-            <input type="checkbox" :value="accept" id="accept" name="accept">
-            <span @click="openContract(1)">阅读并接受<a href="javascript:;"  style="color:blue;">《矿机销售协议》</a></span>
-            <span class="select_accept">{{tips}}</span>
-          </label>
+          <div class="activity_right">
+            <div class="activity_one"><span class="one_left">算   力</span><span class="one_right">9TH/S (-5%~+10%)</span></div>
+            <div class="activity_one"><span class="one_left">墙上功耗比</span><span class="one_right">145W/T（AC/DC 93%的效率，25℃工作温度）</span></div>
+            <div class="activity_one"><span class="one_left">额定电压</span><span class="one_right">11.8V～13.0V</span></div>
+            <div class="activity_one"><span class="one_left">电源接口</span><span class="one_right">9个6PIN接口</span></div>
+            <div class="activity_one"><span class="one_left">芯片数量</span><span class="one_right">DW1227 132颗（14nm LPP工艺）</span></div>
+            <div class="activity_one"><span class="one_left">几何尺寸</span><span class="one_right">290mm*126mm*155mm</span></div>
+            <div class="activity_one"><span class="one_left">重   量</span><span class="one_right">4.7KG</span></div>
+            <div class="activity_one"><span class="one_left">网络连接</span><span class="one_right">以太网</span></div>
+            <div class="activity_one"><span class="one_left">工作温度</span><span class="one_right">-10℃～40℃</span></div>
+            <div class="activity_one"><span class="one_left">工作湿度</span><span class="one_right">5%RH～95%RH 非凝露</span></div>
+          </div>
         </div>
+      </div>
+      <div class="activity_vs">
+        <h4>云算力VS自己挖坑</h4>
+        <div class="activity_ul">
+          <div class="activity_li" v-for="n, k in activityUl">
+            <p class="left">{{n.left}}</p>
+            <p class="unit">{{n.unit}}</p>
+            <p class="right">{{n.right}}</p>
+          </div>
+        </div>
+        <p class="bottom">本次活动最终解释权归算力网所有</p>
       </div>
     </div>
     <div class="mobile_form" v-else>
@@ -93,29 +130,6 @@
       </div>
       <p class="tel">咨询电话： 0571-28031736</p>
     </div>
-    <div class="activity_img" v-if="!isMobile">
-      <h4>产品简介</h4>
-      <p>翼比特E9+矿机采用亿绑最新自助研发的14nm芯片，算力均值可达9TH/S，能耗比145W/T。低功耗、高算力，采用独立散热片，散热更好。散热片采用最新粘合技术，外壳材质更坚固，为您的矿机提供更好的保护，为全球的矿工带来高效益。</p>
-      <h4>官方参数</h4>
-      <div class="activity_content">
-        <div class="activity_left">
-          <img :src="require('@/assets/images/kuan.png')"/>
-          <h6>翼比特矿机E9+</h6>
-        </div>
-        <div class="activity_right">
-          <div class="activity_one"><span class="one_left">算   力</span><span class="one_right">9TH/S (-5%~+10%)</span></div>
-          <div class="activity_one"><span class="one_left">墙上功耗比</span><span class="one_right">145W/T（AC/DC 93%的效率，25℃工作温度）</span></div>
-          <div class="activity_one"><span class="one_left">额定电压</span><span class="one_right">11.8V～13.0V</span></div>
-          <div class="activity_one"><span class="one_left">电源接口</span><span class="one_right">9个6PIN接口</span></div>
-          <div class="activity_one"><span class="one_left">芯片数量</span><span class="one_right">DW1227 132颗（14nm LPP工艺）</span></div>
-          <div class="activity_one"><span class="one_left">几何尺寸</span><span class="one_right">290mm*126mm*155mm</span></div>
-          <div class="activity_one"><span class="one_left">重   量</span><span class="one_right">4.7KG</span></div>
-          <div class="activity_one"><span class="one_left">网络连接</span><span class="one_right">以太网</span></div>
-          <div class="activity_one"><span class="one_left">工作温度</span><span class="one_right">-10℃～40℃</span></div>
-          <div class="activity_one"><span class="one_left">工作湿度</span><span class="one_right">5%RH～95%RH 非凝露</span></div>
-        </div>
-      </div>
-    </div>
     <MyMask :form="form[nowForm]" :title="title" :contract="contract" v-if="edit"></MyMask>
   </div>
 </template>
@@ -132,6 +146,7 @@
     },
     data () {
       return {
+        activityUl: [{left: '规模化部署，专业的散热设备，远离运行噪音，使用低价合规电。', unit: '运行', right: '在家运行占空间，又会产生大量的噪音和热量，家用电的成本也是不小的开支。'}, {left: '基础设施全方位提供服务。', unit: '配套', right: '需要自己购买专用电源、控制组件和矿机支架等。'}, {left: 'IT专业人员进行配置、维护。', unit: '软件', right: '组装矿机后需要专业的软件支持，对于新人需要付出一定的学习成本。'}, {left: '出现问题平台负责解决，并安排专业人员进行维修。', unit: '维修', right: '一旦矿机出现问题，需要自行解决维修问题，挖矿停止，将会造成一定的损失。'}],
         text: {one_amount_value: {unit: '元/台', title: '算力服务器价格'}, hash: {unit: 'T/台', title: '服务器算力'}, left_amount: {unit: '台', title: '剩余数量'}},
         data: {},
         form: {auth: [{name: 'truename', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true}, {name: 'idcard', type: 'text', title: '证件号码', placeholder: '请输入您的证件号码', pattern: 'idCard'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}], address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}]},
@@ -327,17 +342,101 @@
     width: 100%;
     min-height:700px;
     overflow: hidden;
-    background: #151136;
+    // background: url('../../assets/images/activity.jpg');
+    background-size: 100% 100%;
     .bg_box{
-      @include bg(1920,520px,#110d30)
+      @include bg(1920,669px,none)
+    }
+    .body_activity{
+      width: 100%;
+      height: auto;
+      overflow: hidden;
+      background: url('../../assets/images/activity.jpg');
+      background-size: 100% 100%;
+      .activity_vs{
+        @include main
+        padding:65px 0;
+        padding-top:0;
+        h4{
+          width:100%;
+          text-align:center;
+          font-size: 28px;
+          color:#ff9f00;
+          font-weight: 800;
+          padding-bottom: 10px;
+        }
+        .activity_ul{
+          width: 100%;
+          overflow: hidden;
+          margin-top: 55px;
+          .activity_li{
+            width: 100%;
+            height: 100px;
+            margin-bottom: 1px;
+            position: relative;
+            .left{
+              width: 49.9%;
+              height: 100%;
+              box-sizing: border-box;
+              border:4px solid #966cff;
+              margin-right: 1px;
+              float: left;
+              background: #2c1963;
+              line-height: 100px;
+              font-size: 14px;
+              color: white;
+              text-align: center;
+              padding:0 52px;
+              box-sizing: border-box;
+              word-break: break-all;
+            }
+            .unit{
+              position: absolute;
+              width: 82px;
+              height: 82px;
+              border-radius: 100%;
+              border:10px solid #151136;
+              background: #ff9b01;
+              color: white;
+              font-size: 14px;
+              line-height: 82px;
+              text-align: center;
+              line-height: 66px;
+              text-align: center;
+              left: 545px;
+              top: 10px;
+            }
+            .right{
+              width: 49.9%;
+              height: 100%;
+              box-sizing: border-box;
+              border:4px solid #cbbaff;
+              margin-right: 1px;
+              float: left;
+              background: #917cce;
+              line-height: 100px;
+              font-size: 14px;
+              color: white;
+              text-align: center;
+              padding:0 70px;
+              box-sizing: border-box;
+              word-break: break-all;
+            }
+          }
+        }
+        .bottom{
+          color: #917cce;
+          font-size: 16px;
+          text-align: center;
+          width:100%;
+          margin-top: 114px;
+        }
+      }
     }
     .buy_form{
       height:530px;
       padding-top:40px;
-      background: #151136;
       color:$white;
-      background: linear-gradient(to bottom, #151136 20%, #2f006d);
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#151136', endColorstr='#2f006d',GradientType=0 );
       .form_bg{
         @include bg(1213,424px,transparent)
       }
@@ -629,16 +728,20 @@
     .activity_img{
       @include main
       padding:65px 0;
+      padding-bottom:0;
+      padding-top:0;
       h4{
         width:100%;
         text-align:center;
         font-size: 28px;
-        color:#f8b551;
+        color:#ff9f00;
+        font-weight: 800;
+        padding-bottom: 10px;
       }
       p{
         color:white;
-        line-height: 33px;
-        font-size: 18px;
+        line-height: 27px;
+        font-size: 14px;
         padding-top: 33px;
         padding-bottom:65px;
       }
@@ -656,8 +759,8 @@
           overflow: hidden;
           img{
             width: 347px;
-            height: 212px;
-            margin-top: 136px;
+            height: auto;
+            margin-top: 120px;
           }
           h6{
             font-size: 28px;
