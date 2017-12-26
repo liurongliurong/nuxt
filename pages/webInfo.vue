@@ -15,7 +15,7 @@
   export default {
     data () {
       return {
-        nav: [{name: 'product', title: '产品公告', path: '/webInfo/list/product'}, {name: 'website', title: '网站动态', path: '/webInfo/list/website'}, {name: 'aboutUs', title: '关于我们', path: '/webInfo/aboutUs'}, {name: 'Issues', title: '常见问题', path: '/webInfo/issues'}],
+        nav: [{name: 'product', title: '产品公告', path: '/webInfo/list/product'}, {name: 'website', title: '网站动态', path: '/webInfo/list/website'}, {name: 'aboutUs', title: '关于我们', path: '/webInfo/aboutUs'}, {name: 'Issues', title: '常见问题', path: '/webInfo/issues/list'}],
         no: 0
       }
     },

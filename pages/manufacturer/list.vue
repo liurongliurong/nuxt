@@ -78,9 +78,7 @@
         util.post('NewsManfacturerList', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.museum = res.list
-            for (var i = 0; i<res.list.length; i++) {
-              self.allid.push({id: res.list[i].id, title: res.list[i].title})
-            }
+            self.allid = res.id_list
             localStorage.setItem('all_id', JSON.stringify(self.allid))
             if (self.now > 1) return false
             self.len = Math.ceil(res.total / 5)

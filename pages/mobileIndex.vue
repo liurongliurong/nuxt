@@ -82,6 +82,9 @@
             <span>|</span>
             <nuxt-link to="/auth/login">登录</nuxt-link>
           </div>
+          <div class="login" v-else>
+            <nuxt-link to="/mobile/personcenter">个人中心</nuxt-link>
+          </div>
         </header>
         <div class="introduce">
           <p class="title">我们为您提供丰富可靠的算力服务。</p>
@@ -118,7 +121,6 @@ export default {
         beforeChange: (prev, next) => {
         },
         afterChange: (prev, next) => {
-          // this.setHtmlFontSize()
         }
       },
       page2Text: [
@@ -237,7 +239,7 @@ export default {
     }
     .footer {
       position: absolute;
-      bottom: 0.72rem;
+      bottom: 0.45rem;
       right: 0.6rem;
       display: flex;
       flex-direction: column;
@@ -248,7 +250,7 @@ export default {
         margin-bottom: 0.36rem;
         color: #608ad8;
         font-size: 0.3rem;
-        border: solid 0.02rem #608ad8;
+        border: solid 1px #608ad8;
         border-radius: 0.4rem;
       }
       .introduce {
@@ -358,7 +360,7 @@ export default {
       align-items: center;
       right: 10%;
       .button {
-        width: 80%;
+        width: 100%;
         padding: 0.12rem 0.54rem;
         margin-bottom: 0.36rem;
         color: #fff;
@@ -366,7 +368,7 @@ export default {
         font-weight: bold;
         text-align: center;
         background: #01beb5;
-        border: solid 0.02rem #01beb5;
+        border: solid 1px #01beb5;
         border-radius: 0.3rem;
       }
     }
@@ -394,7 +396,7 @@ export default {
       flex-direction: column;
       padding-left: 0.3rem;
       margin: 0.8rem 0 0 0.44rem;
-      border-left: solid 0.08rem #1fbfa7;
+      border-left: solid 4px #1fbfa7;
 
       .title {
         font-size: 0.34rem;
@@ -444,8 +446,8 @@ export default {
           width: 0.24rem;
           height: 0.24rem;
           transform: rotate(45deg);
-          border: solid 0.02rem #fff;
-          border-width: 0.02rem 0.02rem 0 0;
+          border: solid 1px #fff;
+          border-width: 1px 1px 0 0;
         }
         &:nth-child(1) {
           background: url('~/assets/images/mobile/index/cloud.png') no-repeat;

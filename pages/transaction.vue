@@ -25,7 +25,11 @@
           </h2>
           <p class="text" v-html="n.content ? n.content : '暂无简介'"></p>
           <p class="address">{{n.address}}</p>
-          <p class="time"><span v-if="times[k]>0">{{times[k]}} 小时前</span><span v-else>现在</span> / {{n.miner_kind}} / {{n.depreciate}}</p>
+          <p class="time">
+            <span>{{times[k]}}</span>
+            / {{n.miner_kind}} / {{n.depreciate}}
+          </p>
+          <!-- <p class="time"><span v-if="times[k]>0" v-else-if="k==='hours'">{{times[k]}} 小时前</span><span v-else>现在</span> / {{n.miner_kind}} / {{n.depreciate}}</p> -->
         </div>
         <div class="transaction_right">
           <div class="mobile" v-if="show === k">
@@ -99,7 +103,13 @@
             var leave1 = date3 % (24 * 3600 * 1000)
             var days = Math.floor(date3 / (24 * 3600 * 1000)) * 24
             var hours = Math.floor(leave1 / (3600 * 1000)) + days
-            self.times.push(hours)
+            var nowdays = ''
+            if (hours >= 24) {
+              nowdays = Math.floor(hours / 24) + ' 天前'
+            } else {
+              nowdays = hours + ' 小时前'
+            }
+            self.times.push(nowdays)
           }
           self.total = res.num
           if (self.now > 1) return false
