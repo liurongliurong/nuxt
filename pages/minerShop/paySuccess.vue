@@ -4,16 +4,16 @@
       <div class="success_top">
         <div class="success_text">
           <span class="spanone"><img src="../../assets/images/true.png"/></span>
-          <h2 class="spantwo">订单支付成功 ！{{typeList[type].text}}</h2>
+          <h2 class="spantwo">订单支付成功 ！{{typeList[type-1].text}}</h2>
         </div>
         <p class="address" v-if="addressData.id"><span class="te">寄送至 ： </span>{{addressData.province_name+addressData.city_name+addressData.area_name+addressData.area_details}}(<span class="te">{{addressData.post_user}}</span> 收) <span class="te">{{addressData.post_mobile}}</span></p>
         <p class="router">您现在可以 ： <router-link to="/minerShop/list">浏览购买其他产品</router-link> 或去 <router-link to="/user/computeProperty">个人中心</router-link> 查看交易记录</p>
       </div>
       <div class="success_bottom">
-        <h5>其他热门{{typeList[type].title}}推荐</h5>
+        <h5>其他热门{{typeList[type-1].title}}推荐</h5>
         <div class="box">
-          <CloudMinerItem v-for="d,k in data" :d="d" :key="k" v-if="!type"></CloudMinerItem>
-          <MinerItem v-for="n,k in data" :n="n" :key="k" v-else></MinerItem>
+          <CloudMinerItem v-for="d,k in data" :d="d" :key="k" v-if="type==='2'"></CloudMinerItem>
+          <MinerItem v-for="n,k in data" :n="n" :key="k" v-if="type==='1'"></MinerItem>
         </div>
       </div>
     </div>
@@ -33,14 +33,14 @@
       return {
         data: [],
         addressData: {},
-        typeList: [{url: 'product_top_list', title: '云算力', text: ''}, {url: 'showTopMiner', title: '矿机', text: '我们将尽快安排为您发货 ！'}],
-        type: 0
+        typeList: [{url: 'showTopMiner', title: '矿机', text: '我们将尽快安排为您发货 ！'}, {url: 'product_top_list', title: '云算力', text: ''}],
+        type: '1'
       }
     },
     methods: {
       goPay (id) {
         console.log(id)
-        localStorage.setItem('params', JSON.stringify([ id, this.type ? '1' : '2']))
+        localStorage.setItem('params', JSON.stringify([ id, this.type]))
         this.$router.push({path: '/minerShop/detail/'})
       }
     },
@@ -53,7 +53,8 @@
       } else {
         this.$router.push({path: '/minerShop/list'})
       }
-      util.post(this.typeList[this.type].url, {sign: 'token=0'}).then(res => {
+      console.log(this.type)
+      util.post(this.typeList[this.type - 1].url, {sign: 'token=0'}).then(res => {
         api.checkAjax(this, res, () => {
           this.data = res
         })
@@ -141,4 +142,3 @@
     }
   }
 </style>
-

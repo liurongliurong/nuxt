@@ -10,7 +10,7 @@
           <span>{{nav[k-1]&&nav[k-1].title}}</span>
           <i v-if="k===1">{{mobile|format}}</i>
           <i v-else-if="nav[k-1].name==='login'">修改<em></em></i>
-          <i v-else-if="k===2">{{!menu[k-1].status?'去认证':true_name.truename+'：'+true_name.idcard|format}}</i>
+          <i v-else-if="nav[k-1].name==='auth'">{{!menu[k-1].status?'去认证':true_name.truename+'：'+true_name.idcard|format}}</i>
           <i v-else-if="nav[k-1].name==='card'&&bank_card&&bank_card.open_bank">{{bank_card&&bank_card.card_no|format}}</i>
           <i v-else>设置<em></em></i>
         </div>
