@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="page-2 page-common">
-        <img class="logo" src="../assets/images/mobile/index/logo.png"/>
+        <img class="logo" src="~/assets/images/mobile/index/logo.png"/>
         <div class="main">
           <div class="page-number">
             <hr>
@@ -35,7 +35,7 @@
               <i class="total-page">03</i>
             </span>
           </div>
-          <img class="gif" src="../assets/images/mobile/index/2.gif"/>
+          <img class="gif" src="~/assets/images/mobile/index/2.gif"/>
         </div>
         <div class="article">
           <div class="item" v-for="item in page2Text">
@@ -115,14 +115,12 @@ export default {
         loop: false,
         duration: 300,
         der: 0.04,
-        beforeChange: function (prev, next) {
-          // console.log('before', prev, next)
+        beforeChange: (prev, next) => {
         },
-        afterChange: function (prev, next) {
-          // console.log('after', prev, next)
+        afterChange: (prev, next) => {
+          // this.setHtmlFontSize()
         }
       },
-      suanLi: 'https://www.suanli.com/',
       page2Text: [
         {title: '云算力', content: '我们一站式帮你购买品牌矿机，对接合规BDC托管服务，配置专人全天维护，快速部署，算力稳定收益透明，让你真正实现无忧挖矿。'},
         {title: '矿机销售', content: '聚合全球顶级厂商新货、二手矿机及配件资源，精心筛选质量保证，线上交易全流程存证，安全有保障。'},
@@ -137,16 +135,34 @@ export default {
     }
   },
   mounted () {
-    let width = document.documentElement.clientWidth
-    document.documentElement.style.fontSize = width / 750*100 + 'px'
+    this.setHtmlFontSize()
   },
   destroyed () {
-    var width = document.documentElement.clientWidth
-    document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
+    this.initHtmlFontSize()
   },
   methods: {
     jump () {
       this.opts = Object.assign({}, this.opts, {start: 3})
+    },
+    setHtmlFontSize () {
+      let width = document.documentElement.clientWidth
+      document.documentElement.style.fontSize = width / 750*100 + 'px'
+      window.addEventListener('orientationchange', () => {
+        document.documentElement.style.fontSize = width / 750*100 + 'px'
+      })
+      window.addEventListener('resize', () => {
+        document.documentElement.style.fontSize = width / 750*100 + 'px'
+      })
+    },
+    initHtmlFontSize () {
+      let width = document.documentElement.clientWidth
+      document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
+      window.addEventListener('orientationchange', function () {
+        document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
+      })
+      window.addEventListener('resize', function () {
+        document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
+      })
     }
   },
   computed: {
@@ -432,15 +448,15 @@ export default {
           border-width: 0.02rem 0.02rem 0 0;
         }
         &:nth-child(1) {
-          background: url('../assets/images/mobile/index/cloud.png') no-repeat;
+          background: url('~/assets/images/mobile/index/cloud.png') no-repeat;
           background-size: cover;
         }
         &:nth-child(2) {
-          background: url('../assets/images/mobile/index/miner.png') no-repeat;
+          background: url('~/assets/images/mobile/index/miner.png') no-repeat;
           background-size: cover;
         }
         &:nth-child(3) {
-          background: url('../assets/images/mobile/index/bdc.png') no-repeat;
+          background: url('~/assets/images/mobile/index/bdc.png') no-repeat;
           background-size: cover;
         }
       }
