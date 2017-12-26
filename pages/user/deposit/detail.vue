@@ -1,8 +1,7 @@
 <template>
   <section class="deposit">
-    <h2>托管信息</h2>
-    <div class="deposit_list" v-for="i,n in item">
-      <h3>{{'托管项目'+(n+1)}}</h3>
+    <h2>托管项目</h2>
+     <div class="deposit_list" v-for="i,n in content">
       <div class="detail_table">
         <div class="item" v-for="d,k in nav">
           <div class="item_title">{{d.title}}</div>
@@ -12,11 +11,7 @@
           <div class="item_value" v-else>{{i[d.name]+d.unit}}</div>
         </div>
       </div>
-    </div>
-    <div class="nodata" v-if="!item.length">
-      <div class="nodata_img"></div>
-      <p>暂无数据</p>
-    </div>
+    </div> 
   </section>
 </template>
 
@@ -27,8 +22,8 @@
   export default {
     data () {
       return {
-        item: [],
-        showImg: false,
+        content: [],
+        params1: '',
         nav: [{name: 'dep_name', title: '托管人姓名', unit: ''}, {name: 'dep_tel', title: '联系方式', unit: ''}, {name: 'dep_type', title: '矿机型号', unit: ''}, {name: 'dep_number', title: '托管数量', unit: '台'}, {name: 'computing_power', title: '算力', unit: 'T/台'}, {name: 'power', title: '功率', unit: 'w/台'}, {name: 'electric_charge', title: '电费', unit: '元/度'}, {name: 'deposit_fee', title: '托管费', unit: '元/台'}, {name: 'process_fee', title: '手续费', unit: '%'}, {name: 'mine_pool', title: '矿池', unit: ''}, {name: 'wallet_address', title: '钱包地址', unit: ''}, {name: 'bdc_name', title: 'BDC', unit: ''}, {name: 'storage_location', title: '库位', unit: ''}, {name: 'run_time', title: '运行时间', unit: ''}, {name: 'time',title: '托管时间', unit: ''}, {name: 'deposit_money', title: '押金', unit: '万元'}, {name: 'status', title: '状态', unit: ''}, {name: 'contract_copy_picture', title: '合同', unit: ''}],
         status: {1: '未处理', 2: '已联系', 3: '已签署', 4: '已发货', 5: '已运行', 6: '提交中', 7: '审核成功', 8: '审核失败'}
       }
@@ -36,12 +31,20 @@
     methods: {
       items () {
         if (this.token !== 0) {
+          var p = localStorage.getItem('icon_id')
+          if (p) {
+            p = JSON.parse(p)
+            this.params1 = p[0]
+          }
+          console.log(this.params1)
           var self = this
-          this.item = []
           util.post('getBdcMessage', {sign: api.serialize({token: this.token})}).then(function (res) {
             api.checkAjax(self, res, () => {
-              self.item = res
-              self.showImg = !res.length
+              for (var i = 0; i < res.length; i++) {
+                if (self.params1 === res[i].id) {
+                  self.content.push(res[i])
+                }
+              }
             })
           })
         } else {
@@ -53,6 +56,7 @@
     },
     mounted () {
       this.items()
+      console.log(this.content)
     },
     computed: {
       ...mapState({
