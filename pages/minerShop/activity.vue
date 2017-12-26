@@ -246,7 +246,7 @@
       },
       submit () {
         var form = document.querySelector('.form_content') || document.querySelector('.form')
-        var data = api.checkFrom(form, this, this.isMobile)
+        var data = api.checkFrom(form, this.isMobile)
         if (!data) return false
         var sendData = {token: this.token, user_id: this.user_id}
         if (this.nowForm === 'address') {

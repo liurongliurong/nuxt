@@ -158,7 +158,7 @@
           <FormField :form="auth"></FormField>
           <div class="auth_btn_box">
             <button name="btn">立即认证</button>
-            <button @click="quitAuth">暂不认证</button>
+            <div class="go_skip" @click="quitAuth">暂不认证</div>
           </div>
         </form>
       </div>
@@ -264,7 +264,7 @@
       },
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, this, this.isMobile)
+        var data = api.checkFrom(form, this.isMobile)
         var url = 'user_truename'
         var callbackUrl = 'show_user_truename'
         var val = 'true_name'
@@ -363,13 +363,21 @@
         .auth_btn_box{
           @include flex
           button{
-            &:last-child{
-              background: #fff;
-              color:$blue
-            }
-            & + button{
-              margin-left:50px
-            }
+            @include button($blue)
+          }
+          .go_skip{
+            @include button(transparent)
+            margin-left:50px;
+            border:1px solid $blue;
+            color:$blue;
+            border-radius:5px;
+            text-align: center;
+            line-height: 2.6;
+            font-size: 18px;
+            cursor: pointer;
+          }
+          button,.go_skip{
+            width:50%;
           }
         }
       }

@@ -32,7 +32,7 @@
       submit () {
         let self = this
         var form = document.querySelector('.form')
-        var data = api.checkFrom(form)
+        var data = api.checkFrom(form, 1)
         if (!data) return false
         form.btn.setAttribute('disabled', true)
         util.post('depositMessage', {sign: api.serialize(Object.assign(data, {token: this.token}))}).then(function (res) {

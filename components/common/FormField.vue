@@ -64,7 +64,7 @@
       <!-- addon -->
       <template v-if="f.addon">
         <canvas id="code" width="90" height="40" v-if="f.addon===1" @click="changeCode"></canvas>
-        <div class="count_btn btn" v-if="f.addon===2" @click="getCode(f.checkData)">{{str}}</div>
+        <div class="count_btn btn" v-if="f.addon===2" @click="getCode(f.checkData, $event)">{{str}}</div>
       </template>
       <!-- tips -->
       <span class="tips" :title="f.pattern&&check[f.pattern].tips" :error="(f.pattern&&check[f.pattern].error)||f.error" :tips="f.placeholder" :success="f.pattern&&check[f.pattern].success" v-if="!f.edit"></span>
@@ -113,16 +113,16 @@
         if (e.target.className) {
           e.target.className = ''
         }
-        var ff = document.querySelector('.form')
+        var ff = ele.parentNode.parentNode.parentNode
         api.checkFiled(ele, ff)
       },
       changeCode () {
         var ele = document.querySelector('#code')
         localStorage.setItem('code', api.createCode(ele))
       },
-      getCode (str) {
-        var form = document.querySelector('.form')
-        var ele = document.querySelector('.count_btn')
+      getCode (str, e) {
+        var ele = e.target
+        var form = ele.parentNode.parentNode.parentNode
         var telEle = form.dep_tel || form.mobile
         var imgCode = form.imgCode
         var isTel = api.checkCode(telEle)
