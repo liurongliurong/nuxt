@@ -5,7 +5,7 @@
         <div class="item" v-for="n,k in nav" @click="fetchData(n.help_class_id,k)">{{n.name}}</div>
       </div>
       <div class="issues_list">
-        <router-link class="item" v-for="l,k in list" :to="'/webInfo/issuesDetail/'+l.id" :key="list.id">{{l.title}}</router-link>
+        <div class="item" v-for="l,k in list" :key="list.id" @click="goDetail(l.id)">{{l.title}}</div>
       </div>
     </div>
   </section>
@@ -20,12 +20,14 @@
     data () {
       return {
         nav: [],
-        list: []
+        list: [],
+        allid: []
       }
     },
     head () {
       return {
         title: '比特币挖矿问题—如何比特币挖矿算力网',
+        allid: '',
         meta: [
           { hid: 'keywords', name: 'keywords', content: '比特币挖矿问题' },
           { hid: 'description', name: 'description', content: '算力网挖矿问题大全，最细致的问题详情，最全面的问题解答，所有比特币挖矿爱好者的答疑天堂，经验丰富的矿工随时等你咨询。' }
@@ -33,6 +35,10 @@
       }
     },
     methods: {
+      goDetail (id) {
+        localStorage.setItem('icon_id', JSON.stringify([id]))
+        this.$router.push({path: '/webInfo/issues/detail/'})
+      },
       fetchData (id, k) {
         var eles = document.querySelector('.issues_lists').children
         for (var key = 0; key < eles.length; key++) {
@@ -42,6 +48,10 @@
         var self = this
         util.post('getHelp', {sign: api.serialize({token: this.token, help_class_id: id})}).then(function (res) {
           self.list = res
+          for (var i = 0; i<res.length; i++) {
+            self.allid.push({id: res[i].id, title: res[i].title})
+          }
+          localStorage.setItem('all_id', JSON.stringify(self.allid))
         })
         setTimeout(() => {
           this.$store.commit('SET_NUM', k)
@@ -67,7 +77,7 @@
 </script>
 
 <style type="text/css" lang="scss">
-  @import '../../assets/css/style.scss';
+  @import '../../../assets/css/style.scss';
   .issues{
     .issues_box{
       background: #fff;

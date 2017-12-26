@@ -292,7 +292,7 @@
       },
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, this, this.isMobile)
+        var data = api.checkFrom(form, this.isMobile)
         var url = ''
         var sendData = {token: this.token, user_id: this.user_id, order_id: this.order_id}
         var tipsStr = ''

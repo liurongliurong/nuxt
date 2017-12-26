@@ -42,7 +42,7 @@
     methods: {
       login () {
         var form = document.querySelector('.form')
-        var data = api.checkFrom(form, this, api.checkEquipment())
+        var data = api.checkFrom(form, api.checkEquipment())
         if (!data) return false
         data.password = md5(data.password)
         var self = this

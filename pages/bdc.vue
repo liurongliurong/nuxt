@@ -129,7 +129,7 @@
       submit () {
         let self = this
         var ff = document.querySelector('.data_form')
-        var data = api.validityForm(ff, this)
+        var data = api.validityForm(ff)
         if (data.status && data.status === 2) {
           this.tips = ff[data.n].placeholder
           return false

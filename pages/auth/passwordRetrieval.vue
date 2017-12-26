@@ -43,7 +43,7 @@
     methods: {
       submit (n) {
         var form = document.querySelector('.form')
-        var data = api.checkFrom(form, this, api.checkEquipment())
+        var data = api.checkFrom(form, api.checkEquipment())
         if (!data) return false
         var self = this
         if (n === 1) {

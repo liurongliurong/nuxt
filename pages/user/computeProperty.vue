@@ -235,7 +235,7 @@
       },
       submit () {
         var form = document.querySelector('.form_content')
-        var data = api.checkFrom(form)
+        var data = api.checkFrom(form, 1)
         var url = ''
         var sendData = {token: this.token, user_id: this.user_id}
         var tipsStr = ''

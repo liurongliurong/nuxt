@@ -34,7 +34,7 @@
     </div>
     <div class="mobileminer" v-else>
       <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
-        <div class="millsList_mobile" v-for="n,k in minerData">
+        <div class="millsList_mobile" v-for="n,k in $parent.minerData">
           <a href="javascript:;" @click="goPay(n.id)">
             <div class="null">
               <img :src="n.minerPicture"/>
