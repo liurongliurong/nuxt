@@ -1,44 +1,34 @@
 <template>
-  <section class="cloud_miner">
-    <div :class="['item', {'disabled': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]">
-      <h3>
-        <span>{{page==='compute'?d.product_name:d.name}}</span>
-        <span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span>
-        <span :class="['sell_type', {active: d.sell_type===2}]" v-if="page==='minerShop'&&d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span>
-        <span class="sell_type gray" v-if="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">已售罄</span>
-      </h3>
-      <div class="info_box">
-        <template v-for="n,i in dataNav">
-          <div class="info" v-if="i==='leftNum'">
-            <div class="text">
-              <span class="num">{{d.amount-d.buyed_amount}}</span>
-              <span>{{n.unit}}</span>
-            </div>
-            <p>{{n.title}}</p>
+  <div :class="['cloud_miner_item item', {'disabled': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]" @click="$parent.goPay(d.id||d.product_id, d.sell_type)">
+    <h3>
+      <span>{{d.name}}</span>
+      <span :class="'icon_currency '+((d.hashtype&&d.hashtype.name)||d.type_name)" v-if="d.hashtype"></span>
+      <span :class="['sell_type', {active: d.sell_type===2}]" v-if="d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span>
+      <span class="sell_type gray" v-if="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">已售罄</span>
+    </h3>
+    <div class="info_box">
+      <template v-for="n,i in dataNav">
+        <div class="info" v-if="i==='leftNum'">
+          <div class="text">
+            <span class="num">{{d.amount-(d.buyed_amount||d.sell_amount)}}</span>
+            <span>{{n.unit}}</span>
           </div>
-          <div class="info" v-else>
-            <div class="text">
-              <span class="num" v-if="i==='buyed_amount'">{{d.buyed_amount - 0.00}}</span>
-              <span class="num" v-else-if="i==='hashtype'">{{d[i].name}}</span>
-              <span class="num" v-else>{{d[i]}}</span>
-              <span>{{n.unit}}</span>
-            </div>
-            <p>{{n.title}}</p>
+          <p>{{n.title}}</p>
+        </div>
+        <div class="info" v-else>
+          <div class="text">
+            <span class="num" v-if="i==='hashtype'">{{(d[i]&&d[i].name)||d.type_name}}</span>
+            <span class="num" v-else>{{d[i]}}</span>
+            <span>{{n.unit}}</span>
           </div>
-          <div class="line"></div>
-        </template>
-        <template v-if="page==='compute'">
-          <button class="btn" v-if="d.status===1">立即购买</button>
-          <button class="btn" disabled v-else-if="d.status===2">已转让</button>
-          <button class="btn" disabled v-else-if="d.status===3">产品撤销</button>
-        </template>
-        <template v-else>
-          <button class="btn" v-if="d.amount-d.buyed_amount>0">立即购买</button>
-          <button class="btn disabled" v-else>已售罄</button>
-        </template>
-      </div>
+          <p>{{n.title}}</p>
+        </div>
+        <div class="line"></div>
+      </template>
+      <button class="btn" v-if="d.amount-(d.buyed_amount||d.sell_amount)>0">立即购买</button>
+      <button class="btn disabled" v-else>已售罄</button>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -59,100 +49,59 @@
 
 <style type="text/css" lang="scss">
   @import '../../assets/css/style.scss';
-  .cloud_miner{
-    .item{
-      padding:30px 50px;
-      background: $white;
-      cursor: pointer;
-      h3{
-        font-size: 18px;
-        margin-bottom:10px;
-        .icon_currency{
-          margin-left:5px;
+  .cloud_miner_item{
+    background: $white;
+    padding:30px 50px;
+    cursor: pointer;
+    .info_box{
+      @include flex(space-between)
+      .info{
+        width:14%;
+        padding-left: 18px;
+        .text .num{
+          font-size: 24px;
         }
-        .sell_type{
-          font-size: 12px;
-          margin-left:8px;
-          width:58px;
-          height: 18px;
-          text-align: center;
-          border-radius:18px;
-          line-height:15px;
-          color:#ff721f;
-          display: inline-block;
-          border:1px solid #ff721f;
-          position: relative;
-          top: -4px;
-          &.gray{
-            border:1px solid #999;
-            color: #999;
-            background: none;
+        &:first-child{
+          .text{
+            color: $orange
           }
-          &.active{
-            border-color:$blue;
-            color:$blue;
-          }
+        }
+        p{
+          color: $light_black;
         }
       }
-      .info_box{
-        @include flex(space-between)
-        .info{
-          width:14%;
-          padding-left: 18px;
-          .text .num{
-            font-size: 24px;
-          }
-          &:first-child{
-            .text{
-              color: $orange
-            }
-          }
-          p{
-            color: $light_black;
-          }
+      .line{
+        width:1px;
+        height: 35px;
+        margin-top: 12px;
+        background: $border
+      }
+      .btn{
+        border:0;
+        width:145px;
+        color: $orange;
+        text-align: center;
+        line-height: 48px;
+        border-radius:5px;
+        background: transparent;
+        &.disabled{
+          color: #999;
         }
-        .line{
-          width:1px;
-          height: 35px;
-          margin-top: 12px;
-          background: $border
-        }
-        .btn{
-          border:0;
-          width:145px;
-          color: $orange;
-          text-align: center;
-          line-height: 48px;
-          border-radius:5px;
-          background: transparent;
-          &.disabled{
-            color: #999;
-          }
-          &:disabled{
-            color:$light_black
-          }
+        &:disabled{
+          color:$light_black
         }
       }
-      &:not(:last-child){
-        margin-bottom:10px;
+    }
+    &:not(.disabled):hover{
+      background: #ecf3ff;
+      .btn:not(:disabled){
+        @include button($orange)
+        cursor: pointer;
       }
-      &:hover{
-        background: #ecf3ff;
-        .btn:not(:disabled){
-          @include button($orange)
-          cursor: pointer;
-        }
-        .btn.disabled{
-           background: none;
-           border:0;
-           color: #999;
-        }
-      }
-      &.disabled{
-        color:#999;
-        .info_box .info p{
-          color: #c3bebe
-        }
+      .btn.disabled{
+        background: none;
+        border:0;
+        color: #999;
       }
     }
   }

@@ -282,7 +282,6 @@
           callbackUrl += '/user/'
         }
         if (this.params2 === '1') {
-          console.log(this.addressObject)
           if (!this.addressObject.id) {
             this.tip('请添加地址', ff.accept)
             return false

@@ -37,5 +37,8 @@ module.exports = {
       '/webInfo/list/product'
     ]
   },
-  plugins: ['~plugins/fullpage']
+  plugins: [
+    {src:'~plugins/fullpage'}
+    // {src:'~plugins/vConsole', ssr:false}
+  ]
 }
