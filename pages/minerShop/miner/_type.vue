@@ -23,7 +23,7 @@
       return {
         sort: [{title: '价格', option: 'price_desc'}, {title: '算力', option: 'base_desc'}, {title: '剩余总数', option: 'num_desc'}],
         sortNav: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热'}, {code: 1, title: '热销'}, {code: 2, title: '已售罄'}]}],
-        sortNav2: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热'}, {code: 5, title: '热销'}, {code: 1, title: '转售'}, {code: 7, title: '已售罄'}]}],
+        sortNav2: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热'}, {code: 5, title: '热销'}, {code: 1000, title: '转售'}, {code: 7, title: '已售罄'}]}],
         cloudMinerDate: [],
         minerData: [],
         len: 0,
