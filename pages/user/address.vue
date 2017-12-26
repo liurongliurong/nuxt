@@ -75,7 +75,7 @@
       },
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form)
+        var data = api.checkFrom(form, this.isMobile)
         var url = ''
         var strTips = ''
         if (!data) return false

@@ -138,7 +138,7 @@ export default {
     this.setHtmlFontSize()
   },
   destroyed () {
-    this.setHtmlFontSize()
+    this.initHtmlFontSize()
   },
   methods: {
     jump () {
@@ -152,6 +152,16 @@ export default {
       })
       window.addEventListener('resize', () => {
         document.documentElement.style.fontSize = width / 750*100 + 'px'
+      })
+    },
+    initHtmlFontSize () {
+      let width = document.documentElement.clientWidth
+      document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
+      window.addEventListener('orientationchange', function () {
+        document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
+      })
+      window.addEventListener('resize', function () {
+        document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
       })
     }
   },

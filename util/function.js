@@ -118,13 +118,13 @@ api.countDown = () => {
     }
   }, 1000)
 }
-api.checkFrom = (form, obj, ismobile) => {
-  var result = api.validityForm(form, obj, ismobile)
+api.checkFrom = (form, ismobile) => {
+  var result = api.validityForm(form, ismobile)
   if (!result.status) {
     return result
   }
 }
-api.validityForm = (form, obj, ismobile) => {
+api.validityForm = (form, ismobile) => {
   var data = {}
   var icon = 0
   var n = ''
@@ -138,13 +138,13 @@ api.validityForm = (form, obj, ismobile) => {
           data[ele.name] = ele.value
         }
       } else {
-        api.errorTip(ele, ele.title, ismobile, obj)
+        api.errorTip(ele, ele.title, ismobile)
         icon = 1
         n = i
         break
       }
     } else {
-      api.errorTip(ele, ele.placeholder, ismobile, obj)
+      api.errorTip(ele, ele.placeholder, ismobile)
       if (!ismobile) {
         api.setTips(ele, 'null')
       }
@@ -172,7 +172,7 @@ api.clearForm = (form) => {
     ele.setAttribute('disabled', false)
   }
 }
-api.errorTip = (ele, str, ismobile, obj) => {
+api.errorTip = (ele, str, ismobile) => {
   ele.focus()
   if (ismobile) {
     api.tips(str, 1)

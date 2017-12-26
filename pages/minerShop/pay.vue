@@ -384,7 +384,7 @@
       },
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, this, this.isMobile)
+        var data = api.checkFrom(form, this.isMobile)
         if (!data) return false
         data.is_default = 1
         data.token = this.token

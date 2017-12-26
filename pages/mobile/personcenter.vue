@@ -142,7 +142,7 @@
       },
       submit () {
         var form = document.querySelector('.form')
-        var data = api.checkFrom(form, this, api.checkEquipment())
+        var data = api.checkFrom(form, 1)
         var url = 'withdraw'
         var sendData = {token: this.token, user_id: this.user_id}
         var tipsStr = '提现成功'

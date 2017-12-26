@@ -66,7 +66,7 @@
     methods: {
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, this, this.isMobile)
+        var data = api.checkFrom(form, this.isMobile)
         var url = ''
         var callbackUrl = ''
         var val = ''

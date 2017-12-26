@@ -178,7 +178,7 @@
         //   document.querySelector('.form')[1].style = 'color:red'
         //   return false
         // }
-        var data = api.checkFrom(form, this, true)
+        var data = api.checkFrom(form, 1)
         var sendData = {token: this.token, user_id: this.user_id}
         if (!data) return false
         form.btn.setAttribute('disabled', true)
