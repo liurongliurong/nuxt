@@ -44,6 +44,7 @@
       },
      clickcontent (type) {
         let id_lists = JSON.parse(localStorage.getItem('all_id'))
+        console.log(id_lists)
         for (let i = 0; i < id_lists.length; i++) {
           if (this.params1 === id_lists[i].id) {
             if (type === 1) {
@@ -71,8 +72,6 @@
       }
       for (var i = 0; i < id_lists.length; i++) {
         if (this.params1 === id_lists[i].id) {
-          console.log(id_lists[i + 1].title)
-          console.log(i)
           this.nextTitle = id_lists[i + 1] ? id_lists[i + 1].title : '没有下一篇了'
           this.prevTitle = id_lists[i - 1] ? id_lists[i - 1].title : '没有上一篇了'
         }
@@ -119,7 +118,7 @@
       margin-bottom: 30px;
       margin-top: 30px;
       button{
-        width: 50%;
+        width: 40%;
         float: left;
         border:0;
         background: white;
@@ -130,6 +129,7 @@
         overflow: hidden;
       }
       :nth-child(2){
+        float: right;
         text-align: right;
       }
     }
