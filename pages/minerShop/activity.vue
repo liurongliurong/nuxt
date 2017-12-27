@@ -388,6 +388,7 @@
               float: left;
               background: #2c1963;
               line-height: 100px;
+              text-align: left;
               font-size: 14px;
               color: white;
               text-align: center;
@@ -421,11 +422,25 @@
               background: #917cce;
               line-height: 100px;
               font-size: 14px;
-              color: white;
               text-align: center;
+              color: white;
               padding:0 70px;
               box-sizing: border-box;
               word-break: break-all;
+            }
+          }
+          :nth-child(1) {
+            .right{
+              line-height: 24px;
+              text-align: left;
+              padding-top:23px;
+            }
+          }
+          :nth-child(4) {
+            .right{
+              line-height: 24px;
+              text-align: left;
+              padding-top:23px;
             }
           }
         }
