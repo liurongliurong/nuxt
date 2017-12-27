@@ -348,17 +348,15 @@
     width: 100%;
     min-height:700px;
     overflow: hidden;
-    // background: url('../../assets/images/activity1.jpg');
     background-size: 100% 100%;
     background: #240f30;
     .bg_box{
-      @include bg(1920,730px,none)
+      @include bg(1920,730px,#22154A)
     }
     .body_activity{
       width: 100%;
       height: auto;
       background: url('../../assets/images/activity.jpg');
-      // background-color: 
       .activity_vs{
         @include main
         padding:65px 0;
