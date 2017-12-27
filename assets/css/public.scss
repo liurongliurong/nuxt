@@ -227,6 +227,9 @@ input::-webkit-input-placeholder {
           margin-top:1rem;
           overflow: auto !important;
           height: 15rem;
+          .checkbox input{
+            margin-right: 10px;
+          }
           &.card_form .input{
             input,.sel,.select{
               padding-left:10px
