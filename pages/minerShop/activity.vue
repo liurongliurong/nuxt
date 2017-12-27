@@ -1,47 +1,49 @@
 <template>
   <div class="activity_box">
     <div class="bg_box" v-if="!isMobile">
-       <!-- <img src="../../assets/images/swiper/5_1.jpg"/>  -->
-       <h6>12月29日11：00起，每天30台连抢7天 ！</h6>
+        <img src="../../assets/images/swiper/5_1.jpg"/>  
     </div>
     <div class="mobile_bg_box" v-else>
       <img :src="require('@/assets/images/swiper/mobile4.jpg')" alt="">
       <h1>{{data.name}}</h1>
     </div>
-    <div class="body_activity" v-if="!isMobile">
-      <div class="buy_form">
-        <div class="form_bg">
-          <img :src="require('@/assets/images/buy_bg.png')" alt="">
-          <div class="buy_title">
-            <b>{{data.name}}</b>
-          </div>
-          <div class="buy_desc">
-            <div class="item" v-for="t,k in text">
-              <div class="item_num">
-                <b>{{data[k]}}</b>
-                <span>{{t.unit}}</span>
-              </div>
-              <div class="item_desc">{{t.title}}</div>
+    <div class="buy_form"  v-if="!isMobile">
+      <div class="form_bg">
+        <img :src="require('@/assets/images/buy_bg.png')" alt="">
+        <div class="buy_title">
+          <b>{{data.name}}</b>
+          <span class="title_key">批次所在区域：</span>
+          <span class="title_val">{{data.area}}</span>
+        </div>
+        <div class="buy_desc">
+          <div class="item" v-for="t,k in text">
+            <div class="item_num">
+              <b v-if="k==='left_amount'">{{data.amount-data.sell_amount}}</b>
+              <b v-else>{{data[k]}}</b>
+              <span>{{t.unit}}</span>
             </div>
-          </div>
-          <div class="buy_input">
-            <p>购买数量（台）</p>
-            <div class="input_box">
-              <span @click="changeNum(+number-1)">-</span>
-              <input type="text" v-model="number" name="number" placeholder="请输入购买数量，1台起售" @blur="changeNum(number)">
-              <span @click="changeNum(+number+1)">+</span>
-            </div>
-            <p>总算力：<span>{{totalHash}}T</span></p>
-            <p>需支付：<span>{{totalPrice}}元</span></p>
-            <button @click="gobuy()">立即支付</button>
-            <label for="accept">
-              <input type="checkbox" :value="accept" id="accept" name="accept">
-              <span @click="openContract(1)">阅读并接受<a href="javascript:;"  style="color:blue;">《矿机销售协议》</a></span>
-              <span class="select_accept">{{tips}}</span>
-            </label>
+            <div class="item_desc">{{t.title}}</div>
           </div>
         </div>
+        <div class="buy_input">
+          <p>购买数量（台）</p>
+          <div class="input_box">
+            <span @click="changeNum(+number-1)">-</span>
+            <input type="text" v-model="number" name="number" placeholder="请输入购买数量，1台起售" @blur="changeNum(number)">
+            <span @click="changeNum(+number+1)">+</span>
+          </div>
+          <p>总算力：<span>{{totalHash}}T</span></p>
+          <p>需支付：<span>{{totalPrice}}元</span></p>
+          <button @click="gobuy()">立即支付</button>
+          <label for="accept">
+            <input type="checkbox" :value="accept" id="accept" name="accept">
+            <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span>
+            <span class="select_accept">{{tips}}</span>
+          </label>
+        </div>
       </div>
+    </div>
+    <div class="body_activity"  v-if="!isMobile">
       <div class="activity_img">
         <h4>产品简介</h4>
         <p style="padding-bottom:0;">AvalonMiner 740采用88 x A3212 16纳米芯片，是最新的迦南AvalonMiner，具有7.3可靠的每秒散列速率（RTHS）。</p>
@@ -99,7 +101,7 @@
       <button class="submit" @click="gobuy(1)">立即支付</button>
       <label for="accept">
         <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
-        <span @click="openContract(1)">阅读并接受<a href="javascript:;">《矿机销售协议》</a></span>
+        <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span>
         <span class="select_accept">{{tips}}</span>
       </label>
       <div class="imagesall">
@@ -135,6 +137,7 @@
         data: {},
         form: {auth: [{name: 'truename', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true}, {name: 'idcard', type: 'text', title: '证件号码', placeholder: '请输入您的证件号码', pattern: 'idCard'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}], address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}]},
         mobileData: [{title: '算力服务器价格', unit: '元/台'}, {title: '服务器算力', unit: 'T'}, {title: '剩余总量', unit: '台'}],
+        activityType: {1: {dataRequest: 'showMiner', dataCommit: 'saveMiner', agreement: '《矿机销售协议》'}, 2: {dataRequest: 'showProduct', dataCommit: 'productMall', agreement: '《云算力购买协议协议》和《矿机托管协议》'}},
         totalHash: '0.00',
         totalPrice: '0.00',
         number: '',
@@ -146,7 +149,8 @@
         content: '',
         card_type: '中国大陆身份证',
         nowForm: 'auth',
-        addressData: ''
+        addressData: '',
+        activity: 2
       }
     },
     methods: {
@@ -192,10 +196,12 @@
           this.openContract(2)
           return false
         }
-        if (!this.addressData) {
-          this.openContract(3)
-          return false
-        }
+        var url = 'productMall'
+        // var url = 'saveMiner'
+        // if (!this.addressData) {
+        //   this.openContract(3)
+        //   return false
+        // }
         var ele = document.querySelector('#accept')
         if (!this.number) {
           this.check(ele, '请填写数量')
@@ -206,12 +212,13 @@
           return false
         }
         var callbackUrl = location.protocol + '//' + location.host + '/'
-        var data = {miner_id: this.data.miner_id, number: this.number, mode: '2', token: this.token, user_id: this.user_id, amount: this.totalPrice, url: callbackUrl}
+        // var data = {miner_id: this.data.miner_id, number: this.number, mode: '2', token: this.token, user_id: this.user_id, amount: this.totalPrice, url: callbackUrl}
+        var data = {product_id: this.data.product_id, num: this.number, mode: '1', token: this.token, user_id: this.user_id, amount: this.totalPrice, url: callbackUrl}
         var self = this
-        util.post('saveMiner', {sign: api.serialize(Object.assign(this.addressData, data))}).then(function (res) {
+        util.post(url, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             res.subject = encodeURIComponent(res.subject)
-            if (this.isMobile) {
+            if (self.isMobile) {
               res = Object.assign(res, {is_mobile: 1})
             } else {
               res = Object.assign(res, {is_mobile: 0})
@@ -307,13 +314,15 @@
         api.tips('请在浏览器里打开', 1)
       }
       var self = this
-      util.post('showMiner', {sign: api.serialize({token: this.token})}).then(function (res) {
+      // var url = 'showMiner'
+      var url = 'showProduct'
+      util.post(url, {sign: api.serialize({token: this.token})}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.data = res
-          // self.content = res.content + '<hr>' + res.content1
-          self.content = res.content
+          self.content = res.content + '<hr>' + res.content1
+          // self.content = res.content
         }, '', () => {
-          self.$router.push({name: 'index'})
+          // self.$router.push({name: 'index'})
         })
       })
     }
@@ -326,25 +335,21 @@
     width: 100%;
     min-height:700px;
     overflow: hidden;
-    background: url('../../assets/images/activity1.jpg');
+    // background: url('../../assets/images/activity1.jpg');
     background-size: 100% 100%;
-    // background: #240f30;
+    background: #240f30;
     .bg_box{
-      @include bg(1920,669px,none)
-      h6{
-        color: white;
-        font-size: 16px;
-        text-align: center;
-        position: relative;
-        top: -277px;
-        left: 0;
-      }
+      @include bg(1920,730px,none)
     }
     .body_activity{
+      width: 100%;
+      height: auto;
+      background: url('../../assets/images/activity.jpg');
+      // background-color: 
       .activity_vs{
         @include main
         padding:65px 0;
-        padding-top:0;
+        padding-top:20px;
         h4{
           width:100%;
           text-align:center;
@@ -439,6 +444,7 @@
     .buy_form{
       height:470px;
       color:$white;
+      background: #1f1135;
       .form_bg{
         @include bg(1213,424px,transparent)
       }
@@ -709,8 +715,9 @@
           display: inline-block;
           vertical-align: middle;
           margin-left:5px;
+          font-size: 12px;
           a{
-            color:$blue
+            color:#fff
           }
         }
         @include accept_label
