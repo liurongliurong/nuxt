@@ -1,7 +1,7 @@
 <template>
   <article>
     <div class="home" v-if="isMobile===0">
-      <Swiper :pagination-visible="true" :loop="true" :autoPlay="5000"></Swiper>
+      <Swiper :data="banners" :pagination-visible="true" :autoPlay="5000"></Swiper>
       <div class="home_text">
         <div class="main">
           <div class="list">
@@ -86,7 +86,8 @@
         mapData: [{title: '全网算力', name: 'hashrate', unit: 'PH/s'}, {title: '全网困难度', name: 'difficulty', unit: 'T'}],
         computeData: {},
         computeRealData: {},
-        timer: 0
+        timer: 0,
+        banners: [{img: require('@/assets/images/swiper/3_1.jpg'), link: '/minerShop/activity', text: '点击抢购'}, {img: require('@/assets/images/swiper/2_1.jpg'), link: '/minerShop/list', text: '开启挖矿之旅'}, {img: require('@/assets/images/swiper/1_1.jpg'), link: '/bdc', text: '前往申请机位', pos: 'center'}]
       }
     },
     methods: {
@@ -160,22 +161,7 @@
         .swiper_one{
           position: relative;
           height: 420px;
-          &:nth-child(2),&:nth-child(4){
-            @include bg(1920, 420)
-            background: linear-gradient(to right, #FE5337 10%, #FF9D02);
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FE5337', endColorstr='#FF9D02',GradientType=1 );
-            .btn{
-              color:#FC5137
-            }
-          }
-          &:nth-child(1),&:nth-child(3){
-            @include bg(1920, 420)
-            background: linear-gradient(to right, #1077F0 10%, #00E0D8);
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1077F0', endColorstr='#00E0D8',GradientType=1 );
-            .btn{
-              color:#7EAFFC
-            }
-          }
+          @include bg(1920, 420)
           a.btn{
             position: absolute;
             width:200px;
@@ -189,6 +175,57 @@
             border-radius:5px;
             font-size: 18px;
             background: #fff;
+          }
+          &:not(:first-child) a.btn{
+            .swiper_arrow{
+              margin-right:5px;
+            }
+            .swiper_arrow:before{
+              content:'';
+              @include triangle
+            }
+            .swiper_arrow:after{
+              content:'';
+              @include triangle
+              border-left-width:8px;
+              border-top-width:5px;
+              border-bottom-width:5px;
+            }
+          }
+          &:nth-child(1){
+            background: linear-gradient(to bottom, #746BFC 10%, #D25CFE);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FE5337', endColorstr='#FF9D02',GradientType=0 );
+            .btn{
+              color:#D25CFE;
+              left:calc(50% - 100px);
+              top:290px;
+            }
+          }
+          &:nth-child(2){
+            background: linear-gradient(to right, #1077F0 10%, #00E0D8);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1077F0', endColorstr='#00E0D8',GradientType=1 );
+            .btn{
+              color:#7EAFFC;
+              .swiper_arrow:before{
+                border-left-color:#015FFF
+              }
+              .swiper_arrow:after{
+                border-left-color:#7EAFFC
+              }
+            }
+          }
+          &:nth-child(3){
+            background: linear-gradient(to right, #FE5337 10%, #FF9D02);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FE5337', endColorstr='#FF9D02',GradientType=1 );
+            .btn{
+              color:#FC5137;
+              .swiper_arrow:before{
+                border-left-color:#FC5137
+              }
+              .swiper_arrow:after{
+                border-left-color:#FF9F02
+              }
+            }
           }
         }
       }

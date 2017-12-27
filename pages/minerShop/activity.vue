@@ -208,10 +208,10 @@
           this.openContract(2)
           return false
         }
-        if (!this.addressData) {
-          this.openContract(3)
-          return false
-        }
+        // if (!this.addressData) {
+        //   this.openContract(3)
+        //   return false
+        // }
         var ele = document.querySelector('#accept')
         if (!this.number) {
           this.check(ele, '请填写数量')
@@ -323,13 +323,15 @@
         api.tips('请在浏览器里打开', 1)
       }
       var self = this
-      util.post('showMiner', {sign: api.serialize({token: this.token})}).then(function (res) {
+      var url = 'showMiner'
+      // var url = 'showProduct'
+      util.post(url, {sign: api.serialize({token: this.token})}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.data = res
           // self.content = res.content + '<hr>' + res.content1
           self.content = res.content
         }, '', () => {
-          self.$router.push({name: 'index'})
+          // self.$router.push({name: 'index'})
         })
       })
     }
