@@ -117,7 +117,7 @@
             <span class="one_left">{{n.title}}</span>
             <span class="one_right" v-if="k === 'hash'">{{data[k]}}</span> 
             <span class="one_right" v-else-if="k === 'chips_num'">{{data.product_info ? data.product_info[k] : ''}}</span>  
-            <span class="one_right" v-else>{{hashcontent}}</span>
+            <span class="one_right" v-else>{{hashcontent[k]}}</span>
           </div>
         </div>
       </div>
