@@ -1,7 +1,7 @@
 <template>
   <section class="swiper" ref="swiper-wrap">
-    <div class="swiper_wrap" :style="{'transform':'translate('+translateX+'px,0px','transition-duration':transitionDuration+'ms', width: (oneWidth||width)*data.length+'px'}">
-      <div class="swiper_one"  :style="{width:width+'px'}" v-for="n,k in data" @mousemove="onMouseover">
+    <div :class="'swiper_wrap '+effect" :style="boxStyle">
+      <div :class="['swiper_one', {active: k===currentPage}]"  :style="{width:width+'px'}" v-for="n,k in data" @mousemove="onMouseover">
         <img :src="n.img" alt="">
         <router-link class="btn" :to="n.link"><span class="swiper_arrow"></span>{{n.text}}</router-link>
       </div>
@@ -9,10 +9,6 @@
     <div class="swiper-pagination" v-if="paginationVisiable">
       <span class="swiper-pagination-bullet" :class="{'active':k===currentPage}" v-for="slide,k in data" @click="setPage(k)"></span>
     </div>
-    <template v-if="button">
-      <div class="prev" @click="prev"><</div>
-      <div class="next" @click="next">></div>
-    </template>
   </section>
 </template>
 
@@ -20,15 +16,8 @@
   export default {
     name: 'swiper',
     props: {
-      button: {
-        type: Boolean,
-        default: false
-      },
       data: {
         type: Array
-      },
-      oneWidth: {
-        type: String
       },
       paginationVisiable: {
         type: Boolean,
@@ -45,18 +34,24 @@
       autoPlay: {
         type: Number,
         default: 3000
+      },
+      effect: {
+        type: String,
+        default: 'fade'
       }
     },
     data () {
       return {
         currentPage: 0,
-        translateX: 0,
+        translate: 0,
         transitionDuration: 0,
         offset: 0,
         t: '',
         offsetX: 0,
         offsetY: 0,
-        width: 0
+        width: 0,
+        boxStyle: {},
+        itemStyle: {}
       }
     },
     mounted () {
@@ -72,8 +67,8 @@
         this.t = ''
         var w = window.innerWidth
         var h = window.innerHeight
-        this.offsetX = e.clientX / w * 40
-        this.offsetY = e.clientY / h * 20
+        // this.offsetX = e.clientX / w * 40
+        // this.offsetY = e.clientY / h * 20
         var self = this
         setTimeout(() => {
           if (this.t === '' && this.autoPlay) {
@@ -131,23 +126,23 @@
         }
       },
       setTranslate () {
-        this.translateX = this.currentPage * -this.offset
+        this.translate = this.currentPage * -this.offset
+        if (this.effect === 'translate') {
+          this.boxStyle = Object.assign(this.boxStyle, {'transform':'translate('+this.translate+'px,0px)'})
+        }
         if (this.loop) {
           setTimeout(this.onTransitionEnd, this.speed + 500)
         }
       },
       onInit () {
         this.width = document.body.clientWidth || document.documentElement.clientWidth
+        if (this.effect === 'fade') {
+          this.boxStyle = {'transition-duration':this.speed+'ms', width: this.width+'px'}
+        } else if (this.effect === 'translate') {
+          this.boxStyle = {'transition-duration':this.speed+'ms', width: this.width*this.data.length+'px'}
+        }
         clearInterval(this.t)
-        this.offset = this.oneWidth || this.$refs['swiper-wrap']['offsetWidth']
-        // var arr = this.data
-        // if (this.loop) {
-        //   this.setTranslate()
-        //   this.slideEls = [arr[arr.length - 1], ...arr, arr[0]]
-        // } else {
-        //   this.currentPage = 0
-        //   this.slideEls = arr
-        // }
+        this.offset = this.$refs['swiper-wrap']['offsetWidth']
         if (this.autoPlay) {
           this.t = setInterval(() => {
             this.next()
@@ -166,8 +161,20 @@
     .swiper_wrap {
       overflow: hidden;
       transition: all 0ms ease;
+      height:420px;
       .swiper_one{
         float: left;
+      }
+      &.fade{
+        .swiper_one{
+          @include position
+          transition: all 1s ease;
+          float: none;
+          opacity: 0;
+          &.active{
+            opacity:1;
+          }
+        }
       }
     }
     .swiper-pagination {
@@ -181,7 +188,7 @@
         border-bottom: 2px solid #000000;
         border-top:3px solid transparent;
         opacity: .2;
-        transition: all 4s ease;
+        transition: all 2s ease;
         cursor: pointer;
         margin: 0 3px;
         &.active {
