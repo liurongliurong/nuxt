@@ -66,7 +66,9 @@
         </div>
       </div>
       <div class="activity_vs">
-        <h4>云算力VS自己挖坑</h4>
+        <h4>
+          云算力VS自己挖坑
+        </h4>
         <div class="activity_ul">
           <div class="activity_li" v-for="n, k in activityUl">
             <p class="left">{{n.left}}</p>
