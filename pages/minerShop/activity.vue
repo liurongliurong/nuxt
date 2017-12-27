@@ -46,8 +46,8 @@
     <div class="body_activity"  v-if="!isMobile">
       <div class="activity_img">
         <h4>产品简介</h4>
-        <p style="padding-bottom:0;">AvalonMiner 740采用88 x A3212 16纳米芯片，是最新的迦南AvalonMiner，具有7.3可靠的每秒散列速率（RTHS）。</p>
-        <p style="padding-top:28px;">通过将我们的AvalonMiner控制器（另售）连接到单个AUC3（AvalonMiner USB转换器3），您可以连接五个AvalonMiner。为了最大限度地利用，您可以将AvalonMiner控制器连接到4个AUC3设备，每个AUC3设备可以连接到5个AvalonMiners，以同时管理20个AvalonMiner 741达到146 TH / s（RTHS）。</p>
+        <!-- <p style="padding-bottom:0;">AvalonMiner 740采用88 x A3212 16纳米芯片，是最新的迦南AvalonMiner，具有7.3可靠的每秒散列速率（RTHS）。</p> -->
+        <p style="padding-top:28px;padding-bottom: 25px;" v-html="hashcontent.machine_advantage"></p>
         <h4>官方参数</h4>
         <div class="activity_content">
           <div class="activity_left">
@@ -66,7 +66,11 @@
         </div>
       </div>
       <div class="activity_vs">
-        <h4>云算力VS自己挖坑</h4>
+        <h4>
+          <img src="../../assets/images/activity.png"/>
+          云算力VS自己挖坑
+          <img src="../../assets/images/activity.png"/>
+        </h4>
         <div class="activity_ul">
           <div class="activity_li" v-for="n, k in activityUl">
             <p class="left">{{n.left}}</p>
@@ -368,6 +372,21 @@
           color:#ff9f00;
           font-weight: 800;
           padding-bottom: 10px;
+          position: relative;
+          img{
+            width: 70px;
+            height: 32px;
+          }
+          :nth-child(1){
+                position: absolute;
+              left: 201px;
+              top: 7px;
+          }
+          :nth-child(2){
+            position: absolute;
+              right: 201px;
+              top: 7px;
+          }
         }
         .activity_ul{
           width: 100%;
@@ -767,7 +786,6 @@
         line-height: 27px;
         font-size: 14px;
         padding-top: 33px;
-        padding-bottom:65px;
       }
       .activity_content{
         margin-top: 40px;
