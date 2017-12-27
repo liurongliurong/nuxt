@@ -46,8 +46,8 @@
     <div class="body_activity"  v-if="!isMobile">
       <div class="activity_img">
         <h4>产品简介</h4>
-        <p style="padding-bottom:0;">AvalonMiner 740采用88 x A3212 16纳米芯片，是最新的迦南AvalonMiner，具有7.3可靠的每秒散列速率（RTHS）。</p>
-        <p style="padding-top:28px;">通过将我们的AvalonMiner控制器（另售）连接到单个AUC3（AvalonMiner USB转换器3），您可以连接五个AvalonMiner。为了最大限度地利用，您可以将AvalonMiner控制器连接到4个AUC3设备，每个AUC3设备可以连接到5个AvalonMiners，以同时管理20个AvalonMiner 741达到146 TH / s（RTHS）。</p>
+        <!-- <p style="padding-bottom:0;">AvalonMiner 740采用88 x A3212 16纳米芯片，是最新的迦南AvalonMiner，具有7.3可靠的每秒散列速率（RTHS）。</p> -->
+        <p style="padding-top:28px;">{{hashcontent[machine_advantage]}}</p>
         <h4>官方参数</h4>
         <div class="activity_content">
           <div class="activity_left">
