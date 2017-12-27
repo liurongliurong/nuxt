@@ -1,7 +1,7 @@
 <template>
   <article>
     <div class="home" v-if="isMobile===0">
-      <Swiper :data="banners" :pagination-visible="true" :autoPlay="5000"></Swiper>
+      <Swiper :data="banners" :autoPlay="5000"></Swiper>
       <div class="home_text">
         <div class="main">
           <div class="list">
@@ -11,7 +11,7 @@
           </div>
         </div>
       </div>
-      <DataList></DataList>
+      <MyDataList></MyDataList>
       <WebInfo></WebInfo>
       <div class="home_title">
         <div class="main">
@@ -69,7 +69,7 @@
 <script>
   import util from '@/util'
   import api from '@/util/function'
-  import DataList from '@/components/home/DataList'
+  import MyDataList from '@/components/home/DataList'
   import Swiper from '@/components/common/Swipe'
   import WebInfo from '@/components/home/WebInfo'
   import SideBar from '@/components/home/SideBar'
@@ -77,7 +77,7 @@
   import { mapState } from 'vuex'
   export default {
     components: {
-      Swiper, DataList, WebInfo, SideBar, DataMap
+      Swiper, MyDataList, WebInfo, SideBar, DataMap
     },
     data () {
       return {
@@ -160,8 +160,7 @@
       .swiper_wrap{
         .swiper_one{
           position: relative;
-          height: 420px;
-          @include bg(1920, 420)
+          @include bg(1920, 420px)
           a.btn{
             position: absolute;
             width:200px;
@@ -176,7 +175,7 @@
             font-size: 18px;
             background: #fff;
           }
-          &:not(:first-child) a.btn{
+          &:nth-child(2) a.btn,&:nth-child(3) a.btn{
             .swiper_arrow{
               margin-right:5px;
             }
@@ -195,7 +194,7 @@
           &:nth-child(1){
             background: linear-gradient(to bottom, #746BFC 10%, #D25CFE);
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FE5337', endColorstr='#FF9D02',GradientType=0 );
-            .btn{
+            a.btn{
               color:#D25CFE;
               left:calc(50% - 100px);
               top:290px;
@@ -204,7 +203,7 @@
           &:nth-child(2){
             background: linear-gradient(to right, #1077F0 10%, #00E0D8);
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1077F0', endColorstr='#00E0D8',GradientType=1 );
-            .btn{
+            a.btn{
               color:#7EAFFC;
               .swiper_arrow:before{
                 border-left-color:#015FFF
@@ -217,7 +216,7 @@
           &:nth-child(3){
             background: linear-gradient(to right, #FE5337 10%, #FF9D02);
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FE5337', endColorstr='#FF9D02',GradientType=1 );
-            .btn{
+            a.btn{
               color:#FC5137;
               .swiper_arrow:before{
                 border-left-color:#FC5137

@@ -348,13 +348,13 @@
       width:600px;
       margin-left:-300px;
       .popup_title{
-        background: #3A69D3;
+        background: #3A69D3 url(~assets/images/popup_bg.png) bottom right no-repeat;
         color:#fff;
-        height:80px;
-        line-height: 80px;
+        height:100px;
+        line-height: 100px;
       }
       .form{
-        padding: 40px 60px;
+        padding: 40px 80px;
         p.regist_form_title{
           text-align: center;
           font-size: 16px;
