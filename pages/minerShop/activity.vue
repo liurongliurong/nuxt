@@ -5,6 +5,7 @@
     </div>
     <div class="mobile_bg_box" v-else>
       <img :src="require('@/assets/images/swiper/mobile4.jpg')" alt="">
+      <h1>{{data.name}}</h1>
     </div>
     <div class="body_activity" v-if="!isMobile">
       <div class="buy_form">
@@ -77,7 +78,6 @@
       </div>
     </div>
     <div class="mobile_form" v-else>
-      <h1>{{data.name}}</h1>
       <div class="sideone">
         <div class="flexone">
           <div v-for="t,k in text" class="flextwo">
@@ -344,8 +344,13 @@
     overflow: hidden;
     // background: url('../../assets/images/activity.jpg');
     background-size: 100% 100%;
+    background: #240f30;
     .bg_box{
       @include bg(1920,669px,none)
+      img{
+        width:100%;
+        height: 100%;
+      }
     }
     .body_activity{
       width: 100%;
@@ -395,7 +400,7 @@
               width: 82px;
               height: 82px;
               border-radius: 100%;
-              border:10px solid #151136;
+              border:10px solid #240f30;
               background: #ff9b01;
               color: white;
               font-size: 14px;
@@ -434,8 +439,7 @@
       }
     }
     .buy_form{
-      height:530px;
-      padding-top:40px;
+      height:470px;
       color:$white;
       .form_bg{
         @include bg(1213,424px,transparent)
@@ -510,16 +514,20 @@
         }
       }
     }
-    .mobile_form{
-      background: #151136;
+    .mobile_bg_box{
       h1{
         width: 100%;
         color: white;
         font-size: 0.7rem;
         text-align: center;
-        margin-top: 0.5rem;
         margin-bottom: 0.5rem;
+        position: absolute;
+        top: 7rem;
       }
+    }
+    .mobile_form{
+      background: #240f30;
+      margin-top: 1rem;
       .sideone{
         width: 96%;
         margin-left: 2%;
@@ -766,7 +774,7 @@
             font-size: 28px;
             color:#f8b551;
             margin-top: 65px;
-            margin-bottom: 129px;
+            margin-bottom: 86px;
           }
         }
         .activity_right{
