@@ -225,6 +225,8 @@ input::-webkit-input-placeholder {
         .form{
           padding:0.5rem;
           margin-top:1rem;
+          overflow: auto !important;
+          height: 15rem;
           &.card_form .input{
             input,.sel,.select{
               padding-left:10px
