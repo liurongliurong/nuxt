@@ -51,8 +51,8 @@
         <h4>官方参数</h4>
         <div class="activity_content">
           <div class="activity_left">
-            <img :src="require('@/assets/images/kuan.jpg')"/>
-            <h6>翼比特矿机E9+</h6>
+            <img :src="data.activity_picture"/>
+            <h6>{{data.name}}</h6>
           </div>
           <div class="activity_right">
             <div class="activity_one" v-for="n, k in activityOne">
@@ -111,7 +111,7 @@
         <span class="select_accept">{{tips}}</span>
       </label>
       <div class="imagesall">
-        <h5>翼比特矿机E9+ 官方参数</h5>
+        <h5>{{data.name}} 官方参数</h5>
         <div class="imagesbig">
           <div class="activity_one" v-for="n, k in activityOne">
             <span class="one_left">{{n.title}}</span>
