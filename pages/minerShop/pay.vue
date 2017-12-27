@@ -270,7 +270,7 @@
             return false
           }
         } else {
-          callbackUrl = location.protocol + '//' + location.host
+          callbackUrl = location.protocol + '//' + location.host + '/user/order/0'
         }
         if (!ff.accept.checked) {
           this.tip('请同意服务条款', ff.accept)
