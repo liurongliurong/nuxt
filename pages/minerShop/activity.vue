@@ -67,7 +67,9 @@
       </div>
       <div class="activity_vs">
         <h4>
+          <img src="../../assets/images/activity.png"/>
           云算力VS自己挖坑
+          <img src="../../assets/images/activity.png"/>
         </h4>
         <div class="activity_ul">
           <div class="activity_li" v-for="n, k in activityUl">
@@ -370,6 +372,21 @@
           color:#ff9f00;
           font-weight: 800;
           padding-bottom: 10px;
+          position: relative;
+          img{
+            width: 70px;
+            height: 32px;
+          }
+          :nth-child(1){
+                position: absolute;
+              left: 201px;
+              top: 7px;
+          }
+          :nth-child(2){
+            position: absolute;
+              right: 201px;
+              top: 7px;
+          }
         }
         .activity_ul{
           width: 100%;
