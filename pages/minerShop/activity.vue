@@ -1,7 +1,8 @@
 <template>
   <div class="activity_box">
     <div class="bg_box" v-if="!isMobile">
-       <img src="../../assets/images/swiper/5_1.jpg"/> 
+       <!-- <img src="../../assets/images/swiper/5_1.jpg"/>  -->
+       <h6>12月29日11：00起，每天30台连抢7天 ！</h6>
     </div>
     <div class="mobile_bg_box" v-else>
       <img :src="require('@/assets/images/swiper/mobile4.jpg')" alt="">
@@ -52,16 +53,7 @@
             <h6>翼比特矿机E9+</h6>
           </div>
           <div class="activity_right">
-            <div class="activity_one"><span class="one_left">算   力</span><span class="one_right">9TH/S (-5%~+10%)</span></div>
-            <div class="activity_one"><span class="one_left">墙上功耗比</span><span class="one_right">145W/T（AC/DC 93%的效率，25℃工作温度）</span></div>
-            <div class="activity_one"><span class="one_left">额定电压</span><span class="one_right">11.8V～13.0V</span></div>
-            <div class="activity_one"><span class="one_left">电源接口</span><span class="one_right">9个6PIN接口</span></div>
-            <div class="activity_one"><span class="one_left">芯片数量</span><span class="one_right">DW1227 132颗（14nm LPP工艺）</span></div>
-            <div class="activity_one"><span class="one_left">几何尺寸</span><span class="one_right">290mm*126mm*155mm</span></div>
-            <div class="activity_one"><span class="one_left">重   量</span><span class="one_right">4.7KG</span></div>
-            <div class="activity_one"><span class="one_left">网络连接</span><span class="one_right">以太网</span></div>
-            <div class="activity_one"><span class="one_left">工作温度</span><span class="one_right">-10℃～40℃</span></div>
-            <div class="activity_one"><span class="one_left">工作湿度</span><span class="one_right">5%RH～95%RH 非凝露</span></div>
+            <div class="activity_one" v-for="n, k in activityOne"><span class="one_left">{{n.title}}</span><span class="one_right">{{n.value}}</span></div>
           </div>
         </div>
       </div>
@@ -113,16 +105,7 @@
       <div class="imagesall">
         <h5>翼比特矿机E9+ 官方参数</h5>
         <div class="imagesbig">
-          <div class="activity_one"><span class="one_left">算   力</span><span class="one_right">9TH/S (-5%~+10%)</span></div>
-          <div class="activity_one"><span class="one_left">墙上功耗比</span><span class="one_right">145W/T（AC/DC 93%的效率）</span></div>
-          <div class="activity_one"><span class="one_left">额定电压</span><span class="one_right">11.8V～13.0V</span></div>
-          <div class="activity_one"><span class="one_left">电源接口</span><span class="one_right">9个6PIN接口</span></div>
-          <div class="activity_one"><span class="one_left">芯片数量</span><span class="one_right">DW1227 132颗（14nm LPP工艺）</span></div>
-          <div class="activity_one"><span class="one_left">几何尺寸</span><span class="one_right">290mm*126mm*155mm</span></div>
-          <div class="activity_one"><span class="one_left">重   量</span><span class="one_right">4.7KG</span></div>
-          <div class="activity_one"><span class="one_left">网络连接</span><span class="one_right">以太网</span></div>
-          <div class="activity_one"><span class="one_left">工作温度</span><span class="one_right">-10℃～40℃</span></div>
-          <div class="activity_one"><span class="one_left">工作湿度</span><span class="one_right">5%RH～95%RH 非凝露</span></div>
+          <div class="activity_one" v-for="n, k in activityOne"><span class="one_left">{{n.title}}</span><span class="one_right">{{n.value}}</span></div>
         </div>
       </div>
       <div class="logo">
@@ -146,6 +129,7 @@
     },
     data () {
       return {
+        activityOne: [{title: '算   力', value: '9TH/S (-5%~+10%)'}, {title: '墙上功耗比', value: '145W/T（AC/DC 93%的效率）'}, {title: '额定电压', value: '11.8V～13.0V'}, {title: '电源接口', value: '9个6PIN接口'}, {title: '芯片数量', value: 'DW1227 132颗（14nm LPP工艺）'}, {title: '几何尺寸', value: '290mm*126mm*155mm'}, {title: '重量', value: '4.7KG'}, {title: '网络连接', value: '以太网'}, {title: '工作温度', value: '-10℃～40℃'}, {title: '工作湿度', value: '5%RH～95%RH 非凝露'}],
         activityUl: [{left: '规模化部署，专业的散热设备，远离运行噪音，使用低价合规电。', unit: '运行', right: '在家运行占空间，又会产生大量的噪音和热量，家用电的成本也是不小的开支。'}, {left: '基础设施全方位提供服务。', unit: '配套', right: '需要自己购买专用电源、控制组件和矿机支架等。'}, {left: 'IT专业人员进行配置、维护。', unit: '软件', right: '组装矿机后需要专业的软件支持，对于新人需要付出一定的学习成本。'}, {left: '出现问题平台负责解决，并安排专业人员进行维修。', unit: '维修', right: '一旦矿机出现问题，需要自行解决维修问题，挖矿停止，将会造成一定的损失。'}],
         text: {one_amount_value: {unit: '元/台', title: '算力服务器价格'}, hash: {unit: 'T/台', title: '服务器算力'}, left_amount: {unit: '台', title: '剩余数量'}},
         data: {},
@@ -342,22 +326,21 @@
     width: 100%;
     min-height:700px;
     overflow: hidden;
-    // background: url('../../assets/images/activity.jpg');
+    background: url('../../assets/images/activity1.jpg');
     background-size: 100% 100%;
-    background: #240f30;
+    // background: #240f30;
     .bg_box{
       @include bg(1920,669px,none)
-      img{
-        width:100%;
-        height: 100%;
+      h6{
+        color: white;
+        font-size: 16px;
+        text-align: center;
+        position: relative;
+        top: -277px;
+        left: 0;
       }
     }
     .body_activity{
-      width: 100%;
-      height: auto;
-      overflow: hidden;
-      background: url('../../assets/images/activity.jpg');
-      background-size: 100% 100%;
       .activity_vs{
         @include main
         padding:65px 0;
