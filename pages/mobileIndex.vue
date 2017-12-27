@@ -83,7 +83,7 @@
             <a @click="goToPage('/auth/login', 3)">登录</a>
           </div>
           <div class="login" v-else>
-            <nuxt-link to="/mobile/personcenter">个人中心</nuxt-link>
+            <a @click="goToPage('/mobile/personcenter', 3)">个人中心</a>
           </div>
         </header>
         <div class="swiper" @click="goToPage('/minerShop/activity', 3)">

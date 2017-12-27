@@ -46,7 +46,6 @@
     <div class="body_activity"  v-if="!isMobile">
       <div class="activity_img">
         <h4>产品简介</h4>
-        <!-- <p style="padding-bottom:0;">AvalonMiner 740采用88 x A3212 16纳米芯片，是最新的迦南AvalonMiner，具有7.3可靠的每秒散列速率（RTHS）。</p> -->
         <p style="padding-top:28px;padding-bottom: 25px;" v-html="hashcontent.machine_advantage"></p>
         <h4>官方参数</h4>
         <div class="activity_content">
