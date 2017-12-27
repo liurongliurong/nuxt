@@ -735,7 +735,6 @@
                   line-height: 25px;
                   position: relative;
                   vertical-align: bottom;
-                  top: 6px;
                 }
                 &.yue:before{
                   content:'\e60c'
