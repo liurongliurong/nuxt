@@ -174,6 +174,7 @@
             border-radius:5px;
             font-size: 18px;
             background: #fff;
+            z-index: 10;
           }
           &:nth-child(2) a.btn,&:nth-child(3) a.btn{
             .swiper_arrow{

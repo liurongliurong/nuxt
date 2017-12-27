@@ -47,7 +47,7 @@
       <div class="activity_img">
         <h4>产品简介</h4>
         <!-- <p style="padding-bottom:0;">AvalonMiner 740采用88 x A3212 16纳米芯片，是最新的迦南AvalonMiner，具有7.3可靠的每秒散列速率（RTHS）。</p> -->
-        <p style="padding-top:28px;">{{hashcontent[machine_advantage]}}</p>
+        <p style="padding-top:28px;padding-bottom: 25px;" v-html="hashcontent.machine_advantage"></p>
         <h4>官方参数</h4>
         <div class="activity_content">
           <div class="activity_left">
@@ -348,17 +348,15 @@
     width: 100%;
     min-height:700px;
     overflow: hidden;
-    // background: url('../../assets/images/activity1.jpg');
     background-size: 100% 100%;
     background: #240f30;
     .bg_box{
-      @include bg(1920,730px,none)
+      @include bg(1920,730px,#22154A)
     }
     .body_activity{
       width: 100%;
       height: auto;
       background: url('../../assets/images/activity.jpg');
-      // background-color: 
       .activity_vs{
         @include main
         padding:65px 0;
@@ -769,7 +767,6 @@
         line-height: 27px;
         font-size: 14px;
         padding-top: 33px;
-        padding-bottom:65px;
       }
       .activity_content{
         margin-top: 40px;
