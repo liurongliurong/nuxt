@@ -55,7 +55,13 @@
             <h6>翼比特矿机E9+</h6>
           </div>
           <div class="activity_right">
-            <div class="activity_one" v-for="n, k in activityOne"><span class="one_left">{{n.title}}</span><span class="one_right">{{n.value}}</span></div>
+            <div class="activity_one" v-for="n, k in activityOne">
+              <span class="one_left">{{n.title}}</span>
+              <!-- <span class="one_right">{{k}}</span> -->
+               <span class="one_right" v-if="k === 'hash'">{{data[k]}}</span> 
+               <span class="one_right" v-else-if="k === 'chips_num'">{{data.product_info ? data.product_info[k] : ''}}</span>  
+               <span class="one_right" v-else>{{hashcontent[k]}}</span>   
+            </div>
           </div>
         </div>
       </div>
@@ -107,7 +113,12 @@
       <div class="imagesall">
         <h5>翼比特矿机E9+ 官方参数</h5>
         <div class="imagesbig">
-          <div class="activity_one" v-for="n, k in activityOne"><span class="one_left">{{n.title}}</span><span class="one_right">{{n.value}}</span></div>
+          <div class="activity_one" v-for="n, k in activityOne">
+            <span class="one_left">{{n.title}}</span>
+            <span class="one_right" v-if="k === 'hash'">{{data[k]}}</span> 
+            <span class="one_right" v-else-if="k === 'chips_num'">{{data.product_info ? data.product_info[k] : ''}}</span>  
+            <span class="one_right" v-else>{{hashcontent[k]}}</span>
+          </div>
         </div>
       </div>
       <div class="logo">
@@ -131,7 +142,7 @@
     },
     data () {
       return {
-        activityOne: [{title: '算   力', value: '9TH/S (-5%~+10%)'}, {title: '墙上功耗比', value: '145W/T（AC/DC 93%的效率）'}, {title: '额定电压', value: '11.8V～13.0V'}, {title: '电源接口', value: '9个6PIN接口'}, {title: '芯片数量', value: 'DW1227 132颗（14nm LPP工艺）'}, {title: '几何尺寸', value: '290mm*126mm*155mm'}, {title: '重量', value: '4.7KG'}, {title: '网络连接', value: '以太网'}, {title: '工作温度', value: '-10℃～40℃'}, {title: '工作湿度', value: '5%RH～95%RH 非凝露'}],
+        activityOne: {hash: {title: '算   力', value: '9TH/S (-5%~+10%)'}, wallPower: {title: '墙上功耗比', value: '145W/T（AC/DC 93%的效率）'}, voltage: {title: '额定电压', value: '11.8V～13.0V'}, minerOuterSize: {title: '外箱尺寸', value: '9个6PIN接口'}, chips_num: {title: '芯片数量', value: 'DW1227 132颗（14nm LPP工艺）'}, minerSize: {title: '矿机尺寸', value: '290mm*126mm*155mm'}, weight: {title: '重量', value: '4.7KG'}, network: {title: '网络连接', value: '以太网'}, temperature: {title: '工作温度', value: '-10℃～40℃'}, humidity: {title: '工作湿度', value: '5%RH～95%RH 非凝露'}},
         activityUl: [{left: '规模化部署，专业的散热设备，远离运行噪音，使用低价合规电。', unit: '运行', right: '在家运行占空间，又会产生大量的噪音和热量，家用电的成本也是不小的开支。'}, {left: '基础设施全方位提供服务。', unit: '配套', right: '需要自己购买专用电源、控制组件和矿机支架等。'}, {left: 'IT专业人员进行配置、维护。', unit: '软件', right: '组装矿机后需要专业的软件支持，对于新人需要付出一定的学习成本。'}, {left: '出现问题平台负责解决，并安排专业人员进行维修。', unit: '维修', right: '一旦矿机出现问题，需要自行解决维修问题，挖矿停止，将会造成一定的损失。'}],
         text: {one_amount_value: {unit: '元/台', title: '算力服务器价格'}, hash: {unit: 'T/台', title: '服务器算力'}, left_amount: {unit: '台', title: '剩余数量'}},
         data: {},
@@ -150,7 +161,8 @@
         card_type: '中国大陆身份证',
         nowForm: 'auth',
         addressData: '',
-        activity: 2
+        activity: 2,
+        hashcontent: ''
       }
     },
     methods: {
@@ -319,6 +331,7 @@
       util.post(url, {sign: api.serialize({token: this.token})}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.data = res
+          self.hashcontent = res.product_info.has_product_miner_base
           self.content = res.content + '<hr>' + res.content1
           // self.content = res.content
         }, '', () => {
