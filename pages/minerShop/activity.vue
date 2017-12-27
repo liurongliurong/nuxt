@@ -226,7 +226,7 @@
           this.check(ele, '请同意服务条款')
           return false
         }
-        var callbackUrl = location.protocol + '//' + location.host + (this.isMobile ? '/mobile/order/0' : '/mobile/order/0')
+        var callbackUrl = location.protocol + '//' + location.host + (this.isMobile ? '/mobile/order/0' : '/user/order/0')
         // var data = {miner_id: this.data.miner_id, number: this.number, mode: '2', token: this.token, user_id: this.user_id, amount: this.totalPrice, url: callbackUrl}
         var data = {product_id: this.data.product_id, num: this.number, mode: '1', token: this.token, user_id: this.user_id, amount: this.totalPrice, url: callbackUrl}
         var self = this
