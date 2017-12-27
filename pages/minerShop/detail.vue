@@ -92,71 +92,7 @@
           </div>
         </div>
       </div>
-      <div class="product_info">
-        <template v-if="params2!=='1'">
-          <div :class="['info_ul', {fix_top:isFixTop}]">
-            <div class="info_box">
-              <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in infolists" @click="tabs(m,d.name)">{{d.title}}</div>
-            </div>
-          </div>
-          <div class="content_items">
-            <div class="product_img">
-              <div class="pro_name">{{detail.product_name}}</div>
-              <div class="pro_slogan">{{detail.has_product_miner_base && detail.has_product_miner_base.slogan}}</div>
-              <div class="pro_resume">{{detail.has_product_miner_base && detail.has_product_miner_base.resume}}</div>
-              <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
-              <img class="params_img" :src="detail.has_product_miner_base&&detail.has_product_miner_base.product_img" alt="">
-            </div>
-            <div class="content_item" :id="d.name" v-for="d,m in infolists">
-              <h2 v-if="m!==0">{{d.title}}</h2>
-              <div class="content_con" v-html="detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
-              <div class="content_con" v-else-if="d.name==='product_photos'">
-                 <img :src="detail.has_product_miner_base&&detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in detail.has_product_miner_base&&detail.has_product_miner_base.product_photos">
-              </div>
-              <div class="params_table" v-else>
-                <table border="1" cellspacing="0">
-                  <tbody>
-                    <tr v-for="p,k in params">
-                      <td>{{p}}</td>
-                      <td>{{(detail.has_product_miner_base&&detail.has_product_miner_base[k])||detail[k]}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </template>
-        <template v-else>
-          <div :class="['info_ul', {fix_top:isFixTop}]">
-            <div class="info_box">
-              <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in infolist" @click="tabs(m,d.name)">{{d.title}}</div>
-            </div>
-          </div>
-          <div class="content_items">
-            <div class="product_img">
-              <div class="pro_name">{{detail.name}}</div>
-              <div class="pro_slogan">{{detail.miner_list&&detail.miner_list.slogan}}</div>
-              <div class="pro_resume">{{detail.miner_list&&detail.miner_list.resume}}</div>
-              <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
-              <img class="params_img" :src="detail.ActivityPicture" alt="">
-            </div>
-            <div class="content_item" :id="d.name" v-for="d,m in infolist">
-              <h2 v-if="m!==0">{{d.title}}</h2>
-              <div class="content_con" v-html="detail[d.name]" v-if="d.name!=='MinerAdvantage'"></div>
-              <div class="params_table" v-else>
-                <table border="1" cellspacing="0">
-                  <tbody>
-                    <tr v-for="p,k in params">
-                      <td>{{p}}</td>
-                      <td>{{(detail.miner_list&&detail.miner_list[k])||detail[k]}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </template>
-      </div>
+      <ProductInfo :params2="params2" :detail="detail"></ProductInfo>
     </template>
     <div class="mobile_box" v-else-if="isMobile===1">
       <div class="img">
@@ -188,76 +124,16 @@
           </template>
         </div>
       </div>
-      <template v-if="params2!=='1'">
-        <div class="mobile_product_info">
-          <div class="info_ulmobile">
-            <div class="info_limobile">产品介绍</div>
-          </div>
-          <div class="content_itemsmobile">
-            <div class="product_img">
-              <div class="pro_name">{{detail.product_name}}</div>
-              <div class="pro_slogan">{{detail.has_product_miner_base && detail.has_product_miner_base.slogan}}</div>
-              <div class="pro_resume">{{detail.has_product_miner_base && detail.has_product_miner_base.resume}}</div>
-              <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
-            </div>
-            <div class="content_itemmobile" :id="d.name" v-for="d,m in infolists">
-              <h2 v-if="m!==0">{{d.title}}</h2>
-              <div class="content_conmobile" v-html="detail[d.name]" v-if="d.name==='machine_agreement' || d.name==='machine_advantage'"></div>
-              <div class="content_conmobile" v-else-if="d.name==='product_photos'">
-                 <img :src="detail.has_product_miner_base&&detail.has_product_miner_base.product_photos[k]" alt="" v-for="n,k in detail.has_product_miner_base&&detail.has_product_miner_base.product_photos">
-              </div>
-              <div class="params_tablemobile" v-else>
-                <table border="1" cellspacing="0">
-                  <tbody>
-                    <tr v-for="p,k in params">
-                      <td>{{p}}</td>
-                      <td>{{(detail.miner_list&&detail.miner_list[k])||detail[k]}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="mobile_btn">
-          <button disabled v-if="leftStatus||detail.status===7">已售罄</button>
-          <button @click="openMask" :disabled="detail.status===4" v-else>立即购买</button>
-        </div>
-      </template>
-      <template v-else>
-        <div class="mobile_product_info">
-          <div class="info_ulmobile">
-            <div class="info_limobile">产品介绍</div>
-          </div>
-          <div class="content_itemsmobile">
-            <div class="product_img">
-              <div class="pro_name">{{detail.name}}</div>
-              <div class="pro_slogan">{{detail.miner_list&&detail.miner_list.slogan}}</div>
-              <div class="pro_resume">{{detail.miner_list&&detail.miner_list.resume}}</div>
-              <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
-            </div>
-            <div class="content_itemmobile" :id="d.name" v-for="d,m in infolist">
-              <h2 v-if="m!==0">{{d.title}}</h2>
-              <div class="content_conmobile" v-html="detail[d.name]" v-if="d.name!=='MinerAdvantage'"></div>
-              <div class="params_tablemobile" v-else>
-                <table border="1" cellspacing="0">
-                  <tbody>
-                    <tr v-for="p,k in params">
-                      <td>{{p}}</td>
-                      <td>{{(detail.miner_list&&detail.miner_list[k])||detail[k]}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="mobile_btn">
-          <button disabled v-if="detail.status===2">已售罄</button>
-          <button disabled v-else-if="detail.status===3">产品撤销</button>
-          <button @click="openMask" :disabled="detail.status===4" v-else>立即购买</button>
-        </div>
-      </template>
+      <MobileProductInfo :params2="params2" :detail="detail"></MobileProductInfo>
+      <div class="mobile_btn" v-if="params2!=='1'">
+        <button disabled v-if="detail.status===7">已售罄</button>
+        <button @click="openMask" :disabled="detail.status===4" v-else>立即购买</button>
+      </div>
+      <div class="mobile_btn" v-else>
+        <button disabled v-if="detail.status===2">已售罄</button>
+        <button disabled v-else-if="detail.status===3">产品撤销</button>
+        <button @click="openMask" :disabled="detail.status===4" v-else>立即购买</button>
+      </div>
       <div class="popup" v-if="sheetVisible" @click="closeMask">
         <div class="popup_con buy_box">
           <div class="img_text">
@@ -299,7 +175,12 @@
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
+  import ProductInfo from '@/components/miner/ProductInfo'
+  import MobileProductInfo from '@/components/miner/MobileProductInfo'
   export default {
+    components: {
+      ProductInfo, MobileProductInfo
+    },
     data () {
       return {
         detail: {incomeType: '每日结算，次日发放', fee: '', product_name: '', name: ''},
@@ -327,7 +208,6 @@
         mobileNav2: {hashType: {title: '算力类型', unit: ''}, amount: {title: '服务器总数', unit: '台'}, incomeType: {title: '结算方式', unit: ''}},
         statusObj: {1: {title: '热销中', color: 'red'}, 2: {title: '已售罄', color: 'gray'}, 3: {title: '产品撤销', color: 'gray'}, 4: {title: '预热中', color: 'red'}},
         sheetVisible: false,
-        contentShow: 0,
         active: 0,
         isFixTop: false
       }
@@ -372,18 +252,6 @@
         if (e.target === popup) {
           document.body.style.overflow = 'auto'
           this.sheetVisible = false
-        }
-      },
-      tabs (k, name) {
-        this.contentShow = k
-        if (k === 0) {
-          scrollTo(0, 500)
-        } else if (k === 1) {
-          scrollTo(0, 1200)
-        } else if (k === 2) {
-          scrollTo(0, 1600)
-        } else if (k === 3) {
-          scrollTo(0, 2000)
         }
       },
       fixTop () {
@@ -458,6 +326,7 @@
                 self.detail.hashType = (res.hashtype && res.hashtype.name) || ''
               } else {
                 self.detail.name = res.name
+                self.detail = Object.assign(self.detail, res.miner_list)
                 self.detail.weight = (res.miner_list && res.miner_list.weight) || ''
               }
             })
@@ -899,130 +768,6 @@
 
       }
     }
-    .product_info{
-      position: relative;
-      @include main
-      margin-top:90px;
-      background: white;
-      overflow: hidden;
-      padding:0 98px;
-      box-sizing: border-box;
-      box-shadow: #dfe0e1 0 5px 5px -3px;
-      .info_ul{
-        border-bottom:1px solid #e5e5e5;
-        width: 100%;
-        overflow: hidden;
-        transition: all .3s;
-        .info_li{
-          cursor:pointer;
-          float: left;
-          width: 75px;
-          color:#333333;
-          margin-right: 50px;
-          font-size: 18px;
-          height: 50px;
-          padding-top: 12px;
-          padding-bottom: 12px;
-          box-sizing: border-box;
-          &.active{
-            color: #327fff;
-            border-bottom: 2px solid #327fff;
-            box-sizing: border-box;
-          }
-          &:hover{
-            color: #327fff;
-            border-bottom: 2px solid #327fff;
-            box-sizing: border-box;
-          }
-        }
-        &.fix_top{
-          position: fixed;
-          left:0;
-          top:0;
-          z-index: 10;
-          background: #fff;
-          .info_box{
-            @include main
-            padding:0 98px;
-          }
-        }
-      }
-      .content_items{
-        position: relative;
-        margin:15px 0 40px 0;
-        padding-bottom:40px;
-        background: #DDDFEB;
-        .content_item{
-          padding-top:20px;
-          min-height:300px;
-          h2{
-            font-weight: bold;
-            margin-bottom:20px;
-            padding:0 20px;
-          }
-          .params_table{
-            margin:0 20px;
-            margin-bottom:20px;
-            // box-shadow: #9a9a9a -4px 0 5px -3px;
-            table{
-              width:70%;
-              border: 1px solid $light_black;
-              box-shadow: 0 0 10px #9a9a9a;
-              tr{
-                td{
-                  padding:5px 15px;
-                  &:nth-child(2){
-                    width:70%;
-                    text-align: right;
-                  }
-                }
-              }
-            }
-          }
-          .content_con{
-            margin-bottom:30px;
-            width: 52%;
-            overflow: hidden;
-            padding-left: 25px;
-            padding-top: 10px;
-          }
-        }
-        .product_img{
-          position: relative;
-          .pro_name,.pro_slogan,.pro_resume{
-            @include position(40)
-            bottom:auto;
-            text-align: center;
-            color:#fff
-          }
-          .pro_name{
-            font-size: 36px;
-          }
-          .pro_slogan{
-            top:24%;
-            font-size: 50px;
-          }
-          .pro_resume{
-            top:80%;
-            left:20%;
-            width:60%;
-            right:auto;
-            font-size: 18px;
-          }
-          img{
-            &.pro_img{
-
-            }
-            &.params_img{
-              @include position(480,auto,auto,50)
-              width:40%;
-              height:300px;
-              right:30px !important;
-            }
-          }
-        }
-      }
-    }
     .mobile_box{
       .img{
         width: 100%;
@@ -1121,122 +866,6 @@
           }
         }
       }
-      .mobile_product_info{
-        position: relative;
-        @include main
-        margin-top:15px;
-        background: white;
-        overflow: hidden;
-        .info_ulmobile{
-          border-bottom:1px solid #e5e5e5;
-          width: 100%;
-          overflow: hidden;
-          height: 2rem;
-          display: flex;
-          justify-content: space-between;
-          padding:0 0.5rem;
-          box-sizing: border-box;
-          .info_limobile{
-            cursor:pointer;
-            color:#333333;
-            line-height: 2rem;
-            font-size: 0.65rem;
-            box-sizing: border-box;
-            &.active{
-              color: #ff721f;
-              border-bottom: 2px solid #ff721f;
-              box-sizing: border-box;
-            }
-            &:hover{
-              color: #ff721f;
-              border-bottom: 2px solid #ff721f;
-              box-sizing: border-box;
-            }
-          }
-        }
-        .content_itemsmobile{
-          position: relative;
-          margin:0 0.5rem;
-          margin-top:15px;
-          box-sizing: border-box;
-          padding-bottom:40px;
-          .content_itemmobile{
-            background: #f7f8fa;
-            margin-top: 0.3rem;
-            padding-bottom: 0.5rem;
-            h2{
-              font-weight: bold;
-              margin-bottom:10px;
-              padding:0 20px;
-              text-align: center;
-              font-size: 0.7rem;
-              padding-top: 0.5rem;
-            }
-            .params_tablemobile{
-              table{
-                width:100%;
-                border: 1px solid $light_black;
-                tr{
-                  td{
-                    padding:5px 15px;
-                    &:nth-child(2){
-                      width:70%;
-                      text-align: right;
-                    }
-                  }
-                }
-              }
-            }
-            .content_conmobile{
-              width: 100%;
-              overflow: hidden;
-              padding:0 .3rem;
-              padding-top: 10px;
-              background: #f7f8fa;
-              margin-bottom: 0.2px;
-              strong span{
-                font-size: 0.8rem !important;
-              }
-            }
-          }
-          .product_img{
-            position: relative;
-            .pro_name,.pro_slogan,.pro_resume{
-              @include position(40)
-              bottom:auto;
-              text-align: center;
-              color:#fff
-            }
-            .pro_name{
-              font-size: 0.6rem;
-              top:0.5rem;
-            }
-            .pro_slogan{
-              top:1.3rem;
-              font-size: 0.9rem;
-            }
-            .pro_resume{
-              top:4rem;
-              right:auto;
-              padding: 0 0.2rem;
-              font-size: 0.5px;
-            }
-            img{
-              &.pro_img{
-
-              }
-              // &.params_img{
-              //   @include position(480,auto,auto,50)
-              //   width:40%;
-              //   right:30px !important;
-              // }
-            }
-          }
-        }
-      }
-      .mobile_btn{
-        @include mobile_footer_btn
-      }
       .popup{
         .buy_box{
           width:100vw;
@@ -1299,6 +928,9 @@
             border:0
           }
         }
+      }
+      .mobile_btn{
+        @include mobile_footer_btn
       }
     }
   }
