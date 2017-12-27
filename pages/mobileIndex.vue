@@ -20,7 +20,7 @@
           <p class="content slogen">算力是未来可计量的生产力</p>
         </div>
         <div class="footer">
-          <a class="button" @click="jump()">跳过</a>
+          <a class="button" @click="jump(3)">跳过</a>
           <p class="introduce">Clould mining<i>|</i>Miner<i>|</i>Escrow</p>
         </div>
       </div>
@@ -70,7 +70,7 @@
           <p class="title">算力网&nbsp;suanLi.com&nbsp;&nbsp;&nbsp;每秒都为你产生利润</p>
         </div>
         <div class="footer">
-          <nuxt-link class="button" to="/quickNews">体验数字货币带来的乐趣</nuxt-link>
+          <a class="button" @click="goToPage('/quickNews', 2)">体验数字货币带来的乐趣</a>
           <p class="introduce">Clould mining<i>|</i>Miner<i>|</i>Escrow</p>
         </div>
       </div>
@@ -78,28 +78,31 @@
         <header>
           <img class="logo" src="../assets/images/mobile/index/logo.png" />
           <div class="login" v-if="token === 0">
-            <nuxt-link to="/auth/regist">注册</nuxt-link>
+            <a @click="goToPage('/auth/regist', 3)">注册</a>
             <span>|</span>
-            <nuxt-link to="/auth/login">登录</nuxt-link>
+            <a @click="goToPage('/auth/login', 3)">登录</a>
           </div>
           <div class="login" v-else>
             <nuxt-link to="/mobile/personcenter">个人中心</nuxt-link>
           </div>
         </header>
-        <img class="swiper" src="../assets/images/swiper/mobile4.jpg" />
+        <div class="swiper" @click="goToPage('/minerShop/activity', 3)">
+          <img src="../assets/images/swiper/mobile4.jpg"/>
+        </div>
         <!-- <div class="introduce">
           <p class="title">我们为您提供丰富可靠的算力服务。</p>
           <p class="content">整合全球算力产业链资源</p>
           <p class="content">基于算力平台对外进行输出各类算力服务</p>
-        </div> -->
-        <div class="link-list" v-animate="{value: 'bounceInLeft', delay: 0}">
-          <nuxt-link v-for="item,k in page4Text" class="item" :to="item.link" :key="k">
+        </div>
+         v-animate="{value: 'bounceInLeft', delay: 0}"-->
+        <div class="link-list">
+          <div v-for="item,k in page4Text" class="item" @click="goToPage(item.link, 3)" :key="k">
             <div class="word">
               <p class="title">{{item.title}}</p>
               <p class="sub">{{item.sub}}</p>
             </div>
             <i class="arrow"></i>
-          </nuxt-link>
+          </div>
         </div>
       </div>
     </div>
@@ -139,13 +142,21 @@ export default {
   },
   mounted () {
     this.setHtmlFontSize()
+    let page = sessionStorage.getItem('mobileIndex')
+    if (page) {
+      this.jump(page)
+    }
   },
   destroyed () {
     this.initHtmlFontSize()
   },
   methods: {
-    jump () {
-      this.opts = Object.assign({}, this.opts, {start: 3})
+    jump (number) {
+      this.opts = Object.assign({}, this.opts, {start: number})
+    },
+    goToPage (url, page) {
+      sessionStorage.setItem('mobileIndex', page);
+      this.$router.push({path: url})
     },
     setHtmlFontSize () {
       let width = document.documentElement.clientWidth
@@ -379,6 +390,8 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: relative;
+      z-index: 10;
       .login {
         width: auto;
         color: #fff;
@@ -414,9 +427,10 @@ export default {
       }
     }
     .swiper {
+      width: 100%;
       position: absolute;
       top: 0;
-      z-index: -10;
+      z-index: 0;
     }
     .link-list {
       width: 100%;
