@@ -86,11 +86,12 @@
             <nuxt-link to="/mobile/personcenter">个人中心</nuxt-link>
           </div>
         </header>
-        <div class="introduce">
+        <img class="swiper" src="../assets/images/swiper/mobile4.jpg" />
+        <!-- <div class="introduce">
           <p class="title">我们为您提供丰富可靠的算力服务。</p>
           <p class="content">整合全球算力产业链资源</p>
           <p class="content">基于算力平台对外进行输出各类算力服务</p>
-        </div>
+        </div> -->
         <div class="link-list" v-animate="{value: 'bounceInLeft', delay: 0}">
           <nuxt-link v-for="item,k in page4Text" class="item" :to="item.link" :key="k">
             <div class="word">
@@ -412,7 +413,11 @@ export default {
         }
       }
     }
-
+    .swiper {
+      position: absolute;
+      top: 0;
+      z-index: -10;
+    }
     .link-list {
       width: 100%;
       position: absolute;
