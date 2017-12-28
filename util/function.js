@@ -221,7 +221,7 @@ api.tips = (str, isMobile, callback) => {
     if (callback) {
       callback()
     }
-  }, 3000)
+  }, 4000)
 }
 api.checkAjax = (obj, res, callback, btn, failback) => {
   if (res === 'repeatLogin') {
