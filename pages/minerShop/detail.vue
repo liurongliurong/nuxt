@@ -2,7 +2,7 @@
   <section class="product">
     <template v-if="isMobile===0">
       <div class="top_nav">
-        <div class="box">
+        <div class="top_nav_box">
           <router-link to="/minerShop/list">矿机商城</router-link>
           <span>></span>
           <router-link to="/minerShop/miner/1" v-if="params2==='1'">矿机</router-link>
@@ -26,37 +26,37 @@
         <button disabled v-else-if="detail.status===3">产品撤销</button>
         <button @click="openMask" :disabled="detail.status===4" v-else>立即购买</button>
       </div>
-    </div>
-    <div class="popup" v-if="sheetVisible" @click="closeMask">
-      <div class="popup_con buy_box">
-        <div class="img_text">
-          <div class="popup_img">
-            <img :src="detail.product_img||detail.minerPicture" alt="">
+      <div class="popup" v-if="sheetVisible" @click="closeMask">
+        <div class="popup_con buy_box">
+          <div class="img_text">
+            <div class="popup_img">
+              <img :src="detail.product_img||detail.minerPicture" alt="">
+            </div>
+            <div class="popup_text">
+              <div class="price">￥{{detail.one_amount_value}}</div>
+              <div class="name">{{detail.name}}</div>
+              <div class="left">剩余可售{{leftNum}}台</div>
+            </div>
           </div>
-          <div class="popup_text">
-            <div class="price">￥{{detail.one_amount_value}}</div>
-            <div class="name">{{detail.name}}</div>
-            <div class="left">剩余可售{{leftNum}}台</div>
+          <div class="buy_num">
+            <div>购买数量<span class="buy_tips">({{parseInt(detail.single_limit_amount)||1}}台起售)</span></div>
+            <div class="input_box">
+              <span @click="changeNum(+number-1)">-</span>
+              <input type="text" v-model="number" placeholder="购买数量" @blur="changeNum(number)">
+              <span @click="changeNum(+number+1)">+</span>
+            </div>
           </div>
-        </div>
-        <div class="buy_num">
-          <div>购买数量<span class="buy_tips">({{parseInt(detail.single_limit_amount)||1}}台起售)</span></div>
-          <div class="input_box">
-            <span @click="changeNum(+number-1)">-</span>
-            <input type="text" v-model="number" placeholder="购买数量" @blur="changeNum(number)">
-            <span @click="changeNum(+number+1)">+</span>
+          <div class="buy_text">
+            <div class="item">购买算力</div>
+            <div class="item">{{totalHash|format}}T</div>
           </div>
-        </div>
-        <div class="buy_text">
-          <div class="item">购买算力</div>
-          <div class="item">{{totalHash|format}}T</div>
-        </div>
-        <div class="buy_text last">
-          <div class="item">支付金额</div>
-          <div class="item">{{totalPrice|format}}元</div>
-        </div>
-        <div class="mobile_btn" style="z-index:9999999;">
-          <button @click="checkPay($event, false)">立即购买</button>
+          <div class="buy_text last">
+            <div class="item">支付金额</div>
+            <div class="item">{{totalPrice|format}}元</div>
+          </div>
+          <div class="mobile_btn" style="z-index:9999999;">
+            <button @click="checkPay($event, false)">立即购买</button>
+          </div>
         </div>
       </div>
     </div>
@@ -256,7 +256,7 @@
       width: 100%;
       height: 352px;
       background-size: 100% 100%;
-      .box{
+      .top_nav_box{
         @include main
         padding-top: 12px;
         color: white;

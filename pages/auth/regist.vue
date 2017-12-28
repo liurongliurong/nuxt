@@ -147,7 +147,7 @@
         <p class="foot">浙江数秦科技有限公司</p>
       </div>
     </MyMask>
-    <div class="popup" v-if="registed">
+    <div class="popup regist_popup" v-if="registed">
       <div class="popup_con">
         <div class="popup_title">
           <span>欢迎，您已成功注册算力网！</span>
@@ -344,7 +344,7 @@
       padding:30px 15px;
       background: #fff;
     }
-    .popup_con{
+    .regist_popup .popup_con{
       width:600px;
       margin-left:-300px;
       .popup_title{
