@@ -52,7 +52,6 @@
       items () {
         if (this.token !== 0) {
           var self = this
-          this.item = []
           util.post('getBdcMessage', {sign: api.serialize({token: this.token})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.item = res

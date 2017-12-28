@@ -1,31 +1,33 @@
 <template>
   <div class="index_data_list">
-    <div class="box" v-if="total">
+    <div class="box">
       <h1 class="home_item_title">全方位为你推荐算力服务器</h1>
       <p class="home_item_desc">全球算力输出服务由保全网提供全流程区块链存证、保全服务</p>
-      <table>
-        <thead>
-          <tr>
-            <th v-for="n in nav">{{n.title}}</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="l,i in cloudMinerData" @click="goPay(l.product_id||l.id, '2')">
-            <td v-for="v,k in nav">
-              <template v-if="k==='name'"><i class="iconfont">&#xe605;</i>{{l[k]}}</template>
-              <template v-else-if="k==='left_num'">{{l.amount-(l.sell_amount||l.buyed_amount)+v.unit}}</template>
-              <template v-else>{{l[k]+[v.unit]}}</template>
-            </td>
-            <td>
-              <a class="btn" v-if="l.status===4">预热</a> 
-              <a class="btn" v-else-if="l.amount-(l.sell_amount||l.buyed_amount)>0">立即购买</a> 
-              <button class="btn" disabled v-else>已售罄</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <router-link class="get_more" to="/minerShop/miner/2">查看更多云算力 ></router-link>
+      <template v-if="total">
+        <table>
+          <thead>
+            <tr>
+              <th v-for="n in nav">{{n.title}}</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="l,i in cloudMinerData" @click="goPay(l.product_id||l.id, '2')">
+              <td v-for="v,k in nav">
+                <template v-if="k==='name'"><i class="iconfont">&#xe605;</i>{{l[k]}}</template>
+                <template v-else-if="k==='left_num'">{{l.amount-(l.sell_amount||l.buyed_amount)+v.unit}}</template>
+                <template v-else>{{l[k]+[v.unit]}}</template>
+              </td>
+              <td>
+                <a class="btn" v-if="l.status===4">预热</a> 
+                <a class="btn" v-else-if="l.amount-(l.sell_amount||l.buyed_amount)>0">立即购买</a> 
+                <button class="btn" disabled v-else>已售罄</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <router-link class="get_more" to="/minerShop/miner/2">查看更多云算力 ></router-link>
+      </template>
     </div>
     <div class="box">
       <div class="miner_list_box">
