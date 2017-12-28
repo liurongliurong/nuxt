@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile_miner_item" @click="$parent.goPay(n.id)">
+  <div class="mobile_miner_item item" @click="$parent.goPay(n.id)">
     <div class="null">
       <img :src="n.minerPicture"/>
     </div>

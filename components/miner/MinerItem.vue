@@ -1,5 +1,5 @@
 <template>
-  <div class="miner_item" @click="$parent.goPay(n.id)">
+  <div class="miner_item item" @click="$parent.goPay(n.id)">
     <span class="status" v-if="n.status===1">热销中</span>
     <span class="gray" v-if="n.status===3">已下架</span>
     <span class="gray" v-if="n.status===2">已售罄</span>
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="items">
-      <div class="item" v-for="item,d in items">
+      <div class="item_one" v-for="item,d in items">
         <p class="price" v-if="d==='buyed_amount'">{{n.amount-n.buyed_amount}}{{item.unit}}</p>
         <p class="price" v-else>{{n[d]}}{{item.unit}}</p>
         <p class="title">{{item.title}}</p>
@@ -50,8 +50,6 @@
     float: left;
     text-align: center;
     margin-bottom: 24px;
-    margin-left: 8px;
-    margin-right: 11px;
     position: relative;
     cursor: pointer;
     .img1{
@@ -138,7 +136,8 @@
       width: 100%;
       padding: 0 20px;
       padding-top: 18px;
-      .item{
+      overflow:hidden;
+      .item_one{
         width: 33.3%;
         float: left;
         text-align: center;

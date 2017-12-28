@@ -2,7 +2,7 @@
   <div class="miner_list">
     <div class="miner_list_box">
       <slot></slot>
-      <div class="box">
+      <div :class="['box', {mobile_list_box: isMobile}]">
         <template v-if="isMobile===0">
           <MinerItem v-for="n,k in $parent.minerData" :n="n" :key="k"></MinerItem>
         </template>
@@ -137,8 +137,9 @@
       }
       .box{
         overflow: hidden;
-        .item_box{
-          @include flex(space-between)
+        @include row(4, 1%)
+        &.mobile_list_box .item_box{
+          @include row(2)
         }
       }
       .nodata{
