@@ -11,7 +11,7 @@
       </div>
       <div class="success_bottom">
         <h5>其他热门{{typeList[type-1].title}}推荐</h5>
-        <div class="box">
+        <div :class="'box box_type_'+type">
           <CloudMinerItem v-for="d,k in data" :d="d" :key="k" v-if="type==='2'"></CloudMinerItem>
           <MinerItem v-for="n,k in data" :n="n" :key="k" v-if="type==='1'"></MinerItem>
         </div>
@@ -51,7 +51,7 @@
         this.type = p.payType
         this.addressData = p.addressData || {}
       } else {
-        this.$router.push({path: '/minerShop/list'})
+        // this.$router.push({path: '/minerShop/list'})
       }
       console.log(this.type)
       util.post(this.typeList[this.type - 1].url, {sign: 'token=0'}).then(res => {
@@ -136,6 +136,9 @@
         .box{
           .item{
             @include cloud_miner_box
+          }
+          &.box_type_1{
+            @include row(4, 1%)
           }
         }
       }
