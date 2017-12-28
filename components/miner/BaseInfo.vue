@@ -37,7 +37,7 @@
         </div>
         <button class="btn" disabled v-if="detail.status===2">已售罄</button>
         <button class="btn" disabled v-else-if="detail.status===3">产品撤销</button>
-        <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" @click="$parent.checkPay" :disabled="detail.status===4" v-if>立即购买</button>
+        <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" @click="$parent.checkPay" :disabled="detail.status===4" v-else>立即购买</button>
       </div>
     </div>
     <div class="items cloud_miner" v-if="params2!=='1'">
