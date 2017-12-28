@@ -8,13 +8,25 @@
     </h3>
     <div class="mobile_info_box">
       <div class="mobile_info">
-        <h4>每台单价1<span><b>{{d.one_amount_value}}</b>元</span></h4>
+        <h4>每台单价<span><b>{{d.one_amount_value}}</b>元</span></h4>
         <div class="mobile_text">
           <div class="mobile_text_item">每台算力<b>{{d.hash}}T</b></div>
           <div class="mobile_text_item">剩余可售<b>{{d.amount-d.buyed_amount}}台</b></div>
         </div>
       </div>
-      <div class="circle sell_progress">
+      <div class="circle sell_progress" v-if="d.buyed_amount === '0.00'" style="background:#e5e5e5;">
+        <template v-if="(((d.buyed_amount)/d.amount*100).toFixed(0))<=180">
+            <div class="pie_left" style="clip: rect(0,-360px,auto,0) !important;"><div class="left"></div></div>
+          <div class="pie_right" style="clip: rect(0,auto,auto,360px) !important;"><div class="right"  :style="{transform:'rotate(-'+(((d.buyed_amount)/d.amount*100).toFixed(0) * 3.6)+'deg)'}"></div></div>
+        </template>
+        <template v-else>
+            <div class="pie_left"  style="clip: rect(0,-360px,auto,0) !important;"><div class="left" :style="{transform:'rotate(-'+((((d.buyed_amount)/d.amount*100).toFixed(0) - 180) * 3.6)+'deg)'}"></div></div>
+            <div class="pie_right" style="clip: rect(0,auto,auto,360px) !important;"><div class="right" :style="{transform:'rotate('+180+'deg)'}"></div></div>
+        </template>
+        <div class="mask" v-if="d.buyed_amount === '0.00'" style="color:#e5e5e5 !important;"><span style="color:#e5e5e5 !important;">0</span>%</div>
+        <div class="mask" v-else><span>{{((d.buyed_amount)/d.amount*100).toFixed(0)}}</span>%</div>
+      </div>
+      <div class="circle sell_progress" v-else>
         <template v-if="(((d.buyed_amount)/d.amount*100).toFixed(0))<=180">
             <div class="pie_left"><div class="left"></div></div>
           <div class="pie_right"><div class="right"  :style="{transform:'rotate(-'+(((d.buyed_amount)/d.amount*100).toFixed(0) * 3.6)+'deg)'}"></div></div>
@@ -23,7 +35,8 @@
             <div class="pie_left"><div class="left" :style="{transform:'rotate(-'+((((d.buyed_amount)/d.amount*100).toFixed(0) - 180) * 3.6)+'deg)'}"></div></div>
             <div class="pie_right"><div class="right" :style="{transform:'rotate('+180+'deg)'}"></div></div>
         </template>
-        <div class="mask"><span>{{((d.buyed_amount)/d.amount*100).toFixed(0)}}</span>%</div>
+        <div class="mask" v-if="d.buyed_amount === '0.00'" style="color:#e5e5e5 !important;"><span style="color:#e5e5e5 !important;">0</span>%</div>
+        <div class="mask" v-else><span>{{((d.buyed_amount)/d.amount*100).toFixed(0)}}</span>%</div>
       </div>
     </div>
   </div>
