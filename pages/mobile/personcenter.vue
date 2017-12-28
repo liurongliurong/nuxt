@@ -348,4 +348,8 @@
       margin-bottom: 35px;
     }
   }
+  .icon-dingwei:before, .icon-pinpaizhuanxiang:before, .icon-wodezichan:before, .icon-31shoucangxuanzhong:before, .icon-yiwen:before, .icon-31wangwangxuanzhong:before, .icon-xiai:before{
+    position: relative;
+    top: 0.05rem;
+  }
 </style>

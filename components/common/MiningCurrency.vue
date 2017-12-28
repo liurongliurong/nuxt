@@ -5,7 +5,7 @@
     <p class="text">虚拟数字货币百科</p>
     <router-link to="/currency" v-if="$route.name === 'industryInformation'">了解更多 ></router-link>
     </h4>
-    <table border="0"  class="covertable" style="margin:0;">
+    <table border="0"  class="covertable" style="margin:0; ">
         <thead>
             <tr style="background:white;">
             <th v-for="n, k in tr">{{n.title}}</th>

@@ -57,6 +57,11 @@
     mounted () {
       this.items()
       console.log(this.content)
+      var p = localStorage.getItem('icon_id')
+      if (p) {
+        p = JSON.parse(p)
+        this.params1 = p[0]
+      }
     },
     computed: {
       ...mapState({
