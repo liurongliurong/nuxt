@@ -135,12 +135,11 @@
       h2{
         @include data_title
       }
-      .box{
-        overflow: hidden;
+      .box:not(.mobile_list_box){
         @include row(4, 1%)
-        &.mobile_list_box .item_box{
-          @include row(2)
-        }
+      }
+      .box.mobile_list_box .item_box{
+        @include row(2)
       }
       .nodata{
         background: #fff;
