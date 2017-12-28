@@ -72,11 +72,11 @@
             </div>
             <div class="progress_info press" style="overflow:hidden;">
               <div class="progress_box">
-                <div class="box" :style="{margin:0,width:(parseInt(detail.buyed_amount)/parseInt(detail.amount)*100)+'%'}"></div>
+                <div class="box" :style="{margin:0,width:((+detail.buyed_amount)/detail.amount*100).toFixed(0)+'%'}"></div>
               </div>
             </div>
             <div class="progress_price">
-              <span class="one">当前进度 {{((parseInt(detail.buyed_amount/detail.amount)) * 100).toFixed(0)}}%</span>
+              <span class="one">当前进度 {{((+detail.buyed_amount)/detail.amount*100).toFixed(0)}}%</span>
               <span class="two">剩余可售 {{leftNum}}台</span>
             </div>
           </div>

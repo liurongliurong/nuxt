@@ -199,8 +199,8 @@ export default {
   background: #243461;
 
   .page-common {
-    width: 100%;
-    height: 100vh;
+    width: 100% !important;
+    height: 100vh !important;
     padding-top: 0.34rem;
     .logo {
       margin-left: 0.42rem;
