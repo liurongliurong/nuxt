@@ -67,7 +67,7 @@
       <div class="activity_vs">
         <h4>
           <img src="../../assets/images/activity.png"/>
-          云算力VS自己挖坑
+          云算力VS自己挖矿
           <img src="../../assets/images/activity.png"/>
         </h4>
         <div class="activity_ul">
