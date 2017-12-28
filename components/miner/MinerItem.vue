@@ -11,12 +11,12 @@
     <p class="address"><span class="left">{{n.unit?n.unit: 'BitCoin'}}</span><span class="right">{{n.MinerAddress?n.MinerAddress: '未定'}}</span></p>
     <div class="progress_info press">
       <div class="progress_box">
-        <div class="box" :style="{width:((n.amount - n.buyed_amount)/n.amount * 100)+'%'}"></div>
+        <div class="box" :style="{width:(n.buyed_amount/n.amount * 100)+'%'}"></div>
       </div>
     </div>
     <div class="items">
       <div class="item_one" v-for="item,d in items">
-        <p class="price" v-if="d==='buyed_amount'">{{n.amount - n.buyed_amount}}{{item.unit}}</p>
+        <p class="price" v-if="d==='buyed_amount'">{{n.amount-n.buyed_amount}}{{item.unit}}</p>
         <p class="price" v-else>{{n[d]}}{{item.unit}}</p>
         <p class="title">{{item.title}}</p>
       </div>

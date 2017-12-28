@@ -6,7 +6,7 @@
     <h6>{{n.name}}</h6>
     <div class="progress_info1">
       <div class="progress_box1">
-        <div class="box1" :style="{width:(((n.amount - n.buyed_amount)/n.amount)*100).toFixed(1)+'%'}"></div>
+        <div class="box1" :style="{width:((n.buyed_amount/n.amount)*100).toFixed(1)+'%'}"></div>
         </div>
     </div>
     <p>算力价： <b>¥{{n.one_amount_value}}</b> <span>{{n.hash}}T</span></p>
