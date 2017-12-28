@@ -1,5 +1,5 @@
 <template>
-  <div class="miner_item item" @click="$parent.goPay(n.id)">
+  <div class="miner_item item" @click="$parent.goPay(n.id, '1')">
     <span class="status" v-if="n.status===1">热销中</span>
     <span class="gray" v-if="n.status===3">已下架</span>
     <span class="gray" v-if="n.status===2">已售罄</span>

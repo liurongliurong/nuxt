@@ -97,7 +97,7 @@
     .box{
       .miner_list_box{
         @include main
-        overflow:hidden;
+        @include row(4, 1%)
       }
       table{
         @include table;
