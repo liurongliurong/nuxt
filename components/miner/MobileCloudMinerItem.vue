@@ -156,7 +156,7 @@
   }
   .el-progress__text{
     position: relative !important;
-    top: -60px !important;
+    top: -2.6rem !important;
   }
   .el-progress-circle__path{
     stroke:#ffb386 !important;
