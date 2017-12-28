@@ -21,12 +21,21 @@
           <div class="miner_right">
             <h4>
               <span :class="statusObj[detail.status]&&statusObj[detail.status].color">{{statusObj[detail.status]&&statusObj[detail.status].title}}</span>
-              {{detail.name}}
+              <span>{{detail.name}}</span>
             </h4>
             <p class="time">{{detail.DeliveryTime}}</p>
-            <p class="suan_price"><span class="left_miner" style="position:relative;top:-5px;">矿 机 价</span><span class="right_miner">¥ <em>{{detail.one_amount_value}}</em></span></p>
-            <p class="address"><span class="left_miner">总 算 力</span><span class="right_miner"><em>{{totalHash|format}}</em>T</span></p>
-            <p class="address"><span class="left_miner">物&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;流</span><span class="right_miner">订单委托第三方物流公司发货，物流费用到付</span></p>
+            <p class="suan_price">
+              <span class="left_miner" style="position:relative;top:-5px;">矿 机 价</span>
+              <span class="right_miner">¥ <em>{{detail.one_amount_value}}</em></span>
+            </p>
+            <p class="address">
+              <span class="left_miner">总 算 力</span>
+              <span class="right_miner"><em>{{totalHash|format}}</em>T</span>
+            </p>
+            <p class="address">
+              <span class="left_miner">物&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;流</span>
+              <span class="right_miner">订单委托第三方物流公司发货，物流费用到付</span>
+            </p>
             <div class="miner_input">
               <span class="left_miner">数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量</span>
               <div class="input_box right_miner">
@@ -52,16 +61,14 @@
               <span>{{str[detail.status]}}</span>
             </h4>
             <div class="product_data">
-              <template v-for="d,k in proData" v-if="k!=='product_name'">
-                <div class="item">
-                  <div class="item_word">
-                    <span class="num" v-if="k==='price'">{{detail[k]|format}}</span>
-                    <span class="num" v-else>{{detail[k]}}</span>
-                    <span class="unit">{{d.unit}}</span>
-                  </div>
-                  <p class="tips">{{d.title}}</p>
+              <div class="item" v-for="d,k in proData">
+                <div class="item_word">
+                  <span class="num" v-if="k==='price'">{{detail[k]|format}}</span>
+                  <span class="num" v-else>{{detail[k]}}</span>
+                  <span class="unit">{{d.unit}}</span>
                 </div>
-              </template>
+                <p class="tips">{{d.title}}</p>
+              </div>
             </div>
             <div class="progress_info press" style="overflow:hidden;">
               <div class="progress_box">
@@ -69,12 +76,7 @@
               </div>
             </div>
             <div class="progress_price">
-              <template v-if="((parseInt(detail.buyed_amount)/parseInt(detail.amount)) * 100) >= 99">
-                <span class="one">当前进度 {{((0.99) * 100).toFixed(0)}}%</span>
-              </template>
-              <template v-else>
-                <span class="one">当前进度 {{((parseInt(detail.buyed_amount)/parseInt(detail.amount)) * 100).toFixed(0)}}%</span>
-              </template>
+              <span class="one">当前进度 {{((parseInt(detail.buyed_amount/detail.amount)) * 100).toFixed(0)}}%</span>
               <span class="two">剩余可售 {{leftNum}}台</span>
             </div>
           </div>
@@ -190,13 +192,10 @@
         initNum: 0,
         leftNum: 0,
         balance: 0,
-        leftStatus: false,
         buyStatus: 0,
         content: '',
         content1: '',
         show: '',
-        str: {4: '预热中', 5: '可售', 7: '已售馨'},
-        rate: 6,
         params1: '',
         params2: '',
         proData: {one_amount_value: {title: '每台价格', unit: '元'}, hash: {title: '每台算力', unit: 'T'}, amount: {title: '出售总数', unit: '台'}},
@@ -207,6 +206,7 @@
         mobileNav1: {hash: {title: '服务器算力', unit: 'T'}, weight: {title: '服务器重量', unit: 'kg'}, single_limit_amount: {title: '最少购买数量', unit: ''}},
         mobileNav2: {hashType: {title: '算力类型', unit: ''}, amount: {title: '服务器总数', unit: '台'}, incomeType: {title: '结算方式', unit: ''}},
         statusObj: {1: {title: '热销中', color: 'red'}, 2: {title: '已售罄', color: 'gray'}, 3: {title: '产品撤销', color: 'gray'}, 4: {title: '预热中', color: 'red'}},
+        str: {4: '预热中', 5: '可售', 7: '已售馨'},
         sheetVisible: false,
         active: 0,
         isFixTop: false
@@ -281,7 +281,7 @@
       },
       changeNum (n) {
         var minNum = this.detail.single_limit_amount || 1
-        if (this.leftStatus) return false
+        if (this.leftNum === 0) return false
         var isOver = n > this.initNum
         if (isOver) {
           this.buyStatus = 2
@@ -299,8 +299,6 @@
         }
         this.totalPrice = this.detail.one_amount_value * this.number
         this.totalHash = this.detail.hash * this.number
-        var leftAmount = this.initNum - this.number
-        this.leftNum = leftAmount < 0 ? 0 : leftAmount
       },
       getData () {
         if (this.params1) {
@@ -318,7 +316,6 @@
             api.checkAjax(self, res, () => {
               self.initNum = res.amount - res.buyed_amount
               self.leftNum = self.initNum
-              self.leftStatus = self.leftNum === 0
               self.detail = Object.assign(self.detail, res)
               if (self.params2 !== '1') {
                 self.detail = Object.assign(self.detail, res.has_product_miner_base)
@@ -780,11 +777,9 @@
           width: 80%;
         }
       }
-      .first_box,.product_desc{
+      .first_box{
         background: #fff;
         padding: 15px;
-      }
-      .first_box{
         margin-top:-15px;
         h4{
           margin:10px 0;
