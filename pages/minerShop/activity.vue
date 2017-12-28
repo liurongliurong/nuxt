@@ -234,6 +234,7 @@
         var self = this
         if (api.checkWechat()) {
           api.tips('请在浏览器里打开', 1)
+          return false
         }
         util.post(url, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
