@@ -262,10 +262,16 @@
               font-size: 0.45rem;
               font-weight: 800;
             }
-            &.isread{
+          }
+          .isread{
+            span{
               font-weight: 100;
-              font-size: #ccc;
+              color: #121212;
             }
+            i{
+              font-weight: 100;
+              color: #121212;
+            } 
           }
         }
       }
