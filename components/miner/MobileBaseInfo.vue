@@ -5,7 +5,7 @@
     </div>
     <div class="first_box">
       <h4>
-        <span class="status_box">{{(statusObj[detail.status]&&statusObj[detail.status].title)||str[detail.status]}}</span>
+        <span class="status_box">{{($parent.statusObj[detail.status]&&$parent.statusObj[detail.status].title)||$parent.str[detail.status]}}</span>
         <span class="name_box">{{detail.name}}</span>
       </h4>
       <div class="mobile_price">
@@ -15,9 +15,9 @@
       <div class="buy_tips" v-if="params2==='1'">{{detail.DeliveryTime}}</div>
       <div class="progress_info">
         <div class="progress_box">
-          <div class="box" :style="{width:((1-leftNum/detail.amount)*100).toFixed(1)+'%'}"></div>
+          <div class="box" :style="{width:detail.sellProgress}"></div>
         </div>
-        <div class="progress_text">剩余{{leftNum}}台</div>
+        <div class="progress_text">剩余{{$parent.leftNum}}台</div>
       </div>
       <div class="base_info">
         <template v-for="n,k in params2==='1'?mobileNav1:mobileNav2">
@@ -40,6 +40,12 @@
       },
       params2: {
         type: String
+      }
+    },
+    data () {
+      return {
+        mobileNav1: {hash: {title: '服务器算力', unit: 'T'}, weight: {title: '服务器重量', unit: 'kg'}, single_limit_amount: {title: '最少购买数量', unit: ''}},
+        mobileNav2: {hashType: {title: '算力类型', unit: ''}, amount: {title: '服务器总数', unit: '台'}, incomeType: {title: '结算方式', unit: ''}}
       }
     }
   }
