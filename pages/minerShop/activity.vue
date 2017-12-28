@@ -32,8 +32,8 @@
             <input type="text" v-model="number" name="number" placeholder="请输入购买数量，1台起售" @blur="changeNum(number)">
             <span @click="changeNum(+number+1)">+</span>
           </div>
-          <p>总算力：<span>{{totalHash}}T</span></p>
-          <p>需支付：<span>{{totalPrice}}元</span></p>
+          <p>总算力 ：<span>{{totalHash}}T</span></p>
+          <p>需支付 ：<span>{{totalPrice}}元</span></p>
           <button @click="gobuy()">立即支付</button>
           <label for="accept">
             <input type="checkbox" :value="accept" id="accept" name="accept">
