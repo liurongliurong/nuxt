@@ -1,6 +1,6 @@
 <template>
   <div class="product_base_info">
-    <div class="items miner" v-if="params2==='1'">
+    <div class="miner" v-if="params2==='1'">
       <div class="miner_type">
         <div class="iconfont">&#xe603;</div>
         <span>矿机</span>
@@ -40,7 +40,7 @@
         <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" @click="$parent.checkPay" :disabled="detail.status===4" v-else>立即购买</button>
       </div>
     </div>
-    <div class="items cloud_miner" v-if="params2!=='1'">
+    <div class="cloud_miner" v-if="params2!=='1'">
       <div class="miner_type">
         <div class="iconfont">&#xe610;</div>
         <span>云算力</span>
@@ -111,7 +111,7 @@
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .product_base_info{
-    .items{
+    .miner,.cloud_miner{
       @include main
       margin-bottom:30px;
       background: white;
@@ -125,7 +125,6 @@
         top:11px;
         width: 82px;
         height: 78px;
-        background: #fe5039;
         text-align: center;
         color:white;
         .iconfont{
@@ -135,6 +134,9 @@
       }
     }
     .miner{
+      .miner_type{
+        background: #fe5039;
+      }
       .miner_left{
         width: 500px;
         border:1px solid #dcdcdc;
@@ -146,7 +148,6 @@
         margin-right: 20px;
         img{
           width: 50%;
-          // height: 323px;
           margin-top: 78px;
         }
       }
@@ -301,7 +302,6 @@
             content:'您输入的数量已超出库存';
           }
           &:disabled{
-            // opacity: 0.7;
             background: #b5b0af;
           }
         }
