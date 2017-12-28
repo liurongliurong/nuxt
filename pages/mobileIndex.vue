@@ -70,13 +70,14 @@
           <p class="title">算力网&nbsp;suanLi.com&nbsp;&nbsp;&nbsp;每秒都为你产生利润</p>
         </div>
         <div class="footer">
-          <a class="button" @click="goToPage('/quickNews', 2)">体验数字货币带来的乐趣</a>
+          <a class="button" @click="jump(3)">体验数字货币带来的乐趣</a>
           <p class="introduce">Clould mining<i>|</i>Miner<i>|</i>Escrow</p>
         </div>
       </div>
       <div class="page-4 page-common">
         <header>
-          <img class="logo" src="../assets/images/mobile/index/logo.png" />
+          <!-- <img class="logo" src="../assets/images/mobile/index/logo.png" />-->
+          <span> </span>
           <div class="login" v-if="token === 0">
             <a @click="goToPage('/auth/regist', 3)">注册</a>
             <span>|</span>
@@ -152,7 +153,9 @@ export default {
   },
   methods: {
     jump (number) {
-      this.opts = Object.assign({}, this.opts, {start: number})
+      if (number > 0) {
+        this.opts = Object.assign({}, this.opts, {start: number})
+      }
     },
     goToPage (url, page) {
       sessionStorage.setItem('mobileIndex', page);
@@ -196,6 +199,8 @@ export default {
   background: #243461;
 
   .page-common {
+    width: 100%;
+    height: 100vh;
     padding-top: 0.34rem;
     .logo {
       margin-left: 0.42rem;
