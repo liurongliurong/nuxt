@@ -115,7 +115,11 @@
         <span class="select_accept">{{tips}}</span>
       </label>
       <div class="imagesall">
-        <h5>{{data.name}} 官方参数</h5>
+        <h5>产品简介</h5>
+        <div class="mobile_introduction" v-html="hashcontent.machine_advantage"></div>
+      </div>
+      <div class="imagesall">
+        <h5>官方参数</h5>
         <div class="imagesbig">
           <div class="activity_one" v-for="n, k in activityOne">
             <span class="one_left">{{n.title}}</span>
@@ -172,13 +176,8 @@
     methods: {
       changeNum (n) {
         var maxNum = +this.data.amount - (+this.data.sell_amount)
-        // if (this.data.num < 1) {
-        //   api.tips('您已超过购买限制', this.isMobile)
-        //   return false
-        // }
         // this.number = n < 1 ? 1 : n > this.data.num ? this.data.num : n > maxNum ? maxNum : n
         this.number = n < 1 ? 1 : n > maxNum ? maxNum : n
-        // this.number = n < 1 ? 1 : n > 11 ? 11 : n
         this.totalHash = (this.number * this.data.hash).toFixed(2)
         this.totalPrice = this.number * this.data.one_amount_value
       },
@@ -199,10 +198,6 @@
         }
       },
       gobuy () {
-        // if (this.data.num < 1) {
-        //   api.tips('您已超过购买限制', this.isMobile)
-        //   return false
-        // }
         if (!this.token) {
           this.$store.commit('SET_URL', this.$route.path)
           this.$router.push({name: 'auth-login'})
@@ -257,10 +252,6 @@
         this.edit = ''
       },
       check (ele, str) {
-        // if (this.data.num < 1) {
-        //   api.tips('您已超过购买限制', this.isMobile)
-        //   return false
-        // }
         if (this.isMobile) {
           api.tips(str, 1)
         } else {
@@ -688,6 +679,10 @@
         margin-left: 3%;
         margin-top: 1rem;
         overflow: hidden;
+        .mobile_introduction{
+          color:#fff;
+          font-size: .5rem;
+        }
         .imagesbig{
           background: url('../../assets/images/3.png');
           background-size: 100% 100%;
