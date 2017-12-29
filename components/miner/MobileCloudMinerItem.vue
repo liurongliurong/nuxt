@@ -17,20 +17,20 @@
       <div class="wrap">  
         <template v-if="percent > 100">
           <div class="circle">  
-              <div class="percent left" :style="{'-webkit-transform': 'rotate(' + (18 / 5) * ' + percent + ' + ' deg )'}"></div>  
-              <div :class="['percent', 'right', 'wth0']"></div>  
+              <div class="percent left11" :style="{'-webkit-transform': 'rotate(' + (18 / 5) * ' + percent + ' + ' deg )'}"></div>  
+              <div :class="['percent', 'right11', 'wth0']"></div>  
           </div>  
         </template>
         <template v-else-if="percent > 50">
           <div :class="['circle', 'clip-auto']" >  
-              <div class="percent left" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
-              <div class="percent right"></div>  
+              <div class="percent left11" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
+              <div class="percent right11"></div>  
           </div>  
         </template>
         <template v-else-if="percent <= 50">
           <div class="circle"> 
-              <div class="percent left" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
-              <div class="percent right wth0"></div>  
+              <div class="percent left11" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
+              <div class="percent right11 wth0"></div>  
           </div>  
         </template>
         <div class="num"><span>{{percent}}</span>%</div>  
@@ -127,12 +127,12 @@
         top:-20px;  
         left:-20px;  
     }  
-    .left{  
+    .left11{  
         transition:transform ease;  
         border:20px solid #ffb386;  
         clip: rect(0,38px,76px,0);  
     }  
-    .right{  
+    .right11{  
         border:20px solid #ffb386;  
         clip: rect(0,76px,76px,38px);  
     }  

@@ -4,7 +4,7 @@
      <form @submit.prevent="submit">
       <div class="fromone">
         <label>币种</label>
-        <select id="select" @change="changeon">
+        <select id="currency" @change="changeon">
           <option v-for="n, k in option">{{n.name}}</option>
         </select>
       </div>
@@ -138,7 +138,7 @@
         MillWorkforce: '9',
         MillPower: '1300',
         ElectricCharge: '0.32',
-        CoinPrice: '',
+        CoinPrice: '94758.97',
         message7: '0.33',
         message8: '0',
         typebi: '¥',
@@ -147,13 +147,13 @@
         option: [{name: 'CNY - ¥'}, {name: 'USD - $'}],
         timeall: '1',
         flag: false,
-        oldStart: '',
-        oldEnd: ''
+        oldStart: '2017/12/29 17:14',
+        oldEnd: '2017/12/30 17:14'
       }
     },
     methods: {
       changeon (e) {
-        var select = document.getElementById('select').value
+        var select = document.getElementById('currency').value
         if (select === 'CNY - ¥') {
           this.typebi = '¥'
         } else {
