@@ -66,7 +66,7 @@
           util.post('applyBalanceRecharge', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
             api.checkAjax(self, res, () => {
               res.subject = encodeURIComponent(res.subject)
-              if (mobile) {
+              if (self.isMobile) {
                 res = Object.assign(res, {is_mobile: 1})
               } else {
                 res = Object.assign(res, {is_mobile: 0})

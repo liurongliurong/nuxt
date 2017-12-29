@@ -182,7 +182,7 @@
         this.totalPrice = this.number * this.data.one_amount_value
       },
       openContract (n) {
-        this.openMask(n)
+        this.edit = n
         document.body.style.overflow = 'hidden'
         if (n === 1) {
           this.contract = this.content
@@ -303,10 +303,6 @@
             self.$store.commit('SET_INFO', {[val]: ''})
           })
         })
-      },
-      openMask (n) {
-        window.scroll(0, 0)
-        this.edit = n
       },
       setAssept (e) {
         this.accept = e.target.checked

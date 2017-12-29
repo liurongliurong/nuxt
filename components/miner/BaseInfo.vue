@@ -145,15 +145,14 @@
         margin-left: 12px;
         text-align: center;
         float: left;
-        margin-right: 20px;
         img{
           width: 50%;
           margin-top: 78px;
         }
       }
       .miner_right{
-        padding-top: 20px;
-        width: 550px;
+        padding:20px 90px 0 20px;
+        width: calc(100% - 512px);
         float: left;
         h4{
           color: #666666;
@@ -190,7 +189,6 @@
           margin:15px 0;
         }
         .suan_price{
-          width: 550px;
           height: 50px;
           background:#f3f3f3;
           line-height: 50px;
