@@ -37,7 +37,7 @@
           <button @click="gobuy()">立即支付</button>
           <label for="accept">
             <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAccept">
-            <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span>
+            <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span><br>
             <span class="select_accept">{{tips}}</span>
           </label>
         </div>
@@ -240,7 +240,6 @@
         activity: 2,
         hashcontent: '',
         payNo: 2,
-        balance: 0,
         one_amount_value: 0
       }
     },
@@ -412,25 +411,18 @@
         this.accept = e.target.checked
       },
       pageInit () {
-        if (this.token) {
-          var self = this
-          // var url = 'showMiner'
-          var url = 'showProduct'
-          util.post(url, {sign: api.serialize({token: this.token})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.data = res
-              self.hashcontent = res.product_info.has_product_miner_base
-              self.content = res.content + '<hr>' + res.content1
-              self.balance = res.balance
-              self.one_amount_value = res.one_amount_value
-              // self.content = res.content
-            })
+        var self = this
+        // var url = 'showMiner'
+        var url = 'showProduct'
+        util.post(url, {sign: 'token=0'}).then(function (res) {
+          api.checkAjax(self, res, () => {
+            self.data = res
+            self.hashcontent = res.product_info.has_product_miner_base
+            self.content = res.content + '<hr>' + res.content1
+            self.one_amount_value = res.one_amount_value
+            // self.content = res.content
           })
-        } else {
-          setTimeout(() => {
-            this.pageInit()
-          }, 5)
-        }
+        })
       }
     },
     computed: {
@@ -439,7 +431,8 @@
         user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
         true_name: state => state.info.true_name,
-        isMobile: state => state.isMobile
+        isMobile: state => state.isMobile,
+        balance: state => state.info.balance
       })
     },
     mounted () {
@@ -866,6 +859,11 @@
           }
         }
         @include accept_label
+        .select_accept{
+          display: block;
+          width:280px;
+          text-align: center;
+        }
         color:#fff;
         input{
           @include checkbox(18,2px)

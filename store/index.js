@@ -17,7 +17,8 @@ const state = {
     trade_password: 0,
     scode: 0,
     unread_num: 0,
-    last_login_time: ''
+    last_login_time: '',
+    balance: 0
   },
   hashType: [],
   num: '',
