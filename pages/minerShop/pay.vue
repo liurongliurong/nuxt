@@ -245,7 +245,6 @@
     },
     methods: {
       pay (e) {
-        console.log(this.addressObject, this.addressForm)
         var ff = e.target
         var url = ''
         var callbackUrl = ''
@@ -267,7 +266,7 @@
             return false
           }
         } else {
-          callbackUrl = location.protocol + '//' + location.host + '/user/order/0'
+          callbackUrl = location.protocol + '//' + location.host
         }
         if (!ff.accept.checked) {
           this.tip('请同意服务条款', ff.accept)
