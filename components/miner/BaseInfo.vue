@@ -148,6 +148,8 @@
         img{
           width: 50%;
           margin-top: 78px;
+          height: 160px;
+          object-fit: contain;
         }
       }
       .miner_right{
