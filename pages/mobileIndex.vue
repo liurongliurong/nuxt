@@ -142,14 +142,10 @@ export default {
     }
   },
   mounted () {
-    this.setHtmlFontSize()
     let page = sessionStorage.getItem('mobileIndex')
     if (page) {
       this.jump(page)
     }
-  },
-  destroyed () {
-    this.initHtmlFontSize()
   },
   methods: {
     jump (number) {
@@ -160,26 +156,6 @@ export default {
     goToPage (url, page) {
       sessionStorage.setItem('mobileIndex', page);
       this.$router.push({path: url})
-    },
-    setHtmlFontSize () {
-      let width = document.documentElement.clientWidth
-      document.documentElement.style.fontSize = width / 750*100 + 'px'
-      window.addEventListener('orientationchange', () => {
-        document.documentElement.style.fontSize = width / 750*100 + 'px'
-      })
-      window.addEventListener('resize', () => {
-        document.documentElement.style.fontSize = width / 750*100 + 'px'
-      })
-    },
-    initHtmlFontSize () {
-      let width = document.documentElement.clientWidth
-      document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
-      window.addEventListener('orientationchange', function () {
-        document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
-      })
-      window.addEventListener('resize', function () {
-        document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
-      })
     }
   },
   computed: {
@@ -201,10 +177,10 @@ export default {
   .page-common {
     width: 100% !important;
     height: 100vh !important;
-    padding-top: 0.34rem;
+    padding-top: 0.62rem;
     .logo {
-      margin-left: 0.42rem;
-      width: 2.38rem;
+      margin-left: 0.767rem;
+      width: 4.35rem;
       display: block;
     }
     .main {
@@ -212,19 +188,19 @@ export default {
       height: auto;
       display: flex;
       align-items: center;
-      margin-top: 0.6rem;
+      margin-top: 1.1rem;
 
       .page-number {
         position: absolute;
         left: -98px;
-        top: 5rem;
+        top: 9.135rem;
         transform: rotate(90deg);
         display: flex;
         align-items: center;
         justify-content: center;
         hr {
           width: 128px;
-          margin-right: 0.5rem;
+          margin-right: 0.913rem;
           border: solid 1px #7888a5;
           border-width: 0 0 1px;
         }
@@ -256,28 +232,28 @@ export default {
     }
     .footer {
       position: absolute;
-      bottom: 0.45rem;
-      right: 0.6rem;
+      bottom: 0.822rem;
+      right: 1.1rem;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
 
       .button {
-        padding: 0.12rem 0.54rem;
-        margin-bottom: 0.36rem;
+        padding: 0.22rem 0.986rem;
+        margin-bottom: 0.657rem;
         color: #608ad8;
-        font-size: 0.3rem;
+        font-size: 0.548rem;
         border: solid 1px #608ad8;
-        border-radius: 0.4rem;
+        border-radius: 0.73rem;
       }
       .introduce {
         color: #fff;
         font-weight: normal;
-        font-size: 0.2rem;
+        font-size: 0.364rem;
 
         i {
           font-style: normal;
-          margin: 0 0.1rem;
+          margin: 0 0.18rem;
           color: #999;
         }
       }
@@ -288,35 +264,35 @@ export default {
       margin: 0 auto;
     }
     .main-slogen {
-      font-size: 0.26rem;
+      font-size: 0.475rem;
       color: #fff;
-      margin: 0.8rem auto 0;
+      margin: 1.46rem auto 0;
       text-align: center;
-      letter-spacing: 0.02rem;
+      letter-spacing: 0.0364rem;
     }
     .title {
-      font-size: 0.36rem;
+      font-size: 0.657rem;
       font-weight: bold;
       color: #fff;
       margin: 0 auto;
       text-align: center;
-      letter-spacing: 0.06rem;
-      padding: 0.24rem 0;
+      letter-spacing: 0.11rem;
+      padding: 0.438rem 0;
     }
     .main {
       margin-top: 8vh;
     }
     .article {
-      margin-top: 1.08rem;
+      margin-top: 1.97rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       .slogen {
-        letter-spacing: 0.02rem;
-        margin-bottom: 0.3rem;
+        letter-spacing: 0.0364rem;
+        margin-bottom: 0.548rem;
         color: #b0ccff;
-        font-size: 0.3rem;
+        font-size: 0.548rem;
       }
     }
   }
@@ -329,22 +305,22 @@ export default {
     }
     .article {
       margin-top: 0px;
-      padding: 0 0.4rem 0 1rem;
+      padding: 0 0.73rem 0 1.827rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
       .item {
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.548rem;
         .title {
-          font-size: 0.3rem;
+          font-size: 0.548rem;
           color: #b0ccff;
           font-weight: bold;
         }
         .content {
-          font-size: 0.26rem;
-          line-height: 0.4rem;
+          font-size: 0.475rem;
+          line-height: 0.73rem;
           color: #b0ccff;
         }
       }
@@ -359,16 +335,16 @@ export default {
     }
     .article {
       margin-top: 0;
-      padding: 0 0.5rem;
+      padding: 0 0.9135rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
       .title {
-        font-size: 0.3rem;
+        font-size: 0.548rem;
         color: #b0ccff;
-        margin-bottom: 0.18rem;
+        margin-bottom: 0.328rem;
       }
     }
     .footer {
@@ -378,15 +354,15 @@ export default {
       right: 10%;
       .button {
         width: 100%;
-        padding: 0.12rem 0.54rem;
-        margin-bottom: 0.36rem;
+        padding: 0.22rem 0.986rem;
+        margin-bottom: 0.657rem;
         color: #fff;
-        font-size: 0.32rem;
+        font-size: 0.584rem;
         font-weight: bold;
         text-align: center;
         background: #01beb5;
         border: solid 1px #01beb5;
-        border-radius: 0.3rem;
+        border-radius: 0.548rem;
       }
     }
   }
@@ -400,10 +376,10 @@ export default {
       .login {
         width: auto;
         color: #fff;
-        margin-right: 0.42rem;
+        margin-right: 0.767rem;
         a {
           color: #fff;
-          font-size: 0.3rem;
+          font-size: 0.548rem;
         }
         span {
           margin: 0 5px;
@@ -413,21 +389,21 @@ export default {
     .introduce {
       display: flex;
       flex-direction: column;
-      padding-left: 0.3rem;
-      margin: 0.8rem 0 0 0.44rem;
+      padding-left: 0.548rem;
+      margin: 1.46rem 0 0 0.82rem;
       border-left: solid 4px #1fbfa7;
 
       .title {
-        font-size: 0.34rem;
+        font-size: 0.62rem;
         color: #fff;
-        margin-bottom: 0.42rem;
+        margin-bottom: 0.767rem;
       }
       .content {
-        font-size: 0.24rem;
+        font-size: 0.438rem;
         color: #a9adbb;
 
         :nth-child(1) {
-          margin-bottom: 0.1rem;
+          margin-bottom: 0.18rem;
         }
       }
     }
@@ -452,24 +428,24 @@ export default {
         justify-content: center;
         position: relative;
         .word {
-          width: 3.4rem;
+          width: 6.2rem;
           position: relative;
-          left: 2rem;
+          left: 3.64rem;
           .title {
-            font-size: 0.34rem;
+            font-size: 0.62rem;
             color: #fff;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.364rem;
           }
           .sub {
-            font-size: 0.24rem;
+            font-size: 0.438rem;
             color: rgba(255,255,255,0.5);
           }
         }
         .arrow {
           position: absolute;
-          right: 0.34rem;
-          width: 0.24rem;
-          height: 0.24rem;
+          right: 0.62rem;
+          width: 0.438rem;
+          height: 0.438rem;
           transform: rotate(45deg);
           border: solid 1px #fff;
           border-width: 1px 1px 0 0;
