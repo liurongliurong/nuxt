@@ -1186,7 +1186,8 @@
       color:#fff;
       line-height: 3;
       &:disabled{
-        opacity: 0.7;
+        // opacity: 0.7;
+        background: #b5b0af;
       }
       & + button{
         margin-top:10px;

@@ -3,7 +3,7 @@
     <h3>
       <span>{{d.name}}</span>
       <span :class="'icon_currency '+((d.hashtype&&d.hashtype.name)||d.type_name)" v-if="d.hashtype"></span>
-      <span :class="['sell_type', {active: d.sell_type===2}]" v-if="d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]}}</span>
+      <span :class="['sell_type', {active: d.sell_type===2}]" v-if="d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]||(d.status===10&&'活动')}}</span>
       <span class="sell_type gray" v-if="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">已售罄</span>
     </h3>
     <div class="info_box">

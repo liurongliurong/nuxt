@@ -1,6 +1,12 @@
 <template>
   <div class="mobile_miner_item item" @click="$parent.goPay(n.id)">
     <div class="null">
+      <div class="mobile_minerfixed">
+        <p class="status1" v-if="n.status===1">热销中</p>
+        <p class="gray1" v-if="n.status===3">已下架</p>
+        <p class="gray1" v-if="n.status===2">已售罄</p>
+        <p class="gray1" v-if="n.status===4" style="background: #32cf99;">预热</p>
+      </div>
       <img :src="n.minerPicture"/>
     </div>
     <h6>{{n.name}}</h6>
@@ -47,6 +53,26 @@
       background: #efefef;
       border-radius: .3rem;
       text-align: center;
+      position: relative;
+      .mobile_minerfixed{
+        position: absolute;
+        left: 0;
+        top:0;
+        p{
+          width: 2rem;
+          height: 1rem;
+          color: white;
+          font-size: 0.5rem;
+          text-align: center;
+          line-height: 1rem;
+        }
+        .status1{
+          background: #fe5039;
+        }
+        .gray1{
+          background: #c5c4c4;
+        }
+      }
       img{
         width: 4rem;
         height: 2.4rem;
