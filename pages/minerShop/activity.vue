@@ -198,8 +198,8 @@
         }
       },
       gobuy () {
+        var ele = document.querySelector('#accept')
         if (!this.token) {
-          var ele = document.querySelector('#accept')
           localStorage.setItem('activity', JSON.stringify({number: this.number, accept: ele.checked}))
           this.$store.commit('SET_URL', this.$route.path)
           this.$router.push({name: 'auth-login'})
