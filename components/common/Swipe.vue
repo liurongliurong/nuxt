@@ -1,7 +1,7 @@
 <template>
   <section class="swiper" ref="swiper-wrap">
     <div :class="'swiper_wrap '+effect" :style="boxStyle">
-      <div :class="['swiper_one', {active: k===currentPage}]" :style="{width:width+'px'}" v-for="n,k in data" @mousemove="onMouseover">
+      <div :class="['swiper_one', {active: k===currentPage}]" v-for="n,k in data" @mousemove="onMouseover">
         <img :src="n.img" alt="">
         <router-link class="btn" :to="n.link"><span class="swiper_arrow"></span>{{n.text}}</router-link>
       </div>
@@ -160,7 +160,7 @@
     overflow: hidden;
     .swiper_wrap {
       overflow: hidden;
-      // transition: all 0ms ease;
+      transition: all 0ms ease;
       height:420px;
       .swiper_one{
         float: left;
