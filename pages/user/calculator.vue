@@ -88,11 +88,11 @@
       <div class="total">
         <p>
           <span class="p_left">总利润</span>
-          <span class="p_right">{{typebi}} {{((((message8 * CoinPrice * MillWorkforce) - ((MillPower / 1000) * 24 * ElectricCharge * MillNumber)) * timeall)).toFixed(2)}}</span>
+          <span class="p_right">{{typebi}} {{(((message8 * CoinPrice * MillWorkforce) * timeall) - ((MillPower / 1000) * 24 * ElectricCharge * MillNumber * timeall)).toFixed(2)}}</span>
         </p>
         <p>
           <span class="p_left">总收入</span>
-          <span class="p_right">{{typebi}} {{(((message8 * CoinPrice * MillWorkforce)) * timeall).toFixed(2)}}</span>
+          <span class="p_right">{{typebi}} {{((message8 * CoinPrice * MillWorkforce) * timeall).toFixed(2)}}</span>
         </p>
         <p>
           <span class="p_left">总电费</span>
@@ -108,7 +108,7 @@
         </p>
         <p>
           <span class="p_left">投资回报率</span>
-          <span class="p_right">{{(((((message8 * CoinPrice * MillWorkforce) - ((MillPower / 1000) * 24 * ElectricCharge * MillNumber)) * timeall)) / (IndividualMillPrice * MillNumber)).toFixed(2)}} %</span>
+          <span class="p_right">{{((((message8 * CoinPrice * MillWorkforce) * timeall) - ((MillPower / 1000) * 24 * ElectricCharge * MillNumber * timeall)) / (IndividualMillPrice * MillNumber)).toFixed(2)}} %</span>
         </p>
         <p>
           <span class="p_left">当前每日收入</span>
