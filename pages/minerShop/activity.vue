@@ -780,7 +780,7 @@
       }
       p{
         color:white;
-        line-height: 27px;
+        line-height: 0px;
         font-size: 14px;
         padding-top: 33px;
       }
