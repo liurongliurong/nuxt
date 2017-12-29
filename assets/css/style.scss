@@ -1230,3 +1230,79 @@
       margin-bottom:10px;
     }
   }
+// pay_type
+  @mixin pay_type{
+    padding:15px 20px;
+    margin:10px 15px;
+    @include flex(space-between);
+    color: $light_black;
+    .pay_value{
+      input{
+        @include checkbox(18)
+        margin-right:5px;
+        vertical-align: text-top;
+      }
+      span{
+        line-height: 25px;
+        height:25px;
+        &:before{
+          font-family:"iconfont" !important;
+          font-size: 20px;
+          line-height: 25px;
+          position: relative;
+          vertical-align: sub;
+        }
+        &.yue:before{
+          content:'\e60c'
+        }
+        &.zhifubao:before{
+          content:'\e615';
+          color:#00AAF0
+        }
+      }
+    }
+    .pay_info{
+      .money{
+        color:$orange;
+        font-weight: bold;
+      }
+    }
+    a{
+      color: #327fff;
+    }
+    &.active{
+      outline:5px solid $blue_border
+    }
+  }
+// mobile_pay_type
+  @mixin mobile_pay_type{
+    color: $text;
+    padding-bottom:32px;
+    .pay_item{
+      padding:0 15px;
+      @include flex(space-between)
+      line-height: 50px;
+      span.val{
+        color:$light_text;
+        margin-left:15px;
+      }
+      a{
+        color:$blue
+      }
+      &.active{
+        position: relative;
+        .pay_item_left{
+          width:80%;
+          &:after{
+            content:'\e613';
+            font-family: 'iconfont';
+            color:$blue;
+            margin-left:3rem
+          }
+        }
+      }
+      &:not(:last-child){
+        border-bottom:1px solid $border;
+      }
+    }
+  }
