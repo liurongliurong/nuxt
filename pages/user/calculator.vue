@@ -148,7 +148,11 @@
         timeall: '1',
         flag: false,
         oldStart: '2017/12/29 17:14',
-        oldEnd: '2017/12/30 17:14'
+        oldEnd: '2017/12/30 17:14',
+        time: '',
+        time1: '',
+        d1: '',
+        d2: ''
       }
     },
     methods: {
@@ -159,10 +163,10 @@
         } else {
           this.typebi = '$'
         }
-        var time = document.getElementsByClassName('el-range-input')[0].value
-        var time1 = document.getElementsByClassName('el-range-input')[1].value
-        var d1 = new Date(time)
-        var d2 = new Date(time1)
+        this.time = document.getElementsByClassName('el-range-input')[0].value
+        this.time1 = document.getElementsByClassName('el-range-input')[1].value
+        this.d1 = new Date(time)
+        this.d2 = new Date(time1)
         this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
       },
       submit (e) {
@@ -217,10 +221,10 @@
       }).catch(res => {
         console.log(res)
       })
-      var time = document.getElementsByClassName('el-range-input')[0].value
-      var time1 = document.getElementsByClassName('el-range-input')[1].value
-      var d1 = new Date(time)
-      var d2 = new Date(time1)
+      this.time = document.getElementsByClassName('el-range-input')[0].value
+      this.time1 = document.getElementsByClassName('el-range-input')[1].value
+      this.d1 = new Date(time)
+      this.d2 = new Date(time1)
       this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
     },
     computed: {
