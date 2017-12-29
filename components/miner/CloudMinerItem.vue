@@ -10,7 +10,7 @@
       <template v-for="n,i in dataNav">
         <div class="info" v-if="i==='leftNum'">
           <div class="text">
-            <span class="num">{{d.amount-(d.buyed_amount||d.sell_amount)}}</span>
+            <span class="num">{{(d.amount-d.buyed_amount)<0?0:(d.amount-d.buyed_amount)}}</span>
             <span>{{n.unit}}</span>
           </div>
           <p>{{n.title}}</p>
