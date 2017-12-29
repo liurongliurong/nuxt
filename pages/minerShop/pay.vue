@@ -179,19 +179,18 @@
           <div class="popup_body" v-html="contract"></div>
           <div class="popup_foot">
             <label for="accept1" @click="userAgreement">
-              <input type="checkbox" id="accept1">
               <span>同意并继续</span>
             </label>
           </div>
         </template>
         <div class="mobile_pay_type" v-else>
           <div :class="['pay_item', {active:payNo===2}]" @click="setPay(2)">
-            <div>
+            <div class="pay_item_left">
               <span>支付宝支付</span>
             </div>
           </div>
           <div :class="['pay_item', {active:payNo===1}]" @click="setPay(1)">
-            <div>
+            <div class="pay_item_left">
               <span>可用余额</span>
               <span class="val">{{balance}}元</span>
             </div>
@@ -716,47 +715,7 @@
           margin-top: 20px;
           background:$white;
           .pay_text{
-            padding:15px 20px;
-            margin:10px 15px;
-            @include flex(space-between);
-            color: $light_black;
-            .pay_value{
-              input{
-                @include checkbox(18)
-                margin-right:5px;
-                vertical-align: text-top;
-              }
-              span{
-                line-height: 25px;
-                height:25px;
-                &:before{
-                  font-family:"iconfont" !important;
-                  font-size: 20px;
-                  line-height: 25px;
-                  position: relative;
-                  vertical-align: bottom;
-                }
-                &.yue:before{
-                  content:'\e60c'
-                }
-                &.zhifubao:before{
-                  content:'\e615';
-                  color:#00AAF0
-                }
-              }
-            }
-            .pay_info{
-              .money{
-                color:$orange;
-                font-weight: bold;
-              }
-            }
-            a{
-              color: #327fff;
-            }
-            &.active{
-              outline:5px solid $blue_border
-            }
+            @include pay_type
           }
           form{
             padding:15px;
@@ -964,32 +923,11 @@
       }
     }
     .popup{
+      .popup_title{
+        color:$text;
+      }
       .mobile_pay_type{
-        color: $text;
-        .pay_item{
-          padding:0 15px;
-          @include flex(space-between)
-          line-height: 50px;
-          span.val{
-            color:$light_text;
-            margin-left:15px;
-          }
-          a{
-            color:$blue
-          }
-          &.active{
-            position: relative;
-            div:after{
-              content:'';
-              @include right
-              border-color:$orange;
-              left:80%;
-            }
-          }
-          &:not(:last-child){
-            border-bottom:1px solid $border;
-          }
-        }
+        @include mobile_pay_type
       }
     }
   }

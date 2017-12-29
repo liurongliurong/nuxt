@@ -36,7 +36,7 @@
           <p>需支付 ：<span>{{totalPrice}}元</span></p>
           <button @click="gobuy()">立即支付</button>
           <label for="accept">
-            <input type="checkbox" :checked="accept" id="accept" name="accept">
+            <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAccept">
             <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span>
             <span class="select_accept">{{tips}}</span>
           </label>
@@ -110,7 +110,7 @@
       </div>
       <button class="submit" @click="gobuy(1)">立即支付</button>
       <label for="accept">
-        <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAssept">
+        <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAccept">
         <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span>
         <span class="select_accept">{{tips}}</span>
       </label>
@@ -134,7 +134,71 @@
       </div>
       <p class="tel">咨询电话： 0571-28031736</p>
     </div>
-    <MyMask :form="form[nowForm]" :title="title" :contract="contract" v-if="edit"></MyMask>
+    <MyMask :form="form[nowForm]" :title="title" :contract="contract" v-if="edit&&edit!==4&&edit!==5"></MyMask>
+    <div class="popup pay_type_select" v-if="edit===4">
+      <div class="popup_con">
+        <div class="popup_title">
+          <span class="pay_type_title">{{title}}</span>
+          <span class="pay_type_desc">全球算力输出服务由保全网提供全流程区块链存证、保全服务</span>
+          <span class="icon_close" @click="closeMask"></span>
+        </div>
+        <div class="select_pay_type">
+          <div :class="['pay_text',{active:payNo===2}]">
+            <label class="pay_value">
+              <input type="radio" name="payType" @click="setValue('payNo',2)" checked>
+              <span class="zhifubao">支付宝</span>
+            </label>
+            <div class="pay_info">
+              <span>支付</span>
+              <span class="money" style="font-size:16px;">{{totalPrice|format}}</span>
+              <span>元</span>
+            </div>
+          </div>
+          <div :class="['pay_text',{active:payNo===1}]">
+            <label class="pay_value">
+              <input type="radio" name="payType" @click="setValue('payNo',1)">
+              <span class="yue">账户余额{{balance}}元</span>
+            </label>
+            <div class="pay_info">
+              <span>金额不足，可先</span>
+              <a href="javascript:;" @click="goRecharge('/user/recharge')">充值</a>
+            </div>
+          </div>
+        </div>
+        <form class="form" @submit.prevent="submit" novalidate>
+          <input type="hidden" name="mobile" :value="mobile">
+          <FormField :form="form[nowForm]" v-if="payNo===1"></FormField>
+          <button name="btn">确认提交</button>
+        </form>
+      </div>
+    </div>
+    <div class="popup mobile_pay_type_select" v-if="edit===5">
+      <div class="popup_con">
+        <div class="popup_title">
+          <span>选择支付方式</span>
+          <span class="icon_close" @click="closeMask"></span>
+        </div>
+        <div class="mobile_pay_type">
+          <div :class="['pay_item', {active:payNo===2}]" @click="setValue('payNo',2)">
+            <div class="pay_item_left">
+              <span>支付宝支付</span>
+            </div>
+          </div>
+          <div :class="['pay_item', {active:payNo===1}]" @click="setValue('payNo',1)">
+            <div class="pay_item_left">
+              <span>可用余额</span>
+              <span class="val">{{balance}}元</span>
+            </div>
+            <router-link to="/mobile/recharge">充值</router-link>
+          </div>
+        </div>
+        <form class="form" @submit.prevent="submit" novalidate>
+          <input type="hidden" name="mobile" :value="mobile">
+          <FormField :form="form[nowForm]" v-if="payNo===1"></FormField>
+          <button name="btn">确认提交</button>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -154,7 +218,11 @@
         activityUl: [{left: '规模化部署，专业的散热设备，远离运行噪音，使用低价合规电。', unit: '运行', right: '在家运行占空间，又会产生大量的噪音和热量，家用电的成本也是不小的开支。'}, {left: '基础设施全方位提供服务。', unit: '配套', right: '需要自己购买专用电源、控制组件和矿机支架等。'}, {left: 'IT专业人员进行配置、维护。', unit: '软件', right: '组装矿机后需要专业的软件支持，对于新人需要付出一定的学习成本。'}, {left: '出现问题平台负责解决，并安排专业人员进行维修。', unit: '维修', right: '一旦矿机出现问题，需要自行解决维修问题，挖矿停止，将会造成一定的损失。'}],
         text: {one_amount_value: {unit: '元/台', title: '算力服务器价格'}, hash: {unit: 'T/台', title: '服务器算力'}, left_amount: {unit: '台', title: '剩余数量'}},
         data: {name: '', area: '', one_amount_value: 0, hash: 0, amount: 0, sell_amount: 0},
-        form: {auth: [{name: 'truename', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true}, {name: 'idcard', type: 'text', title: '证件号码', placeholder: '请输入您的证件号码', pattern: 'idCard'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}], address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}]},
+        form: {
+          auth: [{name: 'truename', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true}, {name: 'idcard', type: 'text', title: '证件号码', placeholder: '请输入您的证件号码', pattern: 'idCard'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}], 
+          address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}],
+          payType: [{name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', checkData: 'balance'}]
+        },
         mobileData: [{title: '算力服务器价格', unit: '元/台'}, {title: '服务器算力', unit: 'T'}, {title: '剩余总量', unit: '台'}],
         activityType: {1: {dataRequest: 'showMiner', dataCommit: 'saveMiner', agreement: '《矿机销售协议》'}, 2: {dataRequest: 'showProduct', dataCommit: 'productMall', agreement: '《云算力购买协议》和《矿机托管协议》'}},
         totalHash: '0.00',
@@ -170,7 +238,10 @@
         nowForm: 'auth',
         addressData: '',
         activity: 2,
-        hashcontent: ''
+        hashcontent: '',
+        payNo: 2,
+        balance: 0,
+        one_amount_value: 0
       }
     },
     methods: {
@@ -195,6 +266,9 @@
           this.nowForm = 'address'
           this.contract = ''
           this.title = '收货地址'
+        } else if (n === 4 || n === 5) {
+          this.nowForm = 'payType'
+          this.title = '选择支付方式'
         }
       },
       gobuy () {
@@ -210,8 +284,6 @@
           this.openContract(2)
           return false
         }
-        var url = 'productMall'
-        // var url = 'saveMiner'
         // if (!this.addressData) {
         //   this.openContract(3)
         //   return false
@@ -224,9 +296,23 @@
           this.check(ele, '请同意服务条款')
           return false
         }
+        if (this.isMobile) {
+          this.openContract(5)
+        } else {
+          this.openContract(4)
+        }
+      },
+      goPay (inputData) {
+        var url = 'productMall'
+        // var url = 'saveMiner'
         var callbackUrl = location.protocol + '//' + location.host + (this.isMobile ? '/mobile/order/0' : '/user/order/0')
         // var data = {miner_id: this.data.miner_id, number: this.number, mode: '2', token: this.token, user_id: this.user_id, amount: this.totalPrice, url: callbackUrl}
-        var data = {product_id: this.data.product_id, num: this.number, mode: '1', token: this.token, user_id: this.user_id, amount: this.totalPrice, url: callbackUrl}
+        var data = {product_id: this.data.product_id, num: this.number, token: this.token, user_id: this.user_id, amount: this.totalPrice}
+        if (this.payNo === 2) {
+          data = Object.assign({mode: '1', url: callbackUrl}, data)
+        } else {
+          data = Object.assign(inputData, data)
+        }
         var self = this
         if (api.checkWechat()) {
           api.tips('请在浏览器里打开', 1)
@@ -234,24 +320,37 @@
         }
         util.post(url, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
-            res.subject = encodeURIComponent(res.subject)
-            if (self.isMobile) {
-              res = Object.assign(res, {is_mobile: 1})
-            } else {
-              res = Object.assign(res, {is_mobile: 0})
-            }
-            util.post('alipay_wap', {sign: api.serialize(Object.assign({token: self.token}, res))}).then((resData) => {
-              api.checkAjax(self, data, () => {
-                localStorage.removeItem('activity')
-                location.href = resData.url
+            if (self.payNo === 2) {
+              res.subject = encodeURIComponent(res.subject)
+              if (self.isMobile) {
+                res = Object.assign(res, {is_mobile: 1})
+              } else {
+                res = Object.assign(res, {is_mobile: 0})
+              }
+              util.post('alipay_wap', {sign: api.serialize(Object.assign({token: self.token}, res))}).then((resData) => {
+                api.checkAjax(self, data, () => {
+                  localStorage.removeItem('activity')
+                  location.href = resData.url
+                })
               })
-            })
+            } else {
+              api.tips('恭喜您购买成功！', self.isMobile, () => {
+                location.href =  callbackUrl
+              })
+            }
           })
         })
       },
       closeMask () {
         document.body.style.overflow = 'auto'
         this.edit = ''
+      },
+      setValue (name, k) {
+        this[name] = k
+      },
+      goRecharge (url) {
+        this.$store.commit('SET_URL', this.$route.path)
+        this.$router.push({path: url})
       },
       check (ele, str) {
         if (this.isMobile) {
@@ -264,8 +363,8 @@
           }, 2000)
         }
       },
-      submit () {
-        var form = document.querySelector('.form_content') || document.querySelector('.form')
+      submit (e) {
+        var form = e.target
         var data = api.checkFrom(form, this.isMobile)
         if (!data) return false
         var sendData = {token: this.token, user_id: this.user_id}
@@ -273,10 +372,13 @@
           this.addressData = data
           api.tips('收货地址已提交，点击“立即支付”完成购买', this.isMobile)
           this.closeMask(this.isMobile)
-        } else {
+        } else if (this.nowForm === 'payType') {
+          this.goPay(data)
+        } else if (this.nowForm === 'auth') {
           var val = 'true_name'
           var tipsStr = '实名认证已提交，请您耐心等待几秒即可看到认证结果'
-          var tipsStr2 = '恭喜您实名认证成功，请填写收货地址'
+          var tipsStr2 = '恭喜您实名认证成功'
+          // var tipsStr2 = '恭喜您实名认证成功，请填写收货地址'
           var self = this
           util.post('user_truename', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
             api.checkAjax(self, res, () => {
@@ -285,7 +387,7 @@
               setTimeout(() => {
                 self.requestData('show_user_truename', sendData, val, () => {
                   api.tips(tipsStr2, self.isMobile)
-                  self.openContract(3, self.isMobile)
+                  // self.openContract(3, self.isMobile)
                 })
               }, 7000)
               self.closeMask(self.isMobile)
@@ -306,8 +408,29 @@
           })
         })
       },
-      setAssept (e) {
+      setAccept (e) {
         this.accept = e.target.checked
+      },
+      pageInit () {
+        if (this.token) {
+          var self = this
+          // var url = 'showMiner'
+          var url = 'showProduct'
+          util.post(url, {sign: api.serialize({token: this.token})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.data = res
+              self.hashcontent = res.product_info.has_product_miner_base
+              self.content = res.content + '<hr>' + res.content1
+              self.balance = res.balance
+              self.one_amount_value = res.one_amount_value
+              // self.content = res.content
+            })
+          })
+        } else {
+          setTimeout(() => {
+            this.pageInit()
+          }, 5)
+        }
       }
     },
     computed: {
@@ -320,25 +443,16 @@
       })
     },
     mounted () {
-      var self = this
-      // var url = 'showMiner'
-      var url = 'showProduct'
-      util.post(url, {sign: 'token=0'}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.data = res
-          self.hashcontent = res.product_info.has_product_miner_base
-          self.content = res.content + '<hr>' + res.content1
-          // self.content = res.content
-        }, '', () => {
-          // self.$router.push({name: 'index'})
-        })
-      })
       var p = localStorage.getItem('activity')
       if (p) {
         p = JSON.parse(p)
         this.number = p.number
         this.accept = p.accept
       }
+      this.pageInit()
+    },
+    filters: {
+      format: api.decimal
     }
   }
 </script>
@@ -841,6 +955,55 @@
         line-height: 52px;
         padding:0 28px;
         border-bottom: 1px solid $border;
+      }
+    }
+    .popup{
+      &.mobile_pay_type_select .popup_con{
+        .mobile_pay_type{
+          @include mobile_pay_type
+          padding-bottom:0
+        }
+        .form{
+          height:auto;
+          margin-top:0
+        }
+      }
+      &.pay_type_select .popup_con{
+        border-radius:10px;
+        .select_pay_type{
+          border-bottom:1px solid $border;
+          .pay_text{
+            @include pay_type
+          }
+        }
+        .popup_title{
+          border-radius:10px;
+          text-align: left;
+          background: #fff;
+          margin-bottom:15px;
+          margin-top:10px;
+          .pay_type_title{
+            display: inline-block;
+            padding:0 20px;
+            background: $blue;
+            color:#fff;
+            font-size: 16px;
+            line-height: 2;
+            margin-left:-10px;
+          }
+          .pay_type_desc{
+            font-size: 12px;
+            color:$light_black;
+            margin-left:20px;
+          }
+        }
+        .form{
+          padding: 20px 130px;
+          button{
+            background: $orange;
+            border-color:$orange
+          }
+        }
       }
     }
   }

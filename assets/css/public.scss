@@ -206,7 +206,12 @@ input::-webkit-input-placeholder {
         height:auto;
         max-height:80vh;
         .popup_title{
-          font-size: 0.7rem;
+          font-size: 0.65rem;
+          background: #fff;
+          border-bottom:1px solid $border;
+          .icon_close{
+            // @include arrow
+          }
         }
         .popup_body{
           padding:0.5rem;
