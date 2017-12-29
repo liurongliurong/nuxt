@@ -17,14 +17,11 @@
     <div class="mobile_box" v-else-if="isMobile===1">
       <MobileBaseInfo :params2="params2" :detail="detail"></MobileBaseInfo>
       <MobileProductInfo :params2="params2" :detail="detail"></MobileProductInfo>
-      <div class="mobile_btn" v-if="params2!=='1'">
-        <button disabled v-if="detail.status===7">已售罄</button>
-        <button @click="openMask" :disabled="detail.status===4" v-else>立即购买</button>
-      </div>
-      <div class="mobile_btn" v-else>
-        <button disabled v-if="detail.status===2">已售罄</button>
+      <div class="mobile_btn">
+        <button disabled v-if="detail.status===7||detail.status===2">已售罄</button>
         <button disabled v-else-if="detail.status===3">产品撤销</button>
-        <button @click="openMask" :disabled="detail.status===4" v-else>立即购买</button>
+        <button disabled v-else-if="detail.status===4">立即购买</button>
+        <button @click="openMask" v-else>立即购买</button>
       </div>
       <div class="popup" v-if="sheetVisible" @click="closeMask">
         <div class="popup_con buy_box">
@@ -77,7 +74,7 @@
     },
     data () {
       return {
-        detail: {incomeType: '每日结算，次日发放', fee: '', product_name: '', name: ''},
+        detail: {incomeType: '每日结算，次日发放', fee: '', product_name: '', name: '', status: 0},
         infolists: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: '矿场相册'}],
         infolist: [{name: 'MInerBrief', title: '产品介绍'}, {name: 'MinerAdvantage', title: '产品参数'}, {name: 'prProtocolSpeciaification', title: '补充说明'}],
         params: {chips_num: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '矿机尺寸', minerOuterSize: '外箱尺寸', cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
@@ -129,6 +126,9 @@
         this.goPay(e, isLoan)
       },
       openMask () {
+        if (this.detail.status !== 1 && this.detail.status !== 5) {
+          return false
+        }
         document.body.style.overflow = 'hidden'
         window.scroll(0, 0)
         this.sheetVisible = true
