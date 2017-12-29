@@ -145,7 +145,7 @@
         difficulty: '0',
         totallist: [{title: '总利润', prev: '¥'}, {title: '总收入', prev: '¥'}, {title: '总电费', prev: '¥'}, {title: '总矿机成本', prev: '¥'}, {title: '每T价格', prev: '¥'}, {title: '投资回报率', next: '%'}, {title: '当前每日收入', prev: '¥'}, {title: '当前每日电费', prev: '¥'}, {title: '当前每日利润', prev: '¥'}],
         option: [{name: 'CNY - ¥'}, {name: 'USD - $'}],
-        timeall: '`',
+        timeall: '1',
         flag: false,
         oldStart: '',
         oldEnd: ''
@@ -174,23 +174,6 @@
         var d2 = new Date(this.oldEnd)
         this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
       },
-      getData () {
-        if (this.token !== 0) {
-          var self = this
-          util.post('showCoinData', {sign: api.serialize({token: this.token})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.CoinPrice = res[0].price
-              self.message8 = res[0].output.split(' ')[0]
-            })
-          }).catch(res => {
-            console.log(res)
-          })
-        } else {
-          setTimeout(() => {
-            this.getData()
-          }, 5)
-        }
-      },
       getTimeDays (addDay) {
         addDay = addDay || 0
         var date = new Date()
@@ -217,8 +200,15 @@
       }
     },
     mounted () {
-      this.getData()
       var self = this
+      util.post('showCoinData', {sign: api.serialize({token: 0})}).then(function (res) {
+        api.checkAjax(self, res, () => {
+          self.CoinPrice = res[0].price
+          self.message8 = res[0].output.split(' ')[0]
+        })
+      }).catch(res => {
+        console.log(res)
+      })
       util.post('showDifficulty', {sign: api.serialize({token: 0})}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.difficulty = (res.difficulty.replace(/,/g, '') * 7.158 * 0.001 / 1000000).toFixed(0)
