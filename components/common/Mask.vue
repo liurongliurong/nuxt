@@ -19,7 +19,6 @@
         <slot v-else></slot>
         <div class="popup_foot">
           <label for="accept1" @click="goOn">
-            <input type="checkbox" id="accept1">
             <span>同意并继续</span>
           </label>
         </div>

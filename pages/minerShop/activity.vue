@@ -36,7 +36,7 @@
           <p>需支付 ：<span>{{totalPrice}}元</span></p>
           <button @click="gobuy()">立即支付</button>
           <label for="accept">
-            <input type="checkbox" :value="accept" id="accept" name="accept">
+            <input type="checkbox" :checked="accept" id="accept" name="accept">
             <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span>
             <span class="select_accept">{{tips}}</span>
           </label>
@@ -110,7 +110,7 @@
       </div>
       <button class="submit" @click="gobuy(1)">立即支付</button>
       <label for="accept">
-        <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
+        <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAssept">
         <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span>
         <span class="select_accept">{{tips}}</span>
       </label>
@@ -198,7 +198,9 @@
         }
       },
       gobuy () {
+        var ele = document.querySelector('#accept')
         if (!this.token) {
+          localStorage.setItem('activity', JSON.stringify({number: this.number, accept: ele.checked}))
           this.$store.commit('SET_URL', this.$route.path)
           this.$router.push({name: 'auth-login'})
           this.$store.commit('LOGOUT')
@@ -214,7 +216,6 @@
         //   this.openContract(3)
         //   return false
         // }
-        var ele = document.querySelector('#accept')
         if (!this.number) {
           this.check(ele, '请填写数量')
           return false
@@ -241,6 +242,7 @@
             }
             util.post('alipay_wap', {sign: api.serialize(Object.assign({token: self.token}, res))}).then((resData) => {
               api.checkAjax(self, data, () => {
+                localStorage.removeItem('activity')
                 location.href = resData.url
               })
             })
@@ -331,6 +333,12 @@
           // self.$router.push({name: 'index'})
         })
       })
+      var p = localStorage.getItem('activity')
+      if (p) {
+        p = JSON.parse(p)
+        this.number = p.number
+        this.accept = p.accept
+      }
     }
   }
 </script>
