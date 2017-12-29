@@ -183,6 +183,7 @@
 
           }
           &.params_img{
+            display: none;
             @include position(480,auto,auto,50)
             width:40%;
             height:300px;
