@@ -5,7 +5,7 @@
     </div>
     <div class="first_box">
       <h4>
-        <span class="status_box">{{($parent.statusObj[detail.status]&&$parent.statusObj[detail.status].title)||$parent.str[detail.status]}}</span>
+        <span :class="['status_box', {'gray': detail.status === 7 || detail.status === 2}]">{{($parent.statusObj[detail.status]&&$parent.statusObj[detail.status].title)||$parent.str[detail.status]}}</span>
         <span class="name_box">{{detail.name}}</span>
       </h4>
       <div class="mobile_price">
@@ -44,7 +44,7 @@
     },
     data () {
       return {
-        mobileNav1: {hash: {title: '服务器算力', unit: 'T'}, weight: {title: '服务器重量', unit: 'kg'}, single_limit_amount: {title: '最少购买数量', unit: ''}},
+        mobileNav1: {hash: {title: '服务器算力', unit: 'T'}, weight: {title: '服务器重量', unit: 'kg'}, single_limit_amount: {title: '最少购买数量', unit: '台'}},
         mobileNav2: {hashType: {title: '算力类型', unit: ''}, amount: {title: '服务器总数', unit: '台'}, incomeType: {title: '结算方式', unit: ''}}
       }
     }
@@ -76,6 +76,11 @@
           color:$blue;
           padding:2px 7px;
           border-radius:3px;
+          margin-right: 0.5rem;
+        }
+        .gray{
+          color: #999;
+          border: 1px solid #999;
         }
         .name_box{
           font-size: 0.7rem;
