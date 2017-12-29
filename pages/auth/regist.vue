@@ -306,6 +306,9 @@
         user_id: state => state.info.user_id,
         mobile: state => state.info.mobile
       })
+    },
+    mounted() {
+      window.scroll(0, 0)
     }
   }
 </script>

@@ -168,11 +168,8 @@ input::-webkit-input-placeholder {
         line-height: 42px;
         height:50px;
         color:$blue;
-        input{
-          vertical-align: middle;
-          -webkit-transition: all .2s linear;
-          @include checkbox(18,0)
-          margin-right:5px;
+        &,label{
+          cursor: pointer;
         }
       }
       .form{

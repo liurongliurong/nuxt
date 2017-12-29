@@ -61,7 +61,7 @@
         height: 81px;
         left: 50%;
         margin-left: -63px;
-        object-fit: cover;
+        object-fit: contain;
         top:64px;
         position: absolute;
       }
