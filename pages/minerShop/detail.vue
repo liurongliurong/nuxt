@@ -126,7 +126,7 @@
         this.goPay(e, isLoan)
       },
       openMask () {
-        if (this.detail.status !== 1 && this.detail.status !== 5) {
+        if (this.detail.status !== 1 && this.detail.status !== 5 && this.detail.status !== 10) {
           return false
         }
         document.body.style.overflow = 'hidden'

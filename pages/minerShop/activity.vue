@@ -1,139 +1,143 @@
 <template>
   <div class="activity_box">
-    <div class="bg_box" v-if="!isMobile">
-        <img src="../../assets/images/swiper/5_1.jpg"/>  
-    </div>
-    <div class="mobile_bg_box" v-else>
-      <img :src="require('@/assets/images/swiper/mobile4.jpg')" alt="">
-      <h1>{{data.name}}</h1>
-    </div>
-    <div class="buy_form"  v-if="!isMobile">
-      <div class="form_bg">
-        <img :src="require('@/assets/images/buy_bg.png')" alt="">
-        <div class="buy_title">
-          <b>{{data.name}}</b>
-          <span class="title_key">批次所在区域：</span>
-          <span class="title_val">{{data.area}}</span>
-        </div>
-        <div class="buy_desc">
-          <div class="item" v-for="t,k in text">
-            <div class="item_num">
-              <b v-if="k==='left_amount'">{{data.amount-data.sell_amount}}</b>
-              <b v-else>{{data[k]}}</b>
-              <span>{{t.unit}}</span>
+    <template v-if="isMobile===0">
+      <div class="bg_box">
+          <img src="../../assets/images/swiper/5_1.jpg"/>  
+      </div>
+      <div class="buy_form">
+        <div class="form_bg">
+          <img :src="require('@/assets/images/buy_bg.png')" alt="">
+          <div class="buy_title">
+            <b>{{data.name}}</b>
+            <span class="title_key">批次所在区域：</span>
+            <span class="title_val">{{data.area}}</span>
+          </div>
+          <div class="buy_desc">
+            <div class="item" v-for="t,k in text">
+              <div class="item_num">
+                <b v-if="k==='left_amount'">{{data.amount-data.sell_amount}}</b>
+                <b v-else>{{data[k]}}</b>
+                <span>{{t.unit}}</span>
+              </div>
+              <div class="item_desc">{{t.title}}</div>
             </div>
-            <div class="item_desc">{{t.title}}</div>
           </div>
-        </div>
-        <div class="buy_input">
-          <p>购买数量（台）</p>
-          <div class="input_box">
-            <span @click="changeNum(+number-1)">-</span>
-            <input type="text" v-model="number" name="number" placeholder="请输入购买数量，1台起售" @blur="changeNum(number)">
-            <span @click="changeNum(+number+1)">+</span>
+          <div class="buy_input">
+            <p>购买数量（台）</p>
+            <div class="input_box">
+              <span @click="changeNum(+number-1)">-</span>
+              <input type="text" v-model="number" name="number" placeholder="请输入购买数量，1台起售" @blur="changeNum(number)">
+              <span @click="changeNum(+number+1)">+</span>
+            </div>
+            <p>总算力 ：<span>{{totalHash}}T</span></p>
+            <p>需支付 ：<span>{{totalPrice}}元</span></p>
+            <button @click="gobuy()">立即支付</button>
+            <label for="accept">
+              <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAccept">
+              <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span><br>
+              <span class="select_accept">{{tips}}</span>
+            </label>
           </div>
-          <p>总算力 ：<span>{{totalHash}}T</span></p>
-          <p>需支付 ：<span>{{totalPrice}}元</span></p>
-          <button @click="gobuy()">立即支付</button>
-          <label for="accept">
-            <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAccept">
-            <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span><br>
-            <span class="select_accept">{{tips}}</span>
-          </label>
         </div>
       </div>
-    </div>
-    <div class="body_activity"  v-if="!isMobile">
-      <div class="activity_img">
-        <h4>产品简介</h4>
-        <p style="padding-top:28px;padding-bottom: 25px;" v-html="hashcontent.machine_advantage"></p>
-        <h4>官方参数</h4>
-        <div class="activity_content">
-          <div class="activity_left">
-            <img :src="data.activity_picture"/>
-            <h6>{{data.name}}</h6>
+      <div class="body_activity">
+        <div class="activity_img">
+          <h4>产品简介</h4>
+          <p style="padding-top:28px;padding-bottom: 25px;" v-html="hashcontent.machine_advantage"></p>
+          <h4>官方参数</h4>
+          <div class="activity_content">
+            <div class="activity_left">
+              <img :src="data.activity_picture"/>
+              <h6>{{data.name}}</h6>
+            </div>
+            <div class="activity_right">
+              <div class="activity_one" v-for="n, k in activityOne">
+                <span class="one_left">{{n.title}}</span>
+                <!-- <span class="one_right">{{k}}</span> -->
+                 <span class="one_right" v-if="k === 'hash'">{{data[k]}} T</span> 
+                 <span class="one_right" v-else-if="k === 'chips_num'">{{data.product_info ? data.product_info[k] : ''}}</span>  
+                 <span class="one_right" v-else>{{hashcontent[k]}}</span>   
+              </div>
+            </div>
           </div>
-          <div class="activity_right">
+        </div>
+        <div class="activity_vs">
+          <h4>
+            <img src="../../assets/images/activity.png"/>
+            云算力VS自己挖 "坑"
+            <img src="../../assets/images/activity.png"/>
+          </h4>
+          <div class="activity_ul">
+            <div class="activity_li" v-for="n, k in activityUl">
+              <p class="left">{{n.left}}</p>
+              <p class="unit">{{n.unit}}</p>
+              <p class="right">{{n.right}}</p>
+            </div>
+          </div>
+          <p class="bottom">本次活动最终解释权归算力网所有</p>
+        </div>
+      </div>
+    </template>
+    <template v-else-if="isMobile===1">
+      <div class="mobile_bg_box">
+        <img :src="require('@/assets/images/swiper/mobile4.jpg')" alt="">
+        <h1>{{data.name}}</h1>
+      </div>
+      <div class="mobile_form">
+        <div class="sideone">
+          <div class="flexone">
+            <div v-for="t,k in text" class="flextwo">
+              <p class="price" v-if="k==='left_amount'"><em>{{data.amount-data.sell_amount}}</em> {{t.unit}}</p>
+              <p class="price" v-else><em>{{data[k]}}</em> {{t.unit}}</p>
+              <p class="title">{{t.title}}</p>
+            </div>
+          </div>
+          <div class="bottom">
+            <div class="one" style="margin-bottom:1rem;">
+              <span class="title">购买数量</span>
+              <span class="flex">
+                <span class="aes" @click="changeNum(+number-1)">-</span>
+                <input type="number" v-model="number" name="number" placeholder="购买数量" class="number" @blur="changeNum(number)"/>
+                <span class="desc" @click="changeNum(+number+1)">+</span>
+              </span>
+            </div>
+            <div class="one">
+              <span class="title">购买算力</span>
+              <span class="price">{{totalHash}}T</span>
+            </div>
+            <div class="one">
+              <span class="title">支付金额</span>
+              <span class="price">{{totalPrice}}元</span>
+            </div>
+          </div>
+        </div>
+        <button class="submit" @click="gobuy(1)">立即支付</button>
+        <label for="accept">
+          <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAccept">
+          <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span>
+          <span class="select_accept">{{tips}}</span>
+        </label>
+        <div class="imagesall">
+          <h5>产品简介</h5>
+          <div class="mobile_introduction" v-html="hashcontent.machine_advantage"></div>
+        </div>
+        <div class="imagesall">
+          <h5>官方参数</h5>
+          <div class="imagesbig">
             <div class="activity_one" v-for="n, k in activityOne">
               <span class="one_left">{{n.title}}</span>
-              <!-- <span class="one_right">{{k}}</span> -->
-               <span class="one_right" v-if="k === 'hash'">{{data[k]}} T</span> 
-               <span class="one_right" v-else-if="k === 'chips_num'">{{data.product_info ? data.product_info[k] : ''}}</span>  
-               <span class="one_right" v-else>{{hashcontent[k]}}</span>   
+              <span class="one_right" v-if="k === 'hash'">{{data[k]}} T</span> 
+              <span class="one_right" v-else-if="k === 'chips_num'">{{data.product_info ? data.product_info[k] : ''}}</span>  
+              <span class="one_right" v-else>{{hashcontent[k]}}</span>
             </div>
           </div>
         </div>
-      </div>
-      <div class="activity_vs">
-        <h4>
-          <img src="../../assets/images/activity.png"/>
-          云算力VS自己挖 "坑"
-          <img src="../../assets/images/activity.png"/>
-        </h4>
-        <div class="activity_ul">
-          <div class="activity_li" v-for="n, k in activityUl">
-            <p class="left">{{n.left}}</p>
-            <p class="unit">{{n.unit}}</p>
-            <p class="right">{{n.right}}</p>
-          </div>
+        <div class="logo">
+          <div class="logo_img"></div>
         </div>
-        <p class="bottom">本次活动最终解释权归算力网所有</p>
+        <p class="tel">咨询电话： 0571-28031736</p>
       </div>
-    </div>
-    <div class="mobile_form" v-else>
-      <div class="sideone">
-        <div class="flexone">
-          <div v-for="t,k in text" class="flextwo">
-            <p class="price" v-if="k==='left_amount'"><em>{{data.amount-data.sell_amount}}</em> {{t.unit}}</p>
-            <p class="price" v-else><em>{{data[k]}}</em> {{t.unit}}</p>
-            <p class="title">{{t.title}}</p>
-          </div>
-        </div>
-        <div class="bottom">
-          <div class="one" style="margin-bottom:1rem;">
-            <span class="title">购买数量</span>
-            <span class="flex">
-              <span class="aes" @click="changeNum(+number-1)">-</span>
-              <input type="number" v-model="number" name="number" placeholder="购买数量" class="number" @blur="changeNum(number)"/>
-              <span class="desc" @click="changeNum(+number+1)">+</span>
-            </span>
-          </div>
-          <div class="one">
-            <span class="title">购买算力</span>
-            <span class="price">{{totalHash}}T</span>
-          </div>
-          <div class="one">
-            <span class="title">支付金额</span>
-            <span class="price">{{totalPrice}}元</span>
-          </div>
-        </div>
-      </div>
-      <button class="submit" @click="gobuy(1)">立即支付</button>
-      <label for="accept">
-        <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAccept">
-        <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span>
-        <span class="select_accept">{{tips}}</span>
-      </label>
-      <div class="imagesall">
-        <h5>产品简介</h5>
-        <div class="mobile_introduction" v-html="hashcontent.machine_advantage"></div>
-      </div>
-      <div class="imagesall">
-        <h5>官方参数</h5>
-        <div class="imagesbig">
-          <div class="activity_one" v-for="n, k in activityOne">
-            <span class="one_left">{{n.title}}</span>
-            <span class="one_right" v-if="k === 'hash'">{{data[k]}} T</span> 
-            <span class="one_right" v-else-if="k === 'chips_num'">{{data.product_info ? data.product_info[k] : ''}}</span>  
-            <span class="one_right" v-else>{{hashcontent[k]}}</span>
-          </div>
-        </div>
-      </div>
-      <div class="logo">
-        <div class="logo_img"></div>
-      </div>
-      <p class="tel">咨询电话： 0571-28031736</p>
-    </div>
+    </template>
     <MyMask :form="form[nowForm]" :title="title" :contract="contract" v-if="edit&&edit!==4&&edit!==5"></MyMask>
     <div class="popup pay_type_select" v-if="edit===4">
       <div class="popup_con">
@@ -319,6 +323,7 @@
         }
         util.post(url, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
+            localStorage.removeItem('activity')
             if (self.payNo === 2) {
               res.subject = encodeURIComponent(res.subject)
               if (self.isMobile) {
@@ -328,7 +333,6 @@
               }
               util.post('alipay_wap', {sign: api.serialize(Object.assign({token: self.token}, res))}).then((resData) => {
                 api.checkAjax(self, data, () => {
-                  localStorage.removeItem('activity')
                   location.href = resData.url
                 })
               })

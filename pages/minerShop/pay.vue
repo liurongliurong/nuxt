@@ -150,16 +150,14 @@
         </div>
       </div>
       <form action="" class="form payForm2" @submit.prevent="pay" novalidate>
-        <div class="pay_info">
-          <div class="pay_item" @click="openMask(3)">
-            <span>支付方式</span>
-            <span>{{payNo===1?'余额支付':'支付宝'}}</span>
-          </div>
-          <input type="hidden" name="mobile" :value="mobile">
-          <FormField :form="form" class="form" v-if="payNo===1"></FormField>
+        <div class="pay_item" @click="openMask(3)">
+          <span>支付方式</span>
+          <span>{{payNo===1?'余额支付':'支付宝'}}</span>
         </div>
+        <input type="hidden" name="mobile" :value="mobile">
+        <FormField :form="form" class="form" v-if="payNo===1"></FormField>
         <div class="mobile_btn">
-           <label for="accept">
+          <label for="accept">
             <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
             <span @click="openMask(1)" style="margin-left:10px;">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机销售协议》</a><template v-if="params2!=='1'">、<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
             <span class="select_accept">{{tips}}</span>
@@ -867,32 +865,35 @@
       }
       .payForm2{
         @include form
-        .pay_info{
-          padding-bottom:2px;
-          .pay_item{
-            @include flex(space-between)
-            line-height: 50px;
-            &:first-child{
-              span:last-child:after{
-                content:'';
-                @include block(8)
-                @include arrow
-              }
+        .form.form_field{
+          padding:0.5rem;
+          background: #fff;
+        }
+        .pay_item{
+          padding:0 0.5rem;
+          background: #fff;
+          @include flex(space-between)
+          line-height: 50px;
+          &:first-child{
+            span:last-child:after{
+              content:'';
+              @include block(8)
+              @include arrow
             }
-            &.pay_input{
-              width:100%;
-              font-size: 0.45rem;
-              span{
-                width:85px;
-                color:$text
-              }
-              input{
-                width:calc(100% - 85px);
-                height:40px;
-                line-height: 40px;
-                border-radius:3px;
-                padding: 0 10px;
-              }
+          }
+          &.pay_input{
+            width:100%;
+            font-size: 0.45rem;
+            span{
+              width:85px;
+              color:$text
+            }
+            input{
+              width:calc(100% - 85px);
+              height:40px;
+              line-height: 40px;
+              border-radius:3px;
+              padding: 0 10px;
             }
           }
         }
