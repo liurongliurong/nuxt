@@ -14,27 +14,27 @@
           <div class="mobile_text_item">剩余可售<b>{{d.amount-d.buyed_amount}}台</b></div>
         </div>
       </div>
-    <div class="wrap">  
-      <template v-if="percent > 100">
-        <div class="circle">  
-            <div class="percent left" :style="{'-webkit-transform': 'rotate(' + (18 / 5) * ' + percent + ' + ' deg )'}"></div>  
-            <div :class="['percent', 'right', 'wth0']"></div>  
-        </div>  
-      </template>
-      <template v-else-if="percent > 50">
-        <div :class="['circle', 'clip-auto']" >  
-            <div class="percent left" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
-            <div class="percent right"></div>  
-        </div>  
-      </template>
-      <template v-else-if="percent <= 50">
-        <div class="circle"> 
-            <div class="percent left" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
-            <div class="percent right wth0"></div>  
-        </div>  
-      </template>
-      <div class="num"><span>{{percent}}</span>%</div>  
-    </div>  
+      <div class="wrap">  
+        <template v-if="percent > 100">
+          <div class="circle">  
+              <div class="percent left" :style="{'-webkit-transform': 'rotate(' + (18 / 5) * ' + percent + ' + ' deg )'}"></div>  
+              <div :class="['percent', 'right', 'wth0']"></div>  
+          </div>  
+        </template>
+        <template v-else-if="percent > 50">
+          <div :class="['circle', 'clip-auto']" >  
+              <div class="percent left" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
+              <div class="percent right"></div>  
+          </div>  
+        </template>
+        <template v-else-if="percent <= 50">
+          <div class="circle"> 
+              <div class="percent left" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
+              <div class="percent right wth0"></div>  
+          </div>  
+        </template>
+        <div class="num"><span>{{percent}}</span>%</div>  
+      </div>  
     </div>
   </div>
 </template>
