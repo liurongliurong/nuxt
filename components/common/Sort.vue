@@ -127,7 +127,7 @@
           }
           a{
             display: inline-block;
-            padding:0 10px;
+            padding:0 5px;
             border-radius:5px;
             line-height: 1.8;
             border:1px solid transparent;
@@ -178,7 +178,7 @@
       margin-top:-25px;
       .type_img{
         @include row(2,3%)
-        padding:0 10px;
+        padding:0 5px;
         .item{
           height:120px;
           line-height: 120px;
@@ -195,7 +195,7 @@
         padding:0 20px;
         border-bottom:1px solid $border;
         .item{
-          padding:0 10px;
+          padding:0 5px;
           font-size: 0.5rem;
           line-height: 1.6rem;
           border-bottom:2px solid transparent;
