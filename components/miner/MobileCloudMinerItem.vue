@@ -8,46 +8,39 @@
     </h3>
     <div class="mobile_info_box">
       <div class="mobile_info">
-        <h4>每台单价1<span><b>{{d.one_amount_value}}</b>元</span></h4>
+        <h4>每台单价{{percent}}<span><b>{{d.one_amount_value}}</b>元</span></h4>
         <div class="mobile_text">
           <div class="mobile_text_item">每台算力<b>{{d.hash}}T</b></div>
           <div class="mobile_text_item">剩余可售<b>{{d.amount-d.buyed_amount}}台</b></div>
         </div>
       </div>
-      <!-- <div class="circle sell_progress" v-if="d.buyed_amount === '0.00'" style="background:#e5e5e5;">
-        <template v-if="(((d.buyed_amount)/d.amount*100).toFixed(0))<=180">
-            <div class="pie_left" style="clip: rect(0,-360px,auto,0);"><div class="left"></div></div>
-          <div class="pie_right" style="clip: rect(0,auto,auto,360px);"><div class="right"  :style="{transform:'rotate(-'+(((d.buyed_amount)/d.amount*100).toFixed(0) * 3.6)+'deg)'}"></div></div>
-        </template>
-        <template v-else>
-            <div class="pie_left"  style="clip: rect(0,-360px,auto,0);"><div class="left" :style="{transform:'rotate(-'+((((d.buyed_amount)/d.amount*100).toFixed(0) - 180) * 3.6)+'deg)'}"></div></div>
-            <div class="pie_right" style="clip: rect(0,auto,auto,360px);"><div class="right" :style="{transform:'rotate('+180+'deg)'}"></div></div>
-        </template>
-        <div class="mask"><span>{{((d.buyed_amount)/d.amount*100).toFixed(0)}}</span>%</div>
-      </div>
-      <div class="circle sell_progress" v-else>
-        <template v-if="(((d.buyed_amount)/d.amount*100).toFixed(0))<=180">
-            <div class="pie_left"><div class="left"></div></div>
-          <div class="pie_right"><div class="right"  :style="{transform:'rotate(-'+(((d.buyed_amount)/d.amount*100).toFixed(0) * 3.6)+'deg)'}"></div></div>
-        </template>
-        <template v-else>
-            <div class="pie_left"><div class="left" :style="{transform:'rotate(-'+((((d.buyed_amount)/d.amount*100).toFixed(0) - 180) * 3.6)+'deg)'}"></div></div>
-            <div class="pie_right"><div class="right" :style="{transform:'rotate('+180+'deg)'}"></div></div>
-        </template>
-        <div class="mask"  v-if="d.buyed_amount === '0.00'"  style="color:#e5e5e5;"><span style="color:#e5e5e5;">{{((d.buyed_amount)/d.amount*100).toFixed(0)}}</span>%</div>
-        <div class="mask" v-else><span>{{(}}</span>%</div>
-      </div> -->
-      <el-progress type="circle" :percentage="((d.buyed_amount)/d.amount*100).toFixed(0)" style="    height: 76px !important;
-    width: 76px !important;"></el-progress>
+    <div class="wrap">  
+      <template v-if="percent > 100">
+        <div class="circle">  
+            <div class="percent left" :style="{'-webkit-transform': 'rotate(' + (18 / 5) * ' + percent + ' + ' deg )'}"></div>  
+            <div :class="['percent', 'right', 'wth0']"></div>  
+        </div>  
+      </template>
+      <template v-else-if="percent > 50">
+        <div :class="['circle', 'clip-auto']" >  
+            <div class="percent left" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
+            <div class="percent right"></div>  
+        </div>  
+      </template>
+      <template v-else-if="percent <= 50">
+        <div class="circle"> 
+            <div class="percent left" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
+            <div class="percent right wth0"></div>  
+        </div>  
+      </template>
+      <div class="num"><span>{{percent}}</span>%</div>  
+    </div>  
     </div>
   </div>
 </template>
 
 <script>
   import Vue from 'vue'
-  import ElementUI from 'element-ui'
-  import 'element-ui/lib/theme-chalk/index.css'
-  Vue.use(ElementUI)
   export default {
     props: {
       d: {
@@ -56,7 +49,16 @@
     },
     data () {
       return {
-        str: {4: '预热', 5: '热销'}
+        str: {4: '预热', 5: '热销'},
+        percent: ''
+      }
+    },
+    mounted () {
+      this.percent = ((this.d.buyed_amount) / this.d.amount*100).toFixed(0)
+      if (this.percent > 100) {  
+        this.percent = 0
+      } else {
+        this.percent = this.percent
       }
     }
   }
@@ -67,6 +69,7 @@
   .mobile_cloud_miner_item{
     background: $white;
     padding:15px;
+    position: relative;
     border-top:1px solid $border;
     border-bottom:1px solid $border;
     .mobile_info_box{
@@ -97,68 +100,57 @@
           }
         }
       }
-      .circle {
-        width: 70px;
-        height: 70px;
-        line-height: 70px;
-        position: absolute;
-        border-radius: 50%;
-        background: #e5e5e5;
-        text-align:  center;
-        right: 0.5rem;
-        color:$orange;
-        overflow: hidden;
-        .pie_left, .pie_right {
-          width:70px;
-          height:70px;
-          position: absolute;
-          top: 0;left: 0;
-        }
-        .left, .right {
-          width:70px;
-          height:70px;
-          background:#ffb386;
-          border-radius: 50%;
-          position: absolute;
-          top: 0;
-          left: 0;
-          box-sizing: border-box;
-        }
-        .pie_right, .right {
-          clip:rect(0,auto,auto,35px);
-        }
-        .pie_left, .left {
-          clip:rect(0,35px,auto,0);
-        }
-        .mask {
-          width: 66px;
-          height: 66px;
-          border-radius: 50%;
-          background: #FFF;
-          position: absolute;
-          text-align: center;
-          left:2px;
-          top:2px;
-          line-height: 70px;
-          font-size: 0.7rem;
-          margin: 0 auto;
-          color: #ffb386;
-          box-sizing: border-box;
-        }
-      }
     }
   }
-  .el-progress-circle{
-    width: 76px !important;
-    height:  76px !important;
-    position: relative;
-    top: -1rem;
-  }
-  .el-progress__text{
-    position: relative !important;
-    top: -2.6rem !important;
-  }
-  .el-progress-circle__path{
-    stroke:#ffb386 !important;
-  }
+    .wrap,.circle,.percent{  
+        position: absolute;  
+        width: 76px;  
+        height: 76px;  
+        border-radius: 50%;  
+    }  
+    .wrap{  
+        top:0.5rem;  
+        right: 1rem;
+        // left:50px;  
+        background-color: #ccc;  
+    }  
+    .circle{  
+        box-sizing: border-box;  
+        border:20px solid #ccc;  
+        clip:rect(0,76px,76px,38px);  
+    }  
+    .clip-auto{  
+        clip:rect(auto, auto, auto, auto);  
+    }  
+    .percent{  
+        box-sizing: border-box;  
+        top:-20px;  
+        left:-20px;  
+    }  
+    .left{  
+        transition:transform ease;  
+        border:20px solid #ffb386;  
+        clip: rect(0,38px,76px,0);  
+    }  
+    .right{  
+        border:20px solid #ffb386;  
+        clip: rect(0,76px,76px,38px);  
+    }  
+    .wth0{  
+        width:0;  
+    }  
+    .num{  
+           position: absolute;
+    box-sizing: border-box;
+    width: 66px;
+    height: 66px;
+    line-height: 66px;
+    text-align: center;
+    font-size: 14px;
+    left: 5px;
+    top: 5px;
+    border-radius: 50%;
+    background-color: #fff;
+    z-index: 1;
+    }  
 </style>
