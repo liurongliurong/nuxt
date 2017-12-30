@@ -183,7 +183,7 @@
           <span class="icon_close" @click="closeMask"></span>
         </div>
         <div class="mobile_pay_type">
-          <div :class="['pay_item', {active:payNo===2}]" @click="setValue('payNo',2)">
+         <div :class="['pay_item', {active:payNo===2}]" @click="setValue('payNo',2)">
             <div class="pay_item_left">
               <span>支付宝支付</span>
             </div>
