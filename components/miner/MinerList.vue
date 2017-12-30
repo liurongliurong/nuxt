@@ -142,6 +142,7 @@
         @include row(2)
       }
       .nodata{
+        width:100%;
         background: #fff;
         min-height:500px;
         padding-top:100px;
