@@ -170,7 +170,7 @@
     <div class="popup" v-if="isMobile&&mobileEdit">
       <div class="popup_con">
         <div class="popup_title">
-          <span>{{contract?'矿机协议':'选择支付方式'}}</span>
+          <span>{{contract?'协议详情':'选择支付方式'}}</span>
           <span class="icon_close" @click="closeMask"></span>
         </div>
         <template v-if="contract">
