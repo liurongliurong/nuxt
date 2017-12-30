@@ -688,7 +688,7 @@
           border-bottom: 1px dashed white;
           padding-bottom: 0.7rem;
           .flextwo{
-            width:  33.3%;
+            width:  auto;
             text-align: center;
             .price{
               color: #fede00;
