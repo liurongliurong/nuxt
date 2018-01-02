@@ -34,9 +34,6 @@
       CloudMinerItem, MobileCloudMinerItem
     },
     props: {
-      page: {
-        type: String
-      },
       status: {
         type: Number
       }
@@ -92,8 +89,8 @@
         }
       },
       goPay (id) {
-        localStorage.setItem('params', JSON.stringify([ id, '2']))
-        this.$router.push({path: '/' + this.page + '/detail/'})
+        api.setStorge('suanli', {proId: id, proType: '2'})
+        this.$router.push({path: '/minerShop/detail/'})
       }
     },
     mounted () {

@@ -37,7 +37,7 @@
         <router-link to="/minerShop/miner/1">更多矿机 ></router-link>
       </h2>
     </MinerList>
-    <CloudMinerList page="minerShop">
+    <CloudMinerList>
       <h2>
         <div>
           <span>云算力推荐</span>
