@@ -100,11 +100,11 @@
         var startTime = this.detail.sell_start_time
         var now = Date.parse(new Date()) / 1000
         if (this.detail.status === 4) {
-          api.tips('暂不能购买')
+          api.tips('暂不能购买', this.isMobile)
           return false
         }
         if (now < startTime) {
-          api.tips('还未到开售时间，开售时间为：' + api.date(new Date(startTime * 1000)))
+          api.tips('暂未开售，开售时间为：' + api.date(new Date(startTime * 1000)), this.isMobile)
           return false
         }
         if (!this.token) {
