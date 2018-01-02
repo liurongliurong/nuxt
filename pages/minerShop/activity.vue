@@ -275,6 +275,12 @@
         }
       },
       gobuy () {
+        var startTime = this.data.activity_time
+        var now = Date.parse(new Date()) / 1000
+        if (now, startTime) {
+          api.tips('活动未开始，开始时间为：' + api.date(new Date(startTime * 1000)), this.isMobile)
+          return false
+        }
         var ele = document.querySelector('#accept')
         if (!this.token) {
           localStorage.setItem('activity', JSON.stringify({number: this.number, accept: ele.checked}))
@@ -424,6 +430,8 @@
             self.hashcontent = res.product_info.has_product_miner_base
             self.content = res.content + '<hr>' + res.content1
             self.one_amount_value = res.one_amount_value
+            self.totalHash = (self.number * self.data.hash).toFixed(2)
+            self.totalPrice = self.number * self.data.one_amount_value
             // self.content = res.content
           })
         })
