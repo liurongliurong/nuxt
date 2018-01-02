@@ -1,6 +1,6 @@
 <template>
   <section class="deposit">
-    <h2>托管项目</h2>
+    <h2>托管项目{{params1}}</h2>
      <div class="deposit_list" v-for="i,n in content">
       <div class="detail_table">
         <div class="item" v-for="d,k in nav">
@@ -55,13 +55,13 @@
       }
     },
     mounted () {
-      this.items()
       console.log(this.content)
       var p = localStorage.getItem('icon_id')
       if (p) {
         p = JSON.parse(p)
         this.params1 = p[0]
       }
+      this.items()
     },
     computed: {
       ...mapState({
