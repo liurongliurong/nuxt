@@ -30,21 +30,16 @@
     },
     methods: {
       items () {
+        console.log(this.content)
         if (this.token !== 0) {
-          var p = localStorage.getItem('icon_id')
-          if (p) {
-            p = JSON.parse(p)
-            this.params1 = p[0]
-          }
-          console.log(this.params1)
-          var self = this
-          util.post('getBdcMessage', {sign: api.serialize({token: this.token})}).then(function (res) {
-            api.checkAjax(self, res, () => {
+          util.post('getBdcMessage', {sign: api.serialize({token: this.token})}).then((res) => {
+            api.checkAjax(this, res, () => {
               for (var i = 0; i < res.length; i++) {
-                if (self.params1 === res[i].id) {
-                  self.content.push(res[i])
+                if (this.params1 === res[i].id) {
+                  this.content.push(res[i])
                 }
               }
+              console.log(this.content)
             })
           })
         } else {
@@ -55,13 +50,13 @@
       }
     },
     mounted () {
-      this.items()
       console.log(this.content)
       var p = localStorage.getItem('icon_id')
       if (p) {
         p = JSON.parse(p)
         this.params1 = p[0]
       }
+      this.items()
     },
     computed: {
       ...mapState({

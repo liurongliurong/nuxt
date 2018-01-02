@@ -131,14 +131,13 @@ api.validityForm = (form, ismobile) => {
   for (var i = 0; i <= form.length - 2; i++) {
     var ele = form[i]
     if (ele.value) {
-      if (api.checkFiled(ele, form)) {
+      if (api.checkFiled(ele, form, ismobile)) {
         if (ele.getAttribute('isChange')) {
           data[ele.name] = encodeURIComponent(ele.value)
         } else {
           data[ele.name] = ele.value
         }
       } else {
-        api.errorTip(ele, ele.title, ismobile)
         icon = 1
         n = i
         break
@@ -178,12 +177,18 @@ api.errorTip = (ele, str, ismobile) => {
     api.tips(str, 1)
   }
 }
-api.checkFiled = (ele, form) => {
+api.checkFiled = (ele, form, ismobile) => {
   if (!(ele.checkValidity ? ele.checkValidity() : api.check(ele.pattern || ele.getAttribute('pattern'), ele.value))) {
     api.setTips(ele, 'invalid')
+    api.errorTip(ele, ele.title, ismobile)
     return false
-  } else if ((ele.name === 'imgCode' && ele.value && (ele.value.toLowerCase() !== localStorage.getItem('code').toLowerCase())) || (ele.name === 'password1' && ele.value !== form.password.value) || (ele.name === 'trade_password1' && ele.value !== form.trade_password.value)) {
+  } else if ((ele.name === 'imgCode' && ele.value && (ele.value.toLowerCase() !== localStorage.getItem('code').toLowerCase())) || (ele.name === 'password1' && form.password.value && form.password1.value && ele.value !== form.password.value)) {
     api.setTips(ele, 'error')
+    if (ismobile && ele.name === 'password1') {
+      api.errorTip(ele, '两次密码不一致', 1)
+    } else if (ismobile && ele.name === 'imgCode') {
+      api.errorTip(ele, '图形验证码错误', 1)
+    }
     return false
   } else {
     api.setTips(ele, 'valid')
