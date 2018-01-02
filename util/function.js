@@ -104,26 +104,16 @@ api.line = () => {
   line.y = Math.floor(Math.random() * 40)
   return line
 }
-api.countDown = () => {
+api.countDown = (e) => {
   var t = 60
-  var ele = document.querySelector('.count_btn') || document.getElementsByClassName('count_btn')[0]
-  var ele1 = document.getElementsByClassName('count_btn')[1] || ''
+  var ele = e.target
   window.tt = setInterval(() => {
     if (t === 0) {
       ele.innerHTML = '重新获取'
-      if (ele1) {
-        ele1.innerHTML = '重新获取'
-      }
       clearInterval(window.tt)
       ele.setAttribute('disabled', false)
-      if (ele1) {
-        ele1.setAttribute('disabled', false)
-      }
     } else {
       ele.innerHTML = t + 's'
-      if (ele1) {
-        ele1.innerHTML = t + 's'
-      }
       t--
     }
   }, 1000)

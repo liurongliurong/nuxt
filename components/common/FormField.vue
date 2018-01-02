@@ -162,7 +162,7 @@
           } else {
             api.tips('发送成功', 1)
           }
-          api.countDown()
+          api.countDown(e)
           ele.setAttribute('disabled', true)
         })
       },
