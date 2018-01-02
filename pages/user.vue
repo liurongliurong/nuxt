@@ -35,7 +35,7 @@
   export default {
     data () {
       return {
-        nav: [{name: 'computeProperty', title: '算力资产', path: '/user/computeProperty'}, {name: 'account', title: '账户管理', path: '/user/account'}, {name: 'order', title: '订单管理', path: '/user/order/0'}, {name: 'address', title: '地址管理', path: '/user/address'}, {name: 'virtualCurrencyFlow', title: '币流水', path: '/user/virtualCurrencyFlow'}, {name: 'moneyFlow', title: '资金流水', path: '/user/moneyFlow'}, {name: 'lp', title: '合伙人中心', path: '/user/lpCenter'}, {name: 'deposit', title: '托管信息', path: '/user/deposit/list'}, {name: 'message', title: '消息中心', path: '/user/message'}, {name: 'repayment', title: '还款管理', path: '/user/repayment/0'}, {name: 'calculator', title: '挖矿计算器', path: '/user/Calculator'}],
+        nav: [{name: 'computeProperty', title: '算力资产', path: '/user/computeProperty'}, {name: 'account', title: '账户管理', path: '/user/account'}, {name: 'order', title: '订单管理', path: '/user/order/0'}, {name: 'address', title: '地址管理', path: '/user/address'}, {name: 'virtualCurrencyFlow', title: '币流水', path: '/user/virtualCurrencyFlow'}, {name: 'moneyFlow', title: '资金流水', path: '/user/moneyFlow'}, {name: 'lp', title: '合伙人中心', path: '/user/lpCenter'}, {name: 'deposit', title: '托管信息', path: '/user/deposit/list'}, {name: 'message', title: '消息中心', path: '/user/message'}, {name: 'repayment', title: '还款管理', path: '/user/repayment/0'}, {name: 'bitCalculator', title: '挖矿计算器', path: '/user/bitCalculator'}],
         now: 1
       }
     },
