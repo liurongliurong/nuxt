@@ -1,6 +1,6 @@
 <template>
   <section class="deposit">
-    <h2>托管项目{{params1}}</h2>
+    <h2>托管项目</h2>
      <div class="deposit_list" v-for="i,n in content">
       <div class="detail_table">
         <div class="item" v-for="d,k in nav">
@@ -36,7 +36,6 @@
             p = JSON.parse(p)
             this.params1 = p[0]
           }
-          console.log(this.params1)
           var self = this
           util.post('getBdcMessage', {sign: api.serialize({token: this.token})}).then(function (res) {
             api.checkAjax(self, res, () => {
@@ -50,12 +49,11 @@
         } else {
           setTimeout(() => {
             this.items()
-          }, 5)
+          }, 1)
         }
       }
     },
     mounted () {
-      console.log(this.content)
       var p = localStorage.getItem('icon_id')
       if (p) {
         p = JSON.parse(p)

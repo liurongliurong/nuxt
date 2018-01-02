@@ -21,7 +21,7 @@
         <button disabled v-if="detail.status===7||detail.status===2">已售罄</button>
         <button disabled v-else-if="detail.status===3">产品撤销</button>
         <button disabled v-else-if="detail.status===4">立即购买</button>
-        <button @click="openMask" v-else>立即购买</button>
+        <button @click="checkPay()" v-else>立即购买</button>
       </div>
       <div class="popup" v-if="sheetVisible" @click="closeMask">
         <div class="popup_con buy_box">
@@ -52,7 +52,7 @@
             <div class="item">{{totalPrice|format}}元</div>
           </div>
           <div class="mobile_btn" style="z-index:9999999;">
-            <button @click="checkPay($event, false)">立即购买</button>
+            <button @click="goPay($event, false)">立即购买</button>
           </div>
         </div>
       </div>
@@ -99,10 +99,6 @@
       checkPay (e, isLoan) {
         var startTime = this.detail.sell_start_time
         var now = Date.parse(new Date()) / 1000
-        if (this.detail.status === 4) {
-          api.tips('暂不能购买', this.isMobile)
-          return false
-        }
         if (now < startTime) {
           api.tips('暂未开售，开售时间为：' + api.date(new Date(startTime * 1000)), this.isMobile)
           return false
@@ -123,7 +119,11 @@
           })
           return false
         }
-        this.goPay(e, isLoan)
+        if (this.isMobile) {
+          this.openMask()
+        } else {
+          this.goPay(e, isLoan)
+        }
       },
       openMask () {
         if (this.detail.status !== 1 && this.detail.status !== 5 && this.detail.status !== 10) {
