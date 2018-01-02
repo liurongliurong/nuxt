@@ -18,7 +18,7 @@
       <MobileBaseInfo :params2="params2" :detail="detail"></MobileBaseInfo>
       <MobileProductInfo :params2="params2" :detail="detail"></MobileProductInfo>
       <div class="mobile_btn">
-        <button disabled v-if="detail.status===7||detail.status===2">已售罄</button>
+        <button disabled v-if="detail.status===7||detail.status===2">立即购买</button>
         <button disabled v-else-if="detail.status===3">产品撤销</button>
         <button disabled v-else-if="detail.status===4">立即购买</button>
         <button @click="checkPay()" v-else>立即购买</button>

@@ -30,7 +30,7 @@
         <em></em>
       </router-link>
     </div>
-    <button @click="logout">退出</button>
+    <button @click="logout">退出登录</button>
     <div class="null"></div>
     <div class="popup" v-if="showModal">
       <div class="popup_con">
