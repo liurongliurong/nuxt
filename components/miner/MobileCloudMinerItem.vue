@@ -8,7 +8,7 @@
     </h3>
     <div class="mobile_info_box">
       <div class="mobile_info">
-        <h4>每台单价{{percent}}<span><b>{{d.one_amount_value}}</b>元</span></h4>
+        <h4>每台单价<span><b>{{d.one_amount_value}}</b>元</span></h4>
         <div class="mobile_text">
           <div class="mobile_text_item">每台算力<b>{{d.hash}}T</b></div>
           <div class="mobile_text_item">剩余可售<b>{{(d.amount-d.buyed_amount)<0?0:(d.amount-d.buyed_amount)}}台</b></div>

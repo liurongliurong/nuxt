@@ -14,7 +14,6 @@
     </div> 
   </section>
 </template>
-
 <script>
   import util from '@/util'
   import api from '@/util/function'
@@ -64,7 +63,6 @@
     }
   }
 </script>
-
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .deposit{
