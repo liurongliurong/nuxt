@@ -55,9 +55,8 @@
     },
     methods: {
       submit () {
-        var mobile = api.checkEquipment()
         var form = document.querySelector('.form')
-        var data = api.checkFrom(form, this, mobile)
+        var data = api.checkFrom(form, this.isMobile)
         var sendData = {token: this.token}
         var callbackUrl = ''
         if (!data) return false
@@ -67,7 +66,7 @@
           util.post('applyBalanceRecharge', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
             api.checkAjax(self, res, () => {
               res.subject = encodeURIComponent(res.subject)
-              if (mobile) {
+              if (self.isMobile) {
                 res = Object.assign(res, {is_mobile: 1})
               } else {
                 res = Object.assign(res, {is_mobile: 0})

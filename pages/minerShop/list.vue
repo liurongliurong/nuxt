@@ -13,7 +13,6 @@
       </div>
       <div class="miner_pic pic2">
         <img :src="p.image" alt="" v-for="p,k in pics" :style="{'opacity':picShow===k?1:0}">
-        <!-- <router-link to="/minerShop/activity" class="btn">立即抢购</router-link> -->
         <div class="swipe_pager">
           <div :class="['item', {active: picShow===k}]" v-for="p,k in pics" @mouseover="changePic(k)" @mouseout="swipe"></div>
         </div>
@@ -38,7 +37,7 @@
         <router-link to="/minerShop/miner/1">更多矿机 ></router-link>
       </h2>
     </MinerList>
-    <CloudMinerList page="minerShop">
+    <CloudMinerList>
       <h2>
         <div>
           <span>云算力推荐</span>
@@ -54,7 +53,6 @@
         <p><span>惠</span>最长享有180天的分期付款</p>
       </div>
     </div>
-    <!-- <SideBar></SideBar> -->
   </section>
 </template>
 
@@ -64,7 +62,6 @@
   import { mapState } from 'vuex'
   import CloudMinerList from '@/components/miner/CloudMinerList'
   import MinerList from '@/components/miner/MinerList'
-  // import SideBar from '@/components/home/SideBar'
   export default {
     components: {
       CloudMinerList, MinerList
@@ -136,7 +133,7 @@
 
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
- .miner_shop{
+  .miner_shop{
     .bg_box{
       @include bg(1920,466px,#070a0f)
       background:none;
@@ -279,7 +276,7 @@
     }
     .miner_loan{
       @include mobile_hide
-      background:url('../../assets/images/miner_shop/loan.jpg');
+      background:#363A4E url('../../assets/images/miner_shop/loan.jpg');
       background-size:100% 100%;
       width:100%;
       height:350px;

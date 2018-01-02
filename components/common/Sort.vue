@@ -9,11 +9,7 @@
             <span class="input_btn iconfont">&#xe63e;</span>
           </div> -->
         </div>
-        <div class="sort_body" v-if="sortNav||sortType">
-          <!-- <div class="item" v-if="sortType">
-            <span>{{sortType.title}}</span>
-            <a :class="{active:$route.params.type==(+k+1)}" href="javascript:;" @click="setType((+k+1))" v-for="s,k in sortType.options">{{s}}</a>
-          </div> -->
+        <div class="sort_body" v-if="sortNav">
           <div class="item" v-for="s,i in sortNav" v-if="sortNav">
             <span>{{s.title}}</span>
             <a href="javascript:;" :class="{active:$parent.status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
@@ -26,9 +22,6 @@
         </div>
       </div>
       <div class="mobile_sort" v-else-if="isMobile">
-        <!-- <div class="type_img" v-if="sortType">
-          <div class="item" @click="setType((+k+1))" v-for="s,k in sortType.options">{{s}}</div>
-        </div> -->
         <div class="mobile_sort_items" v-for="s,i in sortNav" v-if="sortNav">
           <a class="item" href="javascript:;" :class="{active:$parent.status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
         </div>
@@ -53,9 +46,6 @@
       },
       sortNav: {
         type: Array
-      },
-      sortType: {
-        type: Object
       }
     },
     data () {
@@ -74,13 +64,9 @@
         this.$parent.getList(n)
       },
       setStatus (n) {
-        console.log(n)
+        this.$parent.now = 1
         this.$parent.status = n
         this.$parent.fetchData()
-      },
-      setType (k) {
-        this.$parent.status = 0
-        this.$router.push({path: '/minerShop/miner/' + k})
       }
     },
     computed: {
@@ -141,7 +127,7 @@
           }
           a{
             display: inline-block;
-            padding:0 10px;
+            padding:0 5px;
             border-radius:5px;
             line-height: 1.8;
             border:1px solid transparent;
@@ -192,7 +178,7 @@
       margin-top:-25px;
       .type_img{
         @include row(2,3%)
-        padding:0 10px;
+        padding:0 5px;
         .item{
           height:120px;
           line-height: 120px;
@@ -209,7 +195,7 @@
         padding:0 20px;
         border-bottom:1px solid $border;
         .item{
-          padding:0 10px;
+          padding:0 5px;
           font-size: 0.5rem;
           line-height: 1.6rem;
           border-bottom:2px solid transparent;
@@ -230,9 +216,15 @@
         transition:all .3s;
         font-size: 26px;
         transform:rotate(180deg);
+        position: relative;
+        top: 6px;
       }
       &.active{
         color:$blue;
+        .iconfont{
+          position: relative;
+          top: -6px;
+        }
       }
       &.up{
         .iconfont{

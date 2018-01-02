@@ -55,7 +55,8 @@
         requestUrl: {website: 'webDynamic', product: 'webAnnouncoment'},
         img1: require('@/assets/images/zx.jpg'),
         len: 0,
-        now: 1
+        now: 1,
+        allid: []
       }
     },
     methods: {
@@ -67,6 +68,8 @@
         util.post(url, {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.lists = res.list
+            self.allid = res.id_list
+            localStorage.setItem('all_id', JSON.stringify(self.allid))
             if (self.now > 1) return false
             if (url === 'suanliMessage') {
               self.len = Math.ceil(res.total / 7)

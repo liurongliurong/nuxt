@@ -15,7 +15,7 @@
         <div v-for="item, k in museum" :key="k" class="total">
           <h4> {{item.title}} </h4>
           <p v-html="item.content"></p>
-          <div class="time"><span class="icon iconfont icon-shijian2"></span>{{times[k]}}小时前</div>
+          <div class="time"><span class="icon iconfont icon-shijian2"></span>{{times[k]}}</div>
         </div>
       </div>
       <p v-if="loading"  class="loadmore">加载中······</p>
@@ -83,6 +83,13 @@
                   var leave1 = date3 % (24 * 3600 * 1000)
                   var days = Math.floor(date3 / (24 * 3600 * 1000)) * 24
                   var hours = Math.floor((Math.floor(leave1 / (3600 * 1000)) + days) / 60)
+                  if (hours > 24) {
+                    hours = Math.floor(hours / 24) + '天前'
+                  } else if(hours <= 0) {
+                    hours = '目前'
+                  } else {
+                    hours = hours + '小时前'
+                  }
                   self.times.push(hours)
                 }
                 for (let i = 0, len = res.length; i < len; i++) {

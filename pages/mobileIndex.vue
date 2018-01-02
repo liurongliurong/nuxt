@@ -20,12 +20,12 @@
           <p class="content slogen">算力是未来可计量的生产力</p>
         </div>
         <div class="footer">
-          <a class="button" @click="jump()">跳过</a>
+          <a class="button" @click="jump(3)">跳过</a>
           <p class="introduce">Clould mining<i>|</i>Miner<i>|</i>Escrow</p>
         </div>
       </div>
       <div class="page-2 page-common">
-        <img class="logo" src="../assets/images/mobile/index/logo.png"/>
+        <img class="logo" src="~/assets/images/mobile/index/logo.png"/>
         <div class="main">
           <div class="page-number">
             <hr>
@@ -35,7 +35,7 @@
               <i class="total-page">03</i>
             </span>
           </div>
-          <img class="gif" src="../assets/images/mobile/index/2.gif"/>
+          <img class="gif" src="~/assets/images/mobile/index/2.gif"/>
         </div>
         <div class="article">
           <div class="item" v-for="item in page2Text">
@@ -70,32 +70,40 @@
           <p class="title">算力网&nbsp;suanLi.com&nbsp;&nbsp;&nbsp;每秒都为你产生利润</p>
         </div>
         <div class="footer">
-          <nuxt-link class="button" to="/quickNews">体验数字货币带来的乐趣</nuxt-link>
+          <a class="button" @click="jump(3)">体验数字货币带来的乐趣</a>
           <p class="introduce">Clould mining<i>|</i>Miner<i>|</i>Escrow</p>
         </div>
       </div>
       <div class="page-4 page-common">
         <header>
-          <img class="logo" src="../assets/images/mobile/index/logo.png" />
+          <!-- <img class="logo" src="../assets/images/mobile/index/logo.png" />-->
+          <span> </span>
           <div class="login" v-if="token === 0">
-            <nuxt-link to="/auth/regist">注册</nuxt-link>
+            <a @click="goToPage('/auth/regist', 3)">注册</a>
             <span>|</span>
-            <nuxt-link to="/auth/login">登录</nuxt-link>
+            <a @click="goToPage('/auth/login', 3)">登录</a>
+          </div>
+          <div class="login" v-else>
+            <a @click="goToPage('/mobile/personcenter', 3)">个人中心</a>
           </div>
         </header>
-        <div class="introduce">
+        <div class="swiper" @click="goToPage('/minerShop/activity', 3)">
+          <img src="../assets/images/swiper/mobile4.jpg"/>
+        </div>
+        <!-- <div class="introduce">
           <p class="title">我们为您提供丰富可靠的算力服务。</p>
           <p class="content">整合全球算力产业链资源</p>
           <p class="content">基于算力平台对外进行输出各类算力服务</p>
         </div>
-        <div class="link-list" v-animate="{value: 'bounceInLeft', delay: 0}">
-          <nuxt-link v-for="item,k in page4Text" class="item" :to="item.link" :key="k">
+         v-animate="{value: 'bounceInLeft', delay: 0}"-->
+        <div class="link-list">
+          <div v-for="item,k in page4Text" class="item" @click="goToPage(item.link, 3)" :key="k">
             <div class="word">
               <p class="title">{{item.title}}</p>
               <p class="sub">{{item.sub}}</p>
             </div>
             <i class="arrow"></i>
-          </nuxt-link>
+          </div>
         </div>
       </div>
     </div>
@@ -115,14 +123,11 @@ export default {
         loop: false,
         duration: 300,
         der: 0.04,
-        beforeChange: function (prev, next) {
-          // console.log('before', prev, next)
+        beforeChange: (prev, next) => {
         },
-        afterChange: function (prev, next) {
-          // console.log('after', prev, next)
+        afterChange: (prev, next) => {
         }
       },
-      suanLi: 'https://www.suanli.com/',
       page2Text: [
         {title: '云算力', content: '我们一站式帮你购买品牌矿机，对接合规BDC托管服务，配置专人全天维护，快速部署，算力稳定收益透明，让你真正实现无忧挖矿。'},
         {title: '矿机销售', content: '聚合全球顶级厂商新货、二手矿机及配件资源，精心筛选质量保证，线上交易全流程存证，安全有保障。'},
@@ -137,16 +142,20 @@ export default {
     }
   },
   mounted () {
-    let width = document.documentElement.clientWidth
-    document.documentElement.style.fontSize = width / 750*100 + 'px'
-  },
-  destroyed () {
-    var width = document.documentElement.clientWidth
-    document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
+    let page = sessionStorage.getItem('mobileIndex')
+    if (page) {
+      this.jump(page)
+    }
   },
   methods: {
-    jump () {
-      this.opts = Object.assign({}, this.opts, {start: 3})
+    jump (number) {
+      if (number > 0) {
+        this.opts = Object.assign({}, this.opts, {start: number})
+      }
+    },
+    goToPage (url, page) {
+      sessionStorage.setItem('mobileIndex', page);
+      this.$router.push({path: url})
     }
   },
   computed: {
@@ -166,10 +175,12 @@ export default {
   background: #243461;
 
   .page-common {
-    padding-top: 0.34rem;
+    width: 100% !important;
+    height: 100vh !important;
+    padding-top: 0.62rem;
     .logo {
-      margin-left: 0.42rem;
-      width: 2.38rem;
+      margin-left: 0.767rem;
+      width: 4.35rem;
       display: block;
     }
     .main {
@@ -177,19 +188,19 @@ export default {
       height: auto;
       display: flex;
       align-items: center;
-      margin-top: 0.6rem;
+      margin-top: 1.1rem;
 
       .page-number {
         position: absolute;
         left: -98px;
-        top: 5rem;
+        top: 9.135rem;
         transform: rotate(90deg);
         display: flex;
         align-items: center;
         justify-content: center;
         hr {
           width: 128px;
-          margin-right: 0.5rem;
+          margin-right: 0.913rem;
           border: solid 1px #7888a5;
           border-width: 0 0 1px;
         }
@@ -221,28 +232,28 @@ export default {
     }
     .footer {
       position: absolute;
-      bottom: 0.72rem;
-      right: 0.6rem;
+      bottom: 0.822rem;
+      right: 1.1rem;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
 
       .button {
-        padding: 0.12rem 0.54rem;
-        margin-bottom: 0.36rem;
+        padding: 0.22rem 0.986rem;
+        margin-bottom: 0.657rem;
         color: #608ad8;
-        font-size: 0.3rem;
-        border: solid 0.02rem #608ad8;
-        border-radius: 0.4rem;
+        font-size: 0.548rem;
+        border: solid 1px #608ad8;
+        border-radius: 0.73rem;
       }
       .introduce {
         color: #fff;
         font-weight: normal;
-        font-size: 0.2rem;
+        font-size: 0.364rem;
 
         i {
           font-style: normal;
-          margin: 0 0.1rem;
+          margin: 0 0.18rem;
           color: #999;
         }
       }
@@ -253,35 +264,35 @@ export default {
       margin: 0 auto;
     }
     .main-slogen {
-      font-size: 0.26rem;
+      font-size: 0.475rem;
       color: #fff;
-      margin: 0.8rem auto 0;
+      margin: 1.46rem auto 0;
       text-align: center;
-      letter-spacing: 0.02rem;
+      letter-spacing: 0.0364rem;
     }
     .title {
-      font-size: 0.36rem;
+      font-size: 0.657rem;
       font-weight: bold;
       color: #fff;
       margin: 0 auto;
       text-align: center;
-      letter-spacing: 0.06rem;
-      padding: 0.24rem 0;
+      letter-spacing: 0.11rem;
+      padding: 0.438rem 0;
     }
     .main {
       margin-top: 8vh;
     }
     .article {
-      margin-top: 1.08rem;
+      margin-top: 1.97rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       .slogen {
-        letter-spacing: 0.02rem;
-        margin-bottom: 0.3rem;
+        letter-spacing: 0.0364rem;
+        margin-bottom: 0.548rem;
         color: #b0ccff;
-        font-size: 0.3rem;
+        font-size: 0.548rem;
       }
     }
   }
@@ -294,22 +305,22 @@ export default {
     }
     .article {
       margin-top: 0px;
-      padding: 0 0.4rem 0 1rem;
+      padding: 0 0.73rem 0 1.827rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
       .item {
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.548rem;
         .title {
-          font-size: 0.3rem;
+          font-size: 0.548rem;
           color: #b0ccff;
           font-weight: bold;
         }
         .content {
-          font-size: 0.26rem;
-          line-height: 0.4rem;
+          font-size: 0.475rem;
+          line-height: 0.73rem;
           color: #b0ccff;
         }
       }
@@ -324,16 +335,16 @@ export default {
     }
     .article {
       margin-top: 0;
-      padding: 0 0.5rem;
+      padding: 0 0.9135rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
       .title {
-        font-size: 0.3rem;
+        font-size: 0.548rem;
         color: #b0ccff;
-        margin-bottom: 0.18rem;
+        margin-bottom: 0.328rem;
       }
     }
     .footer {
@@ -342,16 +353,16 @@ export default {
       align-items: center;
       right: 10%;
       .button {
-        width: 80%;
-        padding: 0.12rem 0.54rem;
-        margin-bottom: 0.36rem;
+        width: 100%;
+        padding: 0.22rem 0.986rem;
+        margin-bottom: 0.657rem;
         color: #fff;
-        font-size: 0.32rem;
+        font-size: 0.584rem;
         font-weight: bold;
         text-align: center;
         background: #01beb5;
-        border: solid 0.02rem #01beb5;
-        border-radius: 0.3rem;
+        border: solid 1px #01beb5;
+        border-radius: 0.548rem;
       }
     }
   }
@@ -360,13 +371,15 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: relative;
+      z-index: 10;
       .login {
         width: auto;
         color: #fff;
-        margin-right: 0.42rem;
+        margin-right: 0.767rem;
         a {
           color: #fff;
-          font-size: 0.3rem;
+          font-size: 0.548rem;
         }
         span {
           margin: 0 5px;
@@ -376,25 +389,31 @@ export default {
     .introduce {
       display: flex;
       flex-direction: column;
-      padding-left: 0.3rem;
-      margin: 0.8rem 0 0 0.44rem;
-      border-left: solid 0.08rem #1fbfa7;
+      padding-left: 0.548rem;
+      margin: 1.46rem 0 0 0.82rem;
+      border-left: solid 4px #1fbfa7;
 
       .title {
-        font-size: 0.34rem;
+        font-size: 0.62rem;
         color: #fff;
-        margin-bottom: 0.42rem;
+        margin-bottom: 0.767rem;
       }
       .content {
-        font-size: 0.24rem;
+        font-size: 0.438rem;
         color: #a9adbb;
 
         :nth-child(1) {
-          margin-bottom: 0.1rem;
+          margin-bottom: 0.18rem;
         }
       }
     }
-
+    .swiper {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
     .link-list {
       width: 100%;
       position: absolute;
@@ -409,38 +428,38 @@ export default {
         justify-content: center;
         position: relative;
         .word {
-          width: 3.4rem;
+          width: 6.2rem;
           position: relative;
-          left: 2rem;
+          left: 3.64rem;
           .title {
-            font-size: 0.34rem;
+            font-size: 0.62rem;
             color: #fff;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.364rem;
           }
           .sub {
-            font-size: 0.24rem;
+            font-size: 0.438rem;
             color: rgba(255,255,255,0.5);
           }
         }
         .arrow {
           position: absolute;
-          right: 0.34rem;
-          width: 0.24rem;
-          height: 0.24rem;
+          right: 0.62rem;
+          width: 0.438rem;
+          height: 0.438rem;
           transform: rotate(45deg);
-          border: solid 0.02rem #fff;
-          border-width: 0.02rem 0.02rem 0 0;
+          border: solid 1px #fff;
+          border-width: 1px 1px 0 0;
         }
         &:nth-child(1) {
-          background: url('../assets/images/mobile/index/cloud.png') no-repeat;
+          background: url('~/assets/images/mobile/index/cloud.png') no-repeat;
           background-size: cover;
         }
         &:nth-child(2) {
-          background: url('../assets/images/mobile/index/miner.png') no-repeat;
+          background: url('~/assets/images/mobile/index/miner.png') no-repeat;
           background-size: cover;
         }
         &:nth-child(3) {
-          background: url('../assets/images/mobile/index/bdc.png') no-repeat;
+          background: url('~/assets/images/mobile/index/bdc.png') no-repeat;
           background-size: cover;
         }
       }

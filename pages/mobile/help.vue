@@ -109,7 +109,6 @@
    .issues_boxleft{
       background: #f5f5f9;
       width: 100%;
-      height: 100vh;
       .issues_listsoneone{
         width:100%;
         padding:0;

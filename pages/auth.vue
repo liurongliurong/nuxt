@@ -66,7 +66,8 @@
     .box{
       @include main
       background: #fff;
-      min-height:700px;
+      overflow: hidden;
+      // min-height:700px;
     }
     .regist_mobile{
       text-align: center;

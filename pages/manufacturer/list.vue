@@ -59,7 +59,8 @@
         loading: false,
         museum1: [],
         showcontent: false,
-        content: ''
+        content: '',
+        allid: []
       }
     },
     head () {
@@ -77,6 +78,8 @@
         util.post('NewsManfacturerList', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.museum = res.list
+            self.allid = res.id_list
+            localStorage.setItem('all_id', JSON.stringify(self.allid))
             if (self.now > 1) return false
             self.len = Math.ceil(res.total / 5)
           })

@@ -147,6 +147,22 @@
         <p class="foot">浙江数秦科技有限公司</p>
       </div>
     </MyMask>
+    <div class="popup regist_popup" v-if="registed">
+      <div class="popup_con">
+        <div class="popup_title">
+          <span>欢迎，您已成功注册算力网！</span>
+          <span class="icon_close" @click="quitAuth"></span>
+        </div>
+        <form class="form" @submit.prevent="submit" novalidate>
+          <p class="regist_form_title">为了您的账户安全，请先完成实名认证</p>
+          <FormField :form="auth"></FormField>
+          <div class="auth_btn_box">
+            <button name="btn">立即认证</button>
+            <div class="go_skip" @click="quitAuth">暂不认证</div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -165,13 +181,16 @@
     data () {
       return {
         form: [{name: 'mobile', type: 'text', title: '手机号码', error: '该用户已存在', placeholder: '请输入手机号', pattern: 'tel', changeEvent: true}, {name: 'imgCode', type: 'text', title: '图形验证', placeholder: '请输入图形验证码', addon: 1, pattern: 'imgCode'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}, {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password', focusEvent: true}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}],
-        show: false
+        auth: [{name: 'truename', type: 'text', title: '真实姓名', placeholder: '请输入姓名', isChange: true}, {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true}, {name: 'idcard', type: 'text', title: '证件号码', placeholder: '请输入您的证件号码', pattern: 'idCard'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
+        show: false,
+        card_type: '中国大陆身份证',
+        registed: false
       }
     },
     methods: {
       regist () {
         var form = document.querySelector('.regist')
-        var data = api.checkFrom(form, this, this.isMobile)
+        var data = api.checkFrom(form, this.isMobile)
         if (!data) return false
         if (!form.accept.checked) {
           form.accept.setAttribute('data-status', 'invalid')
@@ -184,7 +203,15 @@
         util.post('/register', {sign: api.serialize(Object.assign(data, {token: 0}))}).then(res => {
           api.checkAjax(self, res, () => {
             api.tips('恭喜您注册成功！', self.isMobile, () => {
-              self.$router.push({name: 'auth-login'})
+              if (self.isMobile) {
+                self.$router.push({name: 'index'})
+              } else {
+                self.$store.commit('SET_TOKEN', Object.assign(res, {mobile: data.mobile}))
+                util.post('getAll', {sign: api.serialize(res)}).then(function (data) {
+                  self.$store.commit('SET_INFO', data)
+                })
+                self.registed = true
+              }
             })
           }, form.btn)
         })
@@ -231,12 +258,57 @@
             ele.className = 'level level' + type
           }
         }
+      },
+      quitAuth () {
+        this.$router.push({name: 'index'})
+      },
+      submit (e) {
+        var form = e.target
+        var data = api.checkFrom(form, this.isMobile)
+        var url = 'user_truename'
+        var callbackUrl = 'show_user_truename'
+        var val = 'true_name'
+        var sendData = {token: this.token, user_id: this.user_id}
+        var tipsStr = '实名认证已提交，请您耐心等待几秒即可看到认证结果'
+        var tipsStr2 = '恭喜您实名认证成功'
+        if (!data) return false
+        var self = this
+        util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
+          api.checkAjax(self, res, () => {
+            api.tips(tipsStr, self.isMobile)
+            self.$store.commit('SET_INFO', {[val]: {status: 0}})
+            setTimeout(() => {
+              self.requestData(callbackUrl, sendData, val, () => {
+                api.tips(tipsStr2, self.isMobile)
+              })
+            }, 7000)
+          })
+        })
+      },
+      requestData (url, sendData, val, callback) {
+        var self = this
+        util.post(url, {sign: api.serialize(sendData)}).then(function (res) {
+          api.checkAjax(self, res, () => {
+            self.$store.commit('SET_INFO', {[val]: res})
+            if (callback) {
+              callback()
+            }
+          }, '', () => {
+            self.$store.commit('SET_INFO', {[val]: ''})
+          })
+        })
       }
     },
     computed: {
       ...mapState({
-        isMobile: state => state.isMobile
+        isMobile: state => state.isMobile,
+        token: state => state.info.token,
+        user_id: state => state.info.user_id,
+        mobile: state => state.info.mobile
       })
+    },
+    mounted() {
+      window.scroll(0, 0)
     }
   }
 </script>
@@ -274,6 +346,44 @@
       width:100%;
       padding:30px 15px;
       background: #fff;
+    }
+    .regist_popup .popup_con{
+      width:600px;
+      margin-left:-300px;
+      .popup_title{
+        background: #3A69D3 url(~assets/images/popup_bg.png) bottom right no-repeat;
+        color:#fff;
+        height:100px;
+        line-height: 100px;
+      }
+      .form{
+        padding: 40px 80px;
+        p.regist_form_title{
+          text-align: center;
+          font-size: 16px;
+          margin-bottom:15px
+        }
+        .auth_btn_box{
+          @include flex
+          button{
+            @include button($blue)
+          }
+          .go_skip{
+            @include button(transparent)
+            margin-left:50px;
+            border:1px solid $blue;
+            color:$blue;
+            border-radius:5px;
+            text-align: center;
+            line-height: 2.6;
+            font-size: 18px;
+            cursor: pointer;
+          }
+          button,.go_skip{
+            width:50%;
+          }
+        }
+      }
     }
   }
 </style>

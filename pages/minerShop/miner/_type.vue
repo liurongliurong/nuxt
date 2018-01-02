@@ -1,30 +1,29 @@
 <template>
   <section class="compute_shop">
-    <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2" :sortType="sortType"></Sort>
+    <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2"></Sort>
     <MinerList v-if="type==='1'" :status="status"></MinerList>
-    <CloudMinerList page="minerShop" :status="status" v-else></CloudMinerList>
+    <CloudMinerList :status="status" v-else></CloudMinerList>
     <Pager :len="len" v-if="!isMobile"></Pager>
   </section>
 </template>
+
 <script>
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import CloudMinerList from '@/components/miner/CloudMinerList'
   import MinerList from '@/components/miner/MinerList'
-  import ProductNav from '@/components/miner/ProductNav'
   import Pager from '@/components/common/Pager'
   import Sort from '@/components/common/Sort'
   export default {
     components: {
-      CloudMinerList, ProductNav, Pager, Sort, MinerList
+      CloudMinerList, Pager, Sort, MinerList
     },
     data () {
       return {
         sort: [{title: '价格', option: 'price_desc'}, {title: '算力', option: 'base_desc'}, {title: '剩余总数', option: 'num_desc'}],
         sortNav: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热'}, {code: 1, title: '热销'}, {code: 2, title: '已售罄'}]}],
-        sortNav2: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热'}, {code: 5, title: '热销'}, {code: 1, title: '转售'}, {code: 7, title: '已售罄'}]}],
-        sortType: {title: '商品列表', options: ['矿机', '云算力']},
+        sortNav2: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热'}, {code: 5, title: '热销'}, {code: 10, title: '活动'}, {code: 1000, title: '转售'}, {code: 7, title: '已售罄'}]}],
         cloudMinerDate: [],
         minerData: [],
         len: 0,
@@ -39,7 +38,7 @@
     methods: {
       fetchData (sort) {
         if (this.isMobile) {
-          return
+          return false
         }
         var self = this
         this.type = this.$route.params.type
@@ -90,6 +89,7 @@
     }
   }
 </script>
+
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .compute_shop{

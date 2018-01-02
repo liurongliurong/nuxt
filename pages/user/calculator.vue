@@ -4,7 +4,7 @@
      <form @submit.prevent="submit">
       <div class="fromone">
         <label>币种</label>
-        <select id="select" @change="changeon">
+        <select id="currency" @change="changeon">
           <option v-for="n, k in option">{{n.name}}</option>
         </select>
       </div>
@@ -88,15 +88,15 @@
       <div class="total">
         <p>
           <span class="p_left">总利润</span>
-          <span class="p_right">{{typebi}} {{((((message8 * CoinPrice * MillWorkforce) - ((MillPower / 1000) * 24 * MillNumber)) * timeall)).toFixed(2)}}</span>
+          <span class="p_right">{{typebi}} {{(((message8 * CoinPrice * MillWorkforce) * timeall) - ((MillPower / 1000) * 24 * ElectricCharge * MillNumber * timeall)).toFixed(2)}}</span>
         </p>
         <p>
           <span class="p_left">总收入</span>
-          <span class="p_right">{{typebi}} {{(((message8 * CoinPrice * MillWorkforce)) * timeall).toFixed(2)}}</span>
+          <span class="p_right">{{typebi}} {{((message8 * CoinPrice * MillWorkforce) * timeall).toFixed(2)}}</span>
         </p>
         <p>
           <span class="p_left">总电费</span>
-          <span class="p_right">{{typebi}} {{((MillPower / 1000) * 24 * MillNumber * timeall).toFixed(2)}}</span>
+          <span class="p_right">{{typebi}} {{((MillPower / 1000) * 24 * ElectricCharge * MillNumber * timeall).toFixed(2)}}</span>
         </p>
         <p>
           <span class="p_left">总矿机成本</span>
@@ -108,7 +108,7 @@
         </p>
         <p>
           <span class="p_left">投资回报率</span>
-          <span class="p_right">{{(((((message8 * CoinPrice * MillWorkforce) - ((MillPower / 1000) * 24 * MillNumber)) * timeall)) / (IndividualMillPrice * MillNumber)).toFixed(2)}} %</span>
+          <span class="p_right">{{(((message8 * CoinPrice * MillWorkforce) * timeall) / ((IndividualMillPrice * MillNumber) + (((MillPower / 1000) * 24 * ElectricCharge * MillNumber * timeall)))).toFixed(2)}} %</span>
         </p>
         <p>
           <span class="p_left">当前每日收入</span>
@@ -116,11 +116,11 @@
         </p>
         <p>
           <span class="p_left">当前每日电费</span>
-          <span class="p_right">{{typebi}} {{((MillPower / 1000) * 24 * MillNumber).toFixed(2)}}</span>
+          <span class="p_right">{{typebi}} {{((MillPower / 1000) * 24 * ElectricCharge * MillNumber).toFixed(2)}}</span>
         </p>
         <p>
           <span class="p_left">当前每日利润</span>
-          <span class="p_right">{{typebi}} {{((message8 * CoinPrice * MillWorkforce) - ((MillPower / 1000) * 24 * MillNumber)).toFixed(2)}}</span>
+          <span class="p_right">{{typebi}} {{((message8 * CoinPrice * MillWorkforce) - ((MillPower / 1000) * 24 * ElectricCharge * MillNumber)).toFixed(2)}}</span>
         </p>
       </div>
   </div>
@@ -138,58 +138,45 @@
         MillWorkforce: '9',
         MillPower: '1300',
         ElectricCharge: '0.32',
-        CoinPrice: '',
+        CoinPrice: '94758.97',
         message7: '0.33',
-        message8: '',
+        message8: '0',
         typebi: '¥',
-        difficulty: '',
+        difficulty: '0',
         totallist: [{title: '总利润', prev: '¥'}, {title: '总收入', prev: '¥'}, {title: '总电费', prev: '¥'}, {title: '总矿机成本', prev: '¥'}, {title: '每T价格', prev: '¥'}, {title: '投资回报率', next: '%'}, {title: '当前每日收入', prev: '¥'}, {title: '当前每日电费', prev: '¥'}, {title: '当前每日利润', prev: '¥'}],
         option: [{name: 'CNY - ¥'}, {name: 'USD - $'}],
-        timeall: '',
+        timeall: '1',
         flag: false,
-        oldStart: '',
-        oldEnd: ''
+        oldStart: '2017/12/29 17:14',
+        oldEnd: '2017/12/30 17:14',
+        time: '',
+        time1: '',
+        d1: '',
+        d2: ''
       }
     },
     methods: {
       changeon (e) {
-        var select = document.getElementById('select').value
+        var select = document.getElementById('currency').value
         if (select === 'CNY - ¥') {
           this.typebi = '¥'
         } else {
           this.typebi = '$'
         }
-        var time = document.getElementsByClassName('el-range-input')[0].value
-        var time1 = document.getElementsByClassName('el-range-input')[1].value
-        var d1 = new Date(time)
-        var d2 = new Date(time1)
-        this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
+        this.time = document.getElementsByClassName('el-range-input')[0].value
+        this.time1 = document.getElementsByClassName('el-range-input')[1].value
+        this.d1 = new Date(this.time)
+        this.d2 = new Date(this.time1)
+        this.timeall = Math.floor((parseInt(this.d2 - this.d1)) / (24 * 3600 * 1000))
       },
       submit (e) {
         this.flag = true
         var form = e.target
         this.oldStart = form.timestart.value
         this.oldEnd = form.timeend.value
-        var d1 = new Date(this.oldStart)
-        var d2 = new Date(this.oldEnd)
-        this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
-      },
-      getData () {
-        if (this.token !== 0) {
-          var self = this
-          util.post('showCoinData', {sign: api.serialize({token: this.token})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.CoinPrice = res[0].price
-              self.message8 = res[0].output.split(' ')[0]
-            })
-          }).catch(res => {
-            console.log(res)
-          })
-        } else {
-          setTimeout(() => {
-            this.getData()
-          }, 5)
-        }
+        this.d1 = new Date(this.oldStart)
+        this.d2 = new Date(this.oldEnd)
+        this.timeall = Math.floor((parseInt(this.d2 - this.d1)) / (24 * 3600 * 1000))
       },
       getTimeDays (addDay) {
         addDay = addDay || 0
@@ -217,8 +204,15 @@
       }
     },
     mounted () {
-      this.getData()
       var self = this
+      util.post('showCoinData', {sign: api.serialize({token: 0})}).then(function (res) {
+        api.checkAjax(self, res, () => {
+          self.CoinPrice = res[0].price
+          self.message8 = res[0].output.split(' ')[0]
+        })
+      }).catch(res => {
+        console.log(res)
+      })
       util.post('showDifficulty', {sign: api.serialize({token: 0})}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.difficulty = (res.difficulty.replace(/,/g, '') * 7.158 * 0.001 / 1000000).toFixed(0)
@@ -227,11 +221,11 @@
       }).catch(res => {
         console.log(res)
       })
-      var time = document.getElementsByClassName('el-range-input')[0].value
-      var time1 = document.getElementsByClassName('el-range-input')[1].value
-      var d1 = new Date(time)
-      var d2 = new Date(time1)
-      this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
+      this.time = document.getElementsByClassName('el-range-input')[0].value
+      this.time1 = document.getElementsByClassName('el-range-input')[1].value
+      this.d1 = new Date(this.time)
+      this.d2 = new Date(this.time1)
+      this.timeall = Math.floor((parseInt(this.d2 - this.d1)) / (24 * 3600 * 1000))
     },
     computed: {
       ...mapState({

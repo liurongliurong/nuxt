@@ -30,7 +30,7 @@
         <em></em>
       </router-link>
     </div>
-    <button @click="logout">退出</button>
+    <button @click="logout">退出登录</button>
     <div class="null"></div>
     <div class="popup" v-if="showModal">
       <div class="popup_con">
@@ -142,7 +142,7 @@
       },
       submit () {
         var form = document.querySelector('.form')
-        var data = api.checkFrom(form, this, api.checkEquipment())
+        var data = api.checkFrom(form, 1)
         var url = 'withdraw'
         var sendData = {token: this.token, user_id: this.user_id}
         var tipsStr = '提现成功'
@@ -347,5 +347,9 @@
       background:#f4f4f4;
       margin-bottom: 35px;
     }
+  }
+  .icon-dingwei:before, .icon-pinpaizhuanxiang:before, .icon-wodezichan:before, .icon-31shoucangxuanzhong:before, .icon-yiwen:before, .icon-31wangwangxuanzhong:before, .icon-xiai:before{
+    position: relative;
+    top: 0.05rem;
   }
 </style>

@@ -104,9 +104,9 @@ api.line = () => {
   line.y = Math.floor(Math.random() * 40)
   return line
 }
-api.countDown = () => {
+api.countDown = (e) => {
   var t = 60
-  var ele = document.querySelector('.count_btn') || document.getElementsByClassName('count_btn')[0]
+  var ele = e.target
   window.tt = setInterval(() => {
     if (t === 0) {
       ele.innerHTML = '重新获取'
@@ -118,33 +118,32 @@ api.countDown = () => {
     }
   }, 1000)
 }
-api.checkFrom = (form, obj, ismobile) => {
-  var result = api.validityForm(form, obj, ismobile)
+api.checkFrom = (form, ismobile) => {
+  var result = api.validityForm(form, ismobile)
   if (!result.status) {
     return result
   }
 }
-api.validityForm = (form, obj, ismobile) => {
+api.validityForm = (form, ismobile) => {
   var data = {}
   var icon = 0
   var n = ''
   for (var i = 0; i <= form.length - 2; i++) {
     var ele = form[i]
     if (ele.value) {
-      if (api.checkFiled(ele, form)) {
+      if (api.checkFiled(ele, form, ismobile)) {
         if (ele.getAttribute('isChange')) {
           data[ele.name] = encodeURIComponent(ele.value)
         } else {
           data[ele.name] = ele.value
         }
       } else {
-        api.errorTip(ele, ele.title, ismobile, obj)
         icon = 1
         n = i
         break
       }
     } else {
-      api.errorTip(ele, ele.placeholder, ismobile, obj)
+      api.errorTip(ele, ele.placeholder, ismobile)
       if (!ismobile) {
         api.setTips(ele, 'null')
       }
@@ -172,18 +171,24 @@ api.clearForm = (form) => {
     ele.setAttribute('disabled', false)
   }
 }
-api.errorTip = (ele, str, ismobile, obj) => {
+api.errorTip = (ele, str, ismobile) => {
   ele.focus()
   if (ismobile) {
     api.tips(str, 1)
   }
 }
-api.checkFiled = (ele, form) => {
+api.checkFiled = (ele, form, ismobile) => {
   if (!(ele.checkValidity ? ele.checkValidity() : api.check(ele.pattern || ele.getAttribute('pattern'), ele.value))) {
     api.setTips(ele, 'invalid')
+    api.errorTip(ele, ele.title, ismobile)
     return false
-  } else if ((ele.name === 'imgCode' && ele.value && (ele.value.toLowerCase() !== localStorage.getItem('code').toLowerCase())) || (ele.name === 'password1' && ele.value !== form.password.value) || (ele.name === 'trade_password1' && ele.value !== form.trade_password.value)) {
+  } else if ((ele.name === 'imgCode' && ele.value && (ele.value.toLowerCase() !== api.getStorge('suanli').imgCode.toLowerCase())) || (ele.name === 'password1' && form.password.value && form.password1.value && ele.value !== form.password.value)) {
     api.setTips(ele, 'error')
+    if (ismobile && ele.name === 'password1') {
+      api.errorTip(ele, '两次密码不一致', 1)
+    } else if (ismobile && ele.name === 'imgCode') {
+      api.errorTip(ele, '图形验证码错误', 1)
+    }
     return false
   } else {
     api.setTips(ele, 'valid')
@@ -221,7 +226,7 @@ api.tips = (str, isMobile, callback) => {
     if (callback) {
       callback()
     }
-  }, 3000)
+  }, 4000)
 }
 api.checkAjax = (obj, res, callback, btn, failback) => {
   if (res === 'repeatLogin') {
@@ -325,5 +330,13 @@ api.getData = () => {
     data.push(api.randomData())
   }
   return data
+}
+api.setStorge = (name, value) => {
+  var storge = localStorage.getItem(name) || '{}'
+  var data = JSON.parse(storge)
+  localStorage.setItem(name, JSON.stringify(Object.assign(data, value)))
+}
+api.getStorge = (name) => {
+  return JSON.parse(localStorage.getItem(name))
 }
 export default api

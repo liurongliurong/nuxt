@@ -129,7 +129,7 @@
       submit () {
         let self = this
         var ff = document.querySelector('.data_form')
-        var data = api.validityForm(ff, this)
+        var data = api.validityForm(ff)
         if (data.status && data.status === 2) {
           this.tips = ff[data.n].placeholder
           return false
@@ -531,6 +531,7 @@
         padding: 0 15px;
         position: absolute;
         bottom: 0;
+        top: 8rem;
         .title {
           text-align: center;
           font-size: 18px;
@@ -557,6 +558,7 @@
       .card {
         @include flex(center, center, column);
         margin-bottom: 20px;
+        margin-top: 20px;
         .title {
           color: #fff;
           font-size: 18px;

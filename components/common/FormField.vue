@@ -22,6 +22,9 @@
             <template v-if="f.name==='product_hash_type'">
               <option :value="v.name" v-for="v,k in hashType">{{v.name}}</option>
             </template>
+            <template v-else-if="f.selectVal">
+              <option :value="v.id" v-for="v,k in f.option">{{v.item}}</option>
+            </template>
             <template v-else>
               <option :value="v" v-for="v,k in f.option">{{v}}{{f.unit}}</option>
             </template>
@@ -61,7 +64,7 @@
       <!-- addon -->
       <template v-if="f.addon">
         <canvas id="code" width="90" height="40" v-if="f.addon===1" @click="changeCode"></canvas>
-        <div class="count_btn btn" v-if="f.addon===2" @click="getCode(f.checkData)">{{str}}</div>
+        <div class="count_btn btn" v-if="f.addon===2" @click="getCode(f.checkData, $event)">{{str}}</div>
       </template>
       <!-- tips -->
       <span class="tips" :title="f.pattern&&check[f.pattern].tips" :error="(f.pattern&&check[f.pattern].error)||f.error" :tips="f.placeholder" :success="f.pattern&&check[f.pattern].success" v-if="!f.edit"></span>
@@ -110,16 +113,16 @@
         if (e.target.className) {
           e.target.className = ''
         }
-        var ff = document.querySelector('.form')
+        var ff = ele.parentNode.parentNode.parentNode
         api.checkFiled(ele, ff)
       },
       changeCode () {
         var ele = document.querySelector('#code')
-        localStorage.setItem('code', api.createCode(ele))
+        api.setStorge('suanli', {imgCode: api.createCode(ele)})
       },
-      getCode (str) {
-        var form = document.querySelector('.form')
-        var ele = document.querySelector('.count_btn')
+      getCode (str, e) {
+        var ele = e.target
+        var form = ele.parentNode.parentNode.parentNode
         var telEle = form.dep_tel || form.mobile
         var imgCode = form.imgCode
         var isTel = api.checkCode(telEle)
@@ -133,7 +136,7 @@
           return false
         }
         if (imgCode) {
-          if (imgCode.value && imgCode.value.toLowerCase() !== localStorage.getItem('code').toLowerCase()) {
+          if (imgCode.value && imgCode.value.toLowerCase() !== api.getStorge('suanli').imgCode.toLowerCase()) {
             api.setTips(imgCode, 'error')
             imgCode.focus()
             return false
@@ -146,7 +149,7 @@
         }
         if (str) {
           var that = this.$parent
-          var money = that.detail.one_amount_value * that.number
+          var money = ((that.detail&&that.detail.one_amount_value)||that.one_amount_value) * that.number
           if (+that.balance < money) {
             api.tips('余额不足，请先充值', this.isMobile)
             return false
@@ -159,7 +162,7 @@
           } else {
             api.tips('发送成功', 1)
           }
-          api.countDown()
+          api.countDown(e)
           ele.setAttribute('disabled', true)
         })
       },

@@ -20,7 +20,7 @@
           </div>
         </template>
         <template v-else>
-          <router-link to="/webInfo/issues">帮助</router-link>
+          <router-link to="/webInfo/issues/list">帮助</router-link>
           <router-link to="/webInfo/aboutUs">关于</router-link>
           <template v-if="token===0">
             <router-link to="/auth/login">登录</router-link>
@@ -44,7 +44,7 @@
     data () {
       return {
         nav: [{name: 'miner/1', text: '品牌矿机', link: '/minerShop/miner/1'}, {name: 'miner/2', text: '云算力', link: '/minerShop/miner/2'}, {name: 'bdc', text: 'BDC托管', link: '/bdc'}, {name: 'industryInformation', text: '产业资讯', link: '/industryInformation'}],
-        path: {frame_header: ['regist', 'passwordRetrieval', '/minerShop/list', 'user', 'account', '/detail', '/pay', '/currency', 'webInfo', 'article/agreement', 'minerShop/miner', '/industryInformation', 'computeNews', 'transaction', 'quickNews', 'digitalCurrency', 'equipments', 'equipmentEvaluate', 'manufacturer', 'computeChart'], border: ['login', 'bdc'], shadow: ['regist', 'passwordRetrieval'], web_box: ['webInfo', 'minerShop/miner']},
+        path: {frame_header: ['regist', 'passwordRetrieval', '/minerShop/activity', '/minerShop/list', 'user', 'account', '/detail', '/pay', '/currency', 'webInfo', 'article/agreement', 'minerShop/miner', '/industryInformation', 'computeNews', 'transaction', 'quickNews', 'digitalCurrency', 'equipments', 'equipmentEvaluate', 'manufacturer', 'computeChart'], border: ['login', 'bdc'], shadow: ['regist', 'passwordRetrieval'], web_box: ['webInfo', 'minerShop/miner']},
         headerClass: ''
       }
     },

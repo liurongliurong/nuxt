@@ -1074,74 +1074,6 @@
       display: block;
     }
   }
-// mobile data
-  @mixin mobile_data{
-    padding:0 15px;
-    border-top:1px solid $border;
-    border-bottom:1px solid $border;
-    h3{
-      margin-bottom:0;
-      border-bottom:1px solid $border;
-      line-height: 40px;
-      .icon_currency{
-        display: none;
-      }
-      .sell_type{
-        width:45px;
-        border-radius:5px;
-        background: #ff721f;
-        color:$white;
-        &.active{
-          background: $blue;
-          color:$white;
-        }
-      }
-    }
-    .info_box{
-      display: none;
-    }
-    .mobile_info_box{
-      display: block;
-      color:$light_black;
-      line-height: 2;
-      padding:5px 0 10px 0;
-      @include flex(space-between)
-      .mobile_info{
-        width:75%;
-        h4{
-          span{
-            margin-left:10px;
-            color:#ffb386;
-            b{
-              font-weight: normal;
-              font-size: 24px;
-              color:$orange;
-            }
-          }
-        }
-        .mobile_text{
-          @include flex(space-between)
-          .mobile_text_item{
-            b{
-              font-weight: normal;
-              color:$text;
-              margin:0 4px;
-            }
-          }
-        }
-      }
-      .sell_progress{
-        width:70px;
-        height:70px;
-        line-height: 70px;
-        text-align: center;
-        border-radius:50%;
-        border:2px solid $border;
-        color:$orange;
-        // background-image: linear-gradient(0deg, #fff 50%, transparent 50%, transparent), linear-gradient(45deg, #fff 50%, #ff721f 50%, #ff721f);
-      }
-    }
-  }
 // data_title
   @mixin data_title{
     @include flex(space-between)
@@ -1254,10 +1186,123 @@
       color:#fff;
       line-height: 3;
       &:disabled{
-        opacity: 0.7;
+        // opacity: 0.7;
+        background: #b5b0af;
       }
       & + button{
         margin-top:10px;
+      }
+    }
+  }
+// cloud_miner_box
+  @mixin cloud_miner_box{
+    h3{
+      font-size: 18px;
+      margin-bottom:10px;
+      .icon_currency{
+        margin-left:5px;
+      }
+      .sell_type{
+        font-size: 12px;
+        margin-left:8px;
+        width:58px;
+        height: 18px;
+        text-align: center;
+        border-radius:18px;
+        line-height:15px;
+        color:#ff721f;
+        display: inline-block;
+        border:1px solid #ff721f;
+        position: relative;
+        top: -4px;
+        &.gray{
+          border:1px solid #999;
+          color: #999;
+          background: none;
+        }
+        &.active{
+          border-color:$blue;
+          color:$blue;
+        }
+      }
+    }
+    &:not(:last-child){
+      margin-bottom:10px;
+    }
+  }
+// pay_type
+  @mixin pay_type{
+    padding:15px 20px;
+    margin:10px 15px;
+    @include flex(space-between);
+    color: $light_black;
+    .pay_value{
+      input{
+        @include checkbox(18)
+        margin-right:5px;
+        vertical-align: text-top;
+      }
+      span{
+        line-height: 25px;
+        height:25px;
+        &:before{
+          font-family:"iconfont" !important;
+          font-size: 20px;
+          line-height: 25px;
+          position: relative;
+          vertical-align: sub;
+        }
+        &.yue:before{
+          content:'\e60c'
+        }
+        &.zhifubao:before{
+          content:'\e615';
+          color:#00AAF0
+        }
+      }
+    }
+    .pay_info{
+      .money{
+        color:$orange;
+        font-weight: bold;
+      }
+    }
+    a{
+      color: #327fff;
+    }
+    &.active{
+      outline:5px solid $blue_border
+    }
+  }
+// mobile_pay_type
+  @mixin mobile_pay_type{
+    color: $text;
+    padding-bottom:32px;
+    .pay_item{
+      padding:0 15px;
+      @include flex(space-between)
+      line-height: 50px;
+      span.val{
+        color:$light_text;
+        margin-left:15px;
+      }
+      a{
+        color:$blue
+      }
+      &.active{
+        position: relative;
+        .pay_item_left{
+          width:80%;
+          &:after{
+            content:'\e613';
+            font-family: 'iconfont';
+            color:$blue;
+            margin-left:3rem
+          }
+        }
+      }
+      &:not(:last-child){
+        border-bottom:1px solid $border;
       }
     }
   }

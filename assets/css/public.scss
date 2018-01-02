@@ -122,7 +122,7 @@ input::-webkit-input-placeholder {
     color:$white;
     transition: opacity .3s linear;
     opacity:0;
-    z-index: 10000
+    z-index: 1000002
   }
 // popup
   .popup{
@@ -165,13 +165,11 @@ input::-webkit-input-placeholder {
       .popup_foot{
         text-align: center;
         border-top:1px solid $border;
-        line-height: 3;
+        line-height: 42px;
+        height:50px;
         color:$blue;
-        input{
-          vertical-align: middle;
-          -webkit-transition: all .2s linear;
-          @include checkbox(18,0)
-          margin-right:5px;
+        &,label{
+          cursor: pointer;
         }
       }
       .form{
@@ -208,7 +206,12 @@ input::-webkit-input-placeholder {
         height:auto;
         max-height:80vh;
         .popup_title{
-          font-size: 0.7rem;
+          font-size: 0.65rem;
+          background: #fff;
+          border-bottom:1px solid $border;
+          .icon_close{
+            // @include arrow
+          }
         }
         .popup_body{
           padding:0.5rem;
@@ -224,6 +227,11 @@ input::-webkit-input-placeholder {
         .form{
           padding:0.5rem;
           margin-top:1rem;
+          overflow: auto !important;
+          height: 15rem;
+          .checkbox input{
+            margin-right: 10px;
+          }
           &.card_form .input{
             input,.sel,.select{
               padding-left:10px

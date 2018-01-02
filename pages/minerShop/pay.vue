@@ -1,6 +1,6 @@
 <template>
   <section class="pay">
-    <div class="pc_box" v-if="!isMobile">
+    <div class="pc_box" v-if="isMobile===0">
       <div class="left_box">
         <div class="order_msg address_msg" v-if="params2==='1'">
           <h3 class="title">选择收货地址</h3>
@@ -124,9 +124,9 @@
         </div>
       </div>
     </div>
-    <div class="mobile_box" v-else>
+    <div class="mobile_box" v-else-if="isMobile===1">
       <div class="mobile_address" v-if="params2==='1'">
-        <div class="address_box" @click="selectAddress" v-if="addressObject">
+        <div class="address_box" @click="selectAddress" v-if="addressObject.id">
           <h3 :class="{active:addressObject.is_default}">收货人地址：{{addressObject.post_user+'  '+addressObject.post_mobile}}</h3>
           <p>{{addressObject.province_name+addressObject.city_name+addressObject.area_name+addressObject.area_details}}</p>
         </div>
@@ -150,16 +150,14 @@
         </div>
       </div>
       <form action="" class="form payForm2" @submit.prevent="pay" novalidate>
-        <div class="pay_info">
-          <div class="pay_item" @click="openMask(3)">
-            <span>支付方式</span>
-            <span>{{payNo===1?'余额支付':'支付宝'}}</span>
-          </div>
-          <input type="hidden" name="mobile" :value="mobile">
-          <FormField :form="form" class="form" v-if="payNo===1"></FormField>
+        <div class="pay_item" @click="openMask(3)">
+          <span>支付方式</span>
+          <span>{{payNo===1?'余额支付':'支付宝'}}</span>
         </div>
+        <input type="hidden" name="mobile" :value="mobile">
+        <FormField :form="form" class="form" v-if="payNo===1"></FormField>
         <div class="mobile_btn">
-           <label for="accept">
+          <label for="accept">
             <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
             <span @click="openMask(1)" style="margin-left:10px;">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机销售协议》</a><template v-if="params2!=='1'">、<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
             <span class="select_accept">{{tips}}</span>
@@ -172,26 +170,25 @@
     <div class="popup" v-if="isMobile&&mobileEdit">
       <div class="popup_con">
         <div class="popup_title">
-          <span>{{contract?'矿机协议':'选择支付方式'}}</span>
+          <span>{{contract?'协议详情':'选择支付方式'}}</span>
           <span class="icon_close" @click="closeMask"></span>
         </div>
         <template v-if="contract">
           <div class="popup_body" v-html="contract"></div>
           <div class="popup_foot">
             <label for="accept1" @click="userAgreement">
-              <input type="checkbox" id="accept1">
               <span>同意并继续</span>
             </label>
           </div>
         </template>
         <div class="mobile_pay_type" v-else>
           <div :class="['pay_item', {active:payNo===2}]" @click="setPay(2)">
-            <div>
+            <div class="pay_item_left">
               <span>支付宝支付</span>
             </div>
           </div>
           <div :class="['pay_item', {active:payNo===1}]" @click="setPay(1)">
-            <div>
+            <div class="pay_item_left">
               <span>可用余额</span>
               <span class="val">{{balance}}元</span>
             </div>
@@ -248,7 +245,6 @@
     },
     methods: {
       pay (e) {
-        console.log(this.addressObject, this.addressForm)
         var ff = e.target
         var url = ''
         var callbackUrl = ''
@@ -282,7 +278,6 @@
           callbackUrl += '/user/'
         }
         if (this.params2 === '1') {
-          console.log(this.addressObject)
           if (!this.addressObject.id) {
             this.tip('请添加地址', ff.accept)
             return false
@@ -355,7 +350,12 @@
           this.alipay(url, data)
         } else {
           api.tips(str, this.isMobile, () => {
-            this.$router.push({path: url})
+            if (this.isMobile) {
+              this.$router.push({path: url})
+            } else {
+              api.setStorge('info', {payType: this.params2, addressData: this.addressObject})
+              this.$router.push({path: '/minerShop/paySuccess'})
+            }
           })
         }
       },
@@ -384,7 +384,7 @@
       },
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, this, this.isMobile)
+        var data = api.checkFrom(form, this.isMobile)
         if (!data) return false
         data.is_default = 1
         data.token = this.token
@@ -511,17 +511,16 @@
     },
     mounted () {
       window.addEventListener('scroll', this.fixTop, false)
-      var p = localStorage.getItem('params')
-      var p2 = localStorage.getItem('buy_info')
-      if (p) {
-        p = JSON.parse(p)
-        this.params1 = p[0]
-        this.params2 = p[1]
+      var p = api.getStorge('suanli')
+      var p2 = api.getStorge('info')
+      if (p.proId) {
+        this.params1 = p.proId
+        this.params2 = p.proType
       } else {
         this.$router.push({path: '/minerShop/detail'})
       }
       if (p2) {
-        this.detail = JSON.parse(p2)
+        this.detail = p2
         this.number = this.detail.number
       } else {
         this.$router.push({path: '/minerShop/detail'})
@@ -710,48 +709,7 @@
           margin-top: 20px;
           background:$white;
           .pay_text{
-            padding:15px 20px;
-            margin:10px 15px;
-            @include flex(space-between);
-            color: $light_black;
-            .pay_value{
-              input{
-                @include checkbox(18)
-                margin-right:5px;
-                vertical-align: text-top;
-              }
-              span{
-                line-height: 25px;
-                height:25px;
-                &:before{
-                  font-family:"iconfont" !important;
-                  font-size: 20px;
-                  line-height: 25px;
-                  position: relative;
-                  vertical-align: bottom;
-                  top: 6px;
-                }
-                &.yue:before{
-                  content:'\e60c'
-                }
-                &.zhifubao:before{
-                  content:'\e615';
-                  color:#00AAF0
-                }
-              }
-            }
-            .pay_info{
-              .money{
-                color:$orange;
-                font-weight: bold;
-              }
-            }
-            a{
-              color: #327fff;
-            }
-            &.active{
-              outline:5px solid $blue_border
-            }
+            @include pay_type
           }
           form{
             padding:15px;
@@ -903,32 +861,35 @@
       }
       .payForm2{
         @include form
-        .pay_info{
-          padding-bottom:2px;
-          .pay_item{
-            @include flex(space-between)
-            line-height: 50px;
-            &:first-child{
-              span:last-child:after{
-                content:'';
-                @include block(8)
-                @include arrow
-              }
+        .form.form_field{
+          padding:0.5rem;
+          background: #fff;
+        }
+        .pay_item{
+          padding:0 0.5rem;
+          background: #fff;
+          @include flex(space-between)
+          line-height: 50px;
+          &:first-child{
+            span:last-child:after{
+              content:'';
+              @include block(8)
+              @include arrow
             }
-            &.pay_input{
-              width:100%;
-              font-size: 0.45rem;
-              span{
-                width:85px;
-                color:$text
-              }
-              input{
-                width:calc(100% - 85px);
-                height:40px;
-                line-height: 40px;
-                border-radius:3px;
-                padding: 0 10px;
-              }
+          }
+          &.pay_input{
+            width:100%;
+            font-size: 0.45rem;
+            span{
+              width:85px;
+              color:$text
+            }
+            input{
+              width:calc(100% - 85px);
+              height:40px;
+              line-height: 40px;
+              border-radius:3px;
+              padding: 0 10px;
             }
           }
         }
@@ -959,32 +920,11 @@
       }
     }
     .popup{
+      .popup_title{
+        color:$text;
+      }
       .mobile_pay_type{
-        color: $text;
-        .pay_item{
-          padding:0 15px;
-          @include flex(space-between)
-          line-height: 50px;
-          span.val{
-            color:$light_text;
-            margin-left:15px;
-          }
-          a{
-            color:$blue
-          }
-          &.active{
-            position: relative;
-            div:after{
-              content:'';
-              @include right
-              border-color:$orange;
-              left:80%;
-            }
-          }
-          &:not(:last-child){
-            border-bottom:1px solid $border;
-          }
-        }
+        @include mobile_pay_type
       }
     }
   }
