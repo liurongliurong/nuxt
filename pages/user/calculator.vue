@@ -165,18 +165,18 @@
         }
         this.time = document.getElementsByClassName('el-range-input')[0].value
         this.time1 = document.getElementsByClassName('el-range-input')[1].value
-        this.d1 = new Date(time)
-        this.d2 = new Date(time1)
-        this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
+        this.d1 = new Date(this.time)
+        this.d2 = new Date(this.time1)
+        this.timeall = Math.floor((parseInt(this.d2 - this.d1)) / (24 * 3600 * 1000))
       },
       submit (e) {
         this.flag = true
         var form = e.target
         this.oldStart = form.timestart.value
         this.oldEnd = form.timeend.value
-        var d1 = new Date(this.oldStart)
-        var d2 = new Date(this.oldEnd)
-        this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
+        this.d1 = new Date(this.oldStart)
+        this.d2 = new Date(this.oldEnd)
+        this.timeall = Math.floor((parseInt(this.d2 - this.d1)) / (24 * 3600 * 1000))
       },
       getTimeDays (addDay) {
         addDay = addDay || 0
@@ -223,9 +223,9 @@
       })
       this.time = document.getElementsByClassName('el-range-input')[0].value
       this.time1 = document.getElementsByClassName('el-range-input')[1].value
-      this.d1 = new Date(time)
-      this.d2 = new Date(time1)
-      this.timeall = Math.floor((parseInt(d2 - d1)) / (24 * 3600 * 1000))
+      this.d1 = new Date(this.time)
+      this.d2 = new Date(this.time1)
+      this.timeall = Math.floor((parseInt(this.d2 - this.d1)) / (24 * 3600 * 1000))
     },
     computed: {
       ...mapState({
