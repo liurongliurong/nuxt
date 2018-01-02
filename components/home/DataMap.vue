@@ -46,12 +46,14 @@
       text-align: center;
       transition: opacity .5s ease-out;
       .split{
+        position: relative;
         display: inline-block;
         font-size: 12px;
         background: #fff;
         padding:0 5px;
         border-radius:5px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        z-index: 2;
       }
       .point {
         &.point_dot {
