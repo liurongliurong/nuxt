@@ -353,9 +353,7 @@
             if (this.isMobile) {
               this.$router.push({path: url})
             } else {
-              var info = JSON.parse(localStorage.getItem('info'))
-              var data = {payType: this.params2, addressData: this.addressObject}
-              localStorage.setItem('info', JSON.stringify(Object.assign(info, data)))
+              api.setStorge('info', {payType: this.params2, addressData: this.addressObject})
               this.$router.push({path: '/minerShop/paySuccess'})
             }
           })
@@ -513,17 +511,16 @@
     },
     mounted () {
       window.addEventListener('scroll', this.fixTop, false)
-      var p = localStorage.getItem('params')
-      var p2 = localStorage.getItem('buy_info')
-      if (p) {
-        p = JSON.parse(p)
-        this.params1 = p[0]
-        this.params2 = p[1]
+      var p = api.getStorge('suanli')
+      var p2 = api.getStorge('info')
+      if (p.proId) {
+        this.params1 = p.proId
+        this.params2 = p.proType
       } else {
         this.$router.push({path: '/minerShop/detail'})
       }
       if (p2) {
-        this.detail = JSON.parse(p2)
+        this.detail = p2
         this.number = this.detail.number
       } else {
         this.$router.push({path: '/minerShop/detail'})

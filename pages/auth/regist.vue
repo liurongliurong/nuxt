@@ -190,7 +190,7 @@
     methods: {
       regist () {
         var form = document.querySelector('.regist')
-        var data = api.checkFrom(form, this, this.isMobile)
+        var data = api.checkFrom(form, this.isMobile)
         if (!data) return false
         if (!form.accept.checked) {
           form.accept.setAttribute('data-status', 'invalid')

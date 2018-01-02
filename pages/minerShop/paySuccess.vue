@@ -7,7 +7,7 @@
           <h2 class="spantwo">订单支付成功 ！{{typeList[type-1].text}}</h2>
         </div>
         <p class="address" v-if="addressData.id"><span class="te">寄送至 ： </span>{{addressData.province_name+addressData.city_name+addressData.area_name+addressData.area_details}}(<span class="te">{{addressData.post_user}}</span> 收) <span class="te">{{addressData.post_mobile}}</span></p>
-        <p class="router">您现在可以 ： <router-link to="/minerShop/list">浏览购买其他产品</router-link> 或去 <router-link to="/user/computeProperty">个人中心</router-link> 查看交易记录</p>
+        <p class="router">您现在可以 ： <router-link to="/minerShop/list">浏览购买其他产品</router-link> 或去 <router-link :to="typeList[type-1].backUrl">个人中心</router-link> 查看交易记录</p>
       </div>
       <div class="success_bottom">
         <h5>其他热门{{typeList[type-1].title}}推荐</h5>
@@ -33,32 +33,29 @@
       return {
         data: [],
         addressData: {},
-        typeList: [{url: 'showTopMiner', title: '矿机', text: '我们将尽快安排为您发货 ！'}, {url: 'product_top_list', title: '云算力', text: ''}],
+        typeList: [{url: 'showTopMiner', title: '矿机', text: '我们将尽快安排为您发货 ！', backUrl: '/user/order/3'}, {url: 'product_top_list', title: '云算力', text: '', backUrl: '/user/order/0'}],
         type: '1'
       }
     },
     methods: {
       goPay (id) {
-        console.log(id)
-        localStorage.setItem('params', JSON.stringify([ id, this.type]))
+        api.setStorge('suanli', {proId: id, proType: this.type})
         this.$router.push({path: '/minerShop/detail/'})
       }
     },
     mounted () {
-      var p = localStorage.getItem('info')
-      p = JSON.parse(p)
-      if (p.payType) {
+      var p = api.getStorge('info')
+      if (p && p.payType) {
         this.type = p.payType
         this.addressData = p.addressData || {}
-      } else {
-        // this.$router.push({path: '/minerShop/list'})
-      }
-      console.log(this.type)
-      util.post(this.typeList[this.type - 1].url, {sign: 'token=0'}).then(res => {
-        api.checkAjax(this, res, () => {
-          this.data = res
+        util.post(this.typeList[this.type - 1].url, {sign: 'token=0'}).then(res => {
+          api.checkAjax(this, res, () => {
+            this.data = res
+          })
         })
-      })
+      } else {
+        this.$router.push({path: '/minerShop/detail'})
+      }
     }
   }
 </script>

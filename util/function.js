@@ -192,7 +192,7 @@ api.checkFiled = (ele, form, ismobile) => {
     api.setTips(ele, 'invalid')
     api.errorTip(ele, ele.title, ismobile)
     return false
-  } else if ((ele.name === 'imgCode' && ele.value && (ele.value.toLowerCase() !== localStorage.getItem('code').toLowerCase())) || (ele.name === 'password1' && form.password.value && form.password1.value && ele.value !== form.password.value)) {
+  } else if ((ele.name === 'imgCode' && ele.value && (ele.value.toLowerCase() !== api.getStorge('suanli').imgCode.toLowerCase())) || (ele.name === 'password1' && form.password.value && form.password1.value && ele.value !== form.password.value)) {
     api.setTips(ele, 'error')
     if (ismobile && ele.name === 'password1') {
       api.errorTip(ele, '两次密码不一致', 1)
@@ -340,5 +340,13 @@ api.getData = () => {
     data.push(api.randomData())
   }
   return data
+}
+api.setStorge = (name, value) => {
+  var storge = localStorage.getItem(name) || '{}'
+  var data = JSON.parse(storge)
+  localStorage.setItem(name, JSON.stringify(Object.assign(data, value)))
+}
+api.getStorge = (name) => {
+  return JSON.parse(localStorage.getItem(name))
 }
 export default api

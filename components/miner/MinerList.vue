@@ -35,9 +35,6 @@
       MinerItem, MobileMinerItem
     },
     props: {
-      page: {
-        type: String
-      },
       status: {
         type: Number
       }
@@ -93,7 +90,7 @@
         }
       },
       goPay (id) {
-        localStorage.setItem('params', JSON.stringify([ id, '1']))
+        api.setStorge('suanli', {proId: id, proType: '1'})
         this.$router.push({path: '/minerShop/detail/'})
       }
     },
