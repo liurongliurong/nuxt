@@ -118,7 +118,7 @@
       },
       changeCode () {
         var ele = document.querySelector('#code')
-        localStorage.setItem('code', api.createCode(ele))
+        api.setStorge('suanli', {imgCode: api.createCode(ele)})
       },
       getCode (str, e) {
         var ele = e.target
@@ -136,7 +136,7 @@
           return false
         }
         if (imgCode) {
-          if (imgCode.value && imgCode.value.toLowerCase() !== localStorage.getItem('code').toLowerCase()) {
+          if (imgCode.value && imgCode.value.toLowerCase() !== api.getStorge('suanli').imgCode.toLowerCase()) {
             api.setTips(imgCode, 'error')
             imgCode.focus()
             return false
@@ -162,7 +162,7 @@
           } else {
             api.tips('发送成功', 1)
           }
-          api.countDown()
+          api.countDown(e)
           ele.setAttribute('disabled', true)
         })
       },

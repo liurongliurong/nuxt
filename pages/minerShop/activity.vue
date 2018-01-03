@@ -231,7 +231,7 @@
         activityType: {1: {dataRequest: 'showMiner', dataCommit: 'saveMiner', agreement: '《矿机销售协议》'}, 2: {dataRequest: 'showProduct', dataCommit: 'productMall', agreement: '《云算力购买协议》和《矿机托管协议》'}},
         totalHash: '0.00',
         totalPrice: '0.00',
-        number: '',
+        number: 0,
         tips: '',
         accept: false,
         edit: 0,
@@ -277,13 +277,13 @@
       gobuy () {
         var startTime = this.data.activity_time
         var now = Date.parse(new Date()) / 1000
-        if (now, startTime) {
+        if (now < startTime) {
           api.tips('活动未开始，开始时间为：' + api.date(new Date(startTime * 1000)), this.isMobile)
           return false
         }
         var ele = document.querySelector('#accept')
         if (!this.token) {
-          localStorage.setItem('activity', JSON.stringify({number: this.number, accept: ele.checked}))
+          api.setStorge('suanli', {number: this.number, accept: ele.checked})
           this.$store.commit('SET_URL', this.$route.path)
           this.$router.push({name: 'auth-login'})
           this.$store.commit('LOGOUT')
@@ -448,12 +448,9 @@
       })
     },
     mounted () {
-      var p = localStorage.getItem('activity')
-      if (p) {
-        p = JSON.parse(p)
-        this.number = p.number
-        this.accept = p.accept
-      }
+      var p = api.getStorge('suanli')
+      this.number = p.number || ''
+      this.accept = p.accept || false
       this.pageInit()
     },
     filters: {

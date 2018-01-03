@@ -30,7 +30,7 @@
         <em></em>
       </router-link>
     </div>
-    <button @click="logout">退出</button>
+    <button @click="logout">退出登录</button>
     <div class="null"></div>
     <div class="popup" v-if="showModal">
       <div class="popup_con">
@@ -78,8 +78,7 @@
         user_id: state => state.info.user_id,
         token: state => state.info.token,
         true_name: state => state.info.true_name,
-        bank_card: state => state.info.bank_card,
-        isMobile: state => state.isMobile
+        bank_card: state => state.info.bank_card
       })
     },
     filters: {
@@ -94,12 +93,8 @@
       openMask (k) {
         this.total_price = 0
         if (!(this.true_name && this.true_name.status === 1)) {
-          api.tips('请先实名认证', this.isMobile, () => {
-            if (api.checkEquipment) {
-              this.$router.push({name: 'mobile-administration'})
-            } else {
-              this.$router.push({name: 'auth-account'})
-            }
+          api.tips('请先实名认证', 1, () => {
+            this.$router.push({name: 'mobile-administration'})
           })
           return false
         }
@@ -110,17 +105,13 @@
         }
         if (k === 2) {
           if (!(this.bank_card && this.bank_card.status === 1)) {
-            api.tips('请先绑定银行卡', this.isMobile, () => {
-              if (api.checkEquipment) {
-                this.$router.push({name: 'mobile-administration'})
-              } else {
-                this.$router.push({name: 'auth-account'})
-              }
+            api.tips('请先绑定银行卡', 1, () => {
+              this.$router.push({name: 'mobile-administration'})
             })
             return false
           }
           if (+this.balance_account <= 0) {
-            api.tips('您的账户余额不足，不能提现', this.isMobile)
+            api.tips('您的账户余额不足，不能提现', 1)
             return false
           }
           this.showModal = true

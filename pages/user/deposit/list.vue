@@ -9,9 +9,7 @@
       <table style="margin-top:0;">
         <thead>
           <tr>
-            <th v-for="n,k in th">
-              {{n.title}} {{n.unit}}
-            </th>
+            <th v-for="n,k in th">{{n.title}}{{n.unit?'('+n.unit+')':''}}</th>
           </tr>
         </thead>
         <tbody>

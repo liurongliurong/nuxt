@@ -18,7 +18,7 @@
       <MobileBaseInfo :params2="params2" :detail="detail"></MobileBaseInfo>
       <MobileProductInfo :params2="params2" :detail="detail"></MobileProductInfo>
       <div class="mobile_btn">
-        <button disabled v-if="detail.status===7||detail.status===2">已售罄</button>
+        <button disabled v-if="detail.status===7||detail.status===2">立即购买</button>
         <button disabled v-else-if="detail.status===3">产品撤销</button>
         <button disabled v-else-if="detail.status===4">立即购买</button>
         <button @click="checkPay()" v-else>立即购买</button>
@@ -162,7 +162,7 @@
           return false
         }
         var data = {name: this.detail.name ? this.detail.name : this.detail.product_name, one_amount_value: this.detail.one_amount_value || '', number: this.number || '', hash: this.detail.hash || '', hashType: this.detail.hashType || '', incomeType: this.detail.incomeType || '', output: this.detail.output || '', total_electric_fee: this.detail.total_electric_fee || '', batch_area: this.detail.batch_area || '', isLoan: this.isLoan}
-        localStorage.setItem('buy_info', JSON.stringify(data))
+        api.setStorge('info', data)
         this.$router.push({name: 'minerShop-pay'})
       },
       changeNum (n) {
@@ -220,16 +220,15 @@
       }
     },
     mounted () {
-      var p = localStorage.getItem('params')
-      if (p) {
-        p = JSON.parse(p)
-        this.params1 = p[0]
-        this.params2 = p[1]
+      var p = api.getStorge('suanli')
+      if (p && p.proId) {
+        this.params1 = p.proId
+        this.params2 = p.proType
+        this.getData()
+        window.addEventListener('scroll', this.fixTop, false)
       } else {
-        this.$router.push({path: '/minerShop/list'})
+        this.$router.push({path: '/minerShop/miner/1'})
       }
-      this.getData()
-      window.addEventListener('scroll', this.fixTop, false)
     },
     computed: {
       ...mapState({

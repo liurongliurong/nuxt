@@ -1,18 +1,13 @@
 <template>
   <div class="password_found_block">
-    <form class="password form" action="" @submit.prevent="submit(1)" novalidate v-if="!next">
+    <form class="password form" action="" @submit.prevent="submit(1,$event)" novalidate v-if="!next">
       <h2>找回密码</h2>
       <FormField :form="form"></FormField>
       <button>下一步</button>
     </form>
-    <form class="next_form form" action="" @submit.prevent="submit" novalidate v-else>
+    <form class="next_form form" action="" @submit.prevent="submit(0,$event)" novalidate v-else>
       <h2>找回密码</h2>
-      <div class="input" v-for="f in nextForm">
-        <span>{{f.title}}</span>
-        <span>*</span>
-        <input :class="f.name" :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="password.code" data-status="">
-        <span :title="password.tips" :tips="f.placeholder" :error="f.error"></span>
-      </div>
+      <FormField :form="nextForm"></FormField>
       <button name="btn">提交</button>
     </form>
   </div>
@@ -32,7 +27,7 @@
     data () {
       return {
         form: [{name: 'mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号', pattern: 'tel'}, {name: 'imgCode', type: 'text', title: '图形验证', placeholder: '请输入图形验证码', addon: 1, pattern: 'imgCode'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
-        nextForm: [{name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码'}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', error: '两次密码不一致'}],
+        nextForm: [{name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password'}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', error: '两次密码不一致', pattern: 'password'}],
         next: false,
         code_id: '',
         valid_code: '',
@@ -41,8 +36,8 @@
       }
     },
     methods: {
-      submit (n) {
-        var form = document.querySelector('.form')
+      submit (n,e) {
+        var form = e.target
         var data = api.checkFrom(form, api.checkEquipment())
         if (!data) return false
         var self = this
@@ -53,6 +48,7 @@
               self.code_id = res.id
               self.valid_code = res.valid_code
               self.next = true
+              api.clearForm(form)
             })
           })
         } else {

@@ -59,7 +59,7 @@
     },
     methods: {
       goPay (id, type) {
-        localStorage.setItem('params', JSON.stringify([ id, type]))
+        api.setStorge('suanli', {proId: id, proType: type})
         this.$router.push({path: '/minerShop/detail/'})
       }
     },

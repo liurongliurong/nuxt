@@ -2,7 +2,7 @@
   <section class="compute_shop">
     <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2"></Sort>
     <MinerList v-if="type==='1'" :status="status"></MinerList>
-    <CloudMinerList page="minerShop" :status="status" v-else></CloudMinerList>
+    <CloudMinerList :status="status" v-else></CloudMinerList>
     <Pager :len="len" v-if="!isMobile"></Pager>
   </section>
 </template>
