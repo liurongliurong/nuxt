@@ -1,10 +1,10 @@
 <template>
   <section class="account">
-    <div class="pc_box" v-if="!isMobile">
+    <div class="pc_box" v-if="isMobile===0">
       <h2>账户管理</h2>
       <Setting :nav="nav" type="account"></Setting>
     </div>
-    <div class="mobile_box" v-else>
+    <div class="mobile_box" v-if="isMobile===1">
       <div class="list">
         <div class="item" v-for="k in 4" @click="setInfo(k-1,nav[k-1].name,menu[k-1].status)">
           <span>{{nav[k-1]&&nav[k-1].title}}</span>
@@ -29,6 +29,7 @@
     <MyMask :form="form[edit]" :title="title" v-if="edit"></MyMask>
   </section>
 </template>
+
 <script>
   import api from '@/util/function'
   import util from '@/util'
@@ -187,6 +188,7 @@
     }
   }
 </script>
+
 <style lang="scss">
   @import '~assets/css/style.scss';
   .account{
@@ -215,7 +217,9 @@
               }
             }
           }
-          border-bottom:1px solid #ddd;
+          &:not(:last-child){
+            border-bottom:1px solid #ddd;
+          }
           &.compute_address{
             .compute_address_title{
               border-bottom:1px solid $border;
