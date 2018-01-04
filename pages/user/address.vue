@@ -44,12 +44,10 @@
   import util from '@/util'
   import api from '@/util/function'
   import MyMask from '@/components/common/Mask'
-  import FormField from '@/components/common/FormField'
-  import AddressInput from '@/components/common/AddressInput'
   import { mapState } from 'vuex'
   export default {
     components: {
-      MyMask, FormField, AddressInput
+      MyMask
     },
     data () {
       return {
@@ -145,7 +143,7 @@
         if (location.href.split('?')[1] === 'select') {
           var obj = Object.assign(this.addressObj, this.data[k])
           this.$store.commit('SET_ADDRESS', obj)
-          this.$router.push({path: '/minerShop/detail/'})
+          this.$router.push({path: '/minerShop/pay/'})
         }
       }
     },

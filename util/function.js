@@ -337,6 +337,7 @@ api.setStorge = (name, value) => {
   localStorage.setItem(name, JSON.stringify(Object.assign(data, value)))
 }
 api.getStorge = (name) => {
-  return JSON.parse(localStorage.getItem(name))
+  var storge = localStorage.getItem(name) || '{}'
+  return JSON.parse(storge)
 }
 export default api

@@ -145,6 +145,7 @@ input::-webkit-input-placeholder {
         background: #f3f9ff;
         line-height: 50px;
         font-size: 18px;
+        color:$text;
         .icon_close{
           @include close
           top:15px;
@@ -195,6 +196,9 @@ input::-webkit-input-placeholder {
           margin-left:5px
         }
       }
+      .mobile_pay_type{
+        @include mobile_pay_type
+      }
     }
     @media screen and (max-width: $mobile) {
       .popup_con{
@@ -209,9 +213,6 @@ input::-webkit-input-placeholder {
           font-size: 0.65rem;
           background: #fff;
           border-bottom:1px solid $border;
-          .icon_close{
-            // @include arrow
-          }
         }
         .popup_body{
           padding:0.5rem;

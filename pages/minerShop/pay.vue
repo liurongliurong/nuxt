@@ -100,8 +100,8 @@
             <input type="hidden" name="mobile" :value="mobile">
             <FormField :form="form" class="form" v-if="payNo===1"></FormField>
              <label for="accept">
-              <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
-              <span @click="openMask(1)" style="margin-left:10px;">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机销售协议》</a><template v-if="params2!=='1'">和<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
+              <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setValue('accept',true)">
+              <span @click="openMask(1)">阅读并接受<a href="javascript:;">《矿机销售协议》</a><template v-if="params2!=='1'">和<a href="javascript:;">《矿机托管协议》</a></template></span><br>
               <span class="select_accept">{{tips}}</span>
             </label> 
             <button name="btn">确认支付</button>
@@ -158,45 +158,15 @@
         <FormField :form="form" class="form" v-if="payNo===1"></FormField>
         <div class="mobile_btn">
           <label for="accept">
-            <input type="checkbox" :value="accept" id="accept" name="accept" @click="setAssept">
-            <span @click="openMask(1)" style="margin-left:10px;">阅读并接受<a href="javascript:;" style="color:#327fff;">《矿机销售协议》</a><template v-if="params2!=='1'">、<a href="javascript:;" style="color:#327fff;">《矿机托管协议》</a></template></span>
+            <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setValue('accept',true)">
+            <span @click="openMask(1)">阅读并接受<a href="javascript:;">《矿机销售协议》</a><template v-if="params2!=='1'">、<a href="javascript:;">《矿机托管协议》</a></template></span>
             <span class="select_accept">{{tips}}</span>
           </label> 
           <button name="btn">确认支付</button>
         </div>
       </form>
     </div>
-    <MyMask :form="address" :title="title" :contract="contract" :val="addressForm" v-if="edit&&!isMobile"></MyMask>
-    <div class="popup" v-if="isMobile&&mobileEdit">
-      <div class="popup_con">
-        <div class="popup_title">
-          <span>{{contract?'协议详情':'选择支付方式'}}</span>
-          <span class="icon_close" @click="closeMask"></span>
-        </div>
-        <template v-if="contract">
-          <div class="popup_body" v-html="contract"></div>
-          <div class="popup_foot">
-            <label for="accept1" @click="userAgreement">
-              <span>同意并继续</span>
-            </label>
-          </div>
-        </template>
-        <div class="mobile_pay_type" v-else>
-          <div :class="['pay_item', {active:payNo===2}]" @click="setPay(2)">
-            <div class="pay_item_left">
-              <span>支付宝支付</span>
-            </div>
-          </div>
-          <div :class="['pay_item', {active:payNo===1}]" @click="setPay(1)">
-            <div class="pay_item_left">
-              <span>可用余额</span>
-              <span class="val">{{balance}}元</span>
-            </div>
-            <router-link to="/mobile/recharge">充值</router-link>
-          </div>
-        </div>
-      </div>
-    </div>
+    <MyMask :form="addressForm" :title="title" :contract="contract" v-if="edit"></MyMask>
   </section>
 </template>
 
@@ -226,12 +196,11 @@
         totalPrice: 0,
         accept: false,
         edit: false,
-        mobileEdit: false,
         contract: '',
         addressShowData: [],
         addressData: [],
         addressObject: {},
-        addressForm: {},
+        addressForm: [],
         payNo: 2,
         rate: 3,
         isFixTop: false,
@@ -312,38 +281,6 @@
           }, ff.btn)
         })
       },
-      openMask (n) {
-        document.body.style.overflow = 'hidden'
-        window.scroll(0, 0)
-        if (this.isMobile) {
-          this.mobileEdit = true
-        } else {
-          this.edit = true
-        }
-        if (n === 1) {
-          this.contract = this.content1 ? this.content + '<br>' + this.content1 : this.content
-          this.title = '协议详情'
-          this.accept = true
-        } else if (n === 2) {
-          this.contract = ''
-          this.title = '收货地址'
-        } else if (n === 3) {
-          this.contract = ''
-        }
-      },
-      closeMask () {
-        document.body.style.overflow = 'auto'
-        if (this.isMobile) {
-          this.mobileEdit = false
-        } else {
-          this.edit = false
-        }
-      },
-      test (e) {
-        var ele = e.target
-        var ff = document.querySelector('.form')
-        api.checkFiled(ele, ff)
-      },
       paySuccess (url, data) {
         var str = '恭喜您购买成功！'
         if (this.payNo === 2) {
@@ -372,16 +309,6 @@
           })
         })
       },
-      setValue (name, k) {
-        this[name] = k
-      },
-      setAssept (e) {
-        this.accept = e.target.checked
-      },
-      setPay (n) {
-        this.payNo = n
-        this.mobileEdit = false
-      },
       submit (e) {
         var form = e.target
         var data = api.checkFrom(form, this.isMobile)
@@ -396,6 +323,49 @@
             self.closeMask()
           }, form.btn)
         })
+      },
+      openMask (n) {
+        document.body.style.overflow = 'hidden'
+        window.scroll(0, 0)
+        this.edit = n
+        this.addressForm = []
+        this.contract = ''
+        if (n === 1) {
+          this.contract = this.content1 ? this.content + '<br>' + this.content1 : this.content
+          this.title = '协议详情'
+          this.accept = true
+        } else if (n === 2) {
+          this.addressForm = this.address
+          this.title = '收货地址'
+        } else if (n === 3) {
+          this.title = '选择支付方式'
+        }
+      },
+      closeMask () {
+        document.body.style.overflow = 'auto'
+        this.edit = false
+      },
+      setValue (name, k) {
+        this[name] = k
+      },
+      tip (str, ele) {
+        if (this.isMobile) {
+          api.tips(str, 1)
+        } else {
+          this.tips = str
+          ele.setAttribute('data-status', 'invalid')
+          setTimeout(() => {
+            ele.setAttribute('data-status', '')
+          }, 2000)
+        }
+      },
+      fixTop (e) {
+        var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
+        if (scrollTop > 5) {
+          this.isFixTop = true
+        } else {
+          this.isFixTop = false
+        }
       },
       getAddress () {
         var self = this
@@ -433,36 +403,9 @@
           })
         })
       },
-      check (ele, str) {
-        this.tips = str
-        ele.setAttribute('data-status', 'invalid')
-        setTimeout(() => {
-          ele.setAttribute('data-status', '')
-        }, 2000)
-      },
-      tip (str, ele) {
-        if (this.isMobile) {
-          api.tips(str, 1)
-        } else {
-          this.check(ele, str)
-        }
-      },
-      fixTop (e) {
-        var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
-        if (scrollTop > 5) {
-          this.isFixTop = true
-        } else {
-          this.isFixTop = false
-        }
-      },
       goRecharge (url) {
         this.$store.commit('SET_URL', this.$route.path)
         this.$router.push({path: url})
-      },
-      userAgreement () {
-        this.closeMask()
-        var accept = document.querySelector('#accept')
-        accept.checked = true
       },
       pageInit () {
         if (this.token && this.number) {
@@ -713,37 +656,23 @@
           }
           form{
             padding:15px;
-            @include form(v);
+            @include form(h,1)
             width:400px;
             margin:30px auto 0 auto;
-            .input,.input input{
-              line-height: 1.5;
-            }
-            .count_btn {
-              top:0 !important;
-              right: 0 !important;
-              border-top-right-radius: 3px;
-              border-bottom-right-radius: 3px;
-              height: 42px;
-            }
             .input{
-              margin-bottom: 25px;
-              & > span:first-child,& > span:nth-child(2){
-                display: none;
-              }
+              margin-bottom: 15px;
               input{
-                padding-left:15px;
                 height:42px;
-              }
-              & span:last-child{
-                top: 44px;
-                &:before{
-                  top:0px
-                }
               }
             }
             label{
               @include accept_label
+              span{
+                margin-left:10px;
+                a{
+                  color:#327fff;
+                }
+              }
             }
             button{
               background: #FE5038;
@@ -860,47 +789,32 @@
         }
       }
       .payForm2{
-        @include form
+        @include form(h,1)
         .form.form_field{
           padding:0.5rem;
           background: #fff;
+          .input input{
+            height:34px;
+          }
         }
         .pay_item{
           padding:0 0.5rem;
           background: #fff;
           @include flex(space-between)
           line-height: 50px;
-          &:first-child{
-            span:last-child:after{
-              content:'';
-              @include block(8)
-              @include arrow
-            }
-          }
-          &.pay_input{
-            width:100%;
-            font-size: 0.45rem;
-            span{
-              width:85px;
-              color:$text
-            }
-            input{
-              width:calc(100% - 85px);
-              height:40px;
-              line-height: 40px;
-              border-radius:3px;
-              padding: 0 10px;
-            }
+          span:last-child:after{
+            content:'';
+            @include block(8)
+            @include arrow
           }
         }
         .mobile_btn{
           padding:15px;
           button{
-            width:100%;
-            margin:10px 0;
             border:0;
             color:#fff;
             background: $orange;
+            line-height: 2.2;
             label{
               color:$white;
             }
@@ -908,23 +822,14 @@
           label{
             font-size: 0.5rem;
             @include accept_label
+            span{
+              margin-left:10px;
+              a{
+                color:#327fff;
+              }
+            }
           }
         }
-      }
-    }
-    .mask_con{
-      h2{
-        line-height: 52px;
-        padding:0 28px;
-        border-bottom: 1px solid $border;
-      }
-    }
-    .popup{
-      .popup_title{
-        color:$text;
-      }
-      .mobile_pay_type{
-        @include mobile_pay_type
       }
     }
   }

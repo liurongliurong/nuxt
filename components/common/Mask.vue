@@ -5,7 +5,7 @@
         <span>{{title}}</span>
         <span class="icon_close" @click="$parent.closeMask"></span>
       </div>
-      <form :class="['form form_content', {card_form: $parent.edit==='card'}]" @submit.prevent="$parent.submit" novalidate v-if="!contract">
+      <form :class="['form form_content', {card_form: $parent.edit==='card'}]" @submit.prevent="$parent.submit" novalidate v-if="form.length">
         <AddressInput :form="form" :val="val" v-if="val"></AddressInput>
         <template v-else>
           <FormField :form="form"></FormField>
@@ -14,7 +14,7 @@
         </template>
         <button name="btn">确认提交</button>
       </form>
-      <template v-else>
+      <template v-else-if="contract">
         <div class="popup_body" v-html="contract" v-if="contract!=='selfEdit'"></div>
         <slot v-else></slot>
         <div class="popup_foot">
@@ -23,6 +23,20 @@
           </label>
         </div>
       </template>
+      <div class="mobile_pay_type" v-else>
+        <div :class="['pay_item', {active:$parent.payNo===2}]" @click="setPayNo(2)">
+          <div class="pay_item_left">
+            <span>支付宝支付</span>
+          </div>
+        </div>
+        <div :class="['pay_item', {active:$parent.payNo===1}]" @click="setPayNo(1)">
+          <div class="pay_item_left">
+            <span>可用余额</span>
+            <span class="val">{{$parent.balance}}元</span>
+          </div>
+          <router-link to="/mobile/recharge">充值</router-link>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -57,6 +71,10 @@
         this.$parent.closeMask()
         var accept = document.querySelector('#accept')
         accept.checked = true
+      },
+      setPayNo (k) {
+        this.$parent.payNo = k
+        this.$parent.closeMask()
       }
     }
   }
