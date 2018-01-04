@@ -1,49 +1,47 @@
 <template>
   <div class="activity_box">
-    <template v-if="isMobile===0">
+    <div class="activity_pc" v-if="isMobile===0">
       <div class="bg_box">
-          <img src="../../assets/images/swiper/5_1.jpg"/>  
+        <img src="~assets/images/swiper/5_1.jpg"/>  
       </div>
-      <div class="buy_form">
-        <div class="form_bg">
-          <img :src="require('@/assets/images/buy_bg.png')" alt="">
-          <div class="buy_title">
-            <b>{{data.name}}</b>
-            <span class="title_key">批次所在区域：</span>
-            <span class="title_val">{{data.area}}</span>
-          </div>
-          <div class="buy_desc">
-            <div class="item" v-for="t,k in text">
-              <div class="item_num">
-                <b v-if="k==='left_amount'">{{data.amount-data.sell_amount}}</b>
-                <b v-else>{{data[k]}}</b>
-                <span>{{t.unit}}</span>
-              </div>
-              <div class="item_desc">{{t.title}}</div>
+      <div class="activity_form">
+        <img :src="require('@/assets/images/buy_bg.png')" alt="">
+        <div class="buy_title">
+          <b>{{data.name}}</b>
+          <span class="title_key">批次所在区域：</span>
+          <span class="title_val">{{data.area}}</span>
+        </div>
+        <div class="buy_desc">
+          <div class="item" v-for="t,k in text">
+            <div class="item_num">
+              <b v-if="k==='left_amount'">{{data.amount-data.sell_amount}}</b>
+              <b v-else>{{data[k]}}</b>
+              <span>{{t.unit}}</span>
             </div>
-          </div>
-          <div class="buy_input">
-            <p>购买数量（台）</p>
-            <div class="input_box">
-              <span @click="changeNum(+number-1)">-</span>
-              <input type="text" v-model="number" name="number" placeholder="请输入购买数量，1台起售" @blur="changeNum(number)">
-              <span @click="changeNum(+number+1)">+</span>
-            </div>
-            <p>总算力 ：<span>{{totalHash}}T</span></p>
-            <p>需支付 ：<span>{{totalPrice}}元</span></p>
-            <button @click="gobuy()">立即支付</button>
-            <label for="accept">
-              <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAccept">
-              <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span><br>
-              <span class="select_accept">{{tips}}</span>
-            </label>
+            <div class="item_desc">{{t.title}}</div>
           </div>
         </div>
+        <div class="buy_input">
+          <p>购买数量（台）</p>
+          <div class="input_box">
+            <span @click="changeNum(+number-1)">-</span>
+            <input type="text" v-model="number" name="number" placeholder="请输入购买数量，1台起售" @blur="changeNum(number)">
+            <span @click="changeNum(+number+1)">+</span>
+          </div>
+          <p>总算力 ：<span>{{totalHash}}T</span></p>
+          <p>需支付 ：<span>{{totalPrice}}元</span></p>
+          <button @click="gobuy()">立即支付</button>
+          <label for="accept">
+            <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAccept">
+            <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span><br>
+            <span class="select_accept">{{tips}}</span>
+          </label>
+        </div>
       </div>
-      <div class="body_activity">
+      <div class="activity_info">
         <div class="activity_img">
           <h4>产品简介</h4>
-          <p style="padding-top:28px;padding-bottom: 25px;" v-html="hashcontent.machine_advantage"></p>
+          <div class="activity_advantage" v-html="hashcontent.machine_advantage"></div>
           <h4>官方参数</h4>
           <div class="activity_content">
             <div class="activity_left">
@@ -53,7 +51,6 @@
             <div class="activity_right">
               <div class="activity_one" v-for="n, k in activityOne">
                 <span class="one_left">{{n.title}}</span>
-                <!-- <span class="one_right">{{k}}</span> -->
                  <span class="one_right" v-if="k === 'hash'">{{data[k]}} T</span> 
                  <span class="one_right" v-else-if="k === 'chips_num'">{{data.product_info ? data.product_info[k] : ''}}</span>  
                  <span class="one_right" v-else>{{hashcontent[k]}}</span>   
@@ -63,9 +60,9 @@
         </div>
         <div class="activity_vs">
           <h4>
-            <img src="../../assets/images/activity.png"/>
+            <img src="~assets/images/activity.png"/>
             云算力VS自己挖 "坑"
-            <img src="../../assets/images/activity.png"/>
+            <img src="~assets/images/activity.png"/>
           </h4>
           <div class="activity_ul">
             <div class="activity_li" v-for="n, k in activityUl">
@@ -77,54 +74,56 @@
           <p class="bottom">本次活动最终解释权归算力网所有</p>
         </div>
       </div>
-    </template>
-    <template v-else-if="isMobile===1">
+    </div>
+    <div class="activity_mobile" v-else-if="isMobile===1">
       <div class="mobile_bg_box">
         <img :src="require('@/assets/images/swiper/mobile4.jpg')" alt="">
         <h1>{{data.name}}</h1>
       </div>
-      <div class="mobile_form">
-        <div class="sideone">
-          <div class="flexone">
-            <div v-for="t,k in text" class="flextwo">
+      <div class="mobile_activity_form">
+        <div class="activity_data_box">
+          <div class="activity_data1">
+            <div v-for="t,k in text" class="item">
               <p class="price" v-if="k==='left_amount'"><em>{{data.amount-data.sell_amount}}</em> {{t.unit}}</p>
               <p class="price" v-else><em>{{data[k]}}</em> {{t.unit}}</p>
               <p class="title">{{t.title}}</p>
             </div>
           </div>
-          <div class="bottom">
-            <div class="one" style="margin-bottom:1rem;">
-              <span class="title">购买数量</span>
-              <span class="flex">
-                <span class="aes" @click="changeNum(+number-1)">-</span>
-                <input type="number" v-model="number" name="number" placeholder="购买数量" class="number" @blur="changeNum(number)"/>
-                <span class="desc" @click="changeNum(+number+1)">+</span>
-              </span>
+          <div class="activity_data2">
+            <div class="item" style="margin-bottom:1rem;">
+              <span>购买数量</span>
+              <div class="mobile_input">
+                <span class="minus" @click="changeNum(+number-1)">-</span>
+                <input class="number" type="number" v-model="number" name="number" placeholder="购买数量" @blur="changeNum(number)"/>
+                <span class="plus" @click="changeNum(+number+1)">+</span>
+              </div>
             </div>
-            <div class="one">
-              <span class="title">购买算力</span>
+            <div class="item">
+              <span>购买算力</span>
               <span class="price">{{totalHash}}T</span>
             </div>
-            <div class="one">
-              <span class="title">支付金额</span>
+            <div class="item">
+              <span>支付金额</span>
               <span class="price">{{totalPrice}}元</span>
             </div>
           </div>
         </div>
-        <button class="submit" @click="gobuy(1)">立即支付</button>
+        <button class="mobile_btn" @click="gobuy(1)">立即支付</button>
         <label for="accept">
           <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAccept">
           <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span>
           <span class="select_accept">{{tips}}</span>
         </label>
-        <div class="imagesall">
+      </div>
+      <div class="mobile_activity_info">
+        <div class="item">
           <h5>产品简介</h5>
-          <div class="mobile_introduction" v-html="hashcontent.machine_advantage"></div>
+          <div v-html="hashcontent.machine_advantage"></div>
         </div>
-        <div class="imagesall">
+        <div class="item">
           <h5>官方参数</h5>
-          <div class="imagesbig">
-            <div class="activity_one" v-for="n, k in activityOne">
+          <div class="item_data_box">
+            <div class="item_data" v-for="n, k in activityOne">
               <span class="one_left">{{n.title}}</span>
               <span class="one_right" v-if="k === 'hash'">{{data[k]}} T</span> 
               <span class="one_right" v-else-if="k === 'chips_num'">{{data.product_info ? data.product_info[k] : ''}}</span>  
@@ -137,16 +136,19 @@
         </div>
         <p class="tel">咨询电话： 0571-28031736</p>
       </div>
-    </template>
-    <MyMask :form="form[nowForm]" :title="title" :contract="contract" v-if="edit&&edit!==4&&edit!==5"></MyMask>
-    <div class="popup pay_type_select" v-if="edit===4">
+    </div>
+    <MyMask :form="nowFormData" :title="title" :contract="contract" v-if="edit&&edit!==4"></MyMask>
+    <div :class="'popup pay_type_select'+(isMobile?' mobile_popup':'')" v-if="edit===4">
       <div class="popup_con">
         <div class="popup_title">
-          <span class="pay_type_title">{{title}}</span>
-          <span class="pay_type_desc">全球算力输出服务由保全网提供全流程区块链存证、保全服务</span>
+          <template v-if="isMobile===0">
+            <span class="pay_type_title">{{title}}</span>
+            <span class="pay_type_desc">全球算力输出服务由保全网提供全流程区块链存证、保全服务</span>
+          </template>
+          <span v-else>{{title}}</span>
           <span class="icon_close" @click="closeMask"></span>
         </div>
-        <div class="select_pay_type">
+        <div class="select_pay_type" v-if="isMobile===0">
           <div :class="['pay_text',{active:payNo===2}]">
             <label class="pay_value">
               <input type="radio" name="payType" @click="setValue('payNo',2)" checked>
@@ -169,21 +171,8 @@
             </div>
           </div>
         </div>
-        <form class="form" @submit.prevent="submit" novalidate>
-          <input type="hidden" name="mobile" :value="mobile">
-          <FormField :form="form[nowForm]" v-if="payNo===1"></FormField>
-          <button name="btn">确认提交</button>
-        </form>
-      </div>
-    </div>
-    <div class="popup mobile_pay_type_select" v-if="edit===5">
-      <div class="popup_con">
-        <div class="popup_title">
-          <span>选择支付方式</span>
-          <span class="icon_close" @click="closeMask"></span>
-        </div>
-        <div class="mobile_pay_type">
-         <div :class="['pay_item', {active:payNo===2}]" @click="setValue('payNo',2)">
+        <div class="mobile_pay_type" v-else-if="isMobile===1">
+          <div :class="['pay_item', {active:payNo===2}]" @click="setValue('payNo',2)">
             <div class="pay_item_left">
               <span>支付宝支付</span>
             </div>
@@ -198,7 +187,7 @@
         </div>
         <form class="form" @submit.prevent="submit" novalidate>
           <input type="hidden" name="mobile" :value="mobile">
-          <FormField :form="form[nowForm]" v-if="payNo===1"></FormField>
+          <FormField :form="nowFormData" v-if="payNo===1"></FormField>
           <button name="btn">确认提交</button>
         </form>
       </div>
@@ -240,6 +229,7 @@
         content: '',
         card_type: '中国大陆身份证',
         nowForm: 'auth',
+        nowFormData: [],
         addressData: '',
         activity: 2,
         hashcontent: '',
@@ -258,19 +248,23 @@
       openContract (n) {
         this.edit = n
         document.body.style.overflow = 'hidden'
+        this.contract = ''
+        this.nowFormData = []
         if (n === 1) {
           this.contract = this.content
           this.title = '协议详情'
           this.accept = true
         } else if (n === 2) {
-          this.contract = ''
+          this.nowForm = 'auth'
+          this.nowFormData = this.form[this.nowForm]
           this.title = '实名认证'
         } else if (n === 3) {
           this.nowForm = 'address'
-          this.contract = ''
+          this.nowFormData = this.form[this.nowForm]
           this.title = '收货地址'
         } else if (n === 4 || n === 5) {
           this.nowForm = 'payType'
+          this.nowFormData = this.form[this.nowForm]
           this.title = '选择支付方式'
         }
       },
@@ -305,11 +299,7 @@
           this.check(ele, '请同意服务条款')
           return false
         }
-        if (this.isMobile) {
-          this.openContract(5)
-        } else {
-          this.openContract(4)
-        }
+        this.openContract(4)
       },
       goPay (inputData) {
         var url = 'productMall'
@@ -460,404 +450,352 @@
 </script>
 
 <style lang="scss">
-  @import '../../assets/css/style.scss';
+  @import '~assets/css/style.scss';
   .activity_box{
-    width: 100%;
-    min-height:700px;
-    overflow: hidden;
-    background-size: 100% 100%;
-    background: #240f30;
-    .bg_box{
-      @include bg(1920,730px,#22154A)
-    }
-    .body_activity{
-      width: 100%;
-      height: auto;
-      background: url('../../assets/images/activity.jpg');
-      .activity_vs{
-        @include main
-        padding:65px 0;
-        padding-top:20px;
+    color:$white;
+    .activity_pc{
+      min-height:700px;
+      background: #170E2D;
+      .bg_box{
+        @include bg(1920,730px,#22154A)
+      }
+      .activity_form{
+        position: relative;
+        height:460px;
+        @include bg(1213,424px,transparent)
+        .buy_title,.buy_desc,.buy_input{
+          position: absolute;
+          left:50%;
+          top:110px;
+        }
+        .buy_title{
+          margin-left:-500px;
+          top:15px;
+          color:#f8b551;
+          font-size: 16px;
+          b{
+            font-size: 28px;
+            font-weight: normal;
+          }
+          .title_key{
+            margin-left:100px;
+            color:#fff
+          }
+        }
+        .buy_desc{
+          margin-left:-75px;
+          .item{
+            &:not(:last-child){
+              margin-bottom:30px
+            }
+            .item_num{
+              color:#fede00;
+              line-height: 1.2;
+            }
+            b{
+              font-size: 36px;
+              margin-right:10px;
+            }
+          }
+        }
+        .buy_input{
+          width:280px;
+          margin-left:200px;
+          .input_box{
+            background: #fff;
+            line-height: 2.4;
+            @include number_box
+            border-radius:5px;
+            overflow:hidden;
+            margin:10px 0;
+          }
+          p{
+            line-height: 2;
+            span{
+              color:#ff9f00;
+            }
+          }
+          button{
+            width:280px;
+            height:45px;
+            line-height: 45px;
+            border:0;
+            color:$white;
+            background: linear-gradient(to right, #ffaf01 20%, #f9580d);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf01', endColorstr='#f9580d',GradientType=1 );
+            margin:10px 0;
+          }
+        }
+      }
+      .activity_info{
+        color:#fff;
+        background: url('~assets/images/activity.jpg');
         h4{
-          width:100%;
           text-align:center;
           font-size: 28px;
           color:#ff9f00;
           font-weight: 800;
-          padding-bottom: 10px;
-          position: relative;
-          img{
-            width: 70px;
-            height: 32px;
+        }
+        .activity_img{
+          @include main
+          padding-top:65px;
+          .activity_advantage{
+            padding:25px 0;
           }
-          :nth-child(1){
-                position: absolute;
-              left: 201px;
-              top: 7px;
-          }
-          :nth-child(2){
-            position: absolute;
-              right: 201px;
-              top: 7px;
+          .activity_content{
+            margin-top: 40px;
+            margin-bottom: 87px;
+            background: url('~assets/images/3.png') no-repeat;
+            background-size: 100% 100%;
+            overflow: hidden;
+            .activity_left{
+              width: 50%;
+              float: left;
+              text-align: center;
+              img{
+                width: 347px;
+                margin-top: 120px;
+              }
+              h6{
+                font-size: 28px;
+                color:#f8b551;
+                margin-top: 65px;
+              }
+            }
+            .activity_right{
+              width: 50%;
+              float: left;
+              margin-bottom: 40px;
+              .activity_one{
+                margin-top: 36px;
+                height: 20px;
+                padding-right: 36px;
+                font-size: 16px;
+                .one_left{
+                  float: left;
+                }
+                .one_right{
+                  float: right;
+                }
+              }
+            }
           }
         }
-        .activity_ul{
-          width: 100%;
-          overflow: hidden;
-          margin-top: 55px;
-          .activity_li{
-            width: 100%;
-            height: 100px;
-            margin-bottom: 1px;
+        .activity_vs{
+          @include main
+          padding:65px 0;
+          padding-top:20px;
+          h4{
             position: relative;
-            .left{
-              width: 49.9%;
-              height: 100%;
-              box-sizing: border-box;
-              border:4px solid #966cff;
-              margin-right: 1px;
-              float: left;
-              background: #2c1963;
-              line-height: 100px;
-              text-align: left;
-              font-size: 14px;
-              color: white;
-              text-align: center;
-              padding:0 52px;
-              box-sizing: border-box;
-              word-break: break-all;
-            }
-            .unit{
+            img{
               position: absolute;
-              width: 82px;
-              height: 82px;
-              border-radius: 100%;
-              border:10px solid #240f30;
-              background: #ff9b01;
-              color: white;
-              font-size: 14px;
-              line-height: 82px;
-              text-align: center;
-              line-height: 66px;
-              text-align: center;
-              left: 545px;
-              top: 10px;
+              width: 70px;
+              height: 32px;
+              top: 7px;
             }
-            .right{
-              width: 49.9%;
-              height: 100%;
-              box-sizing: border-box;
-              border:4px solid #cbbaff;
-              margin-right: 1px;
-              float: left;
-              background: #917cce;
-              line-height: 100px;
-              font-size: 14px;
-              text-align: center;
-              color: white;
-              padding:0 70px;
-              box-sizing: border-box;
-              word-break: break-all;
+            :nth-child(1){
+              left: 201px;
+            }
+            :nth-child(2){
+              right: 201px;
             }
           }
-          :nth-child(1) {
-            .right{
-              line-height: 24px;
-              text-align: left;
-              padding-top:23px;
+          .activity_ul{
+            margin-top: 55px;
+            .activity_li{
+              height: 100px;
+              margin-bottom: 1px;
+              position: relative;
+              .left,.right{
+                width: 49.8%;
+                height: 100%;
+                float: left;
+                line-height: 100px;
+                text-align: center;
+                padding:0 52px;
+                word-break: break-all;
+              }
+              .left{
+                background: #2c1963;
+                border:4px solid #966cff;
+                margin-right: 1px;
+              }
+              .unit{
+                position: absolute;
+                width: 82px;
+                height: 82px;
+                border-radius: 100%;
+                border:10px solid #240f30;
+                background: #ff9b01;
+                line-height: 82px;
+                text-align: center;
+                line-height: 66px;
+                text-align: center;
+                left: 545px;
+                top: 10px;
+              }
+              .right{
+                background: #917cce;
+                border: 4px solid #cbbaff;
+              }
+            }
+            :nth-child(1),:nth-child(4) {
+              .right{
+                line-height: 24px;
+                text-align: left;
+                padding-top:23px;
+              }
             }
           }
-          :nth-child(4) {
-            .right{
-              line-height: 24px;
-              text-align: left;
-              padding-top:23px;
-            }
-          }
-        }
-        .bottom{
-          color: #917cce;
-          font-size: 16px;
-          text-align: center;
-          width:100%;
-          margin-top: 114px;
-        }
-      }
-    }
-    .buy_form{
-      height:470px;
-      color:$white;
-      background: #1f1135;
-      .form_bg{
-        @include bg(1213,424px,transparent)
-      }
-      .buy_title,.buy_desc,.buy_input{
-        position: absolute;
-        left:50%;
-        top:110px;
-      }
-      .buy_title{
-        margin-left:-500px;
-        top:0;
-        b{
-          color:#f8b551;
-          font-size: 28px;
-          font-weight: normal;
-        }
-        .title_key{
-          margin-left:100px;
-          font-size: 16px;
-        }
-        .title_val{
-          color:#f8b551;
-          font-size: 16px;
-        }
-      }
-      .buy_desc{
-        margin-left:-75px;
-        .item{
-          &:not(:last-child){
-            margin-bottom:30px
-          }
-          .item_num{
-            color:#fede00;
-            line-height: 1.2;
-          }
-          b{
-            font-size: 36px;
-            margin-right:10px;
-          }
-        }
-      }
-      .buy_input{
-        width:280px;
-        margin-left:200px;
-        .input_box{
-          background: #fff;
-          line-height: 2.4;
-          @include number_box
-          border-radius:5px;
-          overflow:hidden;
-          margin:10px 0;
-        }
-        p{
-          line-height: 2;
-          span{
-            color:#ff9f00;
-          }
-        }
-        button{
-          width:280px;
-          height:45px;
-          line-height: 45px;
-          border:0;
-          color:$white;
-          background: linear-gradient(to right, #ffaf01 20%, #f9580d);
-          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf01', endColorstr='#f9580d',GradientType=1 );
-          margin:10px 0;
-        }
-        label{
-          width:360px;
-        }
-      }
-    }
-    .mobile_bg_box{
-      h1{
-        width: 100%;
-        color: white;
-        font-size: 0.7rem;
-        text-align: center;
-        margin-bottom: 0.5rem;
-        position: absolute;
-        top: 7rem;
-      }
-    }
-    .mobile_form{
-      background: #240f30;
-      margin-top: 1rem;
-      .sideone{
-        width: 96%;
-        margin-left: 2%;
-        overflow: hidden;
-        background: linear-gradient(45deg, #7524ED 10%, #DA1FE0);
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7524ED', endColorstr='#DA1FE0',GradientType=1 );
-        padding:0 .3rem;
-        border-radius:10px;
-        box-sizing: border-box;
-        padding-bottom: 0.5rem;
-        .flexone{
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          padding-top: 0.5rem;
-          border-bottom: 1px dashed white;
-          padding-bottom: 0.7rem;
-          .flextwo{
-            width:  auto;
+          .bottom{
+            color: #917cce;
+            font-size: 16px;
             text-align: center;
-            .price{
-              color: #fede00;
-              font-size: 0.5rem;
-              em{
-                font-style: normal;
-                font-size: 0.7rem;
-                font-weight: 800;
-              }
-            }
-            .title{
-              font-size: 0.5rem;
-              color: white;
-              padding-top: 0.1rem;
-            }
-          }
-        }
-       .bottom{
-          padding-top: 1rem;
-          .one{
-            width: 100%;
-            padding: 0 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: .5rem;
-            .title{
-              font-size: 0.6rem;
-            }
-            .price{
-              color: #fede00;
-              font-size: 0.6rem;
-            }
-            span{
-              color:white;
-              &.flex{
-                display: flex;
-                justify-content: space-between;
-                .number{
-                  width: 3rem;
-                  height: 1rem;
-                  background: white;
-                  text-align: center;
-                  line-height: 1rem;
-                  border-radius:0
-                }
-                .aes{
-                  width: 1.2rem;
-                  height: 1rem;
-                  border-top-left-radius: .1rem;
-                  border-bottom-left-radius: .1rem;
-                  text-align: center;
-                  color:#666666;
-                  background: #e5e5e5;
-                  font-weight: 800;
-                  font-size: 0.8rem;
-                  line-height: 1rem;
-                }
-                .desc{
-                  width: 1.2rem;
-                  height: 1rem;
-                  border-top-right-radius: .1rem;
-                  border-bottom-right-radius: .1rem;
-                  text-align: center;
-                  color:#666666;
-                  background: #e5e5e5;
-                  font-weight: 800;
-                  font-size: 0.8rem;
-                  line-height: 1rem;
-                }
-              }
-            }
+            margin-top: 114px;
           }
         }
       }
-      .submit{
-        width: 94%;
-        height: 1.8rem;
-        background: linear-gradient(to right, #ffaf01 10%, #f9580d);
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf01', endColorstr='#f9580d',GradientType=1 );
-        margin-top: 1rem;
-        margin-left: 3%;
-        color:white;
-        border:0;
-      }
-      .radio{
-        color: white;
-        font-size: 0.5rem;
-        width: 100%;
-        text-align: center;
-        margin-top: 0.5rem;
-        input{
-          width: 0.6rem;
-          background: white;
-          height: 0.6rem;
-          border-radius: .1rem;
-          margin-right: .2rem;
-          position: relative;
-          top: .1rem;
-        }
-      }
-      .imagesall{
-        width: 94%;
-        margin-left: 3%;
-        margin-top: 1rem;
-        overflow: hidden;
-        .mobile_introduction{
-          color:#fff;
-          font-size: .5rem;
-        }
-        .imagesbig{
-          background: url('../../assets/images/3.png');
-          background-size: 100% 100%;
-          padding:0 .5rem;
-          box-sizing: border-box;
-        }
-        h5{
-          color:#f8b551;
+    }
+    .activity_mobile{
+      .mobile_bg_box{
+        h1{
+          width:100%;
           font-size: 0.7rem;
           text-align: center;
-          width: 100%;
-          margin-bottom: 1rem;
+          margin-bottom: 0.5rem;
+          position: absolute;
+          top: 7rem;
         }
-        .activity_one{
-          width: 100%;
-          height: 1.3rem;
-          line-height: 1.3rem;
-          color: #bfbebf;
-          font-size: 0.5rem;
-          border-bottom:1px solid #602ba3;
-          .one_left{
-            color: #fcfcfd;
-            float: left;
+      }
+      .mobile_activity_form{
+        background: #240f30;
+        padding-top: 1rem;
+        .activity_data_box{
+          margin: 0 2%;
+          background: linear-gradient(45deg, #7524ED 10%, #DA1FE0);
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7524ED', endColorstr='#DA1FE0',GradientType=1 );
+          padding:0 0.3rem 0.5rem;
+          border-radius:10px;
+          .activity_data1{
+            @include flex(space-between)
+            padding-top: 0.5rem;
+            border-bottom: 1px dashed white;
+            padding-bottom: 0.7rem;
+            .item{
+              text-align: center;
+              font-size: 0.5rem;
+              .price{
+                color: #fede00;
+                em{
+                  font-style: normal;
+                  font-size: 0.7rem;
+                  font-weight: 800;
+                }
+              }
+              .title{
+                padding-top: 0.1rem;
+              }
+            }
           }
-          .one_right{
-            color: #bfbebf;
-            float: right;
+          .activity_data2{
+            padding: 1rem 0.5rem 0;
+            font-size: 0.6rem;
+            .item{
+              @include flex(space-between)
+              margin-bottom: .5rem;
+              .price{
+                color: #fede00;
+              }
+              .mobile_input{
+                @include flex(space-between)
+                .number,.minus,.plus{
+                  text-align: center;
+                  height: 1rem;
+                  line-height: 1rem;
+                }
+                .minus,.plus{
+                  width: 1.2rem;
+                  border-top-left-radius: .1rem;
+                  border-bottom-left-radius: .1rem;
+                  color:#666666;
+                  background: #e5e5e5;
+                  font-weight: 800;
+                  font-size: 0.8rem;
+                }
+                .number{
+                  width: 3rem;
+                  background: white;
+                }
+              }
+            }
           }
         }
-      }
-      .logo{
-        text-align: center;
-        margin-top:20px;
-        .logo_img{
-          display: inline-block;
-          width:140px;
-          height:29px;
-          background: url('../../assets/images/css_sprites.png') -10px -364px;
+        .mobile_btn{
+          width: 94%;
+          height: 1.8rem;
+          background: linear-gradient(to right, #ffaf01 10%, #f9580d);
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf01', endColorstr='#f9580d',GradientType=1 );
+          margin-top: 1rem;
+          margin-left: 3%;
+          border:0;
+          color:#fff
         }
       }
-      .tel{
-        width: 100%;
-        color: white;
-        text-align: center;
-        margin-top: 0.5rem;
-        padding-bottom: 1rem;
-      }
-      label{
-        width:100%;
-        padding:15px;
+      .mobile_activity_info{
+        background: #240f30;
+        .item{
+          width: 94%;
+          margin-left: 3%;
+          padding-top: 1rem;
+          overflow: hidden;
+          font-size: .5rem;
+          .item_data_box{
+            background: url('~assets/images/3.png');
+            background-size: 100% 100%;
+            padding:0 .5rem;
+            .item_data{
+              height: 1.3rem;
+              line-height: 1.3rem;
+              color: #bfbebf;
+              border-bottom:1px solid #602ba3;
+              .one_left{
+                color: #fcfcfd;
+                float: left;
+              }
+              .one_right{
+                color: #bfbebf;
+                float: right;
+              }
+            }
+          }
+          h5{
+            color:#f8b551;
+            font-size: 0.7rem;
+            text-align: center;
+            margin-bottom: 1rem;
+          }
+        }
+        .logo{
+          text-align: center;
+          margin-top:20px;
+          .logo_img{
+            display: inline-block;
+            width:140px;
+            height:29px;
+            background: url('~assets/images/css_sprites.png') -10px -364px;
+          }
+        }
+        .tel{
+          text-align: center;
+          margin-top: 0.5rem;
+          padding-bottom: 1rem;
+        }
       }
     }
-    .buy_form .buy_input,.mobile_form{
+    .activity_pc .activity_form .buy_input,.activity_mobile .mobile_activity_form{
       label{
         display: block;
+        width:360px;
         span:nth-child(2){
           display: inline-block;
           vertical-align: middle;
@@ -868,12 +806,12 @@
           }
         }
         @include accept_label
+        color:#fff;
         .select_accept{
           display: block;
           width:280px;
           text-align: center;
         }
-        color:#fff;
         input{
           @include checkbox(18,2px)
           background: #fff;
@@ -886,96 +824,21 @@
           }
         }
         @media screen and (max-width: $mobile) {
-          font-size: 0.5rem;
-        }
-      }
-    }
-    .activity_img{
-      @include main
-      padding:65px 0;
-      padding-bottom:0;
-      padding-top:0;
-      h4{
-        width:100%;
-        text-align:center;
-        font-size: 28px;
-        color:#ff9f00;
-        font-weight: 800;
-        padding-bottom: 10px;
-      }
-      p{
-        color:white;
-        line-height: 0px;
-        font-size: 14px;
-        padding-top: 33px;
-      }
-      .activity_content{
-        margin-top: 40px;
-        width: 100%;
-        margin-bottom: 87px;
-        background: url('../../assets/images/3.png') no-repeat;
-        background-size: 100% 100%;
-        overflow: hidden;
-        text-align: center;
-        .activity_left{
-          width: 50%;
-          float: left;
-          overflow: hidden;
-          img{
-            width: 347px;
-            height: auto;
-            margin-top: 120px;
+          width:100%;
+          padding:0.5rem;
+          input{
+            width: 14px;
+            height: 14px;
           }
-          h6{
-            font-size: 28px;
-            color:#f8b551;
-            margin-top: 65px;
-            margin-bottom: 86px;
-          }
-        }
-        .activity_right{
-          width: 50%;
-          text-align: left;
-          float: left;
-          margin-bottom: 40px;
-          .activity_one{
-            margin-top: 36px;
-            color:white;
-            display: block;
-            height: 20px;
-            padding-right: 36px;
-            box-sizing: border-box;
-            width: 100%;
-            font-size: 17px;
-            .one_left{
-              float: left;
-            }
-            .one_right{
-              float: right;
-            }
+          span:nth-child(2){
+            margin-left:0.2rem;
+            font-size: 0.5rem;
           }
         }
       }
     }
-    .mask_con{
-      h2{
-        line-height: 52px;
-        padding:0 28px;
-        border-bottom: 1px solid $border;
-      }
-    }
-    .popup{
-      &.mobile_pay_type_select .popup_con{
-        .mobile_pay_type{
-          @include mobile_pay_type
-          padding-bottom:0
-        }
-        .form{
-          height:auto;
-          margin-top:0
-        }
-      }
-      &.pay_type_select .popup_con{
+    .popup.pay_type_select{
+      &:not(.mobile_popup) .popup_con{
         border-radius:10px;
         .select_pay_type{
           border-bottom:1px solid $border;
@@ -1005,10 +868,47 @@
           }
         }
         .form{
-          padding: 20px 130px;
+          padding: 20px 200px;
+          .form_field .input{
+            margin-bottom:0;
+            & > span:nth-child(1),& > span:nth-child(2){
+              display: none
+            }
+            & > span:last-child{
+              top:13px;
+              left:110%
+            }
+            input{
+              padding-left:15px;
+              height:42px;
+            }
+          }
           button{
             background: $orange;
-            border-color:$orange
+            border-color:$orange;
+          }
+        }
+      }
+      .form .count_btn.btn {
+        top:0;
+        right: 0;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        bottom: 0;
+      }
+      &.mobile_popup .popup_con{
+        .mobile_pay_type{
+          @include mobile_pay_type
+          padding-bottom:0
+        }
+        .form{
+          height:auto;
+          margin-top:0;
+          input{
+            height:34px;
+          }
+          button{
+            line-height: 2.2;
           }
         }
       }
