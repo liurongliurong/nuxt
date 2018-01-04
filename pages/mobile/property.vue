@@ -227,24 +227,25 @@
       overflow: hidden;
       background:white;
       background: #327fff;
-      padding-bottom: 0.8rem;
+      padding-bottom: 0.43rem;
       .property_top{
         width: 100%;
         display: flex;
-        padding:0 .5rem;
+        padding:0 .3rem;
         box-sizing: border-box;
         justify-content: space-between;
-        padding-top: 0.5rem;
+        padding-top: 0.43rem;
         color: white;
         .left h1{
-          font-size: 0.6rem;
+          font-size: 0.23rem;
         }
         .left p{
-           font-size: 0.8rem;
+           font-size: 0.32rem;
         }
         .left i{
           font-weight: 100;
-          font-size: 0.6rem;
+          font-size: 0.23rem;
+          padding-top: 0.24rem;
         }
         .right{
           width: 3.3rem;
@@ -258,20 +259,20 @@
         .mobile_select_hash{
           @include position(15,auto,auto,15)
           .now_hash{
-            padding:0 5px;
-            font-size: 0.6rem;
+            padding:0 0.43rem;
+            font-size: 0.23rem;
             span{
               @include triangle(bottom)
               margin-left:10px;
             }
           }
           .other{
-            padding:0 5px;
+            padding:0 0.3rem;
             background: rgba(12, 90, 220, 0.75);
             color:#eee;
-            line-height: 1.8;
+            line-height: 0.69rem;
             .item{
-              font-size: 0.6rem;
+              font-size: 0.23rem;
             }
           }
         }
@@ -284,44 +285,45 @@
         box-sizing: border-box;
         justify-content: space-between;
         color: white;
-        margin-top: 0.7rem;
+        margin-top: 0.91rem;
         .left{
           width: 50%;
         }
         .left h1{
-          font-size: 0.6rem;
+          font-size: 0.23rem;
         }
         .left p{
-           font-size: 0.8rem;
+           font-size: 0.32rem;
         }
         .left i{
           font-weight: 100;
-          font-size: 0.6rem;
+          font-size: 0.23rem;
+          padding-top: 0.24rem;
         }
       }
     }
     ul{
         width: 100%;
-        margin-top: 0.5rem;
+        margin-top: 0.2rem;
         overflow: hidden;
         background:white;
-        padding:0 .5rem;
+        padding:0 .3rem;
         box-sizing: border-box;
         margin-bottom: 60px;
         li{
           width: 100%;
           display: flex;
           justify-content: space-between;
-          height:2rem;
+          height:0.89rem;
           border-bottom:1px solid #ddd;
-          line-height: 2rem;
+          line-height:0.89rem;
           span{
             color: #121212;
-            font-size: 0.6rem;
+            font-size: 0.27rem;
           }
           i{
             color: #999999;
-            font-size: 0.5rem;
+            font-size: 0.27rem;
           }
         }
     }

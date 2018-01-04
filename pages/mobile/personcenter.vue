@@ -8,7 +8,6 @@
           <h4>{{mobile|format}}</h4>
           <p>欢迎来到算力网 !</p>
         </div>
-        <div class="right"></div>
       </div>
     </div>
     <div class="price">
@@ -183,7 +182,7 @@
     overflow: hidden;
     .person_header{
       width: 100%;
-      height: 5rem;
+      height: 2.41rem;
       background:#373d41;
       position: relative;
       .bg{
@@ -200,110 +199,106 @@
         position: absolute;
         top:0;
         .img{
-          width: 1.8rem;
-          height: 1.8rem;
+          width: 0.86rem;
+          height: 0.86rem;
           background: white;
           border-radius: 100%;
           text-align: center;
-          line-height: 1.2rem;
-          margin-left: 1.5rem;
-          margin-top: 1.5rem;
+          line-height: 0.6rem;
+          margin-left: 0.66rem;
+          margin-top: 0.62rem;
+          position: absolute;
           img{
-            width: 1.2rem;
-            height: auto;
+            width: 0.58rem;
+            height: 0.32rem;
           }
         }
         .cen{
-          margin-top: 1.5rem;
-          position: relative;
-          left:-2.2rem;
+          margin-top: 0.6rem;
+          position: absolute;
+          left: 1.87rem;
           h4{
             color: white;
-            font-size: 0.7rem;
+            font-size: 0.32rem;
           }
           p{
             color:white;
+            font-size: 0.24rem;
           }
-        }
-        .right{
-          color:white;
-          font-family: "宋体";
-          line-height: 5rem;
-          margin-right: 0.5rem;
         }
       }
     }
     .price{
       width: 100%;
-      height: 3rem;
+      height: 1.64rem;
       background:white;
       // border-bottom: 1px solid #ddd;
-      font-size: 0.6rem;
+      font-size: 0.28rem;
       display: flex;
       justify-content: space-between;
       .left{
-        padding:0.5rem;
+        padding:0.39rem 0.27rem;
       }
       p{
         color: #999;
       }
       h4{
         color: #ff721f;
-        font-size: .9rem;
+        font-size: .44rem;
         font-weight: 900;
       }
       .right{
         width:50%;
         display: flex;
         justify-content: space-between;
-        padding:0.5rem;
-        padding-left:0;
-        padding-top:0.2rem;
+        padding:0.39rem 0.27rem;
         .button1{
           display:inline-block;
-          width:3rem;
-          height:1.5rem;
-          line-height: 1.5rem;
+          width:1.5rem;
+          height:0.9rem;
+          line-height: 0.9rem;
           background:$orange;
           color:white;
-          font-size:0.6rem;
-          margin-top: 0.5rem;
+          font-size:0.4rem;
+          margin-top:0;
         }
       }
     }
     .alllist{
       width: 100%;
-      margin-top: .5rem;
-      margin-bottom: 0.5rem;
+      margin: .2rem 0;
       .route{
         width: 100%;
-        height: 2rem;
+        height: 1.02rem;
         background:white;
         display: flex;
         justify-content: space-between;
+        line-height: 1.02rem;
         padding:0 .5rem;
         box-sizing: border-box;
-        line-height: 2rem;
         border-bottom:1px solid #ddd;
         .left{
           width: 90%;
-          font-size: 0.6rem;
+          font-size: 0.3rem;
           .icon{
-            font-size:0.7rem;
-            margin-right: 0.5rem;
+            font-size:0.33rem;
+            margin-right: 0.38rem;
           }
         }
         em{
           @include block(8)
           @include arrow
-          margin-top:0.8rem
+          width: 0.17rem;
+          height:0.17rem;
+          margin-top:0.4rem;
         }
         &:nth-child(2) .left .icon{
-          font-size: 0.8rem;
+          font-size: 0.43rem;
           position:relative;
-          top:.1rem;
-          left: -.1rem;
-          margin-right: 0.35rem;
+          // top:.1rem;
+          left: -0.05rem;
+          top: 0.05rem;
+          margin-right: 0.3rem;
         }
         // &:not(:last-child){
         //   border-bottom:1px solid #ddd;
@@ -324,24 +319,18 @@
     }
     .back{
       width: 100%;
-      height: 2rem;
-      line-height: 2rem;
+      height: 0.9rem;
+      line-height: 0.9rem;
       background:white;
       color:#999;
       border:0;
       box-sizing: border-box;
-      font-size: 0.7rem;
-      margin-bottom: 0.5rem;
+      font-size: 0.27rem;
+      margin-bottom: 0.2rem;
     }
-    // .null{
-    //   width: 100%;
-    //   height: 2.5rem;
-    //   background:#f4f4f4;
-    //   margin-bottom: 35px;
-    // }
   }
   .icon-dingwei:before, .icon-pinpaizhuanxiang:before, .icon-wodezichan:before, .icon-31shoucangxuanzhong:before, .icon-yiwen:before, .icon-31wangwangxuanzhong:before, .icon-xiai:before{
     position: relative;
-    top: 0.05rem;
+    // top: 0.03rem;
   }
 </style>
