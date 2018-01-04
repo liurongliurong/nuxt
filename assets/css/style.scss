@@ -92,6 +92,16 @@
     line-height: #{$value}px;
     border-radius: $radius
   }
+// linear_background
+  // @mixin linear_background($color1,$color12$r:h){
+  //   @if $r == h {
+  //     background: linear-gradient(to right, $color1 20%, $color2);
+  //     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#{$color1}, endColorstr=#{$color2},GradientType=1 );
+  //   } @else {
+  //     background: linear-gradient(to bottom, $color1 20%, $color2);
+  //     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#{$color1}, endColorstr=#{$color2},GradientType=0 );
+  //   }
+  // }
 // 省略
   @mixin ellipsis($line:0) {
     @if $line != 0 {
@@ -462,7 +472,7 @@
     }
   }
 // form
-  @mixin form($type:h){
+  @mixin form($type:h,$text:0){
     width:100%;
     h2{
       font-size: 24px;
@@ -479,6 +489,21 @@
           left:10px
         }
       }
+      @if $text == 1 {
+        & > span:nth-child(1),& > span:nth-child(2){
+          display: none
+        }
+        input{
+          padding-left:15px;
+        }
+        .count_btn.btn {
+          top:0;
+          right: 0;
+          border-top-right-radius: 3px;
+          border-bottom-right-radius: 3px;
+          bottom: 0;
+        }
+      }
       @media screen and (max-width: $mobile) {
         margin-bottom:15px;
       }
@@ -492,9 +517,6 @@
       @include button($blue)
       line-height:2.6;
       @include gap(20,v,margin)
-    }
-    @media screen and (max-width: $mobile) {
-      width:100%
     }
   }
 // good_table

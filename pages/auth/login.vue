@@ -103,7 +103,7 @@
       color:$light_text;
       background:$white;
       padding:35px;
-      @include form(v)
+      @include form(v,1)
       width:420px;
       h3{
         overflow:hidden;
@@ -134,9 +134,9 @@
         }
       }
       .input{
-        input{
-          padding-left:134px;
-        }
+        // input{
+        //   padding-left:134px;
+        // }
         span:nth-child(2){
           @include gap(10,h)
           top:15px;

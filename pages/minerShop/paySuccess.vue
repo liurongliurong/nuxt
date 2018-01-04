@@ -3,7 +3,7 @@
     <div class="pay_success_box">
       <div class="success_top">
         <div class="success_text">
-          <span class="spanone"><img src="../../assets/images/true.png"/></span>
+          <span class="spanone"><img src="~assets/images/true.png"/></span>
           <h2 class="spantwo">订单支付成功 ！{{typeList[type-1].text}}</h2>
         </div>
         <p class="address" v-if="addressData.id"><span class="te">寄送至 ： </span>{{addressData.province_name+addressData.city_name+addressData.area_name+addressData.area_details}}(<span class="te">{{addressData.post_user}}</span> 收) <span class="te">{{addressData.post_mobile}}</span></p>
@@ -54,7 +54,7 @@
           })
         })
       } else {
-        this.$router.push({path: '/minerShop/detail'})
+        // this.$router.push({path: '/minerShop/detail'})
       }
     }
   }
@@ -89,6 +89,7 @@
             line-height: 42px;
             float: left;
             margin-right: 24px;
+            color:#fff;
             img{
               width: 30px;
               height: auto;
