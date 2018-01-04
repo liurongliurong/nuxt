@@ -151,6 +151,7 @@
     }
     @media screen and (max-width: $mobile) {
       padding-top:0;
+      padding-bottom: 0.5rem;
       .box .data .item{
         h3{
           margin-bottom:0;

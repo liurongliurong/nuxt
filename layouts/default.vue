@@ -46,7 +46,6 @@
         var width = document.documentElement.clientWidth
         document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
       })
-  
       if (api.checkEquipment()) {
         this.$store.commit('SET_EQUIPMENT', 1)
       } else {
