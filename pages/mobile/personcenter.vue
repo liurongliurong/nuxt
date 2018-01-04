@@ -17,8 +17,8 @@
         <h4>{{balance_account|decimal}}</h4>
       </div>
       <div class="right">
-        <button style="background:#26a2ff;"  @click="openMask(1)">充 值</button>
-        <button @click="openMask(2)">提 现</button>
+        <button style="background:#26a2ff;"  @click="openMask(1)" class="button1">充 值</button>
+        <button @click="openMask(2)" class="button1">提 现</button>
       </div>
     </div>
     <div class="alllist">
@@ -30,8 +30,8 @@
         <em></em>
       </router-link>
     </div>
-    <button @click="logout">退出登录</button>
-    <div class="null"></div>
+    <button @click="logout" class="back">退出登录</button>
+    <!-- <div class="null"></div> -->
     <div class="popup" v-if="showModal">
       <div class="popup_con">
         <div class="popup_title">
@@ -178,8 +178,9 @@
   @import '../../assets/css/style.scss';
   .personcenter{
     width:100%;
-    height:100vh;
+    height:100%;
     background:#f4f4f4;
+    overflow: hidden;
     .person_header{
       width: 100%;
       height: 5rem;
@@ -258,7 +259,7 @@
         padding:0.5rem;
         padding-left:0;
         padding-top:0.2rem;
-        button{
+        .button1{
           display:inline-block;
           width:3rem;
           height:1.5rem;
@@ -266,12 +267,14 @@
           background:$orange;
           color:white;
           font-size:0.6rem;
+          margin-top: 0.5rem;
         }
       }
     }
     .alllist{
       width: 100%;
       margin-top: .5rem;
+      margin-bottom: 0.5rem;
       .route{
         width: 100%;
         height: 2rem;
@@ -281,6 +284,7 @@
         padding:0 .5rem;
         box-sizing: border-box;
         line-height: 2rem;
+        border-bottom:1px solid #ddd;
         .left{
           width: 90%;
           font-size: 0.6rem;
@@ -301,9 +305,9 @@
           left: -.1rem;
           margin-right: 0.35rem;
         }
-        &:not(:last-child){
-          border-bottom:1px solid #ddd;
-        }
+        // &:not(:last-child){
+        //   border-bottom:1px solid #ddd;
+        // }
         &:nth-child(1) .left .icon,&:nth-child(5) .left .icon{
           color:#327FFF
         }
@@ -318,7 +322,7 @@
         }
       }
     }
-    button{
+    .back{
       width: 100%;
       height: 2rem;
       line-height: 2rem;
@@ -326,15 +330,15 @@
       color:#999;
       border:0;
       box-sizing: border-box;
-      margin-top: 0.5rem;
       font-size: 0.7rem;
+      margin-bottom: 0.5rem;
     }
-    .null{
-      width: 100%;
-      height: 1rem;
-      background:#f4f4f4;
-      margin-bottom: 35px;
-    }
+    // .null{
+    //   width: 100%;
+    //   height: 2.5rem;
+    //   background:#f4f4f4;
+    //   margin-bottom: 35px;
+    // }
   }
   .icon-dingwei:before, .icon-pinpaizhuanxiang:before, .icon-wodezichan:before, .icon-31shoucangxuanzhong:before, .icon-yiwen:before, .icon-31wangwangxuanzhong:before, .icon-xiai:before{
     position: relative;

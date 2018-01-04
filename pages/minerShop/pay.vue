@@ -783,7 +783,7 @@
     }
     .mobile_box{
       min-height:calc(100vh - 61px);
-      font-size: 0.45rem;
+      font-size: 0.6rem;
       color:$text;
       background: #F1F2F7;
       .mobile_address{
@@ -839,7 +839,7 @@
       .price{
         line-height: 50px;
         font-weight: bold;
-        font-size: 0.52rem;
+        font-size: 0.62rem;
         .val{
           color:$orange;
         }
@@ -879,7 +879,7 @@
           }
           &.pay_input{
             width:100%;
-            font-size: 0.45rem;
+            font-size: 0.6rem;
             span{
               width:85px;
               color:$text
