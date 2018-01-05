@@ -103,12 +103,12 @@
 </script>
 
 <style lang="scss">
-    .mobile_computehome{
+  .mobile_computehome{
     width: 100%;
     height: 100%;
     .mobile_navcompute{
       width: 100%;
-      height: 2rem;
+      height: 0.89rem;
       background: white;
       display: flex;
       justify-content: space-between;
@@ -119,37 +119,37 @@
       }
       a{
         width: 20%;
-        height: 2rem;
+        height: 0.89rem;
         display:inline-block;
-        line-height: 2rem;
+        line-height: 0.89rem;
         text-align: center;
         span{
             float: right;
-            font-size: 0.6rem;
+            font-size: 0.28rem;
             color:#1b1b1b;
         }
         em{
             font-style:normal;
-            font-size: 0.6rem;
+            font-size: 0.28rem;
             color:#1b1b1b;
         }
         &:hover{
             em{
                 display:inline-block;
-                border-bottom:2px solid #fe5039;
+                border-bottom:2rpx solid #fe5039;
                 box-sizing: border-box;
-                width: 1.9rem;
-                height: 1.95rem;
+                width: 1.14rem;
+                height: 0.89rem;
                 color:#fe5039;
             }
         }
         &.active{
             em{
                 display:inline-block;
-                border-bottom:2px solid #fe5039;
+                border-bottom:2rpx solid #fe5039;
                 box-sizing: border-box;
-                width: 1.9rem;
-                height: 1.95rem;
+                width: 1.14rem;
+                height: 0.89rem;
                 color:#fe5039;
           }
         }
@@ -158,8 +158,8 @@
                 display:inline-block;
                 border-bottom:2px solid #fe5039;
                 box-sizing: border-box;
-                width: 1.9rem;
-                height: 1.95rem;
+                width: 1.14rem;
+                height: 0.89rem;
                 color:#fe5039;
           }
         }
@@ -172,42 +172,43 @@
     background: white;
     .list_lists{
       width: 100%;
-    //   border-top: 1px solid #dcdcdc;
-      padding:0 0.5rem;
+      padding:0 0.3rem;
       box-sizing: border-box;
       .list_list{
         width: 100%;
-        height: 5.5rem;
+        height: 3.1rem;
         border-bottom: 1px solid #dcdcdc;
         display:flex;
         justify-content: space-between;
-        padding:0.5rem 0;
+        padding:0.3rem 0;
         .list_left{
             width: 55%;
-            padding-right: .5rem;
+            padding-right: .46rem;
             h3{
-                font-size: 0.5rem;
+                font-size: 0.3rem;
                 font-weight: 800;
-                height: 1.5rem;
+                height: 0.82rem;
                 overflow: hidden;
             }
             p{
-                font-size: 0.4rem;
+                font-size: 0.22rem;
                 margin-top: 0.3rem;
                 color: #989898;
-                height: 1.5rem;
+                height: 0.8rem;
                 overflow: hidden;
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.2rem;
             }
             div{
                 color: #adadad;
-                font-size: 0.4rem;
+                font-size: 0.2rem;
                 span{
-                    width: 0.3rem;
-                    height: 0.3rem;
+                    width: 0.15rem;
+                    height: 0.15rem;
                     background: #666666;
                     display:inline-block;
-                    margin-right: 0.3rem;
+                    margin-right: 0.15rem;
+                    position: relative;
+                    top: -0.02rem;
                 }
             }
         }
@@ -215,18 +216,20 @@
             width: 45%;
             img{
                 width: 100%;
+                height: 2.06rem;
+                object-fit: contain;
             }
             .time{
                 width: 100%;
                 display: flex;
                 justify-content: space-between;
-                margin-top: 0.35rem;
+                margin-top: 0.1rem;
                 p{
-                    font-size: 0.4rem;
+                    font-size: 0.2rem;
                     color: #999999;
                     span{
-                        font-size: 0.55rem;
-                        margin-right: 0.2rem;
+                        font-size: 0.21rem;
+                        margin-right: 0.08rem;
                     }
                 }
             }
@@ -235,29 +238,29 @@
     }
     .loadmore{
         width: 100%;
-        height: 2rem;
+        height: 1.08rem;
         text-align: center;
-        line-height: 2rem;
+        line-height: 1.08rem;
     }
     .quicknews_content{
       width: 100%;
-      padding-bottom: 50px;
+      padding-bottom: 20px;
       background: white;
       .title{
-        padding: 0.5rem;
+        padding:0.3rem 0.3rem 0 0.3rem;
       }
       span{
         font-weight: 800;
-        font-size: 0.7rem;
+        font-size: 0.3rem;
       }
       a{
         float: right;
         color:#327fff;
-        font-size: 0.5rem;
+        font-size: 0.28rem;
       }
       .info_quick{
         width: 100%;
-        padding:0 0.5rem;
+        padding:0 0.3rem;
       }
     }
   }

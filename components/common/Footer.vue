@@ -264,11 +264,11 @@
       right:0;
       width:100%;
       bottom:0;
-      height: 2rem !important;
+      height: 1.13rem;
       z-index: 999999;
       background:white;
       border-top:1px solid $border;
-      padding: 5px 0;
+      padding: 0.21px 0;
       .mobile_tab_item{
         width:33.33%;
         text-align: center;
@@ -276,13 +276,13 @@
         .item{
           .name{
             color: #666;
-            font-size: 11px;
+            font-size: 0.2rem;
           }
           .iconfont{
-            font-size: 20px;
-            position: relative;
-            display:block;
-            height:20px;
+            font-size: 0.33rem;
+            display: block;
+            margin-top: 0.21rem;
+            height: 0.33rem;
           }
           &.active{
             color: #327fff;

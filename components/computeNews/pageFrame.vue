@@ -198,7 +198,7 @@
     height: 100%;
     .mobile_navcompute{
       width: 100%;
-      height: 2rem;
+      height: 0.89rem;
       background: white;
       display: flex;
       justify-content: space-between;
@@ -209,37 +209,37 @@
       }
       a{
         width: 20%;
-        height: 2rem;
+        height: 0.89rem;
         display:inline-block;
-        line-height: 2rem;
+        line-height: 0.89rem;
         text-align: center;
         span{
             float: right;
-            font-size: 0.6rem;
+            font-size: 0.28rem;
             color:#1b1b1b;
         }
         em{
             font-style:normal;
-            font-size: 0.6rem;
+            font-size: 0.28rem;
             color:#1b1b1b;
         }
         &:hover{
             em{
                 display:inline-block;
-                border-bottom:2px solid #fe5039;
+                border-bottom:2rpx solid #fe5039;
                 box-sizing: border-box;
-                width: 1.9rem;
-                height: 1.95rem;
+                width: 1.14rem;
+                height: 0.89rem;
                 color:#fe5039;
             }
         }
         &.active{
             em{
                 display:inline-block;
-                border-bottom:2px solid #fe5039;
+                border-bottom:2rpx solid #fe5039;
                 box-sizing: border-box;
-                width: 1.9rem;
-                height: 1.95rem;
+                width: 1.14rem;
+                height: 0.89rem;
                 color:#fe5039;
           }
         }
@@ -248,8 +248,8 @@
                 display:inline-block;
                 border-bottom:2px solid #fe5039;
                 box-sizing: border-box;
-                width: 1.9rem;
-                height: 1.95rem;
+                width: 1.14rem;
+                height: 0.89rem;
                 color:#fe5039;
           }
         }
