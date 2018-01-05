@@ -206,7 +206,7 @@ export default {
           justify-content: center;
           i {
             font-style: normal;
-            font-size: 13px;
+            font-size: 0.26rem;
           }
           .slash {
             margin: 0 15px;
@@ -299,7 +299,7 @@ export default {
       }
     }
     .article {
-      margin-top: 0px;
+      margin-top: 0;
       padding: 0 0.4rem 0 1rem;
       display: flex;
       flex-direction: column;
