@@ -217,11 +217,9 @@
     background: white;
     h1{
       width: 100%;
-      padding-left: 1rem;
-      font-size: 0.7rem;
+      font-size: 0.3rem;
       color:#333333;
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
+      padding: 0.3rem;
     }
     .quicknews_lists{
       width: 100%;
@@ -236,13 +234,14 @@
         border-bottom: 1px solid #dcdcdc;
         border-right: 1px solid #dcdcdc;
         box-sizing: border-box;
-        padding:0 1.5rem;
-        height: 5.5rem;
+        height: 2.36rem;
         text-align: center;
+        padding: 0 0.5rem;
         img{
-          width: 100%;
-          height: 1.5rem;
-          margin-top: 1.5rem;
+          width: 1.78rem;
+          height: 0.48rem;
+          object-fit: contain;
+          margin-top: 0.56rem;
         }
         p{
           color:#666666;
@@ -251,38 +250,40 @@
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
-          margin-top: 0.5rem;
+          margin-top: 0.42rem;
+          font-size: 0.3rem;
         }
       }
       :nth-of-type(even){
         border-right: 0;
       }
     }
-        .loadmore{
+    .loadmore{
         width: 100%;
-        height: 2rem;
+        height: 1.08rem;
         text-align: center;
-        line-height: 2rem;
+        line-height: 1.08rem;
     }
     .quicknews_content{
       width: 100%;
-      padding-bottom: 50px;
+      padding-bottom: 20px;
       background: white;
       .title{
-        padding: 0.5rem;
+        padding: 0.3rem;
+        padding-bottom: 0;
       }
       span{
         font-weight: 800;
-        font-size: 0.7rem;
+        font-size: 0.3rem;
       }
       a{
         float: right;
         color:#327fff;
-        font-size: 0.5rem;
+        font-size: 0.3rem;
       }
       .info_quick{
         width: 100%;
-        padding:0 0.5rem;
+        padding:0 0.3rem;
       }
     }
   }
