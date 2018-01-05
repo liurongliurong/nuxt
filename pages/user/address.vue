@@ -36,7 +36,7 @@
       <div class="nodata_img"></div>
       <p>暂无列表信息</p>
     </div>
-    <MyMask :form="address" :val="addressData" :title="addressData.id?'编辑地址':'新增地址'" v-if="show"></MyMask>
+    <MyMask :form="address" :val="addressData" :title="addressData.id?'编辑地址':'新增地址'" v-if="show" @submit="submit" @closeMask="closeMask"></MyMask>
   </section>
 </template>
 

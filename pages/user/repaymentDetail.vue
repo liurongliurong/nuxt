@@ -66,7 +66,7 @@
        </tbody>
      </table>
     </div>
-    <MyMask :form="form" title="确认还款" v-if="show"></MyMask>
+    <MyMask :form="form" title="确认还款" v-if="show" @submit="submit" @closeMask="closeMask" @onChange="onChange"></MyMask>
   </section>
 </template>
 
@@ -110,8 +110,8 @@
           }, 5)
         }
       },
-      submit () {
-        var ff = document.querySelector('.form')
+      submit (e) {
+        var ff = e.target
         var data = api.checkFrom(ff)
         if (!data) return false
         ff.btn.setAttribute('disabled', true)
@@ -125,9 +125,8 @@
           }, ff.btn)
         })
       },
-      changeEvent (e) {
-        // console.log(11)
-        this.model = e.target.value
+      onChange (obj) {
+        this.model = obj.e.target.value
         this.balance = this.loanData[this.model].data1 + this.loanData[this.model].unit
         this.totalMoney = this.loanData[this.model].data2 + this.loanData[this.model].unit
         // this.select()
@@ -156,7 +155,7 @@
           })
         })
       },
-      closeEdit () {
+      closeMask () {
         this.show = ''
         document.body.style.overflow = 'auto'
       }

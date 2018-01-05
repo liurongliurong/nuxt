@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <MyMask :form="form[edit]" :title="title" v-if="edit"></MyMask>
+    <MyMask :class="{bank_card_popup:edit==='card'}" :form="form[edit]" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange"></MyMask>
   </section>
 </template>
 
@@ -140,8 +140,8 @@
           })
         })
       },
-      onChange (e) {
-        var val = e.target.value
+      onChange (obj) {
+        var val = obj.e.target.value
         var val1 = val.substr(0, 6)
         var val2 = val.substr(0, 5)
         if (val.length >= 6) {
@@ -200,21 +200,20 @@
         width: 100%;
         overflow: hidden;
         background: white;
-        padding:0 .2rem;
+        padding:0 .5rem;
         box-sizing: border-box;
         .item{
           width: 100%;
-          line-height: 0.85rem;
-          font-size: 0.28rem;
+          line-height: 2rem;
+          font-size: 0.6rem;
           color: #121212;
           &:not(.compute_address),.compute_address_title{
             @include flex(space-between)
             i{
               color: #999999;
               em{
-                @include block(6)
+                @include block(8)
                 @include arrow
-                margin-left:0.17rem;
               }
             }
           }
@@ -227,8 +226,8 @@
             }
             .compute_address_box{
               margin:0 10px;
-              line-height: 0.85rem;
-              font-size: 0.28rem;
+              line-height: 1.2rem;
+              font-size: 0.5rem;
               color:$light_text;
               @include flex(space-between)
               &:not(:last-child){
