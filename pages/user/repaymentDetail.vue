@@ -81,7 +81,7 @@
     },
     data () {
       return {
-        form: [{name: '', type: 'select', title: '还款方式', option: ['算力收益', '资金用户'], dataNo: 1, changeEvent: true}, {name: 'balance', type: 'text', title: '账户余额', edit: 'balance'}, {name: 'totalMoney', type: 'text', title: '还款总额', edit: 'totalMoney'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
+        form: [{name: '', type: 'select', title: '还款方式', option: ['算力收益', '资金用户'], dataNo: 1, changeEvent: true}, {name: 'balance', type: 'text', title: '账户余额', edit: 'balance'}, {name: 'totalMoney', type: 'text', title: '还款总额', edit: 'totalMoney'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
         loanData: {0: {data1: '', data2: '', unit: 'btc'}, 1: {data1: '', data2: '', unit: '元'}},
         model: 0,
         item: {},
