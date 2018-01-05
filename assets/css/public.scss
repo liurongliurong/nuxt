@@ -209,13 +209,13 @@ input::-webkit-input-placeholder {
         height:auto;
         max-height:80vh;
         .popup_title{
-          font-size: 0.65rem;
+          font-size: 0.36rem;
           background: #fff;
           border-bottom:1px solid $border;
         }
         .popup_body{
           padding:0.5rem;
-          font-size: 0.5rem;
+          font-size: 0.3rem;
           max-height:64vh;
           table td{
             padding:0 !important;
@@ -225,18 +225,22 @@ input::-webkit-input-placeholder {
           }
         }
         .form{
-          padding:0.5rem;
-          margin-top:1rem;
-          overflow: auto !important;
-          height: 15rem;
+          padding:0.3rem;
+          overflow: auto;
+          max-height: 70vh;
           .checkbox input{
             margin-right: 10px;
           }
-          &.card_form .input{
-            input,.sel,.select{
-              padding-left:10px
-            }
+          button{
+            margin:0.2rem 0;
+            line-height: 2.2;
+            font-size: 0.32rem;
           }
+        }
+      }
+      &.bank_card_popup .popup_con .form .input{
+        input,.sel,.select{
+          padding-left:10px
         }
       }
     }

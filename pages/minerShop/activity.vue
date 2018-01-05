@@ -90,7 +90,7 @@
             </div>
           </div>
           <div class="activity_data2">
-            <div class="item" style="margin-bottom:1rem;">
+            <div class="item">
               <span>购买数量</span>
               <div class="mobile_input">
                 <span class="minus" @click="changeNum(+number-1)">-</span>
@@ -659,37 +659,38 @@
     }
     .activity_mobile{
       .mobile_bg_box{
-        h1{
-          width:100%;
-          font-size: 0.7rem;
+        h1 {
+          width: 100%;
+          font-size: 0.36rem;
           text-align: center;
           margin-bottom: 0.5rem;
           position: absolute;
-          top: 7rem;
+          top: 3.8rem;
         }
       }
       .mobile_activity_form{
         background: #240f30;
-        padding-top: 1rem;
-        .activity_data_box{
-          margin: 0 2%;
+        padding-top: 0.3rem;
+        .activity_data_box {
+          margin: 0 0.2rem;
           background: linear-gradient(45deg, #7524ED 10%, #DA1FE0);
           filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7524ED', endColorstr='#DA1FE0',GradientType=1 );
-          padding:0 0.3rem 0.5rem;
-          border-radius:10px;
+          padding: 0.3rem;
+          border-radius: 10px;
+          color: #FBF5FD;
           .activity_data1{
             @include flex(space-between)
-            padding-top: 0.5rem;
-            border-bottom: 1px dashed white;
-            padding-bottom: 0.7rem;
+            padding-top: 0.2rem;
+            border-bottom: 1px dashed #FBF5FD;
+            padding-bottom: 0.3rem;
             .item{
               text-align: center;
-              font-size: 0.5rem;
+              font-size: 0.28rem;
               .price{
                 color: #fede00;
                 em{
                   font-style: normal;
-                  font-size: 0.7rem;
+                  font-size: 0.32rem;
                   font-weight: 800;
                 }
               }
@@ -699,44 +700,47 @@
             }
           }
           .activity_data2{
-            padding: 1rem 0.5rem 0;
-            font-size: 0.6rem;
+            padding: 0.4rem 0.2rem 0;
+            font-size: 0.3rem;
             .item{
               @include flex(space-between)
-              margin-bottom: .5rem;
+              margin-bottom: 0.2rem;
               .price{
                 color: #fede00;
               }
               .mobile_input{
+                border-radius:0.08rem;
+                overflow:hidden;
                 @include flex(space-between)
                 .number,.minus,.plus{
                   text-align: center;
-                  height: 1rem;
-                  line-height: 1rem;
+                  height: 0.6rem;
+                  line-height: 0.6rem;
                 }
                 .minus,.plus{
-                  width: 1.2rem;
-                  border-top-left-radius: .1rem;
-                  border-bottom-left-radius: .1rem;
+                  width: 0.5rem;
                   color:#666666;
                   background: #e5e5e5;
                   font-weight: 800;
-                  font-size: 0.8rem;
+                  font-size: 0.28rem;
                 }
                 .number{
-                  width: 3rem;
+                  width: 1.5rem;
                   background: white;
                 }
+              }
+              &:first-child {
+                margin-bottom: 0.4rem;
               }
             }
           }
         }
         .mobile_btn{
           width: 94%;
-          height: 1.8rem;
+          height: 0.8rem;
           background: linear-gradient(to right, #ffaf01 10%, #f9580d);
           filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf01', endColorstr='#f9580d',GradientType=1 );
-          margin-top: 1rem;
+          margin-top: 0.3rem;
           margin-left: 3%;
           border:0;
           color:#fff
@@ -747,18 +751,17 @@
         .item{
           width: 94%;
           margin-left: 3%;
-          padding-top: 1rem;
+          padding-top: 0.3rem;
           overflow: hidden;
-          font-size: .5rem;
-          .item_data_box{
+          font-size: 0.3rem;
+          .item_data_box {
             background: url('~assets/images/3.png');
             background-size: 100% 100%;
-            padding:0 .5rem;
+            padding: 0.2rem 0.3rem;
             .item_data{
-              height: 1.3rem;
-              line-height: 1.3rem;
+              height: 0.7rem;
+              line-height: 0.7rem;
               color: #bfbebf;
-              border-bottom:1px solid #602ba3;
               .one_left{
                 color: #fcfcfd;
                 float: left;
@@ -767,13 +770,16 @@
                 color: #bfbebf;
                 float: right;
               }
+              &:not(:last-child){
+                border-bottom:1px solid #602ba3;
+              }
             }
           }
           h5{
             color:#f8b551;
-            font-size: 0.7rem;
+            font-size: 0.36rem;
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.3rem;
           }
         }
         .logo{
@@ -788,8 +794,8 @@
         }
         .tel{
           text-align: center;
-          margin-top: 0.5rem;
-          padding-bottom: 1rem;
+          margin-top: 0.3rem;
+          padding-bottom: 0.4rem;
         }
       }
     }
@@ -826,14 +832,14 @@
         }
         @media screen and (max-width: $mobile) {
           width:100%;
-          padding:0.5rem;
+          padding:0.3rem;
           input{
             width: 14px;
             height: 14px;
           }
           span:nth-child(2){
-            margin-left:0.2rem;
-            font-size: 0.5rem;
+            margin-left:0.1rem;
+            font-size: 0.28rem;
           }
         }
       }

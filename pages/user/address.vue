@@ -201,7 +201,7 @@
           .address_desc{
             width:70%;
             .address_title{
-              font-size: 0.6rem;
+              font-size: 0.3rem;
               font-weight: bold;
               padding:5px 0;
             }

@@ -109,13 +109,13 @@
         background: #F5F5F5;
         padding:15px 10px;
         .item{
+          text-align: center;
           .item_data{
-            text-align: center;
-            font-size: 0.5rem;
+            font-size: 0.3rem;
           }
           .item_text{
             color:$light_black;
-            text-align: center;
+            font-size: 0.28rem;;
           }
         }
         .line{
@@ -134,7 +134,7 @@
           position: relative;
           overflow:hidden;
           border-radius:8px;
-          height:15px;
+          height:0.3rem;
           background: $border;
           .box{
             @include position
@@ -144,11 +144,12 @@
         .progress_text{
           position: absolute;
           right:0;
-          top:18px;
+          top:50%;
+          margin-top:-0.39rem;
           color:$text;
-          padding:4px 0.18rem;
+          padding:0.1rem 0.18rem;
           border:0.08rem solid $purple;
-          border-radius:30px;
+          border-radius:0.4rem;
           background: #fff;
           font-size: 0.28rem;
         }
