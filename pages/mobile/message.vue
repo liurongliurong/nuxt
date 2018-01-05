@@ -229,8 +229,8 @@
         .loadmore{
           text-align: center;
           width: 100%;
-          height: 0.89rem;
-          line-height: 0.89rem;
+          height: 4rem;
+          line-height: 4rem;
         }
         .list_one{
           font-weight: 800;
@@ -247,20 +247,19 @@
           background:white;
           .itemlist{
             width: 100%;
-            height: 0.89rem;
-            line-height: 0.89rem;
+            height: 2rem;
+            line-height: 2rem;
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #999;
              span{
               width: 50%;
               color: #121212;
               font-weight: 800;
-              font-size: 0.26rem;
             }
             i{
               color: #a9a9a9;
-              font-size: 0.26rem;
+              font-size: 0.45rem;
               font-weight: 800;
             }
           }
@@ -280,11 +279,11 @@
         width: 100%;
         height: 100%;
         background:white;
-        padding:0.5rem .3rem;
+        padding:1rem .5rem;
         button{
-          width: 1.5rem;
-          height: 0.9rem;
-          font-size: 0.4rem;
+          width: 3rem;
+          height: 1.2rem;
+          font-size: 0.6rem;
           color:white;
           background: #26a2ff;
           border:0;
@@ -293,7 +292,7 @@
         }
         h3{
           color:#121212;
-          font-size: 0.3rem;
+          font-size: 0.7rem;
           display: block;
         }
       }

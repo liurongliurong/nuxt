@@ -49,7 +49,7 @@ export default {
 <style scoped lang="scss">
   #block{
     color:red;
-    padding:0.3rem;
+    padding:0.5rem;
     padding-bottom:0;
   }
   .bdcform{
@@ -58,12 +58,12 @@ export default {
     background: #f5f5f9;
     button{
       background:#327fff;
-      height: 0.9rem;
+      height: 2rem;
       border:0;
       color: white;
-      font-size:  0.3rem;
+      font-size:  0.7rem;
       width: 94%;
-      margin-top: 0.2rem;
+      margin-top: 20px;
       margin-left: 3%;
       border-radius: 3px;
     }
@@ -90,15 +90,15 @@ export default {
     }
     .message{
       width: 100%;
-      height: 4rem;
+      height: 6rem;
       background: white;
-      padding:.3rem;
+      padding:.5rem;
       textarea::-webkit-input-placeholder{
         color: #e6e6e6;
       }
       textarea{
         width: 100%;
-        height: 3rem;
+        height: 4.5rem;
         display: block;
       }
       p{

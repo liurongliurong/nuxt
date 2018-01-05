@@ -125,8 +125,8 @@
       @include main
       .loadmore{
         width: 100%;
-        height: 0.89rem;
-        line-height: 0.89rem;
+        height: 2rem;
+        line-height: 2rem;
         text-align: center;
       }
       h2{
@@ -134,10 +134,6 @@
       }
       .box:not(.mobile_list_box){
         @include row(4, 1%)
-      }
-      .box.mobile_list_box{
-        padding: 0 0.3rem;
-        padding-top: 0.3rem;
       }
       .box.mobile_list_box .item_box{
         @include row(2)

@@ -44,12 +44,12 @@
   @import '../../assets/css/style.scss';
   .mobile_miner_item{
     display: block;
-    width: 3.27rem;
-    height: 4.2rem;
+    width: 48%;
+    height: 7.5rem;
     overflow: hidden;
     .null{
       width: 100%;
-      height: 2.6rem;
+      height: 4.3rem;
       background: #efefef;
       border-radius: .3rem;
       text-align: center;
@@ -59,12 +59,12 @@
         left: 0;
         top:0;
         p{
-          width: 1.5rem;
-          height: 0.6rem;
+          width: 2rem;
+          height: 1rem;
           color: white;
-          font-size: 0.3rem;
+          font-size: 0.5rem;
           text-align: center;
-          line-height: 0.6rem;
+          line-height: 1rem;
         }
         .status1{
           background: #fe5039;
@@ -74,10 +74,9 @@
         }
       }
       img{
-        width: 2.68rem;
-        height: 1.58rem;
-        margin-top: 0.49rem;
-        object-fit: contain;
+        width: 4rem;
+        height: 2.4rem;
+        margin-top: 0.9rem;
       }
     }
     h6{
@@ -85,7 +84,7 @@
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: normal;
-      font-size: .26rem;
+      font-size: .6rem;
       padding-top: .2rem;
     }
     .progress_info1{
@@ -104,7 +103,7 @@
       }
     }
     p{
-      font-size: 0.22rem;
+      font-size: 0.4rem;
       b{
         color:#fe5039;
       }
