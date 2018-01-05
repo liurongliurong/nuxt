@@ -129,15 +129,11 @@
         line-height: 0.89rem;
         text-align: center;
       }
-      h2{
-        @include data_title
-      }
       .box:not(.mobile_list_box){
         @include row(4, 1%)
       }
       .box.mobile_list_box{
         padding: 0 0.3rem;
-        padding-top: 0.3rem;
       }
       .box.mobile_list_box .item_box{
         @include row(2)

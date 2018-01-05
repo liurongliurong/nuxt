@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <MyMask :form="form[edit]" :title="title" v-if="edit"></MyMask>
+    <MyMask :class="{bank_card_popup:edit==='card'}" :form="form[edit]" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange"></MyMask>
   </section>
 </template>
 
@@ -140,8 +140,8 @@
           })
         })
       },
-      onChange (e) {
-        var val = e.target.value
+      onChange (obj) {
+        var val = obj.e.target.value
         var val1 = val.substr(0, 6)
         var val2 = val.substr(0, 5)
         if (val.length >= 6) {
@@ -212,7 +212,7 @@
             i{
               color: #999999;
               em{
-                @include block(6)
+                @include block(8)
                 @include arrow
                 margin-left:0.17rem;
               }

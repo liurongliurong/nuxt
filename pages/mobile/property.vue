@@ -267,6 +267,7 @@
             }
           }
           .other{
+            padding:0 5px;
             padding:0 0.3rem;
             background: rgba(12, 90, 220, 0.75);
             color:#eee;
@@ -307,6 +308,7 @@
         margin-top: 0.2rem;
         overflow: hidden;
         background:white;
+        padding:0 .5rem;
         padding:0 .3rem;
         box-sizing: border-box;
         margin-bottom: 60px;

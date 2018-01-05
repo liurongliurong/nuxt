@@ -189,7 +189,7 @@
         }
       }
       .mobile_sort_items{
-        background: #fff;
+     	  background: #fff;
         // margin-top:15px;
         @include flex(space-between)
         padding:0 0.2rem;

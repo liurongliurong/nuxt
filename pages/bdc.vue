@@ -451,23 +451,6 @@
           }
           @include mobile_hide
         }
-        // .mobile_box{
-        //   @include mobile_show
-        //   .box_text{
-        //     margin-top:20px;
-        //     font-size: 0.6rem;
-        //     line-height: 2.8;
-        //     .line{
-        //       @include flex(space-between)
-        //       span:nth-child(2){
-        //         color:$light_black
-        //       }
-        //       &:not(:last-child){
-        //         border-bottom:1px solid #3a3a3a
-        //       }
-        //     }
-        //   }
-        // }
       }
     }
     @media screen and (max-width: $mobile) {

@@ -120,7 +120,6 @@
           color:#121212;
           line-height: 0.87rem;
           .titleall{
-            width: 100%;
             height: 0.87rem;
             padding:0 .5rem;
             line-height: 0.87rem;
@@ -129,7 +128,7 @@
             font-size:0.26rem;
             border-bottom:1px solid #ddd;
             em{
-              @include block(6)
+              @include block(8)
               @include arrow(down)
               margin-top:0.34rem;
               transform: rotate(135deg);
@@ -151,6 +150,7 @@
         width:100%;
         line-height: 0.87rem;
         .item{
+          border-top:1px solid #ddd;
           overflow: hidden;
           line-height: 0.87rem;
           cursor: pointer;

@@ -49,6 +49,7 @@
     overflow: hidden;
     .null{
       width: 100%;
+      height: 4.3rem;
       height: 2.6rem;
       background: #efefef;
       border-radius: .3rem;

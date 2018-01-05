@@ -214,7 +214,7 @@
           }
         }
         .cen{
-          margin-top: 0.6rem;
+           margin-top: 0.6rem;
           position: absolute;
           left: 1.87rem;
           h4{
@@ -223,7 +223,6 @@
           }
           p{
             color:white;
-            font-size: 0.24rem;
           }
         }
       }
@@ -295,7 +294,6 @@
         &:nth-child(2) .left .icon{
           font-size: 0.43rem;
           position:relative;
-          // top:.1rem;
           left: -0.05rem;
           top: 0.05rem;
           margin-right: 0.3rem;
@@ -331,6 +329,6 @@
   }
   .icon-dingwei:before, .icon-pinpaizhuanxiang:before, .icon-wodezichan:before, .icon-31shoucangxuanzhong:before, .icon-yiwen:before, .icon-31wangwangxuanzhong:before, .icon-xiai:before{
     position: relative;
-    // top: 0.03rem;
+    top: 0.05rem;
   }
 </style>
