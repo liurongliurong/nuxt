@@ -36,13 +36,15 @@
       }
     },
     mounted () {
-      let htmlFontSize = (document.documentElement.clientWidth / (750 / 100)) + 'px'
-      document.documentElement.style.fontSize = htmlFontSize
+      var width = document.documentElement.clientWidth
+      document.documentElement.style.fontSize = (width / 7.5) + 'px'
       window.addEventListener('orientationchange', function () {
-        document.documentElement.style.fontSize = htmlFontSize
+        var width = document.documentElement.clientWidth
+        document.documentElement.style.fontSize = (width / 7.5) + 'px'
       })
       window.addEventListener('resize', function () {
-        document.documentElement.style.fontSize = htmlFontSize
+        var width = document.documentElement.clientWidth
+        document.documentElement.style.fontSize = (width / 7.5) + 'px'
       })
       if (api.checkEquipment()) {
         this.$store.commit('SET_EQUIPMENT', 1)
