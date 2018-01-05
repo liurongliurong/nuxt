@@ -333,14 +333,13 @@
           this.transfer_price = isNaN(this.transfer_price) ? 0 : this.transfer_price
         } else {
           if (name === 'amount') {
-            if (unit === '台') {
-              value = (+value > this.amount) ? this.amount : value
-            } else {
-              value = (+value > this.amount) ? api.decimal(this.amount, 2) : value
+            obj.e.target.value = (+value > this.amount) ? this.amount : value
+            if (unit !== '台') {
+              obj.e.target.value = api.decimal(obj.e.target.value, 2)
             }
-            this.inputAmount = value
+            this.inputAmount = obj.e.target.value
           } else {
-            this.inputPrice = value
+            this.inputPrice = obj.e.target.value
           }
           this.total_price = api.decimal(this.inputAmount * this.inputPrice)
           this.total_price = isNaN(this.total_price) ? 0 : this.total_price

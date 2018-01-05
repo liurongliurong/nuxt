@@ -125,8 +125,8 @@
           }, ff.btn)
         })
       },
-      onChange (obj) {
-        this.model = obj.e.target.value
+      onChange (e) {
+        this.model = e.target.value
         this.balance = this.loanData[this.model].data1 + this.loanData[this.model].unit
         this.totalMoney = this.loanData[this.model].data2 + this.loanData[this.model].unit
         // this.select()

@@ -103,7 +103,7 @@
       <router-link to="/user/order/0">出售云算力</router-link>
       <router-link to="/user/order/0">查看订单</router-link>
     </div>
-    <MyMask :form="form[edit]" :title="editText" v-if="edit" @submit="submit" @closeMask="closeMask">
+    <MyMask :form="form[edit]" :title="editText" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
       <template slot="fee">
         <p v-if="edit==='Withdrawals'">手续费：{{total_price * fee|format}}元<span class="fee">({{fee*100+'%'}})</span></p>
         <p v-if="edit==='GetIncome'">手续费：0.0002btc</p>
@@ -267,9 +267,9 @@
       onChange (obj) {
         var value = obj.e.target.value
         if (parseFloat(value) > parseFloat(this.amount)) {
-          value = this.amount
+          obj.e.target.value = this.amount
         }
-        this.total_price = value
+        this.total_price = obj.e.target.value
       },
       getData () {
         if (this.token !== 0) {
