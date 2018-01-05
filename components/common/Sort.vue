@@ -217,13 +217,13 @@
         transition: all .3s;
         transform:rotate(180deg);
         position: relative;
-        top: -4px;
+        top: -9px;
       }
       &.active{
         color:$blue;
         .iconfont{
           position: relative;
-          top: 2px;
+          top: 10px;
         }
       }
       &.up{
