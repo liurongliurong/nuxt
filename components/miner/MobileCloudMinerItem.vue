@@ -14,23 +14,23 @@
           <div class="mobile_text_item">剩余可售<b>{{(d.amount-d.buyed_amount)<0?0:(d.amount-d.buyed_amount)}}台</b></div>
         </div>
       </div>
-      <div class="wrap">  
+      <div class="mobile_wrap">  
         <template v-if="percent > 100">
           <div class="circle">  
-              <div class="percent left11" :style="{'-webkit-transform': 'rotate(' + (18 / 5) * ' + percent + ' + ' deg )'}"></div>  
-              <div :class="['percent', 'right11', 'wth0']"></div>  
-          </div>  
+            <div class="percent left11" :style="{'-webkit-transform': 'rotate(' + (18 / 5) * ' + percent + ' + ' deg )'}"></div>  
+            <div :class="['percent', 'right11', 'wth0']"></div>
+          </div>
         </template>
         <template v-else-if="percent > 50">
-          <div :class="['circle', 'clip-auto']" >  
-              <div class="percent left11" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
-              <div class="percent right11"></div>  
+          <div :class="['circle', 'clip-auto']" >
+            <div class="percent left11" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
+            <div class="percent right11"></div>
           </div>  
         </template>
         <template v-else-if="percent <= 50">
-          <div class="circle"> 
-              <div class="percent left11" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
-              <div class="percent right11 wth0"></div>  
+          <div class="circle">
+            <div class="percent left11" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
+            <div class="percent right11 wth0"></div>
           </div>  
         </template>
         <div class="num"><span>{{percent}}</span>%</div>  
@@ -100,57 +100,53 @@
           }
         }
       }
+      .mobile_wrap{
+        top:0.5rem;
+        right: 0.4rem;
+        background-color: #ffb386;
+        &,.circle,.percent{
+          position: absolute;
+          width: 76px;
+          height: 76px;
+          border-radius: 50%;
+        }
+        .circle{
+          border:20px solid #ffb386;
+          clip:rect(0,76px,76px,38px);
+          .percent{
+            top:-20px;
+            left:-20px;
+          }
+          .left11{  
+            transition:transform ease;
+            border:20px solid #ccc;
+            clip: rect(0,38px,76px,0);
+          }
+          .right11{
+            border:20px solid #ccc;
+            clip: rect(0,76px,76px,38px);
+          }
+          .wth0{
+            width:0;  
+          }
+          &.clip-auto{
+            clip:rect(auto, auto, auto, auto);  
+          }
+        }
+        .num{
+          position: absolute;
+          width: 66px;
+          height: 66px;
+          line-height: 66px;
+          text-align: center;
+          font-size: 14px;
+          left: 5px;
+          top: 5px;
+          border-radius: 50%;
+          background-color: #fff;
+          z-index: 1;
+        }
+      }
     }
   }
-    .wrap,.circle,.percent{  
-        position: absolute;  
-        width: 76px;  
-        height: 76px;  
-        border-radius: 50%;  
-    }  
-    .wrap{  
-       top:0.5rem;  
-        right: 0.3rem;
-        // left:50px;  
-        background-color: #ffb386;  
-    }  
-    .circle{  
-        box-sizing: border-box;  
-        border:20px solid #ffb386;  
-        clip:rect(0,76px,76px,38px);  
-    }  
-    .clip-auto{  
-        clip:rect(auto, auto, auto, auto);  
-    }  
-    .percent{  
-        box-sizing: border-box;  
-        top:-20px;  
-        left:-20px;  
-    }  
-    .left11{  
-        transition:transform ease;  
-        border:20px solid #ccc;  
-        clip: rect(0,38px,76px,0);  
-    }  
-    .right11{  
-        border:20px solid #ccc;  
-        clip: rect(0,76px,76px,38px);  
-    }  
-    .wth0{  
-        width:0;  
-    }  
-    .num{  
-    position: absolute;
-    box-sizing: border-box;
-    width: 66px;
-    height: 66px;
-    line-height: 66px;
-    text-align: center;
-    font-size: 14px;
-    left: 5px;
-    top: 5px;
-    border-radius: 50%;
-    background-color: #fff;
-    z-index: 1;
-    }  
 </style>
