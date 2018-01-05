@@ -54,16 +54,12 @@
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .mobile_base_info{
+    background: $white;
     .img{
       text-align: center;
-      padding-top: 1.5rem;
-      background: $white;
-      img{
-        width: 80%;
-      }
+      padding: 5% 20%;
     }
     .first_box{
-      background: #fff;
       padding: 15px;
       margin-top:-15px;
       h4{
@@ -73,14 +69,15 @@
           color:$blue;
           padding:2px 7px;
           border-radius:3px;
-          margin-right: 0.5rem;
+          margin-right: 0.1rem;
+          font-size: 0.16rem;
         }
         .gray{
           color: #999;
           border: 1px solid #999;
         }
         .name_box{
-          font-size: 0.7rem;
+          font-size: 0.3rem;
         }
       }
       .mobile_price{
