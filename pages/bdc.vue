@@ -531,7 +531,7 @@
         padding: 0 15px;
         position: absolute;
         bottom: 0;
-        top: 8rem;
+        top: 4.5rem;
         .title {
           text-align: center;
           font-size: 18px;

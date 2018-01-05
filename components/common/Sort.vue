@@ -192,12 +192,12 @@
         background: #fff;
         // margin-top:15px;
         @include flex(space-between)
-        padding:0 20px;
+        padding:0 0.2rem;
         border-bottom:1px solid $border;
         .item{
-          padding:0 5px;
-          font-size: 0.5rem;
-          line-height: 1.6rem;
+          padding:0 0.2rem;
+          font-size: 0.26rem;
+          line-height: 1rem;
           border-bottom:2px solid transparent;
           &.active{
             color:#FE5039;

@@ -242,7 +242,6 @@
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .money_flow{
-    padding:0 15px;
     h2{
       padding:0 15px !important;
     }
@@ -282,18 +281,18 @@
     .mobile_box{
       @include mobile_show
       width: 100%;
+      padding:0;
       background: #f5f5f9;
       .flow_p{
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding:0 .5rem;
-        height: 2rem;
-        line-height:2rem;
-        background: white;
+        height: 0.73rem;
+        line-height:0.73rem;
+        background: #f5f5f9;
         color: #999999;
-        font-size: 0.6rem;
-        padding-bottom:.4rem;
+        padding:0 0.3rem;
+        font-size: 0.25rem;
         box-sizing: border-box;
       }
       .moneyflow{
@@ -303,28 +302,27 @@
         .monrylist{
           width: 100%;
           height: 100%;
-          padding:0 .5rem;
+          padding:0.3rem .3rem;
           box-sizing: border-box;
           display: flex;
           justify-content: space-between;
           border-top:1px solid #ddd;
           .left i{
             display: block;
-            font-size: .6rem;
-            padding-top: .5rem;
+            font-size: .25rem;
           }
           .left em{
             display: block;
-            font-size: .45rem;
-            padding-top: .3rem;
+            font-size: .25rem;
             color: #a9a9a9;
+            padding-top: 0.1rem;
             font-style: normal;
           }
           .right{
-            line-height: 3rem;
+            line-height: 0.88rem;
             color: #01beb5;
             font-weight: 800;
-            font-size: 0.6rem;
+            font-size: 0.3rem;
             &.active{
               color: red;
             }
@@ -338,9 +336,9 @@
   }
   .loadmore{
         width: 100%;
-        height: 2rem;
+        height: 1.3rem;
         text-align: center;
-        line-height: 2rem;
+        line-height: 1.3rem;
         background: white;
     }
 </style>

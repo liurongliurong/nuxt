@@ -110,7 +110,7 @@
     }  
     .wrap{  
         top:0.5rem;  
-        right: 1rem;
+        right: 0.3rem;
         // left:50px;  
         background-color: #ffb386;  
     }  
