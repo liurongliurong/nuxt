@@ -10,13 +10,13 @@
           <!-- input -->
           <template v-if="f.type!=='select'">
             <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :value="$parent[f.value]&&$parent[f.value].card_no" :title="f.pattern&&check[f.pattern].tips" v-if="f.value==='bank_card'">
-            <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" @change="($parent.onChange&&$parent.onChange($event,f.name,f.tipsUnit))||($parent.$parent.onChange&&$parent.$parent.onChange($event,f.name,f.tipsUnit))" :isChange="f.isChange" :title="f.pattern&&check[f.pattern].tips" :maxlength="f.len" v-else-if="f.changeEvent">
+            <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" @change="onChange($event,f.name,f.tipsUnit)" :isChange="f.isChange" :title="f.pattern&&check[f.pattern].tips" :maxlength="f.len" v-else-if="f.changeEvent">
             <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" @input="$parent.onFocus" :pattern="f.pattern&&check[f.pattern].code" :title="f.pattern&&check[f.pattern].tips" v-else-if="f.focusEvent">
             <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :isChange="f.isChange" :title="f.pattern&&check[f.pattern].tips" :maxlength="f.len" v-else>
           </template>
           <!-- select -->
           <div class="sel" v-else-if="f.option">
-            <select :name="f.name" @change="$parent.$parent.changeEvent" v-if="f.dataNo">
+            <select :name="f.name" @change="onChange($event)" v-if="f.dataNo">
               <option :value="k" v-for="v,k in f.option">{{v}}</option>
             </select>
             <select :name="f.name" isChange="f.isChange" v-else>
@@ -196,6 +196,9 @@
         var counties = this.selectCity(this.city, v)
         counties = counties.length ? counties[0] : this.city[0]
         this.county = counties.county
+      },
+      onChange (e, name, unit) {
+        this.$emit('onChange', {e, name, unit})
       }
     },
     computed: {

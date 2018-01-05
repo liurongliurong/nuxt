@@ -166,7 +166,9 @@
         </div>
       </form>
     </div>
-    <MyMask :form="addressForm" :title="title" :contract="contract" v-if="edit"></MyMask>
+    <MyMask :form="addressForm" :title="title" :contract="contract" v-if="edit" @submit="submit" @closeMask="closeMask">
+      <pay-type slot="pay_type" @setPayNo="setPayNo" :payNo="payNo" :balance="balance"></pay-type>
+    </MyMask>
   </section>
 </template>
 
@@ -176,9 +178,10 @@
   import { mapState } from 'vuex'
   import FormField from '@/components/common/FormField'
   import MyMask from '@/components/common/Mask'
+  import PayType from '@/components/common/PayType'
   export default {
     components: {
-      FormField, MyMask
+      FormField, MyMask, PayType
     },
     data () {
       return {
@@ -208,7 +211,7 @@
         params1: '',
         params2: '',
         detail: {},
-        balance: '',
+        balance: 0,
         number: 0
       }
     },
@@ -348,6 +351,10 @@
       setValue (name, k) {
         this[name] = k
       },
+      setPayNo (k) {
+        this.payNo = k
+        this.closeMask()
+      },
       tip (str, ele) {
         if (this.isMobile) {
           api.tips(str, 1)
@@ -430,7 +437,7 @@
           var self = this
           util.post(url, {sign: api.serialize(data)}).then(function (res) {
             api.checkAjax(self, res, () => {
-              self.balance = res.balance
+              self.balance = +res.balance
               if (res.output) {
                 self.detail.output = res.output
                 self.detail.total_electric_fee = res.total_electric_fee
@@ -681,7 +688,6 @@
               line-height: 2.2;
             }
           }
-          @include mobile_hide
         }
       }
       .right_box{

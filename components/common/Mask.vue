@@ -3,40 +3,26 @@
     <div class="popup_con">
       <div class="popup_title">
         <span>{{title}}</span>
-        <span class="icon_close" @click="$parent.closeMask"></span>
+        <span class="icon_close" @click="closeMask"></span>
       </div>
-      <form :class="['form form_content', {card_form: $parent.edit==='card'}]" @submit.prevent="$parent.submit" novalidate v-if="form.length">
+      <form class="form form_content" @submit.prevent="submit" novalidate v-if="form&&form.length">
         <AddressInput :form="form" :val="val" v-if="val"></AddressInput>
         <template v-else>
-          <FormField :form="form"></FormField>
-          <p v-if="$parent.fee&&$parent.edit!=='GetIncome'">手续费：{{$parent.total_price * $parent.fee|format}}元<span class="fee">({{$parent.fee*100+'%'}})</span></p>
-          <p v-if="$parent.fee&&$parent.edit==='GetIncome'">手续费：0.0002btc</p>
+          <FormField :form="form" @onChange="onChange"></FormField>
+          <slot name="fee"></slot>
         </template>
         <button name="btn">确认提交</button>
       </form>
       <template v-else-if="contract">
-        <div class="popup_body" v-html="contract" v-if="contract!=='selfEdit'"></div>
-        <slot v-else></slot>
+        <slot name="selfEdit" v-if="contract==='selfEdit'"></slot>
+        <div class="popup_body" v-html="contract" v-else></div>
         <div class="popup_foot">
-          <label for="accept1" @click="goOn">
+          <label for="accept1" @click="closeMask">
             <span>同意并继续</span>
           </label>
         </div>
       </template>
-      <div class="mobile_pay_type" v-else>
-        <div :class="['pay_item', {active:$parent.payNo===2}]" @click="setPayNo(2)">
-          <div class="pay_item_left">
-            <span>支付宝支付</span>
-          </div>
-        </div>
-        <div :class="['pay_item', {active:$parent.payNo===1}]" @click="setPayNo(1)">
-          <div class="pay_item_left">
-            <span>可用余额</span>
-            <span class="val">{{$parent.balance}}元</span>
-          </div>
-          <router-link to="/mobile/recharge">充值</router-link>
-        </div>
-      </div>
+      <slot name="pay_type" v-else></slot>
     </div>
   </div>
 </template>
@@ -68,13 +54,18 @@
     },
     methods: {
       goOn () {
-        this.$parent.closeMask()
+        this.closeMask()
         var accept = document.querySelector('#accept')
         accept.checked = true
       },
-      setPayNo (k) {
-        this.$parent.payNo = k
-        this.$parent.closeMask()
+      closeMask () {
+        this.$emit('closeMask')
+      },
+      submit (e) {
+        this.$emit('submit', e)
+      },
+      onChange (obj) {
+        this.$emit('onChange', obj)
       }
     }
   }

@@ -137,7 +137,7 @@
         <p class="tel">咨询电话： 0571-28031736</p>
       </div>
     </div>
-    <MyMask :form="nowFormData" :title="title" :contract="contract" v-if="edit&&edit!==4"></MyMask>
+    <MyMask :form="nowFormData" :title="title" :contract="contract" @submit="submit" @closeMask="closeMask" v-if="edit&&edit!==4"></MyMask>
     <div :class="'popup pay_type_select'+(isMobile?' mobile_popup':'')" v-if="edit===4">
       <div class="popup_con">
         <div class="popup_title">

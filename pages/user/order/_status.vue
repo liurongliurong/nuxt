@@ -144,7 +144,7 @@
         <p>暂无列表信息</p>
       </div>
     </div>
-    <MyMask :form="form[edit]" :title="editText" v-if="edit"></MyMask>
+    <MyMask :form="form[edit]" :title="editText" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange"></MyMask>
   </section>
 </template>
 
@@ -322,22 +322,25 @@
           })
         })
       },
-      onChange (e, i, unit) {
-        if (i === 'total_price') {
-          this.total_price = e.target.value
+      onChange (obj) {
+        var value = obj.e.target.value
+        var name = obj.name
+        var unit = obj.unit
+        if (name === 'total_price') {
+          this.total_price = value
           this.total_price = isNaN(this.total_price) ? 0 : this.total_price
           this.transfer_price = api.decimal(this.total_price / this.amount)
           this.transfer_price = isNaN(this.transfer_price) ? 0 : this.transfer_price
         } else {
-          if (i === 'amount') {
+          if (name === 'amount') {
             if (unit === '台') {
-              e.target.value = (+e.target.value > this.amount) ? this.amount : e.target.value
+              value = (+value > this.amount) ? this.amount : value
             } else {
-              e.target.value = (+e.target.value > this.amount) ? api.decimal(this.amount, 2) : e.target.value
+              value = (+value > this.amount) ? api.decimal(this.amount, 2) : value
             }
-            this.inputAmount = e.target.value
+            this.inputAmount = value
           } else {
-            this.inputPrice = e.target.value
+            this.inputPrice = value
           }
           this.total_price = api.decimal(this.inputAmount * this.inputPrice)
           this.total_price = isNaN(this.total_price) ? 0 : this.total_price

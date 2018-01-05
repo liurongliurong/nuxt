@@ -63,7 +63,9 @@
       <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
       <p v-if="showno" class="showno loadmore">暂无数据······</p>
     </div>
-    <MyMask :form="form[edit]" :title="editText" v-if="edit"></MyMask>
+    <MyMask :form="form[edit]" :title="editText" v-if="edit" @submit="submit" @closeMask="closeMask">
+      <p slot="fee">手续费：{{total_price * fee|format}}元<span class="fee">({{fee*100+'%'}})</span></p>
+    </MyMask>
   </section>
 </template>
 
@@ -182,8 +184,8 @@
           })
         })
       },
-      submit () {
-        var form = document.querySelector('.form_content')
+      submit (e) {
+        var form = e.target
         var data = api.checkFrom(form)
         var sendData = {token: this.token, user_id: this.user_id}
         if (!data) return false
@@ -196,8 +198,8 @@
           }, form.btn)
         })
       },
-      onChange (e) {
-        this.total_price = e.target.value
+      onChange (obj) {
+        this.total_price = obj.e.target.value
       },
       getData () {
         if (this.token !== 0) {
@@ -216,7 +218,8 @@
       }
     },
     filters: {
-      currency: api.currency
+      currency: api.currency,
+      format: api.decimal
     },
     watch: {
       '$route': 'getList'
