@@ -213,17 +213,12 @@
         line-height: 20px;
         text-align: center;
         vertical-align: text-bottom;
-        transition:all .3s;
         font-size: 26px;
         transform:rotate(180deg);
-        position: relative;
-        top: 6px;
       }
       &.active{
         color:$blue;
         .iconfont{
-          position: relative;
-          top: -6px;
         }
       }
       &.up{
