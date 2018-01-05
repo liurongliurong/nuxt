@@ -67,27 +67,28 @@
         .status_box{
           border: 1px solid $blue;
           color:$blue;
-          padding:2px 7px;
+          padding:0.02rem 0.07rem;
           border-radius:3px;
           margin-right: 0.1rem;
-          font-size: 0.16rem;
+          font-size: 0.28rem;
         }
         .gray{
           color: #999;
           border: 1px solid #999;
         }
         .name_box{
-          font-size: 0.3rem;
+          font-size: 0.36rem;
+          font-weight: bold;
         }
       }
       .mobile_price{
         @include flex(space-between);
         color:$light_text;
+        font-size: 0.28rem;
         .type_name{
           background: $orange;
           color:#fff;
-          padding:2px 5px;
-          font-size: 0.4rem;
+          padding:0.02rem 0.05rem;
           border-radius:3px;
         }
         .name_type{
@@ -96,7 +97,7 @@
         .price{
           color:$orange;
           font-weight: bold;
-          font-size: 0.6rem;
+          font-size: 0.36rem;
         }
       }
       .buy_tips{
@@ -143,12 +144,13 @@
         .progress_text{
           position: absolute;
           right:0;
-          top:16px;
+          top:18px;
           color:$text;
-          padding:6px 18px;
-          border:4px solid $purple;
+          padding:4px 0.18rem;
+          border:0.08rem solid $purple;
           border-radius:30px;
           background: #fff;
+          font-size: 0.28rem;
         }
       }
     }
