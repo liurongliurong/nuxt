@@ -1,5 +1,4 @@
 @import './style.scss';
-// @import './assets/fonts/iconfont.css';
 
 body {
   line-height: 1.5;
@@ -10,7 +9,7 @@ body {
 body,div,aside,section,article,h1,h2,h3,h4,h5,h6,p,span,input,textarea,button,ul,li,a,form,label{
   margin:0;
   padding:0;
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 h1,h2,h3,h4,h5,h6{
   font-weight:normal
@@ -176,20 +175,6 @@ input::-webkit-input-placeholder {
       .form{
         padding:40px 130px;
         @include form(v)
-        &.card_form .input{
-          span{
-            &:first-child {
-              width: 120px;
-              text-align: right;
-            }
-            &:nth-child(2) {
-              left: 135px
-            }
-          }
-          input,.sel,.select{
-            padding-left:185px
-          }
-        }
         .fee{
           font-size: 12px;
           color: $light_black;
@@ -198,6 +183,20 @@ input::-webkit-input-placeholder {
       }
       .mobile_pay_type{
         @include mobile_pay_type
+      }
+    }
+    &.bank_card_popup .popup_con .form .input{
+      span{
+        &:first-child {
+          width: 120px;
+          text-align: right;
+        }
+        &:nth-child(2) {
+          left: 135px
+        }
+      }
+      input,.sel,.select{
+        padding-left:185px
       }
     }
     @media screen and (max-width: $mobile) {

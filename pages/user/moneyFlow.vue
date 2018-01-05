@@ -63,7 +63,9 @@
       <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
       <p v-if="showno" class="showno loadmore">暂无数据······</p>
     </div>
-    <MyMask :form="form[edit]" :title="editText" v-if="edit"></MyMask>
+    <MyMask :form="form[edit]" :title="editText" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
+      <p slot="fee">手续费：{{total_price * fee|format}}元<span class="fee">({{fee*100+'%'}})</span></p>
+    </MyMask>
   </section>
 </template>
 
@@ -89,7 +91,7 @@
         list: [],
         edit: '',
         form: {
-          Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}]
+          Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}]
         },
         editText: '',
         sort: [{title: '时间', option: 'desc'}],
@@ -102,6 +104,7 @@
         showno: false,
         len: 0,
         now: 1,
+        amount: 0,
         total: -1
       }
     },
@@ -156,6 +159,7 @@
         util.post('showWithdraw', {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.fee = res.withdraw_fee
+            self.amount = parseInt(res.balance_account)
           })
         })
       },
@@ -182,8 +186,8 @@
           })
         })
       },
-      submit () {
-        var form = document.querySelector('.form_content')
+      submit (e) {
+        var form = e.target
         var data = api.checkFrom(form)
         var sendData = {token: this.token, user_id: this.user_id}
         if (!data) return false
@@ -196,8 +200,12 @@
           }, form.btn)
         })
       },
-      onChange (e) {
-        this.total_price = e.target.value
+      onChange (obj) {
+        var value = obj.e.target.value
+        if (parseFloat(value) > parseFloat(this.amount)) {
+          obj.e.target.value = this.amount
+        }
+        this.total_price = obj.e.target.value
       },
       getData () {
         if (this.token !== 0) {
@@ -216,7 +224,8 @@
       }
     },
     filters: {
-      currency: api.currency
+      currency: api.currency,
+      format: api.decimal
     },
     watch: {
       '$route': 'getList'

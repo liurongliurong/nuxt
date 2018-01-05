@@ -106,7 +106,7 @@ api.line = () => {
 }
 api.countDown = (e) => {
   var t = 60
-  var ele = e.target
+  var ele = e.target || e
   window.tt = setInterval(() => {
     if (t === 0) {
       ele.innerHTML = '重新获取'

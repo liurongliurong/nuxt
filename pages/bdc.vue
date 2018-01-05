@@ -173,7 +173,7 @@
         if (ele.getAttribute('disabled') === 'true') return false
         util.post('send_code', {sign: api.serialize({token: this.token, mobile: form.dep_tel.value})}).then(res => {
           self.tips = '短信验证码发送成功'
-          api.countDown()
+          api.countDown(ele)
           ele.setAttribute('disabled', true)
         })
       }
