@@ -210,15 +210,20 @@
       .iconfont{
         @include block(24)
         height:16px;
-        line-height: 20px;
+        line-height: 40px;
         text-align: center;
         vertical-align: text-bottom;
         font-size: 26px;
+        transition: all .3s;
         transform:rotate(180deg);
+        position: relative;
+        top: -4px;
       }
       &.active{
         color:$blue;
         .iconfont{
+          position: relative;
+          top: 2px;
         }
       }
       &.up{
