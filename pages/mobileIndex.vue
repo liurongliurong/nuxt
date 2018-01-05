@@ -75,8 +75,7 @@
         </div>
       </div>
       <div class="page-4 page-common">
-        <header>
-          <!-- <img class="logo" src="../assets/images/mobile/index/logo.png" />-->
+        <!-- <header>
           <span> </span>
           <div class="login" v-if="token === 0">
             <a @click="goToPage('/auth/regist', 3)">注册</a>
@@ -89,13 +88,23 @@
         </header>
         <div class="swiper" @click="goToPage('/minerShop/activity', 3)">
           <img src="../assets/images/swiper/mobile4.jpg"/>
-        </div>
-        <!-- <div class="introduce">
+        </div> -->
+        <header>
+          <img class="logo" src="../assets/images/mobile/index/logo.png" />
+          <div class="login" v-if="token === 0">
+            <a @click="goToPage('/auth/regist', 3)">注册</a>
+            <span>|</span>
+            <a @click="goToPage('/auth/login', 3)">登录</a>
+          </div>
+          <div class="login" v-else>
+            <a @click="goToPage('/mobile/personcenter', 3)">个人中心</a>
+          </div>
+        </header>
+        <div class="introduce">
           <p class="title">我们为您提供丰富可靠的算力服务。</p>
           <p class="content">整合全球算力产业链资源</p>
           <p class="content">基于算力平台对外进行输出各类算力服务</p>
         </div>
-         v-animate="{value: 'bounceInLeft', delay: 0}"-->
         <div class="link-list">
           <div v-for="item,k in page4Text" class="item" @click="goToPage(item.link, 3)" :key="k">
             <div class="word">

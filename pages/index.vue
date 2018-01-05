@@ -87,7 +87,7 @@
         computeData: {},
         computeRealData: {},
         timer: 0,
-        banners: [{img: require('@/assets/images/swiper/3_1.jpg'), link: '/minerShop/activity', text: '点击抢购'}, {img: require('@/assets/images/swiper/2_1.jpg'), link: '/minerShop/list', text: '开启挖矿之旅'}, {img: require('@/assets/images/swiper/1_1.jpg'), link: '/bdc', text: '前往申请机位', pos: 'center'}]
+        banners: [{img: require('@/assets/images/swiper/2_1.jpg'), link: '/minerShop/list', text: '开启挖矿之旅'}, {img: require('@/assets/images/swiper/1_1.jpg'), link: '/bdc', text: '前往申请机位', pos: 'center'}]
       }
     },
     methods: {
@@ -176,7 +176,7 @@
             background: #fff;
             z-index: 10;
           }
-          &:nth-child(2) a.btn,&:nth-child(3) a.btn{
+          &:nth-child(1) a.btn,&:nth-child(2) a.btn{
             .swiper_arrow{
               margin-right:5px;
             }
@@ -192,16 +192,16 @@
               border-bottom-width:5px;
             }
           }
+          // &:nth-child(1){
+          //   background: linear-gradient(to bottom, #746BFC 10%, #D25CFE);
+          //   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FE5337', endColorstr='#FF9D02',GradientType=0 );
+          //   a.btn{
+          //     color:#D25CFE;
+          //     left:calc(50% - 100px);
+          //     top:290px;
+          //   }
+          // }
           &:nth-child(1){
-            background: linear-gradient(to bottom, #746BFC 10%, #D25CFE);
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FE5337', endColorstr='#FF9D02',GradientType=0 );
-            a.btn{
-              color:#D25CFE;
-              left:calc(50% - 100px);
-              top:290px;
-            }
-          }
-          &:nth-child(2){
             background: linear-gradient(to right, #1077F0 10%, #00E0D8);
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1077F0', endColorstr='#00E0D8',GradientType=1 );
             a.btn{
@@ -214,7 +214,7 @@
               }
             }
           }
-          &:nth-child(3){
+          &:nth-child(2){
             background: linear-gradient(to right, #FE5337 10%, #FF9D02);
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FE5337', endColorstr='#FF9D02',GradientType=1 );
             a.btn{
