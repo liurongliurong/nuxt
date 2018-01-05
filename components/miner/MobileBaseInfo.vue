@@ -1,7 +1,7 @@
 <template>
   <div class="mobile_base_info">
     <div class="img">
-      <img :src="detail.product_img||detail.minerPicture" alt="" style="height:6.5rem;">
+      <img :src="detail.product_img||detail.minerPicture" alt="">
     </div>
     <div class="first_box">
       <h4>
@@ -55,12 +55,9 @@
   @import '~assets/css/style.scss';
   .mobile_base_info{
     .img{
-      width: 100%;
-      height: 8.5rem;
-      padding:0.5rem;
       text-align: center;
       padding-top: 1.5rem;
-      background: white;
+      background: $white;
       img{
         width: 80%;
       }
