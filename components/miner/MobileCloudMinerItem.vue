@@ -112,11 +112,11 @@
         top:0.5rem;  
         right: 1rem;
         // left:50px;  
-        background-color: #ccc;  
+        background-color: #ffb386;  
     }  
     .circle{  
         box-sizing: border-box;  
-        border:20px solid #ccc;  
+        border:20px solid #ffb386;  
         clip:rect(0,76px,76px,38px);  
     }  
     .clip-auto{  
@@ -129,18 +129,18 @@
     }  
     .left11{  
         transition:transform ease;  
-        border:20px solid #ffb386;  
+        border:20px solid #ccc;  
         clip: rect(0,38px,76px,0);  
     }  
     .right11{  
-        border:20px solid #ffb386;  
+        border:20px solid #ccc;  
         clip: rect(0,76px,76px,38px);  
     }  
     .wth0{  
         width:0;  
     }  
     .num{  
-           position: absolute;
+    position: absolute;
     box-sizing: border-box;
     width: 66px;
     height: 66px;

@@ -439,6 +439,7 @@
     },
     mounted () {
       var p = api.getStorge('suanli')
+      console.log(p)
       this.number = p.number || ''
       this.accept = p.accept || false
       this.pageInit()

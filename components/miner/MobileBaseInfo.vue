@@ -9,7 +9,7 @@
         <span class="name_box">{{detail.name}}</span>
       </h4>
       <div class="mobile_price">
-        <div class="type_name">{{params2==='1'?'矿机':'云算力'}}</div>
+        <div :class="['type_name', {'name_type': params2 !== '1'}]">{{params2==='1'?'矿机':'云算力'}}</div>
         <div>算力价：<span class="price">￥{{detail.one_amount_value}}</span></div>
       </div>
       <div class="buy_tips" v-if="params2==='1'">{{detail.DeliveryTime}}</div>
@@ -87,7 +87,7 @@
         }
       }
       .mobile_price{
-        @include flex(space-between)
+        @include flex(space-between);
         color:$light_text;
         .type_name{
           background: $orange;
@@ -95,6 +95,9 @@
           padding:2px 5px;
           font-size: 0.4rem;
           border-radius:3px;
+        }
+        .name_type{
+          background: #327fff;
         }
         .price{
           color:$orange;
@@ -107,7 +110,7 @@
         padding-top:15px;
       }
       .base_info{
-        @include flex(space-between)
+        @include flex(space-between);
         background: #F5F5F5;
         padding:15px 10px;
         .item{
@@ -116,7 +119,8 @@
             font-size: 0.5rem;
           }
           .item_text{
-            color:$light_black
+            color:$light_black;
+            text-align: center;
           }
         }
         .line{
