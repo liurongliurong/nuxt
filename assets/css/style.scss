@@ -394,7 +394,7 @@
         border-color:$border;
         line-height: 25px;
         height:43px;
-        font-size: 0.5rem;
+        font-size: 0.16rem;
         &[data-status='invalid'],&[data-status='null'],&[data-status='error'],&[data-status='success']{
           & ~ span{
             display:none
