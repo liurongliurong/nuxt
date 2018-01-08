@@ -89,12 +89,15 @@
       })
     },
     mounted () {
-      var self = this
-      util.post('friendlinkList', {sign: 'token=0'}).then(function (res) {
-        self.partner = res
-      })
+      this.getFriendLinks()
     },
     methods: {
+      getFriendLinks () {
+        util.post('friendlinkList', {sign: 'token=0'}).then(
+          res => {
+            this.partner = res
+        })
+      },
       goPage (link) {
         if (this.token || link === 'mobileIndex') {
           this.$router.push({name: link})
