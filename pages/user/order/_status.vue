@@ -168,23 +168,21 @@
         status: 1,
         edit: '',
         form: {
-          sold: [{name: 'amount', type: 'text', title: '出售数量', placeholder: '请输入出售数量', changeEvent: true, tipsInfo: '最大可出售数量', tipsUnit: '台', pattern: 'int'}, {name: 'one_amount_value', type: 'text', title: '出售单价', placeholder: '请输入出售单价', changeEvent: true, tipsInfo: '购入价格', tipsUnit: '元', pattern: 'float'}, {name: 'total_price', type: 'text', title: '出售总价', edit: 'price', tipsInfo: 'show', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
-          rent: [{name: 'amount', type: 'text', title: '出租数量', placeholder: '请输入出租数量', changeEvent: true, tipsInfo: '最大可出租数量', tipsUnit: 'T', pattern: 'float'}, {name: 'transfer_time', type: 'select', title: '出租时长', option: ['30', '90', '180', '360'], unit: '天'}, {name: 'transfer_price', type: 'text', title: '出租单价', placeholder: '请输入出租单价', changeEvent: true, tipsInfo: 'show', tipsUnit: '元', pattern: 'float'}, {name: 'total_price', type: 'text', title: '出租总价', edit: 'price', tipsInfo: 'show', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
-          againRent: [{name: 'amount', type: 'text', title: '转租数量', placeholder: '请输入出租数量', edit: 'price', tipsInfo: 'show', tipsUnit: 'T', pattern: 'float'}, {name: 'transfer_time', type: 'text', title: '转租时长', edit: 'price', tipsInfo: '已使用时长', tipsUnit: '天', showUse: true}, {name: 'transfer_price', type: 'text', title: '转租单价', placeholder: '请输入出租单价', edit: 'price', tipsInfo: 'show', tipsUnit: '元'}, {name: 'total_price', type: 'text', title: '转租总价', placeholder: '请输入转租总价', changeEvent: true, tipsInfo: 'show', tipsUnit: '元', pattern: 'float'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}]
+          sold: [{name: 'amount', type: 'text', title: '出售数量', placeholder: '请输入出售数量', changeEvent: true, tipsInfo: '最大可出售数量', tipsUnit: '台', value: 0, value2: 0, pattern: 'int'}, {name: 'one_amount_value', type: 'text', title: '出售单价', placeholder: '请输入出售单价', changeEvent: true, tipsInfo: '购入价格', value2: 0, tipsUnit: '元', pattern: 'float'}, {name: 'total_price', type: 'text', title: '出售总价', edit: 'price', value: 0, tipsInfo: 'show', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
+          rent: [{name: 'amount', type: 'text', title: '出租数量', placeholder: '请输入出租数量', changeEvent: true, tipsInfo: '最大可出租数量', tipsUnit: 'T', value: 0, pattern: 'float'}, {name: 'transfer_time', type: 'select', title: '出租时长', option: [{id: 0, item: '30'}, {id: 1, item: '90'}, {id: 2, item: '180'}, {id: 3, item: '360'}], unit: '天'}, {name: 'transfer_price', type: 'text', title: '出租单价', placeholder: '请输入出租单价', changeEvent: true, tipsInfo: 'show', tipsUnit: '元', pattern: 'float'}, {name: 'total_price', type: 'text', title: '出租总价', edit: 'price', value: 0, tipsInfo: 'show', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
+          againRent: [{name: 'amount', type: 'text', title: '转租数量', placeholder: '请输入出租数量', edit: 'price', value: '', tipsInfo: 'show', tipsUnit: 'T', value: 0, pattern: 'float'}, {name: 'transfer_time', type: 'text', title: '转租时长', edit: 'price', value: '', tipsInfo: '已使用时长', value2: 0, tipsUnit: '天'}, {name: 'transfer_price', type: 'text', title: '转租单价', placeholder: '请输入出租单价', edit: 'price', value: 0, tipsInfo: 'show', tipsUnit: '元'}, {name: 'total_price', type: 'text', title: '转租总价', placeholder: '请输入转租总价', changeEvent: true, tipsInfo: 'show', tipsUnit: '元', pattern: 'float'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}]
         },
         editText: '',
         amount: 0,
         inputPrice: 0,
         inputAmount: 0,
-        transfer_price: 0,
         one_amount_value: 0,
         total_price: 0,
-        transfer_time: 0,
-        have_use_time: 0,
         order_id: '',
         len: 0,
         now: 1,
         fee: 0,
+        transfer_price: 0,
         showImg: false,
         showtype: false,
         nowEdit: 0
@@ -245,23 +243,24 @@
           var self = this
           util.post(requestUrl, {sign: api.serialize(Object.assign({token: this.token, user_id: this.user_id}, data))}).then(function (res) {
             api.checkAjax(self, res, () => {
-              window.scroll(0, 0)
-              document.body.style.overflow = 'hidden'
-              self.edit = str
               self.editText = title
               if (str === 'sold') {
                 self.one_amount_value = res.one_amount_value
-                self.amount = res.show_miner
+                self.form[str][0].value2 = res.show_miner
+                self.form[str][1].value2 = res.one_amount_value
                 self.fee = res.sell_miner_fee
               } else if (str === 'againRent') {
-                self.amount = res.show_hash
-                self.transfer_time = res.rent_time - res.have_use_time
+                self.form[str][0].value = res.show_hash
+                self.form[str][1].value = (res.rent_time - res.have_use_time < 0) && 0
                 self.fee = res.rent_fee
-                self.have_use_time = res.have_use_time
+                self.form[str][1].value2 = res.have_use_time
               } else {
-                self.amount = res.show_hash
+                self.form[str][0].value = res.show_hash
                 self.fee = res.rent_fee
               }
+              window.scroll(0, 0)
+              document.body.style.overflow = 'hidden'
+              self.edit = str
             })
           })
         } else {
@@ -326,24 +325,27 @@
         var value = obj.e.target.value
         var name = obj.name
         var unit = obj.unit
+        var total_price = 0
+        var amount_obj = this.form[this.edit][0]
+        var amount = amount_obj.value2 || amount_obj.value
         if (name === 'total_price') {
-          this.total_price = value
-          this.total_price = isNaN(this.total_price) ? 0 : this.total_price
-          this.transfer_price = api.decimal(this.total_price / this.amount)
-          this.transfer_price = isNaN(this.transfer_price) ? 0 : this.transfer_price
+          total_price = value
+          var val = api.decimal(value / amount)
+          document.getElementsByName('transfer_price')[0].value = (isNaN(val) || !isFinite(val)) ? 0 : val
         } else {
           if (name === 'amount') {
-            obj.e.target.value = (+value > this.amount) ? this.amount : value
+            obj.e.target.value = (+value > amount) ? amount : value
             if (unit !== '台') {
-              obj.e.target.value = api.decimal(obj.e.target.value, 2)
+              obj.e.target.value = api.decimal(isNaN(obj.e.target.value)? 0 : obj.e.target.value, 2)
             }
             this.inputAmount = obj.e.target.value
           } else {
             this.inputPrice = obj.e.target.value
           }
-          this.total_price = api.decimal(this.inputAmount * this.inputPrice)
-          this.total_price = isNaN(this.total_price) ? 0 : this.total_price
+          total_price = api.decimal(this.inputAmount * this.inputPrice)
         }
+        total_price = isNaN(total_price) ? 0 : total_price
+        document.getElementsByName('total_price')[0].value = total_price
       },
       goDetail (type, id) {
         var info = JSON.parse(localStorage.getItem('info'))

@@ -81,7 +81,7 @@
     },
     data () {
       return {
-        form: [{name: '', type: 'select', title: '还款方式', option: ['算力收益', '资金用户'], dataNo: 1, changeEvent: true}, {name: 'balance', type: 'text', title: '账户余额', edit: 'balance'}, {name: 'totalMoney', type: 'text', title: '还款总额', edit: 'totalMoney'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
+        form: [{name: '', type: 'select', title: '还款方式', option: [{id: 0, item: '算力收益'}, {id: 1, item: '资金用户'}], changeEvent: true}, {name: 'balance', type: 'text', title: '账户余额', value: 0, edit: 'balance'}, {name: 'totalMoney', type: 'text', title: '还款总额', value: 0, edit: 'totalMoney'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
         loanData: {0: {data1: '', data2: '', unit: 'btc'}, 1: {data1: '', data2: '', unit: '元'}},
         model: 0,
         item: {},
@@ -89,8 +89,6 @@
         show: '',
         mode: '',
         detailId: '',
-        balance: '',
-        totalMoney: '',
         repaymentId: ''
       }
     },
@@ -127,14 +125,12 @@
       },
       onChange (e) {
         this.model = e.target.value
-        this.balance = this.loanData[this.model].data1 + this.loanData[this.model].unit
-        this.totalMoney = this.loanData[this.model].data2 + this.loanData[this.model].unit
-        // this.select()
+        this.form[1].value = this.loanData[this.model].data1 + this.loanData[this.model].unit
+        this.form[2].value = this.loanData[this.model].data2 + this.loanData[this.model].unit
         if (+this.loanData[this.model].data1 < +this.loanData[this.model].data2) {
           var ff = document.querySelector('.form')
           api.tips('余额不足')
           ff.btn.setAttribute('disabled', true)
-          // return false
         }
       },
       openMask (id) {
@@ -146,9 +142,8 @@
             self.loanData[0].data2 = res.coin_repayment
             self.loanData[1].data1 = res.user_balance
             self.loanData[1].data2 = res.repayment
-            console.log(self.balance)
-            self.balance = self.loanData[self.model].data1 + self.loanData[self.model].unit
-            self.totalMoney = self.loanData[self.model].data2 + self.loanData[self.model].unit
+            self.form[1].value = self.loanData[self.model].data1 + self.loanData[self.model].unit
+            self.form[2].value = self.loanData[self.model].data2 + self.loanData[self.model].unit
             window.scroll(0, 0)
             document.body.style.overflow = 'hidden'
             self.show = true

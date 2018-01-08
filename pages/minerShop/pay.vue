@@ -167,7 +167,7 @@
       </form>
     </div>
     <MyMask :form="addressForm" :title="title" :contract="contract" v-if="edit" @submit="submit" @closeMask="closeMask">
-      <pay-type slot="pay_type" @setPayNo="setPayNo" :payNo="payNo" :balance="balance"></pay-type>
+      <pay-type slot="pay_type" @setPayNo="setPayNo" :payNo="payNo" :balance="+balance"></pay-type>
     </MyMask>
   </section>
 </template>
@@ -192,7 +192,7 @@
         mobileNav1: ['one_amount_value', 'number', 'batch_area'],
         mobileNav2: ['one_amount_value', 'number', 'hash'],
         thead: [{title: '选择'}, {title: '分期金额（元）'}, {title: '分期期数'}, {title: '手续费率'}, {title: '每期应还（元）'}, {title: '每期手续费（元）'}],
-        form: [{name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', checkData: 'balance', len: 6}],
+        form: [{name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6, value2: 0, value3: 0}],
         address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}, {name: 'is_default', type: 'radio', title: '是否设为默认地址'}],
         tips: '请同意服务条款',
         totalPrice: 0,
@@ -210,7 +210,6 @@
         params1: '',
         params2: '',
         detail: {},
-        balance: 0,
         number: 0
       }
     },
@@ -223,7 +222,7 @@
         if (this.payNo === 1) {
           var val = ff.code.value
           data = Object.assign({code: val, mobile: ff.mobile.value}, data)
-          if (this.totalPrice > this.balance) {
+          if (this.totalPrice > +this.balance) {
             this.tip('余额不足，请充值', ff.accept)
             return false
           }
@@ -416,6 +415,8 @@
       pageInit () {
         if (this.token && this.number) {
           this.totalPrice = this.detail.one_amount_value * +this.number
+          this.form[0].value2 = this.detail.one_amount_value
+          this.form[0].value3 = +this.number
           if (this.detail.isLoan) {
             this.totalPrice /= 2
           }
@@ -436,7 +437,6 @@
           var self = this
           util.post(url, {sign: api.serialize(data)}).then(function (res) {
             api.checkAjax(self, res, () => {
-              self.balance = +res.balance
               if (res.output) {
                 self.detail.output = res.output
                 self.detail.total_electric_fee = res.total_electric_fee
@@ -486,7 +486,8 @@
         mobile: state => state.info.mobile,
         isMobile: state => state.isMobile,
         trade_password: state => state.info.trade_password,
-        addressObj: state => state.addressData
+        addressObj: state => state.addressData,
+        balance: state => state.info.balance
       })
     }
   }

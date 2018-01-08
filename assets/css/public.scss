@@ -232,11 +232,11 @@ input::-webkit-input-placeholder {
           .checkbox input{
             margin-right: 10px;
           }
-          &.card_form .input{
-            input,.sel,.select{
-              padding-left:10px
-            }
-          }
+        }
+      }
+      &.bank_card_popup .popup_con .form .input{
+        input,.sel,.select{
+          padding-left:10px
         }
       }
     }

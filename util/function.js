@@ -172,7 +172,6 @@ api.clearForm = (form) => {
   }
 }
 api.errorTip = (ele, str, ismobile) => {
-  ele.focus()
   if (ismobile) {
     api.tips(str, 1)
   }

@@ -396,7 +396,7 @@
         height:43px;
         font-size: 0.5rem;
         &[data-status='invalid'],&[data-status='null'],&[data-status='error'],&[data-status='success']{
-          & ~ span{
+          & ~ span.tips{
             display:none
           }
         }

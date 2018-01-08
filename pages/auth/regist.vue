@@ -2,7 +2,7 @@
   <div class="rigist_block">
     <form class="form regist" action="" @submit.prevent="regist" novalidate v-show="!show">
       <h2>欢迎注册算力网</h2>
-      <FormField :form="form" @onChange="onChange"></FormField>
+      <FormField :form="form" @onChange="onChange" @onFocus="onFocus"></FormField>
       <label for="accept">
         <input type="checkbox" id="accept" name="accept">
         <span>阅读并接受<a class="accept_link" href="javascript:;" @click="show=true">《用户使用协议》</a></span>

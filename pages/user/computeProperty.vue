@@ -137,14 +137,12 @@
         dataFund: {total_miner: 0, total_hash: 0, selled_miner: 0, selling_miner: 0},
         edit: '',
         form: {
-          Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
-          GetIncome: [{name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType'}, {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', tipsUnit: 'hash'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}]
+          Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
+          GetIncome: [{name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType', value: ''}, {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', value2: 0, tipsUnit: ''}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}]
         },
         editText: '',
         fee: 0,
         total_price: 0,
-        amount: 0,
-        product_hash_type: '',
         qwsl: '',
         output: ''
       }
@@ -176,9 +174,9 @@
             api.tips('您的账户余额不足，不能提取收益', this.isMobile)
             return false
           }
+          var nowHash = this.hashType[this.nowEdit]
           requestUrl = 'showWithdrawCoin'
-          data = {token: this.token, user_id: this.user_id, product_hash_type: this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id}
-          this.product_hash_type = this.hashType[this.nowEdit].name.toUpperCase()
+          data = {token: this.token, user_id: this.user_id, product_hash_type: nowHash && nowHash.id}
         }
         if (str === 'Withdrawals') {
           if (!(this.bank_card && this.bank_card.status === 1)) {
@@ -197,17 +195,17 @@
         var self = this
         util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
+            if (str === 'Withdrawals') {
+              self.fee = res.withdraw_fee
+              self.form.Withdrawals[0].value2 = parseInt(res.balance_account)
+            } else if (str === 'GetIncome') {
+              self.fee = res.withdraw_coin_fee
+              self.form.GetIncome[1].value2 = res.coin_account
+            }
             window.scroll(0, 0)
             document.body.style.overflow = 'hidden'
             self.editText = title
             self.edit = str
-            if (str === 'Withdrawals') {
-              self.fee = res.withdraw_fee
-              self.amount = parseInt(res.balance_account)
-            } else if (str === 'GetIncome') {
-              self.fee = res.withdraw_coin_fee
-              self.amount = res.coin_account
-            }
           })
         })
       },
@@ -221,7 +219,10 @@
       },
       getList () {
         var self = this
-        var sendData = {token: this.token, user_id: this.user_id, product_hash_type: (this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id) || '1'}
+        var nowHash = this.hashType[this.nowEdit]
+        this.form.GetIncome[0].value = nowHash.name
+        this.form.GetIncome[1].tipsUnit = nowHash.name.toLowerCase()
+        var sendData = {token: this.token, user_id: this.user_id, product_hash_type: (nowHash && nowHash.id) || '1'}
         util.post('myHashAccount', {sign: api.serialize(sendData)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.computeData = res
@@ -266,13 +267,14 @@
       },
       onChange (obj) {
         var value = obj.e.target.value
-        if (parseFloat(value) > parseFloat(this.amount)) {
-          obj.e.target.value = this.amount
+        var amount = this.edit === 'GetIncome' ? this.form.GetIncome[1].value2 : this.form.Withdrawals[0].value2
+        if (parseFloat(value) > parseFloat(amount)) {
+          obj.e.target.value = amount
         }
         this.total_price = obj.e.target.value
       },
       getData () {
-        if (this.token !== 0) {
+        if (this.token !== 0 && this.hashType.length) {
           var self = this
           util.post('myAccount', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
             api.checkAjax(self, res, () => {

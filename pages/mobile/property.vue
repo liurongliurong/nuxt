@@ -51,7 +51,7 @@
           <span class="icon_close" @click="closeEdit"></span>
         </div>
         <form class="form" @submit.prevent="submit" novalidate v-if="edit===1">
-          <FormField :form="GetIncome"></FormField>
+          <FormField :form="GetIncome" @onChange="onChange"></FormField>
           <p>手续费：0.002btc</p>
           <button name="btn">提交</button>
         </form>
@@ -80,7 +80,7 @@
         compute: [{title: '现货资产'}, {title: '币价'}, {title: '单位挖矿产出'}],
         computeProperty: {total_miner: ['已购入云算力', '台'], total_hash: ['算力总和', 'T'], selled_miner: ['已出售云算力', '台'], selling_miner: ['出售中云算力', '台']},
         dataProperty: {total_miner: 0, total_hash: 0, selled_miner: 0, selling_miner: 0},
-        GetIncome: [{name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType'}, {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', tipsUnit: 'hash'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
+        GetIncome: [{name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType', value: ''}, {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', value2: 0, tipsUnit: ''}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
         showSelect: false,
         edit: 0,
         showModal: false,
@@ -94,7 +94,7 @@
     },
     methods: {
       getData () {
-        if (this.token !== 0) {
+        if (this.token !== 0 && this.hashType.length) {
           var self = this
           util.post('showCoinData', {sign: api.serialize({token: this.token})}).then(function (res) {
             api.checkAjax(self, res, () => {
@@ -121,7 +121,10 @@
       },
       getList () {
         var self = this
-        var sendData = {token: this.token, user_id: this.user_id, product_hash_type: (this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id) || '1'}
+        var nowHash = this.hashType[this.nowEdit]
+        this.GetIncome[0].value =  nowHash.name
+        this.GetIncome[1].tipsUnit = nowHash.name.toLowerCase()
+        var sendData = {token: this.token, user_id: this.user_id, product_hash_type: nowHash.id || '1'}
         util.post('myHashAccount', {sign: api.serialize(sendData)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.computeData = res
@@ -152,8 +155,6 @@
             api.tips('您的账户余额不足，不能提取收益', 1)
             return false
           }
-          this.edit = k
-          this.showModal = true
           var requestUrl = 'showWithdrawCoin'
           var data = {token: this.token, user_id: this.user_id, product_hash_type: this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id}
           this.product_hash_type = this.hashType[this.nowEdit].name.toUpperCase()
@@ -162,6 +163,9 @@
             api.checkAjax(self, res, () => {
               self.fee = res.withdraw_coin_fee
               self.amount = res.coin_account
+              self.GetIncome[1].value2 = res.coin_account
+              self.edit = k
+              self.showModal = true
             })
           })
         } else {
@@ -188,11 +192,12 @@
           }, form.btn)
         })
       },
-      onChange (e) {
-        if (parseFloat(e.target.value) > parseFloat(this.amount)) {
-          e.target.value = this.amount
+      onChange (obj) {
+        var amount = this.GetIncome[1].value2
+        if (parseFloat(obj.e.target.value) > parseFloat(amount)) {
+          obj.e.target.value = amount
         }
-        this.total_price = e.target.value
+        this.total_price = obj.e.target.value
       },
       closeEdit () {
         this.showModal = false

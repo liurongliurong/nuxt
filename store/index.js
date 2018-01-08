@@ -11,7 +11,7 @@ const state = {
     mobile: '',
     token: 0,
     true_name: '',
-    bank_card: '',
+    bank_card: {card_no: ''},
     risk: {user_risk_score: -1},
     address: [],
     trade_password: 0,
