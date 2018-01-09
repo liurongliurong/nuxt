@@ -50,10 +50,7 @@
     },
     data () {
       return {
-        loading: false,
-        // minerDate: [],
-        total: -1,
-        currentPage: 1
+        loading: false
       }
     },
     asyncData ({ params }) {
@@ -61,54 +58,24 @@
     },
     methods: {
       loadMore () {
-        if (this.now < this.len ) {
+        if (this.now <= this.len ) {
           this.loading = true
-          this.$emit('fetchData')
+          this.$emit('getMobileData', 1)
+          setTimeout(() => {
+            this.loading = false
+          }, 1000)
         } else {
           this.loading = false
         }
-        // let self = this
-        // let obj = {token: this.token, page: this.currentPage, product_type: '1'}
-        // this.loading = true
-        // if (this.total === 0) {
-        //   this.loading = false
-        //   this.$parent.show = true
-        //   return
-        // } else {
-        //   this.$parent.show = false
-        // }
-        // this.type = this.$route.params.type
-        // if (this.status) {
-        //   obj = Object.assign({status: this.status}, obj)
-        // }
-        // if (this.total > this.minerDate.length || this.minerDate.length === 0) {
-        //   let time = this.minerDate.length === 0 ? 0 : 1000
-        //   setTimeout(() => {
-        //     util.post('showList', {sign: api.serialize(obj)}).then(function (res) {
-        //       api.checkAjax(self, res, () => {
-        //         self.total = res.page.count
-        //         for (let i = 0, len = res.data.length; i < len; i++) {
-        //           self.minerDate.push(res.data[i])
-        //         }
-        //         self.loading = false
-        //         self.currentPage++
-        //       })
-        //     })
-        //   }, time)
-        // } else {
-        //   this.loading = false
-        // }
       }
     },
     mounted () {
-      this.loadMore()
+      this.$emit('getMobileData')
     },
     watch: {
       'status': function () {
-        // this.currentPage = 1
-        // this.minerData = []
-        // this.total = -1
-        this.loadMore()
+        this.loading = false
+        this.$emit('getMobileData')
       }
     },
     computed: {

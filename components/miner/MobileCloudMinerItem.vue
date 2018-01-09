@@ -17,7 +17,7 @@
       <div class="wrap">  
         <template v-if="percent > 100">
           <div class="circle">  
-              <div class="percent left11" :style="{'-webkit-transform': 'rotate(' + (18 / 5) * ' + percent + ' + ' deg )'}"></div>  
+              <div class="percent left11" :style="{'-webkit-transform': 'rotate(' + (18 / 5) * percent + ' deg )'}"></div>  
               <div :class="['percent', 'right11', 'wth0']"></div>  
           </div>  
         </template>
@@ -57,14 +57,22 @@
     methods: {
       goDetail (id, type) {
         api.goPage(id, type, this)
+      },
+      getPercent () {
+        this.percent = ((this.d.buyed_amount) / this.d.amount*100).toFixed(0)
+        if (this.percent > 100) {  
+          this.percent = 0
+        } else {
+          this.percent = this.percent
+        }
       }
     },
     mounted () {
-      this.percent = ((this.d.buyed_amount) / this.d.amount*100).toFixed(0)
-      if (this.percent > 100) {  
-        this.percent = 0
-      } else {
-        this.percent = this.percent
+      this.getPercent()
+    },
+    watch: {
+      'd': function () {
+        this.getPercent()
       }
     }
   }

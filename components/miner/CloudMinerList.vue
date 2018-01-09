@@ -49,73 +49,36 @@
     },
     data () {
       return {
-        loading: false,
-        // cloudMinerDate: [],
-        len: 0,
-        now: 1,
-        total: -1,
-        currentPage: 1
+        loading: false
       }
     },
     asyncData ({ params }) {
       return {type: params.type}
     },
+    mounted () {
+      this.$emit('getMobileData')
+    },
     methods: {
       loadMore () {
         if (this.now < this.len ) {
           this.loading = true
-          this.$emit('fetchData')
+          this.$emit('getMobileData', 1)
+          setTimeout(() => {
+            this.loading = false
+          }, 1000)
         } else {
           this.loading = false
         }
-        // let self = this
-        // let obj = {token: this.token, page: this.currentPage, product_type: '1'}
-        // this.loading = true
-        // if (this.total === 0) {
-        //   this.loading = false
-        //   this.$parent.show = true
-        //   return
-        // } else {
-        //   this.$parent.show = false
-        // }
-        // this.type = this.$route.params.type
-        // if (this.status) {
-        //   obj = Object.assign({status: this.status}, obj)
-        // }
-        // if (this.total > this.cloudMinerDate.length || this.cloudMinerDate.length === 0) {
-        //   let time = this.cloudMinerDate.length === 0 ? 0 : 1000
-        //   setTimeout(() => {
-        //     util.post('productList', {sign: api.serialize(obj)}).then(function (res) {
-        //       api.checkAjax(self, res, () => {
-        //         self.total = res.page.count
-        //         for (let i = 0, len = res.data.length; i < len; i++) {
-        //           self.cloudMinerDate.push(res.data[i])
-        //         }
-        //         self.loading = false
-        //         self.currentPage++
-        //       })
-        //     }).catch(res => {
-        //       console.log(res)
-        //     })
-        //   }, time)
-        // } else {
-        //   this.loading = false
-        // }
       },
       goPay (id) {
         api.setStorge('suanli', {proId: id, proType: '2'})
         this.$router.push({path: '/minerShop/detail/'})
       }
     },
-    mounted () {
-      this.loadMore()
-    },
     watch: {
       'status': function () {
-        // this.currentPage = 1
-        // this.cloudMinerDate = []
-        // this.total = -1
-        this.loadMore()
+        this.loading = false
+        this.$emit('getMobileData')
       }
     },
     computed: {

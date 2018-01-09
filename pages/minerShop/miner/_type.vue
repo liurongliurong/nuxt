@@ -1,8 +1,8 @@
 <template>
   <section class="compute_shop">
     <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2" :status="status" @setStatus="setStatus" @getList="getList"></Sort>
-    <MinerList v-if="type==='1'" :status="status" :minerData="minerData" :len="len" :now="now"></MinerList>
-    <CloudMinerList :status="status" :cloudMinerData="cloudMinerData" :len="len" :now="now" v-else></CloudMinerList>
+    <MinerList v-if="type==='1'" :status="status" :minerData="minerData" :len="len" :now="now" @getMobileData="getMobileData"></MinerList>
+    <CloudMinerList :status="status" :cloudMinerData="cloudMinerData" :len="len" :now="now" @getMobileData="getMobileData" v-else></CloudMinerList>
     <Pager :len="len" v-if="!isMobile"></Pager>
   </section>
 </template>
@@ -36,10 +36,7 @@
       return {type: params.type}
     },
     methods: {
-      fetchData (sort) {
-        if (this.isMobile) {
-          return false
-        }
+      fetchData (sort, more) {
         var self = this
         this.type = this.$route.params.type
         var obj = {token: this.token, page: this.now, product_type: '1'}
@@ -58,7 +55,7 @@
         util.post(url, {sign: api.serialize(obj)}).then(function (res) {
           api.checkAjax(self, res, () => {
             if (self.type === '1') {
-              if (self.isMobile) {
+              if (more) {
                 for (let i = 0, len = res.data.length; i < len; i++) {
                   self.minerData.push(res.data[i])
                 }
@@ -66,7 +63,7 @@
                 self.minerData = res.data
               }
             } else {
-              if (self.isMobile) {
+              if (more) {
                 for (let i = 0, len = res.data.length; i < len; i++) {
                   self.cloudMinerData.push(res.data[i])
                 }
@@ -87,6 +84,14 @@
         this.now = 1
         this.status = n
         this.fetchData()
+      },
+      getMobileData (isMore) {
+        if (isMore) {
+          this.now++
+          this.fetchData(0, 1)
+        } else {
+          this.fetchData()
+        }
       }
     },
     watch: {
