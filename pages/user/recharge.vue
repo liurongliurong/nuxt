@@ -8,7 +8,7 @@
         <p>开户银行：杭州联合农村商业银行股份有限公司吴山支行</p>
         <p>银行卡号：2010 0018 4219 726</p>
         <div class="recharge_process">
-          <div>流程说明：</div>
+          <div class="h3">流程说明：</div>
           <div class="process">
             <div class="item active" v-for="p,k in processText">
               <i>{{k+1}}</i>
@@ -120,8 +120,14 @@
         font-size: 16px;
         line-height: 2;
         color:$light_text;
+        p{
+          font-size: 0.3rem;
+        }
         .recharge_process{
           @include flex
+          .h3{
+            font-size:0.3rem !important;
+          }
           .process{
             font-size: 14px;
             width:600px;
@@ -175,7 +181,10 @@
         }
       }
       button{
-        margin:0
+        margin:0;
+        height: 0.9rem;
+        font-size:0.4rem !important;
+        line-height:0.9rem;
       }
     }
     @media screen and (max-width: $mobile) {
