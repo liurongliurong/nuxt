@@ -82,7 +82,7 @@
           <h6>【主流厂商】</h6>
           <div style="height:313px;">
               <div class="she_ol" style="padding-top:1px;">
-                <div  @click="goDetailb(n.id)" class="border" v-for="n, k in sheol1" :key="k"><span></span>{{n.title}}</div>
+                <div  @click="goDetailb(n.id, 3)" class="border" v-for="n, k in sheol1" :key="k"><span></span>{{n.title}}</div>
               </div>
           </div>
           <router-link to="/manufacturer/list">全部厂商介绍 ></router-link>
@@ -90,7 +90,7 @@
         <div class="shebottomcen">
           <h6>【矿机测评】</h6>
           <div class="she_ol">
-            <div class="imgshe" v-for="n, k in sheol2" @click="goDetaila(n.id)">
+            <div class="imgshe" v-for="n, k in sheol2" @click="goDetaila(n.id, 2)">
               <h2>BitCoin</h2>
               <div class="imgshe1">
                 <img :src="n.image"/>
@@ -104,7 +104,7 @@
         <div class="shebottomright">
           <h6>【矿机博物馆】</h6>
           <div class="all_ol" style="height:287px;">
-            <div @click="goDetail(n.id)" class="she_ol" v-for="n, k in sheol3" :key="k">
+            <div @click="goDetail(n.id, 1)" class="she_ol" v-for="n, k in sheol3" :key="k">
               <img :src="n.image"/>
               <p class="title">{{n.title}}</p>
             </div>
@@ -192,32 +192,18 @@
       }
     },
     methods: {
-      hoverwhite (k) {
-        this.show = k
-        var bigimg = document.getElementsByClassName('teimg')
-        for (var a = 0; a < bigimg.length; a++) {
-          if (a === k) {
-            bigimg[a].style.opacity = '1'
-          } else {
-            bigimg[a].style.opacity = '0'
-          }
+      goDetail (id, type) {
+        localStorage.setItem('icon_id', JSON.stringify([id]))
+        if (type === 1){
+          this.$router.push({path: '/equipments/detail/'})
+        } else if (type === 2) {
+          this.$router.push({path: '/equipmentEvaluate/detail/'})
+        } else if (type === 3) {
+          this.$router.push({path: '/manufacturer/detail/'})
         }
-      },
-      goDetail (id) {
-        localStorage.setItem('icon_id', JSON.stringify([id]))
-        this.$router.push({path: '/equipments/detail/'})
-      },
-      goDetaila (id) {
-        localStorage.setItem('icon_id', JSON.stringify([id]))
-        this.$router.push({path: '/equipmentEvaluate/detail/'})
-      },
-      goDetailb (id) {
-        localStorage.setItem('icon_id', JSON.stringify([id]))
-        this.$router.push({path: '/manufacturer/detail/'})
       }
     },
     mounted () {
-      this.hoverwhite(0)
       var self = this
       util.post('showDifficulty', {sign: api.serialize({token: 0})}).then(function (res) {
         api.checkAjax(self, res, () => {
