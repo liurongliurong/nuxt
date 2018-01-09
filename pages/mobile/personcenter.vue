@@ -30,7 +30,6 @@
       </router-link>
     </div>
     <button @click="logout" class="back">退出登录</button>
-    <!-- <div class="null"></div> -->
     <div class="popup" v-if="showModal">
       <div class="popup_con">
         <div class="popup_title">
@@ -231,7 +230,6 @@
       width: 100%;
       height: 1.64rem;
       background:white;
-      // border-bottom: 1px solid #ddd;
       font-size: 0.28rem;
       display: flex;
       justify-content: space-between;
@@ -254,12 +252,12 @@
         .button1{
           display:inline-block;
           width:1.5rem;
-          height:0.9rem;
-          line-height: 0.9rem;
+          height:0.7rem;
+          line-height: 0.7rem;
           background:$orange;
           color:white;
-          font-size:0.4rem;
-          margin-top:0;
+          font-size:0.3rem;
+          margin-top:0.1rem;
         }
       }
     }
@@ -298,9 +296,6 @@
           top: 0.05rem;
           margin-right: 0.3rem;
         }
-        // &:not(:last-child){
-        //   border-bottom:1px solid #ddd;
-        // }
         &:nth-child(1) .left .icon,&:nth-child(5) .left .icon{
           color:#327FFF
         }

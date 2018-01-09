@@ -42,7 +42,7 @@
         <img :src="require('@/assets/images/information7.png')"/>
       </router-link>
       <div class="scroll">
-        <router-link to="/computeChart">【全网算力】<b>{{qwsl.hashrate}}PH/s</b>&nbsp;&nbsp;&nbsp;&nbsp;【全网困难度】<b>{{qwsl.difficulty}}T</b></router-link>
+        <router-link to="/computeChart">【全网算力】<b>{{qwsl.hashrate}} PH/s</b>&nbsp;&nbsp;&nbsp;&nbsp;【全网困难度】<b>{{qwsl.difficulty}} T</b></router-link>
         <router-link :to="'/quickNews'" v-for="s, m in scroll" :key="m"> /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon iconfont icon-new1"></span> {{s.title}}</router-link>
       </div>
     </div>
@@ -82,7 +82,7 @@
           <h6>【主流厂商】</h6>
           <div style="height:313px;">
               <div class="she_ol" style="padding-top:1px;">
-                <div  @click="goDetailb(n.id)" class="border" v-for="n, k in sheol1" :key="k"><span></span>{{n.title}}</div>
+                <div  @click="goDetail(n.id, 3)" class="border" v-for="n, k in sheol1" :key="k"><span></span>{{n.title}}</div>
               </div>
           </div>
           <router-link to="/manufacturer/list">全部厂商介绍 ></router-link>
@@ -90,7 +90,7 @@
         <div class="shebottomcen">
           <h6>【矿机测评】</h6>
           <div class="she_ol">
-            <div class="imgshe" v-for="n, k in sheol2" @click="goDetaila(n.id)">
+            <div class="imgshe" v-for="n, k in sheol2" @click="goDetail(n.id, 2)">
               <h2>BitCoin</h2>
               <div class="imgshe1">
                 <img :src="n.image"/>
@@ -103,8 +103,8 @@
         </div>
         <div class="shebottomright">
           <h6>【矿机博物馆】</h6>
-          <div class="all_ol" style="height:287px;">
-            <div @click="goDetail(n.id)" class="she_ol" v-for="n, k in sheol3" :key="k">
+          <div class="all_ol">
+            <div @click="goDetail(n.id, 1)" class="she_ol" v-for="n, k in sheol3" :key="k">
               <img :src="n.image"/>
               <p class="title">{{n.title}}</p>
             </div>
@@ -143,7 +143,11 @@
     data () {
       return {
         scroll: [],
-        autool: [{title: '内蒙矿场', text: '国家电网合规用电', button: '即将开放'}, {title: '山西矿场', text: '国家电网合规用电', button: '即将开放'}, {title: '辽宁矿场', text: '国家电网合规用电', button: '即将开放'}],
+        autool: [
+          {title: '内蒙矿场', text: '国家电网合规用电', button: '即将开放'},
+          {title: '山西矿场', text: '国家电网合规用电', button: '即将开放'},
+          {title: '辽宁矿场', text: '国家电网合规用电', button: '即将开放'}
+        ],
         sheol1: [],
         sheol2: [],
         sheol3: [],
@@ -173,13 +177,21 @@
         }],
         bigimglist: '',
         show: 0,
-        computationallist: [{title: '算力资讯', path: '/computeNews/list'}, {title: '设备之家', path: '/equipments/list'}, {title: '交易信息', path: '/transaction'}, {title: '挖矿币种', path: '/currency'}],
-        // , {title: '电场矿场', path: '/computational/electric'}
+        computationallist: [
+          {title: '算力资讯', path: '/computeNews/list'},
+          {title: '设备之家', path: '/equipments/list'},
+          {title: '交易信息', path: '/transaction'},
+          {title: '挖矿币种', path: '/currency'}
+        ],
         infoleft: [],
         inforight: [],
         active: 0,
         qwsl: '',
-        miners: [{big: require('@/assets/images/information5.jpg'), title: '资深矿工-设备之家', route: '前往了解 >', path: '/equipments/list'}, {big: require('@/assets/images/information2.jpg'), title: '新手矿工-数字货币', route: '前往了解 >', path: '/currency'}, {big: require('@/assets/images/information3.jpg'), title: '平台交易最新资讯', route: '前往了解 >', path: '/transaction'}]
+        miners: [
+          {big: require('@/assets/images/information5.jpg'), title: '资深矿工-设备之家', route: '前往了解 >', path: '/equipments/list'},
+          {big: require('@/assets/images/information2.jpg'), title: '新手矿工-数字货币', route: '前往了解 >', path: '/currency'},
+          {big: require('@/assets/images/information3.jpg'), title: '平台交易最新资讯', route: '前往了解 >', path: '/transaction'}
+        ]
       }
     },
     head () {
@@ -203,17 +215,15 @@
           }
         }
       },
-      goDetail (id) {
+      goDetail (id, type) {
         localStorage.setItem('icon_id', JSON.stringify([id]))
-        this.$router.push({path: '/equipments/detail/'})
-      },
-      goDetaila (id) {
-        localStorage.setItem('icon_id', JSON.stringify([id]))
-        this.$router.push({path: '/equipmentEvaluate/detail/'})
-      },
-      goDetailb (id) {
-        localStorage.setItem('icon_id', JSON.stringify([id]))
-        this.$router.push({path: '/manufacturer/detail/'})
+        if (type === 1) {
+          this.$router.push({path: '/equipments/detail/'})
+        } else if (type === 2) {
+          this.$router.push({path: '/equipmentEvaluate/detail/'})
+        } else if (type === 3) {
+          this.$router.push({path: '/manufacturer/detail/'})
+        }
       }
     },
     mounted () {
@@ -913,6 +923,7 @@
                     }
                 }
                 .all_ol{
+                    height: 287px;
                     overflow: hidden;
                     margin-bottom: 18px;
                 }
