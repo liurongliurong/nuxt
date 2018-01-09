@@ -66,22 +66,23 @@
         var self = this
         form.btn.setAttribute('disabled', true)
         if (this.rechargeNo) {
-          util.post('applyBalanceRecharge', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              res.subject = encodeURIComponent(res.subject)
-              if (self.isMobile) {
-                res = Object.assign(res, {is_mobile: 1})
-              } else {
-                res = Object.assign(res, {is_mobile: 0})
-              }
-              callbackUrl = location.protocol + '//' + location.host + self.callUrl
-              util.post('alipay', {sign: api.serialize(Object.assign({url: callbackUrl, token: self.token}, res))}).then((resData) => {
-                api.checkAjax(self, resData, () => {
-                  location.href = resData.url
-                })
-              })
-            })
-          })
+          api.tips('暂不能充值', this.isMobile)
+          // util.post('applyBalanceRecharge', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
+          //   api.checkAjax(self, res, () => {
+          //     res.subject = encodeURIComponent(res.subject)
+          //     if (self.isMobile) {
+          //       res = Object.assign(res, {is_mobile: 1})
+          //     } else {
+          //       res = Object.assign(res, {is_mobile: 0})
+          //     }
+          //     callbackUrl = location.protocol + '//' + location.host + self.callUrl
+          //     util.post('alipay', {sign: api.serialize(Object.assign({url: callbackUrl, token: self.token}, res))}).then((resData) => {
+          //       api.checkAjax(self, resData, () => {
+          //         location.href = resData.url
+          //       })
+          //     })
+          //   })
+          // })
         } else {
           util.post('balance_recharge', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
             api.checkAjax(self, res, () => {

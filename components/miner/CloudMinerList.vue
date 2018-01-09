@@ -4,7 +4,7 @@
       <slot></slot>
       <div class="data">
         <template v-if="isMobile===0">
-          <CloudMinerItem v-for="d,k in $parent.cloudMinerDate" :d="d" :key="k"></CloudMinerItem>
+          <CloudMinerItem v-for="d,k in cloudMinerData" :d="d" :key="k"></CloudMinerItem>
         </template>
         <template v-else-if="isMobile===1">
           <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
@@ -36,6 +36,9 @@
     props: {
       status: {
         type: Number
+      },
+      cloudMinerData: {
+        type: Array
       }
     },
     data () {

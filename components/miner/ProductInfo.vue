@@ -1,8 +1,8 @@
 <template>
   <div class="product_info">
-    <div :class="['info_ul', {fix_top:$parent.isFixTop}]">
+    <div :class="['info_ul', {fix_top:isFixTop}]">
       <div class="info_box">
-        <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in params2!=='1'?$parent.infolists:$parent.infolist" @click="tabs(m,d.name)">{{d.title}}</div>
+        <div :class="['info_li',{'active': contentShow===m}]" v-for="d,m in params2!=='1'?cloudInfo:minerInfo" @click="tabs(m,d.name)">{{d.title}}</div>
       </div>
     </div>
     <div class="content_items">
@@ -13,7 +13,7 @@
         <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
         <img class="params_img" :src="params2!=='1'?detail.product_img:detail.ActivityPicture" alt="">
       </div>
-      <div class="content_item" :id="d.name" v-for="d,m in params2!=='1'?$parent.infolists:$parent.infolist">
+      <div class="content_item" :id="d.name" v-for="d,m in params2!=='1'?cloudInfo:minerInfo">
         <h2 v-if="m!==0">{{d.title}}</h2>
         <div class="content_con" v-if="d.name==='product_photos'">
            <img :src="n" alt="" v-for="n,k in detail.product_photos">
@@ -21,7 +21,7 @@
         <div class="params_table" v-else-if="d.name==='machine_intro'||d.name==='MinerAdvantage'">
           <table border="1" cellspacing="0">
             <tbody>
-              <tr v-for="p,k in $parent.params">
+              <tr v-for="p,k in params">
                 <td>{{p}}</td>
                 <td>{{detail[k]}}</td>
               </tr>
@@ -42,11 +42,21 @@
       },
       params2: {
         type: String
+      },
+      cloudInfo: {
+        type: Array
+      },
+      minerInfo: {
+        type: Array
+      },
+      params: {
+        type: Object
       }
     },
     data () {
       return {
-        contentShow: 0
+        contentShow: 0,
+        isFixTop: false
       }
     },
     methods: {
@@ -61,7 +71,18 @@
         } else if (k === 3) {
           scrollTo(0, 2000)
         }
+      },
+      fixTop () {
+        var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
+        if (scrollTop > 500) {
+          this.isFixTop = true
+        } else {
+          this.isFixTop = false
+        }
       }
+    },
+    mounted () {
+      window.addEventListener('scroll', this.fixTop, false)
     }
   }
 </script>

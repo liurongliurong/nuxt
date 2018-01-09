@@ -4,11 +4,11 @@
       <slot></slot>
       <div :class="['box', {mobile_list_box: isMobile}]">
         <template v-if="isMobile===0">
-          <MinerItem v-for="n,k in $parent.minerData" :n="n" :key="k"></MinerItem>
+          <MinerItem v-for="n,k in minerData" :n="n" :key="k"></MinerItem>
         </template>
         <template v-if="isMobile===1">
           <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="item_box" v-if="!showcontent">
-            <MobileMinerItem v-for="n,k in minerData" :n="n" :key="k"></MobileMinerItem>
+            <MobileMinerItem v-for="n,k in minerDate" :n="n" :key="k"></MobileMinerItem>
           </div>
           <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
         </template>
@@ -37,13 +37,16 @@
     props: {
       status: {
         type: Number
+      },
+      minerData: {
+        type: Array
       }
     },
     data () {
       return {
         loading: false,
         showcontent: false,
-        minerData: [],
+        minerDate: [],
         total: -1,
         currentPage: 1
       }
@@ -64,34 +67,26 @@
           this.$parent.show = false
         }
         this.type = this.$route.params.type
-        console.log(this.type)
         if (this.status) {
           obj = Object.assign({status: this.status}, obj)
-          console.log(obj)
         }
-        if (this.total > this.minerData.length || this.minerData.length === 0) {
-          let time = this.minerData.length === 0 ? 0 : 1000
+        if (this.total > this.minerDate.length || this.minerDate.length === 0) {
+          let time = this.minerDate.length === 0 ? 0 : 1000
           setTimeout(() => {
             util.post('showList', {sign: api.serialize(obj)}).then(function (res) {
               api.checkAjax(self, res, () => {
                 self.total = res.page.count
                 for (let i = 0, len = res.data.length; i < len; i++) {
-                  self.minerData.push(res.data[i])
+                  self.minerDate.push(res.data[i])
                 }
                 self.loading = false
                 self.currentPage++
               })
-            }).catch(res => {
-              console.log(res)
             })
           }, time)
         } else {
           this.loading = false
         }
-      },
-      goPay (id) {
-        api.setStorge('suanli', {proId: id, proType: '1'})
-        this.$router.push({path: '/minerShop/detail/'})
       }
     },
     mounted () {
@@ -100,10 +95,9 @@
     watch: {
       'status': function () {
         this.currentPage = 1
-        this.minerData = []
+        this.minerDate = []
         this.total = -1
         this.loadMore()
-        console.log(this.status)
       }
     },
     computed: {

@@ -339,4 +339,8 @@ api.getStorge = (name) => {
   var storge = localStorage.getItem(name) || '{}'
   return JSON.parse(storge)
 }
+api.goPage = (id, type, obj) => {
+  api.setStorge('suanli', {proId: id, proType: type})
+  obj.$router.push({path: '/minerShop/detail/'})
+}
 export default api

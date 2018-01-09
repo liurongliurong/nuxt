@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile_cloud_miner_item item" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)" @click="$parent.goPay(d.id, d.sell_type)">
+  <div class="mobile_cloud_miner_item item" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)" @click="goDetail(d.id, '2')">
     <h3>
       <span>{{d.name}}</span>
       <span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span>
@@ -41,6 +41,7 @@
 
 <script>
   import Vue from 'vue'
+  import api from '@/util/function'
   export default {
     props: {
       d: {
@@ -51,6 +52,11 @@
       return {
         str: {4: '预热', 5: '热销'},
         percent: ''
+      }
+    },
+    methods: {
+      goDetail (id, type) {
+        api.goPage(id, type, this)
       }
     },
     mounted () {

@@ -1,8 +1,8 @@
 <template>
   <section class="compute_shop">
-    <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2"></Sort>
-    <MinerList v-if="type==='1'" :status="status"></MinerList>
-    <CloudMinerList :status="status" v-else></CloudMinerList>
+    <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2" :status="status" @setStatus="setStatus" @getList="getList"></Sort>
+    <MinerList v-if="type==='1'" :status="status" :minerData="minerData"></MinerList>
+    <CloudMinerList :status="status" :cloudMinerData="cloudMinerData" v-else></CloudMinerList>
     <Pager :len="len" v-if="!isMobile"></Pager>
   </section>
 </template>
@@ -24,7 +24,7 @@
         sort: [{title: '价格', option: 'price_desc'}, {title: '算力', option: 'base_desc'}, {title: '剩余总数', option: 'num_desc'}],
         sortNav: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热'}, {code: 1, title: '热销'}, {code: 2, title: '已售罄'}]}],
         sortNav2: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 4, title: '预热'}, {code: 5, title: '热销'}, {code: 10, title: '活动'}, {code: 1000, title: '转售'}, {code: 7, title: '已售罄'}]}],
-        cloudMinerDate: [],
+        cloudMinerData: [],
         minerData: [],
         len: 0,
         now: 1,
@@ -60,7 +60,7 @@
             if (self.type === '1') {
               self.minerData = res.data
             } else {
-              self.cloudMinerDate = res.data
+              self.cloudMinerData = res.data
             }
             self.show = !res.data.length
             if (self.now > 1) return false
@@ -70,6 +70,11 @@
       },
       getList (sort) {
         this.fetchData(sort)
+      },
+      setStatus (n) {
+        this.now = 1
+        this.status = n
+        this.fetchData()
       }
     },
     watch: {

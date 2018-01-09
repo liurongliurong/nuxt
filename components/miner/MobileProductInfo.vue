@@ -10,7 +10,7 @@
         <div class="pro_resume">{{detail.resume}}</div>
         <img class="pro_img" :src="require('@/assets/images/miner_shop/miner_img.jpg')" alt="">
       </div>
-      <div class="content_itemmobile" v-for="d,m in params2!=='1'?$parent.infolists:$parent.infolist">
+      <div class="content_itemmobile" v-for="d,m in params2!=='1'?cloudInfo:minerInfo">
         <h2 v-if="m!==0">{{d.title}}</h2>
         <div class="content_conmobile" v-if="d.name==='product_photos'">
            <img :src="detail.product_photos[k]" alt="" v-for="n,k in detail.product_photos">
@@ -18,7 +18,7 @@
         <div class="params_tablemobile" v-else-if="d.name==='machine_intro'||d.name==='MinerAdvantage'">
           <table border="1" cellspacing="0">
             <tbody>
-              <tr v-for="p,k in $parent.params">
+              <tr v-for="p,k in params">
                 <td>{{p}}</td>
                 <td>{{detail[k]}}</td>
               </tr>
@@ -39,6 +39,15 @@
       },
       params2: {
         type: String
+      },
+      cloudInfo: {
+        type: Array
+      },
+      minerInfo: {
+        type: Array
+      },
+      params: {
+        type: Object
       }
     }
   }

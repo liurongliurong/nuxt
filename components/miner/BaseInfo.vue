@@ -10,7 +10,7 @@
       </div>
       <div class="miner_right">
         <h4>
-          <span :class="$parent.statusObj[detail.status]&&$parent.statusObj[detail.status].color">{{$parent.statusObj[detail.status]&&$parent.statusObj[detail.status].title}}</span>
+          <span :class="detail.statusColor">{{detail.statusStr}}</span>
           <span>{{detail.name}}</span>
         </h4>
         <p class="time">{{detail.DeliveryTime}}</p>
@@ -20,7 +20,7 @@
         </p>
         <p class="address">
           <span class="left_miner">总 算 力</span>
-          <span class="right_miner"><em>{{$parent.totalHash|format}}</em>T</span>
+          <span class="right_miner"><em>{{(detail.one_amount_value*number)|format}}</em>T</span>
         </p>
         <p class="address">
           <span class="left_miner">物&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;流</span>
@@ -29,15 +29,15 @@
         <div class="miner_input">
           <span class="left_miner">数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量</span>
           <div class="input_box right_miner">
-            <span @click="$parent.changeNum(+$parent.number-1)">-</span>
-            <input type="text" v-model="$parent.number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="$parent.changeNum($parent.number)">
-            <span @click="$parent.changeNum(+$parent.number+1)">+</span>
+            <span @click="changeNum(+number-1)">-</span>
+            <input type="text" :value="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum($event.target.value)">
+            <span @click="changeNum(+number+1)">+</span>
           </div>
-          <p class="miner_number">库存{{$parent.leftNum}}台</p>
+          <p class="miner_number">库存{{detail.leftNum}}台</p>
         </div>
         <button class="btn" disabled v-if="detail.status===2">已售罄</button>
         <button class="btn" disabled v-else-if="detail.status===3">产品撤销</button>
-        <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" @click="$parent.checkPay" :disabled="detail.status===4" v-else>立即购买</button>
+        <button :class="['btn buy_btn', {error: buyStatus===1}, {over: buyStatus===2}]" @click="checkPay(false)" :disabled="detail.status===4" v-else>立即购买</button>
       </div>
     </div>
     <div class="cloud_miner" v-if="params2!=='1'">
@@ -48,7 +48,7 @@
       <div class="cloud_miner_left">
         <h4>
           {{detail.product_name}}
-          <span>{{$parent.str[detail.status]}}</span>
+          <span>{{detail.statusStr}}</span>
         </h4>
         <div class="product_data">
           <div class="item" v-for="d,k in proData">
@@ -67,20 +67,20 @@
         </div>
         <div class="progress_price">
           <span class="one">当前进度 {{detail.sellProgress}}</span>
-          <span class="two">剩余可售 {{$parent.leftNum}}台</span>
+          <span class="two">剩余可售 {{detail.leftNum}}台</span>
         </div>
       </div>
       <div class="cloud_miner_right">
         <div class="price_text">我要购买</div>
         <div class="input_box">
-          <input type="text" v-model="$parent.number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="$parent.changeNum($parent.number)">
+          <input type="text" :value="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum($event.target.value)">
           <span>台</span>
         </div>
-        <div class="price_text1">总算力：<span class="money">{{$parent.totalHash|format}}T</span></div>
-        <div class="price_text1">需支付：<span class="money">{{$parent.totalPrice|format}}元</span></div>
+        <div class="price_text1">总算力：<span class="money">{{(detail.hash*number)|format}}T</span></div>
+        <div class="price_text1">需支付：<span class="money">{{(detail.one_amount_value*number)|format}}元</span></div>
         <button class="btn" disabled v-if="detail.status===7">已售罄</button>
-        <button :class="['btn buy_btn', {error: $parent.buyStatus===1}, {over: $parent.buyStatus===2}]" @click="$parent.checkPay($event, false)" v-else :disabled="detail.status===4">立即购买</button>
-        <button class="btn loan_btn" @click="$parent.checkPay($event, true)" v-if="detail.status!==4&&params2==='2'&&detail.is_loan===1">分期购买</button>
+        <button :class="['btn buy_btn', {error: buyStatus===1}, {over: buyStatus===2}]" @click="checkPay(false)" v-else :disabled="detail.status===4">立即购买</button>
+        <button class="btn loan_btn" @click="checkPay(true)" v-if="detail.status!==4&&params2==='2'&&detail.is_loan===1">分期购买</button>
       </div>
     </div>
   </div>
@@ -95,6 +95,12 @@
       },
       params2: {
         type: String
+      },
+      number: {
+        type: String
+      },
+      buyStatus: {
+        type: Number
       }
     },
     data () {
@@ -104,6 +110,14 @@
     },
     filters: {
       format: api.decimal
+    },
+    methods: {
+      changeNum (n) {
+        this.$emit('changeNum', n)
+      },
+      checkPay (isLoan) {
+        this.$emit('checkPay', isLoan)
+      }
     }
   }
 </script>

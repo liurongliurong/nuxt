@@ -1,5 +1,5 @@
 <template>
-  <div :class="['cloud_miner_item item', {'disabled': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]" @click="$parent.goPay(d.id||d.product_id, d.sell_type)">
+  <div :class="['cloud_miner_item item', {'disabled': d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)}]" @click="goDetail(d.id||d.product_id, '2')">
     <h3>
       <span>{{d.name}}</span>
       <span :class="'icon_currency '+((d.hashtype&&d.hashtype.name)||d.type_name)" v-if="d.hashtype"></span>
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+  import api from '@/util/function'
   export default {
     props: {
       d: {
@@ -42,6 +43,11 @@
       return {
         dataNav: {'amount': {title: '出售总数', unit: '台'}, 'one_amount_value': {title: '每台单价', unit: '元'}, 'hash': {title: '每台算力', unit: 'T'}, 'power': {title: '功耗', unit: 'W/台'}, 'hashtype': {title: '算力类型', unit: ''}, 'leftNum': {title: '剩余数量', unit: '台'}},
         str: {4: '预热', 5: '热销'}
+      }
+    },
+    methods: {
+      goDetail (id, type) {
+        api.goPage(id, type, this)
       }
     }
   }
