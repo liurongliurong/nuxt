@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <div class="issues_content" v-show="!show" style="background:white;margin-bottom:40px;">
+    <div class="issues_content" v-show="!show">
       <div v-html="nowItem.content"></div>
       <button @click="back()"  v-show="!show">返回</button>
     </div>
@@ -81,7 +81,7 @@
   .issues{
     button{
       width: 1.5rem;
-      height: 0.9rem;
+      height: 0.6rem;
       background: #327fff;
       border:0;
       color: white;
@@ -93,7 +93,8 @@
       overflow: hidden;
       height: 100%;
       padding:0.5rem;
-      background: #f5f5f9;
+      background:white;
+      margin-bottom:40px;
       box-sizing: border-box;
       text-indent:0rem !important;
       img{

@@ -280,11 +280,11 @@
         width: 100%;
         height: 100%;
         background:white;
-        padding:0.5rem .3rem;
+        padding-top: 0.3rem;
         button{
           width: 1.5rem;
-          height: 0.9rem;
-          font-size: 0.4rem;
+          height: 0.6rem;
+          font-size: 0.3rem;
           color:white;
           background: #26a2ff;
           border:0;
@@ -293,7 +293,7 @@
         }
         h3{
           color:#121212;
-          font-size: 0.3rem;
+          font-size: 0.4rem;
           display: block;
         }
       }
