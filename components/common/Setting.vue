@@ -51,21 +51,7 @@
           }
         }
         if (!setting) return false
-        this.$parent.edit = str
-        this.$parent.title = title
-        if (str === 'address') {
-          if (n) {
-            this.$parent.product_hash_type = n
-            this.$parent.form[this.$parent.edit][0].type = 'text'
-            this.$parent.form[this.$parent.edit][0].edit = 'address'
-          } else {
-            this.$parent.product_hash_type = ''
-            this.$parent.form[this.$parent.edit][0].type = 'select'
-            this.$parent.form[this.$parent.edit][0].edit = 0
-          }
-        }
-        window.scroll(0, 0)
-        document.body.style.overflow = 'hidden'
+        this.$emit('setEdit', {str, title, n})
       }
     },
     computed: {

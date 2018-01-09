@@ -5,8 +5,8 @@ import util from './function'
 
 let api = axios.create({
   // baseURL: 'http://www.suanli.local/background/api',  
-  baseURL: 'https://www.suanli.com/background/api',
-  // baseURL: 'http://192.168.3.206:8080/background/api/',
+  // baseURL: 'https://www.suanli.com/background/api',
+  baseURL: 'http://192.168.3.206:8080/background/api/',
   // baseURL: 'http://192.168.3.45/background/api/',
   // baseURL: 'http://suanli.baoquan.com/background/api',  
   headers: {'Content-Type': 'application/x-www-form-urlencoded'},

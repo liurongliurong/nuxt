@@ -7,13 +7,10 @@
         <span>*</span>
         <!-- type -->
         <template v-if="!f.edit">
-          <!-- input -->
           <template v-if="f.type!=='select'">
             <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :title="f.pattern&&check[f.pattern].tips" :value="bank_card&&bank_card.card_no" v-if="f.value">
             <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :title="f.pattern&&check[f.pattern].tips" :isChange="f.isChange" :maxlength="f.len" @change="f.changeEvent&&onChange($event,f.name,f.tipsUnit)" @input="f.focusEvent&&onFocus($event)" v-else>
-            <!-- <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :title="f.pattern&&check[f.pattern].tips" :isChange="f.isChange" :maxlength="f.len" @change="f.changeEvent&&onChange($event,f.name,f.tipsUnit)" v-else> -->
           </template>
-          <!-- select -->
           <div class="sel" v-else-if="f.option">
             <select :name="f.name" @change="f.changeEvent&&onChange($event)" :isChange="f.isChange">
               <template v-if="f.name==='product_hash_type'">
@@ -24,7 +21,6 @@
               </template>
             </select>
           </div>
-          <!-- select city -->
           <select-city v-else></select-city>
         </template>
         <input :type="f.type" :name="f.name" :value="f.value===undefined?((f.name==='mobile')?mobile:data[f.name]):f.value" disabled :isChange="f.isChange" v-else>

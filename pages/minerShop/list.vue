@@ -28,7 +28,7 @@
         </router-link>
       </div>
     </div>
-    <MinerList>
+    <MinerList :minerData="minerData">
       <h2>
         <div>
           <span style="font-size:24px;">矿机推荐</span>
@@ -37,7 +37,7 @@
         <router-link to="/minerShop/miner/1">更多矿机 ></router-link>
       </h2>
     </MinerList>
-    <CloudMinerList>
+    <CloudMinerList :cloudMinerData="cloudMinerData">
       <h2>
         <div>
           <span>云算力推荐</span>
@@ -68,7 +68,7 @@
     },
     data () {
       return {
-        cloudMinerDate: [],
+        cloudMinerData: [],
         minerData: [],
         picShow: 0,
         pics: [],
@@ -92,7 +92,7 @@
         var url2 = 'showproductList'
         util.post(url2, {sign: api.serialize(obj)}).then(function (res) {
           api.checkAjax(self, res, () => {
-            self.cloudMinerDate = res.data
+            self.cloudMinerData = res.data
           })
         })
         util.post(url, {sign: api.serialize(obj)}).then(function (res) {

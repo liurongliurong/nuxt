@@ -2,7 +2,7 @@
   <section class="account">
     <div class="pc_box" v-if="isMobile===0">
       <h2>账户管理</h2>
-      <Setting :nav="nav" type="account"></Setting>
+      <Setting :nav="nav" type="account" @setEdit="setEdit"></Setting>
     </div>
     <div class="mobile_box" v-if="isMobile===1">
       <div class="list">
@@ -167,6 +167,24 @@
             this.form[this.edit][0].edit = 0
           }
         }
+      },
+      setEdit (obj) {
+        this.edit = obj.str
+        this.title = obj.title
+        if (obj.str === 'address') {
+          if (obj.n) {
+            this.product_hash_type = obj.n
+            this.form[this.edit][0].type = 'text'
+            this.form[this.edit][0].edit = 'address'
+            this.form[this.edit][0].value = obj.n
+          } else {
+            this.product_hash_type = ''
+            this.form[this.edit][0].type = 'select'
+            this.form[this.edit][0].edit = 0
+          }
+        }
+        window.scroll(0, 0)
+        document.body.style.overflow = 'hidden'
       }
     },
     computed: {

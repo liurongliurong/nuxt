@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile_miner_item item" @click="$parent.goPay(n.id)">
+  <div class="mobile_miner_item item" @click="goDetail(n.id, '1')">
     <div class="null">
       <div class="mobile_minerfixed">
         <p class="status1" v-if="n.status===1">热销中</p>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+  import api from '@/util/function'
   export default {
     props: {
       n: {
@@ -35,6 +36,11 @@
         total: -1,
         currentPage: 1,
         items: {'one_amount_value': {title: '矿机单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'buyed_amount': {title: '剩余数量', unit: '台'}}
+      }
+    },
+    methods: {
+      goDetail (id, type) {
+        api.goPage(id, type, this)
       }
     }
   }

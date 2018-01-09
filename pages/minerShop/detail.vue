@@ -10,13 +10,13 @@
           <span>></span>
           <em>{{detail.name}}</em>
         </div>
-        <BaseInfo :params2="params2" :detail="detail"></BaseInfo>
+        <BaseInfo :params2="params2" :detail="detail" :buyStatus="buyStatus" :number="number" @changeNum="changeNum" @checkPay="checkPay"></BaseInfo>
       </div>
-      <ProductInfo :params2="params2" :detail="detail"></ProductInfo>
+      <ProductInfo :params2="params2" :detail="detail" :cloudInfo="cloudInfo" :minerInfo="minerInfo" :params="params"></ProductInfo>
     </template>
     <div class="mobile_box" v-else-if="isMobile===1">
       <MobileBaseInfo :params2="params2" :detail="detail"></MobileBaseInfo>
-      <MobileProductInfo :params2="params2" :detail="detail"></MobileProductInfo>
+      <MobileProductInfo :params2="params2" :detail="detail" :cloudInfo="cloudInfo" :minerInfo="minerInfo" :params="params"></MobileProductInfo>
       <div class="mobile_btn">
         <button disabled v-if="detail.status===7||detail.status===2">立即购买</button>
         <button disabled v-else-if="detail.status===3">产品撤销</button>
@@ -32,7 +32,7 @@
             <div class="popup_text">
               <div class="price">￥{{detail.one_amount_value}}</div>
               <div class="name">{{detail.name}}</div>
-              <div class="left">剩余可售{{leftNum}}台</div>
+              <div class="left">剩余可售{{detail.leftNum}}台</div>
             </div>
           </div>
           <div class="buy_num">
@@ -45,11 +45,11 @@
           </div>
           <div class="buy_text">
             <div class="item">购买算力</div>
-            <div class="item">{{totalHash|format}}T</div>
+            <div class="item">{{(detail.hash*number)|format}}T</div>
           </div>
           <div class="buy_text last">
             <div class="item">支付金额</div>
-            <div class="item">{{totalPrice|format}}元</div>
+            <div class="item">{{(detail.one_amount_value*number)|format}}元</div>
           </div>
           <div class="mobile_btn" style="z-index:9999999;">
             <button @click="goPay($event, false)">立即购买</button>
@@ -75,28 +75,20 @@
     data () {
       return {
         detail: {incomeType: '每日结算，次日发放', fee: '', product_name: '', name: '', status: 0},
-        infolists: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: '矿场相册'}],
-        infolist: [{name: 'MInerBrief', title: '产品介绍'}, {name: 'MinerAdvantage', title: '产品参数'}, {name: 'prProtocolSpeciaification', title: '补充说明'}],
+        cloudInfo: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: '矿场相册'}],
+        minerInfo: [{name: 'MInerBrief', title: '产品介绍'}, {name: 'MinerAdvantage', title: '产品参数'}, {name: 'prProtocolSpeciaification', title: '补充说明'}],
         params: {chips_num: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '矿机尺寸', minerOuterSize: '外箱尺寸', cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
         statusObj: {1: {title: '热销中', color: 'red'}, 2: {title: '已售罄', color: 'gray'}, 3: {title: '产品撤销', color: 'gray'}, 4: {title: '预热中', color: 'red'}},
         str: {4: '预热中', 5: '可售', 7: '已售馨', 10: '活动'},
-        totalPrice: 0,
-        totalHash: 0,
         number: '',
-        leftNum: 0,
-        balance: 0,
         buyStatus: 0,
-        content: '',
-        content1: '',
-        isLoan: '',
         params1: '',
         params2: '',
-        sheetVisible: false,
-        isFixTop: false
+        sheetVisible: false
       }
     },
     methods: {
-      checkPay (e, isLoan) {
+      checkPay (isLoan) {
         var startTime = this.detail.sell_start_time
         var now = Date.parse(new Date()) / 1000
         if (now < startTime) {
@@ -122,7 +114,7 @@
         if (this.isMobile) {
           this.openMask()
         } else {
-          this.goPay(e, isLoan)
+          this.goPay(isLoan)
         }
       },
       openMask () {
@@ -140,16 +132,7 @@
           this.sheetVisible = false
         }
       },
-      fixTop () {
-        var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
-        if (scrollTop > 500) {
-          this.isFixTop = true
-        } else {
-          this.isFixTop = false
-        }
-      },
-      goPay (e, isLoan) {
-        this.isLoan = isLoan
+      goPay (isLoan) {
         if (this.number < 1) {
           if (!this.isMobile) {
             this.buyStatus = 1
@@ -161,24 +144,22 @@
           }
           return false
         }
-        var data = {name: this.detail.name ? this.detail.name : this.detail.product_name, one_amount_value: this.detail.one_amount_value || '', number: this.number || '', hash: this.detail.hash || '', hashType: this.detail.hashType || '', incomeType: this.detail.incomeType || '', output: this.detail.output || '', total_electric_fee: this.detail.total_electric_fee || '', batch_area: this.detail.batch_area || '', isLoan: this.isLoan}
+        var data = {name: this.detail.name ? this.detail.name : this.detail.product_name, one_amount_value: this.detail.one_amount_value || '', number: this.number || '', hash: this.detail.hash || '', hashType: this.detail.hashType || '', incomeType: this.detail.incomeType || '', output: this.detail.output || '', total_electric_fee: this.detail.total_electric_fee || '', batch_area: this.detail.batch_area || '', isLoan: isLoan}
         api.setStorge('info', data)
         this.$router.push({name: 'minerShop-pay'})
       },
       changeNum (n) {
-        if (this.leftNum === 0) return false
+        if (this.detail.leftNum === 0) return false
         var minNum = this.detail.single_limit_amount || 1
-        var isOver = n > this.leftNum
+        var isOver = n > this.detail.leftNum
         if (isOver) {
           this.buyStatus = 2
           setTimeout(() => {
             this.buyStatus = 0
           }, 2000)
         }
-        this.number = +n < minNum || isNaN(+n) || typeof +n !== 'number' ? minNum : isOver ? this.leftNum : n
-        this.number = parseInt(this.number)
-        this.totalPrice = this.detail.one_amount_value * this.number
-        this.totalHash = this.detail.hash * this.number
+        this.number = +n < minNum || isNaN(+n) || typeof +n !== 'number' ? minNum : isOver ? this.detail.leftNum : n
+        this.number = parseInt(this.number).toFixed(0)
       },
       getData () {
         if (this.params1) {
@@ -194,17 +175,20 @@
           }
           util.post(url, {sign: api.serialize(data)}).then(function (res) {
             api.checkAjax(self, res, () => {
-              self.leftNum = res.amount - res.buyed_amount
+              self.detail.leftNum = res.amount - res.buyed_amount
               self.detail = Object.assign(self.detail, res)
               self.detail.sellProgress = ((+self.detail.buyed_amount)/self.detail.amount*100).toFixed(0)+'%'
               if (self.params2 !== '1') {
                 self.detail = Object.assign(self.detail, res.has_product_miner_base)
                 self.detail.name = res.product_name
                 self.detail.hashType = (res.hashtype && res.hashtype.name) || ''
+                self.detail.statusStr = self.str[res.status]
               } else {
                 self.detail.name = res.name
                 self.detail = Object.assign(self.detail, res.miner_list)
                 self.detail.weight = (res.miner_list && res.miner_list.weight) || ''
+                self.detail.statusStr = self.statusObj[res.status].title
+                self.detail.statusColor = self.statusObj[res.status].color
               }
             })
           })
@@ -225,7 +209,6 @@
         this.params1 = p.proId
         this.params2 = p.proType
         this.getData()
-        window.addEventListener('scroll', this.fixTop, false)
       } else {
         this.$router.push({path: '/minerShop/miner/1'})
       }

@@ -12,7 +12,7 @@
         <div class="sort_body" v-if="sortNav">
           <div class="item" v-for="s,i in sortNav" v-if="sortNav">
             <span>{{s.title}}</span>
-            <a href="javascript:;" :class="{active:$parent.status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
+            <a href="javascript:;" :class="{active:status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
           </div>
         </div>
         <div class="sort_allitems">
@@ -23,7 +23,7 @@
       </div>
       <div class="mobile_sort" v-else-if="isMobile">
         <div class="mobile_sort_items" v-for="s,i in sortNav" v-if="sortNav">
-          <a class="item" href="javascript:;" :class="{active:$parent.status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
+          <a class="item" href="javascript:;" :class="{active:status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
         </div>
       </div>
     </template>
@@ -46,6 +46,9 @@
       },
       sortNav: {
         type: Array
+      },
+      status: {
+        type: Number
       }
     },
     data () {
@@ -61,12 +64,10 @@
           this.edit = (n >= 0) ? n : -1
         }
         n = (this.edit !== -1) ? n : ''
-        this.$parent.getList(n)
+        this.$emit('getList', n)
       },
       setStatus (n) {
-        this.$parent.now = 1
-        this.$parent.status = n
-        this.$parent.fetchData()
+        this.$emit('setStatus', n)
       }
     },
     computed: {
