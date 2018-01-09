@@ -7,10 +7,10 @@
           <CloudMinerItem v-for="d,k in cloudMinerData" :d="d" :key="k"></CloudMinerItem>
         </template>
         <template v-else-if="isMobile===1">
-          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
-            <MobileCloudMinerItem v-for="d,k in cloudMinerDate" :d="d" @click="goPay(d.id)" :key="k"></MobileCloudMinerItem>
+          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists">
+            <MobileCloudMinerItem v-for="d,k in cloudMinerData" :d="d" @click="goPay(d.id)" :key="k"></MobileCloudMinerItem>
           </div>
-          <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
+          <p v-if="loading"  class="loadmore">加载中······</p>
         </template>
         <div class="nodata" v-if="$parent.show">
           <div class="nodata_img"></div>
@@ -39,13 +39,18 @@
       },
       cloudMinerData: {
         type: Array
+      },
+      len: {
+        type: Number
+      },
+      now: {
+        type: Number
       }
     },
     data () {
       return {
         loading: false,
-        showcontent: false,
-        cloudMinerDate: [],
+        // cloudMinerDate: [],
         len: 0,
         now: 1,
         total: -1,
@@ -57,39 +62,45 @@
     },
     methods: {
       loadMore () {
-        let self = this
-        let obj = {token: this.token, page: this.currentPage, product_type: '1'}
-        this.loading = true
-        if (this.total === 0) {
-          this.loading = false
-          this.$parent.show = true
-          return
-        } else {
-          this.$parent.show = false
-        }
-        this.type = this.$route.params.type
-        if (this.status) {
-          obj = Object.assign({status: this.status}, obj)
-        }
-        if (this.total > this.cloudMinerDate.length || this.cloudMinerDate.length === 0) {
-          let time = this.cloudMinerDate.length === 0 ? 0 : 1000
-          setTimeout(() => {
-            util.post('productList', {sign: api.serialize(obj)}).then(function (res) {
-              api.checkAjax(self, res, () => {
-                self.total = res.page.count
-                for (let i = 0, len = res.data.length; i < len; i++) {
-                  self.cloudMinerDate.push(res.data[i])
-                }
-                self.loading = false
-                self.currentPage++
-              })
-            }).catch(res => {
-              console.log(res)
-            })
-          }, time)
+        if (this.now < this.len ) {
+          this.loading = true
+          this.$emit('fetchData')
         } else {
           this.loading = false
         }
+        // let self = this
+        // let obj = {token: this.token, page: this.currentPage, product_type: '1'}
+        // this.loading = true
+        // if (this.total === 0) {
+        //   this.loading = false
+        //   this.$parent.show = true
+        //   return
+        // } else {
+        //   this.$parent.show = false
+        // }
+        // this.type = this.$route.params.type
+        // if (this.status) {
+        //   obj = Object.assign({status: this.status}, obj)
+        // }
+        // if (this.total > this.cloudMinerDate.length || this.cloudMinerDate.length === 0) {
+        //   let time = this.cloudMinerDate.length === 0 ? 0 : 1000
+        //   setTimeout(() => {
+        //     util.post('productList', {sign: api.serialize(obj)}).then(function (res) {
+        //       api.checkAjax(self, res, () => {
+        //         self.total = res.page.count
+        //         for (let i = 0, len = res.data.length; i < len; i++) {
+        //           self.cloudMinerDate.push(res.data[i])
+        //         }
+        //         self.loading = false
+        //         self.currentPage++
+        //       })
+        //     }).catch(res => {
+        //       console.log(res)
+        //     })
+        //   }, time)
+        // } else {
+        //   this.loading = false
+        // }
       },
       goPay (id) {
         api.setStorge('suanli', {proId: id, proType: '2'})
@@ -101,9 +112,9 @@
     },
     watch: {
       'status': function () {
-        this.currentPage = 1
-        this.cloudMinerDate = []
-        this.total = -1
+        // this.currentPage = 1
+        // this.cloudMinerDate = []
+        // this.total = -1
         this.loadMore()
       }
     },

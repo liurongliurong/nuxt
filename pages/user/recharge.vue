@@ -49,8 +49,8 @@
         processText: ['银行转账', '提交申请', '审核通过'],
         processStatus: 2,
         form: [
-          [{name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', pattern: 'bigMoney', len: 7}, {name: 'bank_num', type: 'text', title: '充值银行卡', placeholder: '请输入充值银行卡', value: 'bank_num', pattern: 'bankCard'}, {name: 'request_id', type: 'text', title: '充值流水号', placeholder: '请输入充值流水号', pattern: 'int'}],
-          [{name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', pattern: 'bigMoney', len: 6}]
+          [{name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', len: 7}, {name: 'bank_num', type: 'text', title: '充值银行卡', placeholder: '请输入充值银行卡', value: 'bank_num', pattern: 'bankCard'}, {name: 'request_id', type: 'text', title: '充值流水号', placeholder: '请输入充值流水号', pattern: 'int'}],
+          [{name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', len: 6}]
         ],
         rechargeType: ['银行卡充值', '支付宝充值'],
         rechargeNo: 0
@@ -66,23 +66,23 @@
         var self = this
         form.btn.setAttribute('disabled', true)
         if (this.rechargeNo) {
-          api.tips('暂不能充值', this.isMobile)
-          // util.post('applyBalanceRecharge', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
-          //   api.checkAjax(self, res, () => {
-          //     res.subject = encodeURIComponent(res.subject)
-          //     if (self.isMobile) {
-          //       res = Object.assign(res, {is_mobile: 1})
-          //     } else {
-          //       res = Object.assign(res, {is_mobile: 0})
-          //     }
-          //     callbackUrl = location.protocol + '//' + location.host + self.callUrl
-          //     util.post('alipay', {sign: api.serialize(Object.assign({url: callbackUrl, token: self.token}, res))}).then((resData) => {
-          //       api.checkAjax(self, resData, () => {
-          //         location.href = resData.url
-          //       })
-          //     })
-          //   })
-          // })
+          // api.tips('暂不能充值', this.isMobile)
+          util.post('applyBalanceRecharge', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              res.subject = encodeURIComponent(res.subject)
+              if (self.isMobile) {
+                res = Object.assign(res, {is_mobile: 1})
+              } else {
+                res = Object.assign(res, {is_mobile: 0})
+              }
+              callbackUrl = location.protocol + '//' + location.host + self.callUrl
+              util.post('alipay', {sign: api.serialize(Object.assign({url: callbackUrl, token: self.token}, res))}).then((resData) => {
+                api.checkAjax(self, resData, () => {
+                  location.href = resData.url
+                })
+              })
+            })
+          })
         } else {
           util.post('balance_recharge', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
             api.checkAjax(self, res, () => {

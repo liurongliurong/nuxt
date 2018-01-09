@@ -1,8 +1,8 @@
 <template>
   <section class="compute_shop">
     <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2" :status="status" @setStatus="setStatus" @getList="getList"></Sort>
-    <MinerList v-if="type==='1'" :status="status" :minerData="minerData"></MinerList>
-    <CloudMinerList :status="status" :cloudMinerData="cloudMinerData" v-else></CloudMinerList>
+    <MinerList v-if="type==='1'" :status="status" :minerData="minerData" :len="len" :now="now"></MinerList>
+    <CloudMinerList :status="status" :cloudMinerData="cloudMinerData" :len="len" :now="now" v-else></CloudMinerList>
     <Pager :len="len" v-if="!isMobile"></Pager>
   </section>
 </template>
@@ -58,9 +58,21 @@
         util.post(url, {sign: api.serialize(obj)}).then(function (res) {
           api.checkAjax(self, res, () => {
             if (self.type === '1') {
-              self.minerData = res.data
+              if (self.isMobile) {
+                for (let i = 0, len = res.data.length; i < len; i++) {
+                  self.minerData.push(res.data[i])
+                }
+              } else {
+                self.minerData = res.data
+              }
             } else {
-              self.cloudMinerData = res.data
+              if (self.isMobile) {
+                for (let i = 0, len = res.data.length; i < len; i++) {
+                  self.cloudMinerData.push(res.data[i])
+                }
+              } else {
+                self.cloudMinerData = res.data
+              }
             }
             self.show = !res.data.length
             if (self.now > 1) return false

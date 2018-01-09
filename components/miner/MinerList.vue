@@ -7,10 +7,10 @@
           <MinerItem v-for="n,k in minerData" :n="n" :key="k"></MinerItem>
         </template>
         <template v-if="isMobile===1">
-          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="item_box" v-if="!showcontent">
-            <MobileMinerItem v-for="n,k in minerDate" :n="n" :key="k"></MobileMinerItem>
+          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="item_box">
+            <MobileMinerItem v-for="n,k in minerData" :n="n" :key="k"></MobileMinerItem>
           </div>
-          <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
+          <p v-if="loading"  class="loadmore">加载中······</p>
         </template>
         <div class="nodata" v-if="$parent.show">
           <div class="nodata_img"></div>
@@ -40,13 +40,18 @@
       },
       minerData: {
         type: Array
+      },
+      len: {
+        type: Number
+      },
+      now: {
+        type: Number
       }
     },
     data () {
       return {
         loading: false,
-        showcontent: false,
-        minerDate: [],
+        // minerDate: [],
         total: -1,
         currentPage: 1
       }
@@ -56,37 +61,43 @@
     },
     methods: {
       loadMore () {
-        let self = this
-        let obj = {token: this.token, page: this.currentPage, product_type: '1'}
-        this.loading = true
-        if (this.total === 0) {
-          this.loading = false
-          this.$parent.show = true
-          return
-        } else {
-          this.$parent.show = false
-        }
-        this.type = this.$route.params.type
-        if (this.status) {
-          obj = Object.assign({status: this.status}, obj)
-        }
-        if (this.total > this.minerDate.length || this.minerDate.length === 0) {
-          let time = this.minerDate.length === 0 ? 0 : 1000
-          setTimeout(() => {
-            util.post('showList', {sign: api.serialize(obj)}).then(function (res) {
-              api.checkAjax(self, res, () => {
-                self.total = res.page.count
-                for (let i = 0, len = res.data.length; i < len; i++) {
-                  self.minerDate.push(res.data[i])
-                }
-                self.loading = false
-                self.currentPage++
-              })
-            })
-          }, time)
+        if (this.now < this.len ) {
+          this.loading = true
+          this.$emit('fetchData')
         } else {
           this.loading = false
         }
+        // let self = this
+        // let obj = {token: this.token, page: this.currentPage, product_type: '1'}
+        // this.loading = true
+        // if (this.total === 0) {
+        //   this.loading = false
+        //   this.$parent.show = true
+        //   return
+        // } else {
+        //   this.$parent.show = false
+        // }
+        // this.type = this.$route.params.type
+        // if (this.status) {
+        //   obj = Object.assign({status: this.status}, obj)
+        // }
+        // if (this.total > this.minerDate.length || this.minerDate.length === 0) {
+        //   let time = this.minerDate.length === 0 ? 0 : 1000
+        //   setTimeout(() => {
+        //     util.post('showList', {sign: api.serialize(obj)}).then(function (res) {
+        //       api.checkAjax(self, res, () => {
+        //         self.total = res.page.count
+        //         for (let i = 0, len = res.data.length; i < len; i++) {
+        //           self.minerDate.push(res.data[i])
+        //         }
+        //         self.loading = false
+        //         self.currentPage++
+        //       })
+        //     })
+        //   }, time)
+        // } else {
+        //   this.loading = false
+        // }
       }
     },
     mounted () {
@@ -94,9 +105,9 @@
     },
     watch: {
       'status': function () {
-        this.currentPage = 1
-        this.minerDate = []
-        this.total = -1
+        // this.currentPage = 1
+        // this.minerData = []
+        // this.total = -1
         this.loadMore()
       }
     },
