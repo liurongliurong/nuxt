@@ -114,7 +114,7 @@
       box-sizing: border-box;
       div{
         width: 100%;
-        height: 2rem;
+        height: 1.08rem;
         display:flex;
         justify-content: space-between;
         border-bottom: 1px solid #bfbfbf;
@@ -122,53 +122,53 @@
           float: left;
           width: 50%;
           img{
-            width: 0.7rem;
-            height: 0.7rem;
+            width: 0.32rem;
+            height: 0.32rem;
             position: relative;
-            top:0.6rem;
+            top:0.37rem;
           }
           p{
             font-weight: 800;
-            margin-left: .5rem;
+            margin-left: .16rem;
             width: 90%;
             white-space: normal;
             text-overflow: hidden;
             overflow: hidden;
-            font-size: 0.5rem;
-            line-height: 2rem;
+            font-size: 0.28rem;
+            line-height: 1.08rem;
           }
         }
         .right{
           float:right;
           width: 50%;
-          font-size: 0.5rem;
+          font-size: 0.24rem;
           color: #747474;
           text-align: right;
-          line-height:2rem;
+          line-height:1.08rem;
         }
       }
     }
     .loadmore{
         width: 100%;
-        height: 2rem;
+        height: 1.08rem;
         text-align: center;
-        line-height: 2rem;
+        line-height: 1.08rem;
     }
     .quicknews_content{
       width: 100%;
       padding-bottom: 50px;
       background: white;
       .title{
-        padding: 0.5rem;
+        padding: 0.3rem;
       }
       span{
         font-weight: 800;
-        font-size: 0.7rem;
+        font-size: 0.4rem;
       }
       a{
         float: right;
         color:#327fff;
-        font-size: 0.5rem;
+        font-size: 0.27rem;
       }
       .info_quick{
         width: 100%;

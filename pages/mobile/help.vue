@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <div class="issues_content" v-show="!show" style="background:white;margin-bottom:40px;">
+    <div class="issues_content" v-show="!show">
       <div v-html="nowItem.content"></div>
       <button @click="back()"  v-show="!show">返回</button>
     </div>
@@ -80,8 +80,8 @@
   @import '~assets/css/style.scss';
   .issues{
     button{
-      width: 3rem;
-      height: 1.5rem;
+      width: 1.5rem;
+      height: 0.6rem;
       background: #327fff;
       border:0;
       color: white;
@@ -93,7 +93,8 @@
       overflow: hidden;
       height: 100%;
       padding:0.5rem;
-      background: #f5f5f9;
+      background:white;
+      margin-bottom:40px;
       box-sizing: border-box;
       text-indent:0rem !important;
       img{
@@ -118,20 +119,19 @@
           width: 100%;
           text-align: left;
           color:#121212;
-          line-height: 3;
+          line-height: 0.87rem;
           .titleall{
-            width: 100%;
-            height: 2rem;
+            height: 0.87rem;
             padding:0 .5rem;
-            line-height: 2rem;
+            line-height: 0.87rem;
             box-sizing: border-box;
             background: white;
-            font-size:0.6rem;
+            font-size:0.26rem;
             border-bottom:1px solid #ddd;
             em{
               @include block(8)
               @include arrow(down)
-              margin-top:0.8rem;
+              margin-top:0.34rem;
               transform: rotate(135deg);
               float:right;
             }
@@ -149,11 +149,11 @@
       }
       .issues_listoneone{
         width:100%;
-        line-height: 2;
+        line-height: 0.87rem;
         .item{
           border-top:1px solid #ddd;
           overflow: hidden;
-          line-height: 1.5rem;
+          line-height: 0.87rem;
           cursor: pointer;
           width: 100%;
           display: block;
@@ -161,9 +161,9 @@
             width: 100%;
             display:flex;
             justify-content: space-between;
-            height: 1.5rem;
-            padding:0 .5rem;
-            font-size:0.5rem;
+            height: 0.87rem;
+            padding:0 0.3rem;
+            font-size:0.3rem;
           }
           &:hover{
             color:#327fff;
