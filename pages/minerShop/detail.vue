@@ -21,7 +21,7 @@
         <button disabled v-if="detail.status===7||detail.status===2">立即购买</button>
         <button disabled v-else-if="detail.status===3">产品撤销</button>
         <button disabled v-else-if="detail.status===4">立即购买</button>
-        <button @click="checkPay()" v-else>立即购买</button>
+        <button @click="checkPay" v-else>立即购买</button>
       </div>
       <div class="popup" v-if="sheetVisible" @click="closeMask">
         <div class="popup_con buy_box">
@@ -52,7 +52,7 @@
             <div class="item">{{(detail.one_amount_value*number)|format}}元</div>
           </div>
           <div class="mobile_btn" style="z-index:9999999;">
-            <button @click="goPay($event, false)">立即购买</button>
+            <button @click="goPay(false)">立即购买</button>
           </div>
         </div>
       </div>
