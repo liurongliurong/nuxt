@@ -70,7 +70,7 @@
             </tr>
           </tbody>
         </table>
-        <div class="nodata" v-if="showImg">
+        <div class="nodata" v-if="!data.length">
           <div class="nodata_img"></div>
           <p>暂无列表信息</p>
         </div>
@@ -138,7 +138,7 @@
           </div>
         </div>
       </div>
-      <div class="nodata" v-if="showImg">
+      <div class="nodata" v-if="!data.length">
         <div class="nodata_img"></div>
         <p>暂无列表信息</p>
       </div>
@@ -175,14 +175,12 @@
         amount: 0,
         inputPrice: 0,
         inputAmount: 0,
-        one_amount_value: 0,
         total_price: 0,
         order_id: '',
         len: 0,
         now: 1,
         fee: 0,
         transfer_price: 0,
-        showImg: false,
         showtype: false,
         nowEdit: 0
       }
@@ -207,7 +205,6 @@
           util.post('fundOrder', {sign: api.serialize({token: this.token, user_id: this.user_id, type: this.nowEdit, status: this.status, page: this.now})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res.list
-              self.showImg = !res.total_num
               if (self.now > 1) return false
               self.len = Math.ceil(res.total_num / 15)
             })
@@ -241,7 +238,6 @@
             api.checkAjax(self, res, () => {
               self.editText = title
               if (str === 'sold') {
-                self.one_amount_value = res.one_amount_value
                 self.form[str][0].value2 = res.show_miner
                 self.form[str][1].value2 = res.one_amount_value
                 self.fee = res.sell_miner_fee

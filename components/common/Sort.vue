@@ -1,35 +1,29 @@
 <template>
-  <div :class="['sort',{one_sort:page}]">
-    <template v-if="!page">
-      <div class="box" v-if="!isMobile">
-        <div class="sort_title" v-if="!page">
-          <h1>项目列表</h1>
-          <!-- <div class="input_box">
-            <input type="text">
-            <span class="input_btn iconfont">&#xe63e;</span>
-          </div> -->
-        </div>
-        <div class="sort_body" v-if="sortNav">
-          <div class="item" v-for="s,i in sortNav" v-if="sortNav">
-            <span>{{s.title}}</span>
-            <a href="javascript:;" :class="{active:status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
-          </div>
-        </div>
-        <div class="sort_allitems">
-          <span class="sort_allitems_title">排序方式</span>
-          <div :class="['item', 'next', {active1: !sort[edit]}]" @click="setSort()">综合排序</div>
-          <div :class="['item', {active: edit==k}, {up: edit!=k},{active1: sort[edit]}]" v-for="s,k in sort" @click="setSort(k)">{{s.title}}<span class="iconfont">&#xe611;</span></div>
+  <div class="sort">
+    <div class="box" v-if="isMobile===0">
+      <div class="sort_title" v-if="!page">
+        <h1>项目列表</h1>
+        <!-- <div class="input_box">
+          <input type="text">
+          <span class="input_btn iconfont">&#xe63e;</span>
+        </div> -->
+      </div>
+      <div class="sort_body" v-if="sortNav">
+        <div class="item" v-for="s,i in sortNav" v-if="sortNav">
+          <span>{{s.title}}</span>
+          <a href="javascript:;" :class="{active:status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
         </div>
       </div>
-      <div class="mobile_sort" v-else-if="isMobile">
-        <div class="mobile_sort_items" v-for="s,i in sortNav" v-if="sortNav">
-          <a class="item" href="javascript:;" :class="{active:status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
-        </div>
+      <div class="sort_allitems">
+        <span class="sort_allitems_title">排序方式</span>
+        <div :class="['item', 'next', {active1: !sort[edit]}]" @click="setSort()">综合排序</div>
+        <div :class="['item', {active: edit==k}, {up: edit!=k},{active1: sort[edit]}]" v-for="s,k in sort" @click="setSort(k)">{{s.title}}<span class="iconfont">&#xe611;</span></div>
       </div>
-    </template>
-    <div class="sort_items" v-else>
-      <div :class="['item', 'next', {active1: !sort[edit]}]" @click="setSort()">默认</div>
-      <div :class="['item', {active: edit==k}, {up: edit!=k},{active1: sort[edit]}]" v-for="s,k in sort" @click="setSort(k)">{{s.title}}<span class="iconfont">&#xe611;</span></div>
+    </div>
+    <div class="mobile_sort" v-else-if="isMobile===1">
+      <div class="mobile_sort_items" v-for="s,i in sortNav" v-if="sortNav">
+        <a class="item" href="javascript:;" :class="{active:status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
+      </div>
     </div>
   </div>
 </template>
@@ -40,9 +34,6 @@
     props: {
       sort: {
         type: Array
-      },
-      page: {
-        type: String
       },
       sortNav: {
         type: Array
@@ -81,13 +72,10 @@
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .sort{
-    padding-top:10px;
     padding-bottom:10px;
+    padding-top:25px;
     color:$light_text;
-    &:not(.one_sort){
-      @include main
-      padding-top:25px;
-    }
+    @include main
     .box{
       background: $white;
       box-shadow:0px 0px 15px 0px rgba(63, 71, 84, 0.37);
@@ -230,23 +218,6 @@
       &.up{
         .iconfont{
           transform:rotate(0deg);
-        }
-      }
-    }
-    .sort_items{
-      @include flex
-      .item{
-        cursor: pointer;
-        padding:0 30px;
-        line-height: 40px;
-        color:#999;
-        & + .item{
-          margin-left:50px
-        }
-      }
-      .next{
-        &.active1{
-          color:$blue;
         }
       }
     }

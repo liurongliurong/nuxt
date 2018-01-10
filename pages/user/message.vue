@@ -1,6 +1,6 @@
 <template>
   <section class="message">
-    <template v-if="!isMobile">
+    <template v-if="isMobile===0">
       <h2>消息中心</h2>
       <h3>通知消息<span class="read" v-if="unread_num" @click="setRead()">全部标为已读</span></h3>
       <div class="data">
@@ -9,28 +9,29 @@
           <div class="text">{{d.dealtContent.split(" ")[0]}}</div>
           <div class="time">{{d.created_at}}</div>
         </a>
-        <Pager :len="len"></Pager>
+        <Pager :len="len" :now="now" @setPage="setPage"></Pager>
       </div>
-      <div class="nodata" v-if="show">
+      <div class="nodata" v-if="!data.length">
         <div class="nodata_img"></div>
         <p>暂无列表信息</p>
       </div>
     </template>
-    <div class="mobile_box" v-else>
-      <ul v-show="contentshow">
-        <li class="list_one" @click="setRead()" v-if="unread_num"><span></span>全部标为已读1</li>
-        <li>
-          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
-            <li v-for="d,k in cloudMinerDate" :key="k" @click="goDetail(d.id)" :class="['itemlist', {isread: d.is_read}]">
-              <span>{{d.title}}</span>
-              <i>{{d.created_at.split(" ")[0]}}</i>
-            </li>
+    <div class="mobile_box" v-else-if="isMobile===1">
+      <div v-show="contentShow" class="message_box">
+        <div class="read_num" @click="setRead()" v-if="unread_num"><span></span>全部标为已读</div>
+        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="message_list">
+          <div v-for="d,k in data" :key="k" @click="goDetail(d.id)" :class="['itemlist', {isread: d.is_read}]">
+            <span>{{d.title}}</span>
+            <i>{{d.created_at.split(" ")[0]}}</i>
           </div>
-        </li>
-        <li><p v-if="loading && !showcontent"  class="loadmore">加载中······</p></li>
-        <li><p v-if="showno" class="showno loadmore">暂无数据······</p></li>
-      </ul>
-      <div class="message_content" v-show="!contentshow">
+        </div>
+        <p v-if="loading" class="load_more">加载中······</p>
+        <div class="nodata" v-if="!data.length">
+          <div class="nodata_img"></div>
+          <p>暂无列表信息</p>
+        </div>
+      </div>
+      <div class="message_content" v-show="!contentShow">
         <h3>{{content.title}}</h3>
         <p style="color:#999;">{{content.created_at}}</p>
         <p v-html="content.msg"></p>
@@ -55,46 +56,23 @@
     data () {
       return {
         data: [],
-        leftSibling: 0,
-        rightSibling: 0,
         show: false,
         content: '',
-        contentshow: true,
+        contentShow: true,
         loading: false,
-        showcontent: false,
-        cloudMinerDate: [],
-        showno: false,
         len: 0,
-        now: 1,
-        total: -1
+        now: 1
       }
     },
     methods: {
       loadMore () {
-        var self = this
-        this.loading = true
-        if (this.total === 0) {
-          this.loading = false
-          this.showno = true
-          return
-        }
-        var self = this
-        if (this.total > this.cloudMinerDate.length || this.cloudMinerDate.length === 0) {
-          let time = this.cloudMinerDate.length === 0 ? 0 : 1000
+        if (this.now <= this.len ) {
+          this.loading = true
+          this.now++
+          this.fetchData(1)
           setTimeout(() => {
-            util.post('MessageList', {sign: api.serialize({token: this.token, user_id: this.user_id, page: this.now})}).then(function (res) {
-              api.checkAjax(self, res, () => {
-                self.total = res.total_num
-                for (let i = 0, len = res.value_list.length; i < len; i++) {
-                  self.cloudMinerDate.push(res.value_list[i])
-                }
-                self.loading = false
-                self.now++
-              })
-            }).catch(res => {
-              console.log(res)
-            })
-          }, time)
+            this.loading = false
+          }, 1000)
         } else {
           this.loading = false
         }
@@ -108,14 +86,19 @@
           })
         })
       },
-      fetchData () {
+      fetchData (more) {
         if (this.token !== 0) {
           var self = this
           util.post('MessageList', {sign: api.serialize({token: this.token, user_id: this.user_id, page: this.now})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.$store.commit('SET_INFO', {unread_num: res.unread_num})
-              self.data = res.list
-              self.show = !res.list.length
+              if (more) {
+                for (let i = 0, len = res.list.length; i < len; i++) {
+                  self.data.push(res.list[i])
+                }
+              } else {
+                self.data = res.list
+              }
               if (self.now > 1) return false
               self.len = Math.ceil(res.total_num / 15)
             })
@@ -126,14 +109,11 @@
           }, 5)
         }
       },
-      getList () {
-        this.fetchData()
-      },
       goDetail (id) {
         if (this.isMobile) {
           var self = this
           var messageid = id
-          this.contentshow = false
+          this.contentShow = false
           util.post('Messagecontent', {sign: api.serialize({token: this.token, user_id: this.user_id, message_id: messageid})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.content = res
@@ -148,7 +128,11 @@
       },
       back () {
         window.location.reload()
-        this.contentshow = false
+        this.contentShow = false
+      },
+      setPage (n) {
+        this.now = n
+        this.fetchData()
       }
     },
     watch: {
@@ -220,40 +204,61 @@
         }
       }
     }
-    h2,h3,.data{
-      @include mobile_hide
-    }
     .mobile_box{
-      ul{
+      padding-top:10px;
+      .message_box{
         width: 100%;
         overflow: hidden;
-        .list_one{
+        padding-bottom: 2rem;
+        .read_num{
           font-weight: 800;
           color: #327fff;
-        }
-        li{
-          width: 100%;
-          border-bottom:1px solid #dddddd;
-          display: flex;
-          justify-content: space-between;
-          height: 2rem;
-          line-height: 2rem;
-          background:white;
-          padding:0 .5rem;
-          font-weight: 800;
-          &.isread{
-            font-weight: 100;
-            font-size: #ccc;
-          }
+          text-align: right;
           span{
-            width: 70%;
-            color: #121212;
-          }
-          i{
-            color: #a9a9a9;
-            font-size: 0.45rem;
+            width: 50%;
+            display:inline-block;
           }
         }
+        .message_list{
+          width: 100%;
+          overflow: hidden;
+          background:white;
+          .itemlist{
+            width: 100%;
+            height: 2rem;
+            line-height: 2rem;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #999;
+             span{
+              width: 50%;
+              color: #121212;
+              font-weight: 800;
+            }
+            i{
+              color: #a9a9a9;
+              font-size: 0.45rem;
+              font-weight: 800;
+            }
+          }
+          .isread{
+            span{
+              font-weight: 100;
+              color: #121212;
+            }
+            i{
+              font-weight: 100;
+              color: #121212;
+            } 
+          }
+        }
+        .load_more{
+          text-align: center;
+          width: 100%;
+          height: 4rem;
+          line-height: 4rem;
+        }
+        @include nodata
       }
       .message_content{
         width: 100%;
@@ -276,7 +281,6 @@
           display: block;
         }
       }
-      @include mobile_show
     }
     @include nodata
   }
