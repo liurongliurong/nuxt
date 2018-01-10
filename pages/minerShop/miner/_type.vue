@@ -1,9 +1,9 @@
 <template>
   <section class="compute_shop">
-    <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2" :status="status" @setStatus="setStatus" @getList="getList"></Sort>
+    <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2" :status="status" @setStatus="setStatus" @fetchData="fetchData"></Sort>
     <MinerList v-if="type==='1'" :status="status" :minerData="minerData" :len="len" :now="now" @getMobileData="getMobileData"></MinerList>
     <CloudMinerList :status="status" :cloudMinerData="cloudMinerData" :len="len" :now="now" @getMobileData="getMobileData" v-else></CloudMinerList>
-    <Pager :len="len" v-if="!isMobile"></Pager>
+    <Pager :len="len" v-if="!isMobile" :now="now" @setPage="setPage"></Pager>
   </section>
 </template>
 
@@ -77,9 +77,6 @@
           })
         })
       },
-      getList (sort) {
-        this.fetchData(sort)
-      },
       setStatus (n) {
         this.now = 1
         this.status = n
@@ -92,6 +89,10 @@
         } else {
           this.fetchData()
         }
+      },
+      setPage (n) {
+        this.now = n
+        this.fetchData()
       }
     },
     watch: {

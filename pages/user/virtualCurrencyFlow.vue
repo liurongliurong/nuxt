@@ -5,7 +5,7 @@
       <div class="title_content">
         <span class="title_now">{{hashType[nowEdit]&&hashType[nowEdit].name}}</span>
         <div class="title_list">
-          <a href="javascript:;" @click="setList(k)" v-for="n,k in hashType">{{n.name}}</a>
+          <a href="javascript:;" @click="fetchData(k)" v-for="n,k in hashType">{{n.name}}</a>
         </div>
       </div>
     </div>
@@ -25,7 +25,6 @@
       </div>
     </div>
     <div class="detail_table">
-      <Sort :sort="sort" page="virtualCurrencyFlow"></Sort>
       <table>
         <thead>
           <tr>
@@ -38,7 +37,7 @@
           </tr>
         </tbody>
       </table>
-      <Pager :len="len"></Pager>
+      <Pager :len="len" :now="now" @setPage="setPage"></Pager>
       <div class="nodata" v-if="showImg">
         <div class="nodata_img"></div>
         <p>暂无列表信息</p>
@@ -52,10 +51,9 @@
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import Pager from '@/components/common/Pager'
-  import Sort from '@/components/common/Sort'
   export default {
     components: {
-      Pager, Sort
+      Pager
     },
     data () {
       return {
@@ -71,17 +69,12 @@
       }
     },
     methods: {
-      getList (sort) {
+      fetchData (sort) {
+        this.nowEdit = sort || 0
         var self = this
         this.list = []
-        var sendData = {}
-        var data = {token: this.token, user_id: this.user_id, product_hash_type: this.nowEdit + 1, page: this.now}
-        if (sort >= 0 && this.sort[sort] && this.sort[sort].option) {
-          sendData = {sort: this.sort[sort].option}
-        } else {
-          sendData = {sort: ''}
-        }
-        util.post('userCoinList', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
+        var data = {token: this.token, user_id: this.user_id, product_hash_type: this.nowEdit + 1, page: this.now, sort: ''}
+        util.post('userCoinList', {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.list = res.value_list
             self.showImg = !res.value_list.length
@@ -89,10 +82,6 @@
             self.len = Math.ceil(res.total_num / 15)
           })
         })
-      },
-      setList (n) {
-        this.nowEdit = n
-        this.getList()
       },
       getData () {
         if (this.token !== 0) {
@@ -102,16 +91,20 @@
               self.data = res
             })
           })
-          this.getList()
+          this.fetchData()
         } else {
           setTimeout(() => {
             this.getData()
           }, 5)
         }
+      },
+      setPage (n) {
+        this.now = n
+        this.fetchData()
       }
     },
     watch: {
-      '$route': 'getList'
+      '$route': 'fetchData'
     },
     mounted () {
       this.getData()

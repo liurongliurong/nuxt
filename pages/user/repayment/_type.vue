@@ -61,7 +61,7 @@
         <div class="nodata_img"></div>
         <p>暂无列表信息</p>
       </div>
-      <Pager :len="len"></Pager>
+      <Pager :len="len" :now="now" @setPage="setPage"></Pager>
     </div>
   </section>
 </template>
@@ -116,6 +116,10 @@
         var data = {repaymentId: id}
         localStorage.setItem('info', JSON.stringify(Object.assign(info, data)))
         this.$router.push({path: '/user/repaymentDetail/'})
+      },
+      setPage (n) {
+        this.now = n
+        this.fetchData()
       }
     },
     mounted () {

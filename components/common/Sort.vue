@@ -64,7 +64,7 @@
           this.edit = (n >= 0) ? n : -1
         }
         n = (this.edit !== -1) ? n : ''
-        this.$emit('getList', n)
+        this.$emit('fetchData', n)
       },
       setStatus (n) {
         this.$emit('setStatus', n)

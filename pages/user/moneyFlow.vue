@@ -16,11 +16,10 @@
         </div>
         <div class="btn">
           <button @click="openMask('recharge')">充值</button>
-          <button @click="openMask('Withdrawals', '资金提现')">提现</button>
+          <button @click="openMask('Withdrawals')">提现</button>
         </div>
       </div>
       <div class="detail_table">
-        <Sort :sort="sort" page="moneyFlow"></Sort>
         <table>
           <thead>
             <tr>
@@ -41,17 +40,17 @@
           <div class="nodata_img"></div>
           <p>暂无列表信息</p>
         </div>
-        <Pager :len="len"></Pager>
+        <Pager :len="len" :now="now" @setPage="setPage"></Pager>
       </div>
     </template>
     <div class="mobile_box" v-else>
-      <p class="flow_p" v-if="!show">
+      <p class="flow_p">
         <span>资金用途</span>
         <span>金额（元）</span>
       </p>
-      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
+      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists">
         <div class="moneyflow">
-          <div v-for="n, k in cloudMinerDate" class="monrylist">
+          <div v-for="n, k in list" class="monrylist">
             <span class="left">
               <i>{{n.type_name}}</i>
               <em>{{n.create_time}}</em>
@@ -60,11 +59,10 @@
           </div>
         </div>
       </div>
-      <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
-      <p v-if="showno" class="showno loadmore">暂无数据······</p>
+      <p v-if="loading"  class="loadmore">加载中······</p>
     </div>
-    <MyMask :form="form[edit]" :title="editText" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
-      <p slot="fee">手续费：{{total_price * fee|format}}元<span class="fee">({{fee*100+'%'}})</span></p>
+    <MyMask :form="Withdrawals" title="资金提现" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
+      <p slot="fee">手续费：{{chargeMoney|format}}元<span class="fee">({{fee*100+'%'}})</span></p>
     </MyMask>
   </section>
 </template>
@@ -75,13 +73,12 @@
   import { mapState } from 'vuex'
   import MyMask from '@/components/common/Mask'
   import Pager from '@/components/common/Pager'
-  import Sort from '@/components/common/Sort'
   import Vue from 'vue'
   import { InfiniteScroll } from 'mint-ui'
   Vue.use(InfiniteScroll)
   export default {
     components: {
-      MyMask, Pager, Sort
+      MyMask, Pager
     },
     data () {
       return {
@@ -90,55 +87,30 @@
         nav: {create_time: '时间', type_name: '交易类型', trade_content: '交易内容', value: '交易金额', remark: '备注', status: '状态'},
         list: [],
         edit: '',
-        form: {
-          Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}]
-        },
-        editText: '',
-        sort: [{title: '时间', option: 'desc'}],
+        Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
         show: false,
-        fee: 0,
-        total_price: 0,
         loading: false,
-        showcontent: false,
-        cloudMinerDate: [],
-        showno: false,
         len: 0,
         now: 1,
-        amount: 0,
-        total: -1
+        fee: 0,
+        chargeMoney: 0,
+        balance: 0
       }
     },
     methods: {
       loadMore () {
-        var self = this
-        this.loading = true
-        if (this.total === 0) {
-          this.loading = false
-          this.showno = true
-          return
-        }
-        var self = this
-        if (this.total > this.cloudMinerDate.length || this.cloudMinerDate.length === 0) {
-          let time = this.cloudMinerDate.length === 0 ? 0 : 1000
+        if (this.now <= this.len ) {
+          this.loading = true
+          this.now++
+          this.fetchData(1)
           setTimeout(() => {
-            util.post('userCapitalList', {sign: api.serialize({token: this.token, user_id: this.user_id, page: this.now,sort: ''})}).then(function (res) {
-              api.checkAjax(self, res, () => {
-                self.total = res.total_num
-                for (let i = 0, len = res.value_list.length; i < len; i++) {
-                  self.cloudMinerDate.push(res.value_list[i])
-                }
-                self.loading = false
-                self.now++
-              })
-            }).catch(res => {
-              console.log(res)
-            })
-          }, time)
+            this.loading = false
+          }, 1000)
         } else {
           this.loading = false
         }
       },
-      openMask (str, title) {
+      openMask (str) {
         if ((str === 'Withdrawals') && !this.bank_card) {
           api.tips('请先绑定银行卡', this.isMobile, () => {
             this.$router.push({name: 'user-account'})
@@ -150,16 +122,16 @@
           this.$router.push({name: 'user-recharge'})
           return false
         }
-        window.scroll(0, 0)
-        document.body.style.overflow = 'hidden'
-        this.editText = title
-        this.edit = str
         var data = {token: this.token, user_id: this.user_id}
         var self = this
         util.post('showWithdraw', {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.fee = res.withdraw_fee
-            self.amount = parseInt(res.balance_account)
+            self.balance = parseInt(res.balance_account)
+            self.Withdrawals[0].value2 = self.balance
+            window.scroll(0, 0)
+            document.body.style.overflow = 'hidden'
+            self.edit = str
           })
         })
       },
@@ -167,20 +139,18 @@
         this.edit = ''
         document.body.style.overflow = 'auto'
       },
-      getList (sort) {
+      fetchData (more) {
         var self = this
-        this.list = []
-        var sendData = {}
-        var data = {token: this.token, user_id: this.user_id, page: this.now}
-        if (sort >= 0 && this.sort[sort] && this.sort[sort].option) {
-          sendData = {sort: this.sort[sort].option}
-        } else {
-          sendData = {sort: ''}
-        }
-        util.post('userCapitalList', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
+        var data = {token: this.token, user_id: this.user_id, page: this.now, sort: ''}
+        util.post('userCapitalList', {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
-            self.list = res.value_list
-            self.show = !res.value_list.length
+            if (more) {
+              for (let i = 0, len = res.value_list.length; i < len; i++) {
+                self.list.push(res.value_list[i])
+              }
+            } else {
+              self.list = res.value_list
+            }
             if (self.now > 1) return false
             self.len = Math.ceil(res.total_num / 15)
           })
@@ -202,10 +172,10 @@
       },
       onChange (obj) {
         var value = obj.e.target.value
-        if (parseFloat(value) > parseFloat(this.amount)) {
-          obj.e.target.value = this.amount
+        if (parseFloat(value) > parseFloat(this.balance)) {
+          obj.e.target.value = this.balance
         }
-        this.total_price = obj.e.target.value
+        this.chargeMoney = obj.e.target.value * this.fee
       },
       getData () {
         if (this.token !== 0) {
@@ -215,12 +185,16 @@
               self.data = res
             })
           })
-          this.getList()
+          this.fetchData()
         } else {
           setTimeout(() => {
             this.getData()
           }, 5)
         }
+      },
+      setPage (n) {
+        this.now = n
+        this.fetchData()
       }
     },
     filters: {
@@ -228,7 +202,7 @@
       format: api.decimal
     },
     watch: {
-      '$route': 'getList'
+      '$route': 'fetchData'
     },
     mounted () {
       this.getData()

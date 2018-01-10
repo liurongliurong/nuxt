@@ -18,7 +18,7 @@
           </div>
         </div>
         <nav>
-          <a :class="{active: status===(+k+1)}" href="javascript:;" @click="getList(+k+1)" v-for="n,k in nav[nowEdit]">{{n}}</a>
+          <a :class="{active: status===(+k+1)}" href="javascript:;" @click="fetchData(+k+1)" v-for="n,k in nav[nowEdit]">{{n}}</a>
         </nav>
       </div>
       <div class="order_box">
@@ -74,7 +74,7 @@
           <div class="nodata_img"></div>
           <p>暂无列表信息</p>
         </div>
-        <Pager :len="len"></Pager>
+        <Pager :len="len" :now="now" @setPage="setPage"></Pager>
       </div>
     </div>
     <div class="mobile_box" v-if="isMobile===1">
@@ -83,7 +83,7 @@
           <span>{{scode?title2[nowEdit]:title[nowEdit]}}</span>
           <span class="active"></span>
         </div>
-        <a :class="{active: status===(+k+1)}" href="javascript:;" @click="getList(+k+1)" v-for="n,k in nav[nowEdit]">{{n}}</a>
+        <a :class="{active: status===(+k+1)}" href="javascript:;" @click="fetchData(+k+1)" v-for="n,k in nav[nowEdit]">{{n}}</a>
         <div class="nav_list" v-show="showtype">
           <router-link class="item" :to="'/mobile/order/'+k" v-for="n,k in scode?title2:title" :key="k">
             <span>{{n}}</span>
@@ -137,7 +137,6 @@
             <button class="left" @click="goDetail(nowEdit,d.id)" v-if="nowEdit===3||(nowEdit!==2&&status!=2&&status!=3)">查看详情</button>
           </div>
         </div>
-        <Pager :len="len"></Pager>
       </div>
       <div class="nodata" v-if="showImg">
         <div class="nodata_img"></div>
@@ -192,7 +191,8 @@
       return {nowEdit: +params.status}
     },
     methods: {
-      fetchData () {
+      fetchData (sort) {
+        this.status = sort || 1
         this.nowEdit = +this.$route.params.status
         this.getData()
       },
@@ -217,10 +217,6 @@
             this.getData()
           }, 5)
         }
-      },
-      getList (sort) {
-        this.status = sort || 1
-        this.fetchData()
       },
       openMask (str, title, id) {
         if (this.token !== 0) {
@@ -357,6 +353,10 @@
         } else {
           location.href = '/user/orderDetail/'
         }
+      },
+      setPage (n) {
+        this.now = n
+        this.fetchData()
       }
     },
     computed: {
