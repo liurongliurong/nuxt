@@ -39,7 +39,7 @@
     }
   }
 // 横向进度条以及圆形进度条$type:1=>'横向';2=>'圆形',noColor=>'初始颜色', yesColor=>'过去的颜色'
-  @mixin progress($type:2, $height: 5, $noColor: #ccc, $yesColor: #ffb386, $width:76, $top: 0.5, $right: 1, $paddingTop: 6) {
+  @mixin progress($type:2, $height: 5, $noColor: #ccc, $yesColor: #ffb386, $width:76, $top: 0.5, $right: 1, $paddingTop: 6, $border: 20) {
     @if ($type == 2) {
       .wrap,.circle,.percent{  
         position: absolute;  
@@ -54,7 +54,7 @@
       }  
       .circle{  
         box-sizing: border-box;  
-        border:20px solid #ffb386;  
+        border:#{$border}px solid #ffb386;  
         clip:rect(0,#{$width}px,#{$width}px,#{$width / 2}px);  
       }  
       .clip-auto{  
@@ -62,16 +62,16 @@
       }  
       .percent{  
         box-sizing: border-box;  
-        top:-20px;  
-        left:-20px;  
+        top:-#{$border}px;  
+        left:-#{$border}px;  
       }  
       .left11{  
         transition:transform ease;  
-        border:20px solid #ccc;  
+        border:#{$border}px solid #ccc;  
         clip: rect(0,38px,#{$width}px,0);  
       }  
       .right11{  
-        border:20px solid #ccc;  
+        border:#{$border}px solid #ccc;  
         clip: rect(0,#{$width}px,#{$width}px,#{$width / 2}px);  
       }  
       .wth0{  
