@@ -125,14 +125,8 @@
         font-size: 16px;
         line-height: 2;
         color:$light_text;
-        p{
-          font-size: 0.3rem;
-        }
         .recharge_process{
           @include flex
-          .h3{
-            font-size:0.3rem !important;
-          }
           .process{
             font-size: 14px;
             width:600px;
@@ -185,12 +179,6 @@
           width: 80px;
         }
       }
-      button{
-        margin:0;
-        height: 0.9rem;
-        font-size:0.4rem !important;
-        line-height:0.9rem;
-      }
     }
     @media screen and (max-width: $mobile) {
       background:#f4f4f4;
@@ -223,8 +211,14 @@
         margin-bottom:15px;
         .recharge_info{
           font-size: 0.6rem;
+          p{
+            font-size: 0.3rem;
+          }
           .recharge_process{
             display: block;
+            .h3{
+              font-size:0.3rem !important;
+            }
             .process{
               width:100%;
               .item{
@@ -264,9 +258,10 @@
         }
         button{
           width:calc(100% - 30px);
-          font-size: 0.6rem;
+          font-size: 0.4rem;
           margin-bottom:15px;
           margin-left:15px;
+          line-height: 2.2;
         }
       }
     }
