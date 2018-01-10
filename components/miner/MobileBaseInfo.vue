@@ -1,7 +1,7 @@
 <template>
   <div class="mobile_base_info">
     <div class="img">
-      <img :src="detail.product_img||detail.minerPicture" alt="" style="height:6.5rem;">
+      <img :src="detail.product_img||detail.minerPicture" alt="">
     </div>
     <div class="first_box">
       <h4>
@@ -54,19 +54,12 @@
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .mobile_base_info{
+    background: $white;
     .img{
-      width: 100%;
-      height: 8.5rem;
-      padding:0.5rem;
       text-align: center;
-      padding-top: 1.5rem;
-      background: white;
-      img{
-        width: 80%;
-      }
+      padding: 5% 20%;
     }
     .first_box{
-      background: #fff;
       padding: 15px;
       margin-top:-15px;
       h4{
@@ -74,26 +67,28 @@
         .status_box{
           border: 1px solid $blue;
           color:$blue;
-          padding:2px 7px;
+          padding:0.02rem 0.07rem;
           border-radius:3px;
-          margin-right: 0.5rem;
+          margin-right: 0.1rem;
+          font-size: 0.28rem;
         }
         .gray{
           color: #999;
           border: 1px solid #999;
         }
         .name_box{
-          font-size: 0.7rem;
+          font-size: 0.36rem;
+          font-weight: bold;
         }
       }
       .mobile_price{
         @include flex(space-between);
         color:$light_text;
+        font-size: 0.28rem;
         .type_name{
           background: $orange;
           color:#fff;
-          padding:2px 5px;
-          font-size: 0.4rem;
+          padding:0.02rem 0.05rem;
           border-radius:3px;
         }
         .name_type{
@@ -102,7 +97,7 @@
         .price{
           color:$orange;
           font-weight: bold;
-          font-size: 0.6rem;
+          font-size: 0.36rem;
         }
       }
       .buy_tips{
@@ -114,13 +109,13 @@
         background: #F5F5F5;
         padding:15px 10px;
         .item{
+          text-align: center;
           .item_data{
-            text-align: center;
-            font-size: 0.5rem;
+            font-size: 0.3rem;
           }
           .item_text{
             color:$light_black;
-            text-align: center;
+            font-size: 0.28rem;;
           }
         }
         .line{
@@ -139,7 +134,7 @@
           position: relative;
           overflow:hidden;
           border-radius:8px;
-          height:15px;
+          height:0.3rem;
           background: $border;
           .box{
             @include position
@@ -149,12 +144,14 @@
         .progress_text{
           position: absolute;
           right:0;
-          top:16px;
+          top:50%;
+          margin-top:-0.39rem;
           color:$text;
-          padding:6px 18px;
-          border:4px solid $purple;
-          border-radius:30px;
+          padding:0.1rem 0.18rem;
+          border:0.08rem solid $purple;
+          border-radius:0.4rem;
           background: #fff;
+          font-size: 0.28rem;
         }
       }
     }

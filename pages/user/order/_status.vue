@@ -473,13 +473,12 @@
       width: 100%;
       background: #f4f4f4;
       .type_nav_box{
-        width: 100%;
-        height: 2rem;
-        line-height: 2rem;
-        background: white;
+        height: 45px;
+        line-height: 45px;
+        background: $white;
         @include flex(space-between)
         border-bottom:1px solid #ddd;
-        padding:0 0.5rem;
+        padding:0 0.3rem;
         .type_list{
           width: 20%;
           text-align:center;
@@ -494,7 +493,7 @@
         .nav_list{
           position: absolute;
           left:0;
-          top:2rem;
+          top:45px;
           width: 100%;
           height: calc(100vh - 2rem);
           z-index:1000000;
@@ -502,8 +501,8 @@
           .item{
             @include flex(space-between)
             background: white;
-            padding:0 0.5rem;
-            line-height: 1.5rem;
+            padding:0 0.3rem;
+            line-height: 40px;
             .yes{
               display:none;
             }
@@ -526,36 +525,35 @@
           width: 100%;
           overflow: hidden;
           background:white;
-          padding:0 .5rem;
+          padding:0 .3rem;
           box-sizing: border-box;
           .order_product_name{
             width: 100%;
             display: flex;
             justify-content: space-between;
-            padding:.4rem 0;
+            padding:.2rem 0;
             border-bottom: 1px solid #ddd;
-            line-height: 1rem;
             span{
               color:#121212;
-              font-size: 0.7rem;
+              font-size: 0.36rem;
             }
             em{
               color:#999;
               font-style: normal;
-              font-size: 0.5rem;
+              font-size: 0.28rem;
             }
           }
           .order_product_value{
             width: 100%;
             @include flex(space-between)
-            padding:0.8rem 0;
+            padding:0.2rem 0;
             .value_one{
               text-align: center;
               h4{
-                font-size:0.9rem;
+                font-size:0.32rem;
                 em{
                   font-style: normal;
-                  font-size: 0.5rem;
+                  font-size: 0.28rem;
                 }
                 &.buy_number{
                   color:#ff721f;
@@ -574,26 +572,26 @@
                 text-align: right;
               }
             }
-            .line{
-              height:1.5rem;
-              width:1px;
+            .line {
+              height: 0.5rem;
+              width: 1px;
               background: $border;
             }
           }
           .order_button{
             text-align:right;
-            padding-bottom:0.5rem;
+            padding-bottom:0.2rem;
             button{
               background: #327fff;
               color: #fff;
-              padding: .2rem .5rem;
+              padding: 0.1rem 0.3rem;
               & + button{
                 margin-left:10px;
               }
             }
           }
           &:not(:last-child){
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.2rem;
           }
         } 
         .pager{

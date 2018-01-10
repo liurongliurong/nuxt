@@ -218,12 +218,12 @@
         width: 100%;
         overflow: hidden;
         background: white;
-        padding:0 .5rem;
+        padding:0 .2rem;
         box-sizing: border-box;
         .item{
           width: 100%;
-          line-height: 2rem;
-          font-size: 0.6rem;
+          line-height: 0.85rem;
+          font-size: 0.28rem;
           color: #121212;
           &:not(.compute_address),.compute_address_title{
             @include flex(space-between)
@@ -232,6 +232,7 @@
               em{
                 @include block(8)
                 @include arrow
+                margin-left:0.17rem;
               }
             }
           }
@@ -244,8 +245,8 @@
             }
             .compute_address_box{
               margin:0 10px;
-              line-height: 1.2rem;
-              font-size: 0.5rem;
+              line-height: 0.85rem;
+              font-size: 0.28rem;
               color:$light_text;
               @include flex(space-between)
               &:not(:last-child){

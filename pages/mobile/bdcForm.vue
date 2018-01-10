@@ -6,7 +6,7 @@
         <button class="btn" name="btn">提交申请</button>
       </form>
     </div>
-    <div class="link">
+    <div class="link" v-if="!isMobile">
       <img src="../../assets/images/BDC-2.png"/>
       客服热线： 0571-28221076 &nbsp;&nbsp;&nbsp;工作日 （9:00~18:00）
     </div>
