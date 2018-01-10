@@ -9,10 +9,10 @@
     </div>
     <h6>{{n.name}}</h6>
     <p class="address"><span class="left">{{n.unit?n.unit: 'BitCoin'}}</span><span class="right">{{n.MinerAddress?n.MinerAddress: '未定'}}</span></p>
-    <div class="progress_info press">
-      <div class="progress_box">
-        <div class="box" :style="{width:(n.buyed_amount/n.amount * 100)+'%'}"></div>
-      </div>
+    <div class="progress_info1">
+      <div class="progress_box1">
+        <div class="box1" :style="{width:((n.buyed_amount/n.amount)*100).toFixed(1)+'%'}"></div>
+        </div>
     </div>
     <div class="items">
       <div class="item_one" v-for="item,d in items">
@@ -123,25 +123,16 @@
         font-size: 12px;
       }
     }
-    .press{
+    .progress_info1{
       width: 240px;
-      height: 5px;
-      background: #e3e3e3;
-      margin: 0 auto;
-      margin-top: 20px;
-      .progress_box{
-        position: relative;
-        height:100%;
-        .box{
-          @include position
-          background: #32cf99;
-        }
-      }
+      margin:0 auto;
+      margin-top: 10px;
     }
+    @include progress(1, 5, rgb(50, 207, 153), rgb(50, 207, 153), 240)
     .items{
       width: 100%;
       padding: 0 20px;
-      padding-top: 18px;
+      padding-top: 14px;
       overflow:hidden;
       .item_one{
         width: 33.3%;

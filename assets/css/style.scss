@@ -38,6 +38,78 @@
       #{$type}-#{$item}: #{$value}px;
     }
   }
+// 横向进度条以及圆形进度条$type:1=>'横向';2=>'圆形',noColor=>'初始颜色', yesColor=>'过去的颜色'
+  @mixin progress($type:2, $height: 5, $noColor: #ccc, $yesColor: #ffb386, $width:76, $top: 0.5, $right: 1, $paddingTop: 6) {
+    @if ($type == 2) {
+      .wrap,.circle,.percent{  
+        position: absolute;  
+        width: #{$width}px;  
+        height: #{$width}px;  
+        border-radius: 50%;  
+      }  
+      .wrap{  
+        top: #{$top}rem;  
+        right: #{$right}rem;
+        background-color: #ffb386;  
+      }  
+      .circle{  
+        box-sizing: border-box;  
+        border:20px solid #ffb386;  
+        clip:rect(0,#{$width}px,#{$width}px,#{$width / 2}px);  
+      }  
+      .clip-auto{  
+        clip:rect(auto, auto, auto, auto);  
+      }  
+      .percent{  
+        box-sizing: border-box;  
+        top:-20px;  
+        left:-20px;  
+      }  
+      .left11{  
+        transition:transform ease;  
+        border:20px solid #ccc;  
+        clip: rect(0,38px,#{$width}px,0);  
+      }  
+      .right11{  
+        border:20px solid #ccc;  
+        clip: rect(0,#{$width}px,#{$width}px,#{$width / 2}px);  
+      }  
+      .wth0{  
+        width:0;  
+      }  
+      .num{  
+        position: absolute;
+        box-sizing: border-box;
+        width: #{$width - 10}px;
+        height: #{$width - 10}px;
+        line-height: #{$width - 10}px;
+        text-align: center;
+        font-size: 14px;
+        left: 5px;
+        top: 5px;
+        border-radius: 50%;
+        background-color: #fff;
+        z-index: 1;
+      }
+    } @else {
+      .progress_info1{
+        position: relative;
+        padding:#{$paddingTop}px 0;
+        .progress_box1{
+          position: relative;
+          overflow:hidden;
+          border-radius:#{$height}px;
+          height:#{$height}px;
+          background: $border;
+          .box1{
+            @include position;
+            background: linear-gradient(to right, $noColor 20%, $yesColor);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$noColor', endColorstr='$yesColor',GradientType=1 );
+          }
+        }
+      }
+    }
+  }
 // flex
   @mixin flex($h:flex-start,$v:center,$direction:row,$wrap:nowrap) {
     display: flex;

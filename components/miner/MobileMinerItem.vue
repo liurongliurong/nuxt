@@ -93,21 +93,7 @@
       font-size: .6rem;
       padding-top: .2rem;
     }
-    .progress_info1{
-      position: relative;
-      padding:6px 0;
-      .progress_box1{
-        position: relative;
-        overflow:hidden;
-        border-radius:5px;
-        height:5px;
-        background: $border;
-        .box1{
-          @include position
-          @include process_color
-        }
-      }
-    }
+    @include progress(1, 5, #337eff, #c72abc)
     p{
       font-size: 0.4rem;
       b{
