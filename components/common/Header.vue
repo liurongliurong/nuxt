@@ -75,7 +75,9 @@
     width: 100%;
     height: 0.88rem;
     background: #327fff;
-    position: relative;
+    position: fixed;
+    top:0;
+    z-index: 9999;
     .header_conten{
       width: 100%;
       height: 100%;
