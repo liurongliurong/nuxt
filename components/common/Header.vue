@@ -83,15 +83,13 @@
       height: 100%;
       display: flex;
       justify-content: space-between;
-      padding: 0.22rem 0.3rem;
+      padding: 0 0.3rem;
+      line-height: 0.88rem;
       box-sizing: border-box;
       .logo {
         width: 1.8rem;
         height: auto;
-        img{
-          position: relative;
-          top: -0.07rem;
-        }
+        line-height: 0.6rem;
       }
       .title{
         color: #fff;
@@ -109,8 +107,6 @@
           font-size: 0.32rem;
         }
         .navlink{
-          position: relative;
-          top: -0.02rem;
           font-size: 0.37rem;
           color: #fff;
         }
