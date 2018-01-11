@@ -136,7 +136,7 @@
         util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             if (res === '暂无协议') {
-              api.tips(res, self.isMobile)
+              api.tips(res)
             } else {
               self.show = true
               self.contract = res

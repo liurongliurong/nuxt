@@ -65,8 +65,9 @@
         <p>暂无列表信息</p>
       </div>
     </div>
-    <MyMask :form="Withdrawals" title="资金提现" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
+    <MyMask :form="edit==='auth'?[]:Withdrawals" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
       <p slot="fee">手续费：{{chargeMoney|format}}元<span class="fee">({{fee*100+'%'}})</span></p>
+      <opr-select slot="select_opr" :no="maskNo" @closeMask="closeMask"></opr-select>
     </MyMask>
   </section>
 </template>
@@ -77,12 +78,13 @@
   import { mapState } from 'vuex'
   import MyMask from '@/components/common/Mask'
   import Pager from '@/components/common/Pager'
+  import OprSelect from '@/components/common/OprSelect'
   import Vue from 'vue'
   import { InfiniteScroll } from 'mint-ui'
   Vue.use(InfiniteScroll)
   export default {
     components: {
-      MyMask, Pager
+      MyMask, Pager, OprSelect
     },
     data () {
       return {
@@ -97,7 +99,9 @@
         now: 1,
         fee: 0,
         chargeMoney: 0,
-        balance: 0
+        balance: 0,
+        title: '',
+        maskNo: 0
       }
     },
     methods: {
@@ -114,10 +118,12 @@
         }
       },
       openMask (str) {
+        if (!(this.true_name && this.true_name.status === 1)) {
+          this.goAuth ('立即认证', 0)
+          return false
+        }
         if ((str === 'Withdrawals') && !this.bank_card) {
-          api.tips('请先绑定银行卡', this.isMobile, () => {
-            this.$router.push({name: 'user-account'})
-          })
+          this.goAuth ('立即绑定', 1)
           return false
         }
         if (str === 'recharge') {
@@ -135,6 +141,7 @@
             window.scroll(0, 0)
             document.body.style.overflow = 'hidden'
             self.edit = str
+            self.title = '资金提现'
           })
         })
       },
@@ -161,7 +168,7 @@
       },
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form)
+        var data = api.checkForm(form, this.isMobile)
         var sendData = {token: this.token, user_id: this.user_id}
         if (!data) return false
         form.btn.setAttribute('disabled', true)
@@ -169,7 +176,7 @@
         util.post('withdraw', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.closeMask()
-            api.tips('提现成功', self.isMobile)
+            api.tips('提现成功')
           }, form.btn)
         })
       },
@@ -198,6 +205,13 @@
       setPage (n) {
         this.now = n
         this.fetchData()
+      },
+      goAuth (str, n) {
+        window.scroll(0, 0)
+        document.body.style.overflow = 'hidden'
+        this.title = str
+        this.maskNo = n
+        this.edit = 'auth'
       }
     },
     filters: {
@@ -214,6 +228,7 @@
       ...mapState({
         token: state => state.info.token,
         user_id: state => state.info.user_id,
+        true_name: state => state.info.true_name,
         mobile: state => state.info.mobile,
         bank_card: state => state.info.bank_card,
         isMobile: state => state.isMobile

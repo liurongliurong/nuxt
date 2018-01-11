@@ -38,7 +38,7 @@
     methods: {
       submit (n,e) {
         var form = e.target
-        var data = api.checkFrom(form, api.checkEquipment())
+        var data = api.checkForm(form, this.isMobile)
         if (!data) return false
         var self = this
         if (n === 1) {
@@ -57,23 +57,18 @@
           data.password1 = md5(data.password1)
           util.post('forgitPwd', {sign: api.serialize(Object.assign(data, {token: this.token, valid_code: this.valid_code, code_id: this.code_id, mobile: this.mobile}))}).then(res => {
             api.checkAjax(self, res, () => {
-              api.tips('重置密码成功', self.isMobile, () => {
+              api.tips('重置密码成功', () => {
                 self.$router.push({name: 'auth-login'})
               })
             }, form.btn)
           })
         }
-      },
-      test (e) {
-        var ele = e.target
-        var form = document.querySelector('.form')
-        api.checkFiled(ele, form)
       }
     },
     computed: {
       ...mapState({
-        token: state => state.info.token,
-        isMobile: state => state.isMobile
+        isMobile: state => state.isMobile,
+        token: state => state.info.token
       })
     },
     mounted() {

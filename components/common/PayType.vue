@@ -17,7 +17,7 @@
 
 <script>
   export default {
-    name: 'swiper',
+    name: 'payType',
     props: {
       payNo: {
         type: Number

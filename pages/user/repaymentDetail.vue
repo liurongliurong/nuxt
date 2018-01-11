@@ -109,18 +109,18 @@
         }
       },
       submit (e) {
-        var ff = e.target
-        var data = api.checkFrom(ff)
+        var form = e.target
+        var data = api.checkForm(form, this.isMobile)
         if (!data) return false
-        ff.btn.setAttribute('disabled', true)
+        form.btn.setAttribute('disabled', true)
         var self = this
-        util.post('repayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repaymentId, product_hash_type: 1, mode: this.model, mobile: ff.mobile.value, code: ff.code.value})}).then(function (res) {
+        util.post('repayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repaymentId, product_hash_type: 1, mode: this.model, mobile: form.mobile.value, code: form.code.value})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips('提交成功', self.isMobile, () => {
+            api.tips('提交成功', () => {
               self.show = false
               window.location.reload()
             })
-          }, ff.btn)
+          }, form.btn)
         })
       },
       onChange (e) {
@@ -128,9 +128,9 @@
         this.form[1].value = this.loanData[this.model].data1 + this.loanData[this.model].unit
         this.form[2].value = this.loanData[this.model].data2 + this.loanData[this.model].unit
         if (+this.loanData[this.model].data1 < +this.loanData[this.model].data2) {
-          var ff = document.querySelector('.form')
+          var form = document.querySelector('.form')
           api.tips('余额不足')
-          ff.btn.setAttribute('disabled', true)
+          form.btn.setAttribute('disabled', true)
         }
       },
       openMask (id) {
@@ -169,8 +169,7 @@
       ...mapState({
         token: state => state.info.token,
         user_id: state => state.info.user_id,
-        mobile: state => state.info.mobile,
-        isMobile: state => state.isMobile
+        mobile: state => state.info.mobile
       })
     },
     filters: {

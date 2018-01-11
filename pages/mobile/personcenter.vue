@@ -30,19 +30,10 @@
       </router-link>
     </div>
     <button @click="logout" class="back">退出登录</button>
-    <div class="popup" v-if="showModal">
-      <div class="popup_con">
-        <div class="popup_title">
-          <span>提现</span>
-          <span class="icon_close" @click="closeEdit"></span>
-        </div>
-        <form class="form" @submit.prevent="submit" novalidate>
-          <FormField :form="Withdrawals" @onChange="onChange"></FormField>
-          <p>手续费：{{total_price * fee|decimal}}元<span class="fee">({{fee*100+'%'}})</span></p>
-          <button name="btn">提交</button>
-        </form>
-      </div>
-    </div>
+    <MyMask :form="edit===3?[]:Withdrawals" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
+      <p slot="fee">手续费：{{total_price * fee|decimal}}元<span class="fee">({{fee*100+'%'}})</span></p>
+      <opr-select slot="select_opr" :no="maskNo" @closeMask="closeMask"></opr-select>
+    </MyMask>
   </div>
 </template>
 
@@ -51,9 +42,11 @@
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import FormField from '@/components/common/FormField'
+  import MyMask from '@/components/common/Mask'
+  import OprSelect from '@/components/common/OprSelect'
   export default {
     components: {
-      FormField
+      FormField, MyMask, OprSelect
     },
     data () {
       return {
@@ -61,16 +54,18 @@
         Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
         balance_account: '',
         edit: 0,
-        showModal: false,
         fee: 0,
         total_price: 0,
         feedetail: '',
-        product_hash_type: ''
+        product_hash_type: '',
+        title: '',
+        maskNo: 0
       }
     },
     computed: {
       ...mapState({
         token: state => state.info.token,
+        isMobile: state => state.isMobile,
         mobile: state => state.info.mobile,
         user_id: state => state.info.user_id,
         token: state => state.info.token,
@@ -90,9 +85,7 @@
       openMask (k) {
         this.total_price = 0
         if (!(this.true_name && this.true_name.status === 1)) {
-          api.tips('请先实名认证', 1, () => {
-            this.$router.push({name: 'mobile-administration'})
-          })
+          this.goAuth ('立即认证', 0)
           return false
         }
         if (k === 1) {
@@ -102,16 +95,14 @@
         }
         if (k === 2) {
           if (!(this.bank_card && this.bank_card.status === 1)) {
-            api.tips('请先绑定银行卡', 1, () => {
-              this.$router.push({name: 'mobile-administration'})
-            })
+            this.goAuth ('立即绑定', 1)
             return false
           }
           if (+this.balance_account <= 0) {
-            api.tips('您的账户余额不足，不能提现', 1)
+            api.tips('您的账户余额不足，不能提现')
             return false
           }
-          this.showModal = true
+          this.title = '提现'
           var requestUrl = 'showWithdraw'
           var data = {token: this.token, user_id: this.user_id}
           var self = this
@@ -124,13 +115,13 @@
           })
         }
       },
-      closeEdit () {
-        this.showModal = false
+      closeMask () {
+        this.edit = 0
         document.body.style.overflow = 'auto'
       },
       submit () {
         var form = document.querySelector('.form')
-        var data = api.checkFrom(form, 1)
+        var data = api.checkForm(form, this.isMobile)
         var url = 'withdraw'
         var sendData = {token: this.token, user_id: this.user_id}
         var tipsStr = '提现成功'
@@ -140,7 +131,7 @@
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.closeEdit()
-            api.tips(tipsStr, 1)
+            api.tips(tipsStr)
           }, form.btn)
         })
       },
@@ -164,6 +155,11 @@
             this.getData()
           }, 5)
         }
+      },
+      goAuth (str, n) {
+        this.title = str
+        this.maskNo = n
+        this.edit = 3
       }
     },
     mounted () {
