@@ -180,6 +180,7 @@
     },
     mounted () {
       let self = this
+      this.$store.commit('SET_TITLE', 'BDC托管')
       util.post('bdcinfoList', {sign: 'token=0'}).then(function (data) {
         self.list = data
         for (let i = 0, len = self.list.length; i < len; i++) {
