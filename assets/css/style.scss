@@ -101,7 +101,7 @@
           overflow:hidden;
           border-radius:#{$height}px;
           height:#{$height}px;
-          background: $border;
+          background: #ccc;
           .box1{
             @include position;
             background: linear-gradient(to right, $noColor 20%, $yesColor);
