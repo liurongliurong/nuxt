@@ -22,7 +22,6 @@
     </div>
   </pageFrame>
 </template>
-
 <script>
   import util from '@/util/index'
   import api from '@/util/function'
@@ -59,13 +58,15 @@
     methods: {
       getList () {
         var self = this
-        util.post('NewsBriefList', {sign: api.serialize({token: 0})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.newslists = res
+        if (!this.isMobile) {
+          util.post('NewsBriefList', {sign: api.serialize({token: 0})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.newslists = res
+            })
+          }).catch(res => {
+            console.log(res)
           })
-        }).catch(res => {
-          console.log(res)
-        })
+        }
       },
       loadMore () {
         var self = this
@@ -76,8 +77,8 @@
             util.post('showBrief_h5', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
               api.checkAjax(self, res, () => {
                 self.total = res.total
-                for (var a = 0; a < res.length; a++) {
-                  var date1 = res[a].dateline
+                for (var a = 0; a < res.list.length; a++) {
+                  var date1 = res.list[a].dateline
                   var date2 = new Date()
                   var date3 = date2.getTime() - new Date(date1.replace(/-/g, '/')).getTime()
                   var leave1 = date3 % (24 * 3600 * 1000)
@@ -92,8 +93,8 @@
                   }
                   self.times.push(hours)
                 }
-                for (let i = 0, len = res.length; i < len; i++) {
-                  self.museum.push(res[i])
+                for (let i = 0, len = res.list.length; i < len; i++) {
+                  self.museum.push(res.list[i])
                 }
                 self.loading = false
                 self.now++
@@ -118,7 +119,6 @@
     }
   }
 </script>
-
 <style lang="scss">
   .news_left{
     float: left;
