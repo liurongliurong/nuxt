@@ -7,10 +7,13 @@
           <CloudMinerItem v-for="d,k in cloudMinerData" :d="d" :key="k"></CloudMinerItem>
         </template>
         <template v-else-if="isMobile===1">
-          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists">
-            <MobileCloudMinerItem v-for="d,k in cloudMinerData" :d="d" @click="goPay(d.id)" :key="k"></MobileCloudMinerItem>
+          <div class="tab_cloud_miner">
+            <span v-for="item in tabCloudMiner" :class="{tab_cloud_active: item.active}">{{item.name}}</span>
           </div>
-          <p v-if="loading"  class="loadmore">加载中······</p>
+          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists">
+            <MobileCloudMinerItem v-for="item,key in cloudMinerData" :itemData="item" @click="goPay(item.id)" :key="key"></MobileCloudMinerItem>
+          </div>
+          <p v-if="loading" class="loadmore">加载中······</p>
         </template>
         <div class="nodata" v-if="$parent.show">
           <div class="nodata_img"></div>
@@ -49,7 +52,11 @@
     },
     data () {
       return {
-        loading: false
+        loading: false,
+        tabCloudMiner: [
+          {name: '云算力市场', active: true},
+          {name: '转售市场', active: false}
+        ]
       }
     },
     asyncData ({ params }) {
@@ -102,8 +109,24 @@
         @include data_title
       }
       .data{
+        .tab_cloud_miner {
+          @include flex(space-around, center)
+          margin-top: 0.88rem;
+          padding: 0.26rem 0;
+          background: #327fff;
+          color: #fff;
+          font-size: 0.3rem;
+          position: relative;
+
+          .tab_cloud_active {
+            font-weight: bold;
+          }
+        }
         .item{
           @include cloud_miner_box
+        }
+        .list_lists {
+          padding-top: 0.2rem;
         }
       }
     }

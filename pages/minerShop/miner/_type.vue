@@ -1,8 +1,8 @@
 <template>
   <section class="compute_shop">
-    <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2" :status="status" @setStatus="setStatus" @fetchData="fetchData"></Sort>
+    <Sort v-if="type==='1'" :sort="sort" :sortNav="sortNav"? :status="status" @setStatus="setStatus" @fetchData="fetchData"></Sort>
     <MinerList v-if="type==='1'" :status="status" :minerData="minerData" :len="len" :now="now" @getMobileData="getMobileData"></MinerList>
-    <CloudMinerList :status="status" :cloudMinerData="cloudMinerData" :len="len" :now="now" @getMobileData="getMobileData" v-else></CloudMinerList>
+    <CloudMinerList v-else :status="status" :cloudMinerData="cloudMinerData" :len="len" :now="now" @getMobileData="getMobileData"></CloudMinerList>
     <Pager :len="len" v-if="!isMobile" :now="now" @setPage="setPage"></Pager>
   </section>
 </template>

@@ -45,14 +45,14 @@
         </div>
       </div>
     </div>
-    <div class="mobile_tabbar" v-if="isMobile === 1&&$route.name!=='minerShop-detail'&&$route.name!=='mobile-orderDetail'&&$route.name!=='mobileIndex'&&$route.name!=='bdc'">
+    <!-- <div class="mobile_tabbar" v-if="isMobile === 1&&$route.name!=='minerShop-detail'&&$route.name!=='mobile-orderDetail'&&$route.name!=='mobileIndex'&&$route.name!=='bdc'">
       <div class="mobile_tab_item" v-for="item in footList">
         <a href="javascript:;" @click="goPage(item.linkName)" class="item" :class="{active: $route.name === item.linkName}">
           <i :class="['iconfont',$route.name === item.linkName ? item.activeIcon : item.icon]"></i>
           <span class="name">{{item.name}}</span>
         </a>
       </div>
-    </div>
+    </div> -->
   </footer>
 </template>
 

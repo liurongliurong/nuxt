@@ -1,50 +1,40 @@
 <template>
-  <div class="mobile_cloud_miner_item item" :disabled="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)" @click="goDetail(d.id, '2')">
-    <h3>
-      <span>{{d.name}}</span>
-      <span :class="'icon_currency '+d.hashtype&&d.hashtype.name" v-if="d.hashtype"></span>
-      <span :class="['sell_type', {active: d.sell_type===2}]" v-if="d.status!==7">{{(d.sell_type===2&&'转售')||str[d.status]||(d.status===10&&'活动')}}</span>
-      <span class="sell_type gray" v-if="d.status&&(d.status===2||d.status===3)||(d.amount-d.buyed_amount<=0)">已售罄</span>
-    </h3>
-    <div class="mobile_info_box">
-      <div class="mobile_info">
-        <h4>每台单价<span><b>{{d.one_amount_value}}</b>元</span></h4>
-        <div class="mobile_text">
-          <div class="mobile_text_item">每台算力<b>{{d.hash}}T</b></div>
-          <div class="mobile_text_item">剩余可售<b>{{(d.amount-d.buyed_amount)<0?0:(d.amount-d.buyed_amount)}}台</b></div>
-        </div>
+  <div class="mobile_cloud_miner_item item" :disabled="itemData.status&&(itemData.status===2||itemData.status===3)||(itemData.amount-itemData.buyed_amount<=0)" @click="goDetail(itemData.id, '2')">
+    <div class="item_title">
+      <div class="left">
+        <span class="name">{{itemData.name}}</span>
+        <!-- <span :class="'icon_currency '+itemData.hashtype&&itemData.hashtype.name" ></span>
+        <span :class="['sell_type', {active: itemData.sell_type===2}]" v-if="itemData.status!==7">{{(itemData.sell_type===2&&'转售')||str[itemData.status]||(itemData.status===10&&'活动')}}</span>
+        <span class="sell_type gray" v-if="itemData.status&&(itemData.status===2||itemData.status===3)||(itemData.amount-itemData.buyed_amount<=0)">已售罄</span> -->
+        <span class="sell_type">热销</span>
+        <span class="coin_sign" v-if="itemData.hashtype">{{itemData.hashtype.name}}</span>
       </div>
-      <div class="mobile_wrap">  
-        <template v-if="percent > 100">
-          <div class="circle">  
-            <div class="percent left11" :style="{'-webkit-transform': 'rotate(' + (18 / 5) * percent + ' deg )'}"></div>  
-            <div :class="['percent', 'right11', 'wth0']"></div>
-          </div>  
-        </template>
-        <template v-else-if="percent > 50">
-          <div :class="['circle', 'clip-auto']">
-            <div class="percent left11" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
-            <div class="percent right11"></div>
-          </div>  
-        </template>
-        <template v-else-if="percent <= 50">
-          <div class="circle">
-            <div class="percent left11" :style="{'-webkit-transform': 'rotate('+ (18 / 5) * percent +'deg)'}"></div>  
-            <div class="percent right11 wth0"></div>
-          </div>  
-        </template>
-        <div class="num"><span>{{percent}}</span>%</div>  
-      </div>  
+      <div class="right">
+        剩余{{remain}}台
+      </div>
+    </div>
+    <div class="item_info">
+      <div class="info">
+        <span class="price"><b>{{itemData.one_amount_value}}</b>元</span>
+        <span class="info_name">预计今日收益</span>
+      </div>
+      <div class="info">
+        <span>{{itemData.one_amount_value}}元</span>
+        <span class="info_name">每台价格</span>
+      </div>
+      <div class="info">
+        <span>{{itemData.hash}}T</span>
+        <span class="info_name">每台算力</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import Vue from 'vue'
-  import api from '@/util/function'
   export default {
     props: {
-      d: {
+      itemData: {
         type: Object
       }
     },
@@ -57,22 +47,14 @@
     methods: {
       goDetail (id, type) {
         api.goPage(id, type, this)
-      },
-      getPercent () {
-        this.percent = ((this.d.buyed_amount) / this.d.amount*100).toFixed(0)
-        if (this.percent > 100) {  
-          this.percent = 0
-        } else {
-          this.percent = this.percent
-        }
       }
     },
-    mounted () {
-      this.getPercent()
+    mounted() {
+      this.$store.commit('SET_TITLE', '云算力')
     },
-    watch: {
-      'd': function () {
-        this.getPercent()
+    computed: {
+      remain: function() {
+        return this.itemData.amount - this.itemData.buyed_amount < 0 ? 0 : this.itemData.amount - this.itemData.buyed_amount
       }
     }
   }
@@ -80,88 +62,69 @@
 
 <style type="text/css" lang="scss">
   @import '../../assets/css/style.scss';
-  .mobile_cloud_miner_item{
+  .mobile_cloud_miner_item {
     background: $white;
-    padding:15px;
+    padding: 0 0.3rem;
     position: relative;
     border-top:1px solid $border;
     border-bottom:1px solid $border;
-    .mobile_info_box{
-      color:$light_black;
-      line-height: 2;
-      @include flex
-      .mobile_info{
-        width:75%;
-        h4{
-          span{
-            margin-left:10px;
-            color:#ffb386;
-            b{
-              font-weight: normal;
-              font-size: 24px;
-              color:$orange;
-            }
-          }
+
+    .item_title {
+      padding: 0.24rem 0 0.18rem;
+      @include flex(space-between,center)
+      border-bottom: solid 1px #e5e5e5;
+
+      .left {
+        .name {
+          margin-right: 0.2rem;
+          font-size: 0.3rem;
+          font-weight: bold;
+          color: #333;
         }
-        .mobile_text{
-          @include flex(space-between)
-          .mobile_text_item{
-            b{
-              font-weight: normal;
-              color:$text;
-              margin:0 4px;
-            }
-          }
+        .coin_sign, .sell_type {
+          border: solid 1px #327fff;
+          border-radius: 8px;
+          color: #327fff;
+          padding: 0 0.18rem;
+          font-size: 0.22rem;
+        }
+
+        .sell_type {
+          color: #fff;
+          margin-right: 0.2rem;
+          background: #ff721f;
+          border: solid 1px #ff721f;
         }
       }
-      .mobile_wrap{
-        top:0.5rem;
-        right: 0.4rem;
-        background-color: #ffb386;
-        &,.circle,.percent{
-          position: absolute;
-          width: 76px;
-          height: 76px;
-          border-radius: 50%;
-        }
-        .circle{
-          border:20px solid #ffb386;
-          clip:rect(0,76px,76px,38px);
-          .percent{
-            top:-20px;
-            left:-20px;
-          }
-          .left11{  
-            transition:transform ease;
-            border:20px solid #ccc;
-            clip: rect(0,38px,76px,0);
-          }
-          .right11{
-            border:20px solid #ccc;
-            clip: rect(0,76px,76px,38px);
-          }
-          .wth0{
-            width:0;  
-          }
-          &.clip-auto{
-            clip:rect(auto, auto, auto, auto);  
+      .right {
+        color: #666;
+        font-size: 0.28rem;
+      }
+    }
+
+    .item_info{
+      @include flex(space-between,center)
+      padding: 0.4rem 0;
+
+      .info {
+        @include flex(center,centet,column)
+        .price {
+          color: #ff721f;
+          b {
+            font-size: 0.48rem;
           }
         }
-        .num{
-          position: absolute;
-          width: 66px;
-          height: 66px;
-          line-height: 66px;
-          text-align: center;
-          font-size: 14px;
-          left: 5px;
-          top: 5px;
-          border-radius: 50%;
-          background-color: #fff;
-          z-index: 1;
+        .info_name {
+          color: #999;
+          font-size: 0.26rem;
+        }
+        :first-child {
+          height: 0.62rem;
+          line-height: 0.62rem;
         }
       }
     }
+
   }
   @include progress
 </style>
