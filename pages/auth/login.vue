@@ -134,9 +134,6 @@
         }
       }
       .input{
-        // input{
-        //   padding-left:134px;
-        // }
         span:nth-child(2){
           @include gap(10,h)
           top:15px;

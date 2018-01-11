@@ -171,6 +171,7 @@
     </MyMask>
   </section>
 </template>
+
 <script>
   import util from '@/util/index'
   import api from '@/util/function'
@@ -492,6 +493,7 @@
     }
   }
 </script>
+
 <style type="text/css" lang="scss">
   @import '../../assets/css/style.scss';
   .pay{
@@ -717,7 +719,7 @@
     }
     .mobile_box{
       min-height:calc(100vh - 61px);
-      font-size: 0.45rem;
+      font-size: 0.3rem;
       color:$text;
       background: #F1F2F7;
       .mobile_address{
@@ -744,12 +746,12 @@
             top:36px
           }
           h3{
-            font-size: 0.5rem;
+            font-size: 0.3rem;
             position: relative;
             &.active:after{
               content:'默认';
               @include position(4,auto,auto,10)
-              font-size: 0.4rem;
+              font-size: 0.28rem;
               font-weight: normal;
               border:1px solid $orange;
               border-radius:3px;
@@ -759,7 +761,7 @@
           }
           p{
             @include ellipsis(2)
-            font-size: 0.5rem;
+            font-size: 0.3rem;
           }
         }
         .address_btn:after{
@@ -767,13 +769,13 @@
         }
       }
       .price,.confirm_info,.pay_info{
-        padding:0 15px;
+        padding:0 0.3rem;
         background: #fff;
       }
       .price{
         line-height: 50px;
         font-weight: bold;
-        font-size: 0.52rem;
+        font-size: 0.36rem;
         .val{
           color:$orange;
         }
@@ -790,20 +792,20 @@
           }
         }
         &.confirm_info2{
-          padding:10px 15px;
+          padding:10px 0.3rem;
         }
       }
       .payForm2{
         @include form(h,1)
         .form.form_field{
-          padding:0.5rem;
+          padding:0.3rem;
           background: #fff;
           .input input{
             height:34px;
           }
         }
         .pay_item{
-          padding:0 0.5rem;
+          padding:0 0.3rem;
           background: #fff;
           @include flex(space-between)
           line-height: 50px;
@@ -825,7 +827,7 @@
             }
           }
           label{
-            font-size: 0.5rem;
+            font-size: 0.3rem;
             @include accept_label
             span{
               margin-left:10px;

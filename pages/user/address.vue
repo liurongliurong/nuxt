@@ -1,6 +1,6 @@
 <template>
   <section class="address">
-    <div class="pc_box" v-if="!isMobile">
+    <div class="pc_box" v-if="isMobile===0">
       <h2>地址管理<div class="address_btn" @click="openMask">添加新地址</div></h2>
       <div class="address_box">
         <div class="item" v-for="a,k in data">
@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <div class="mobile_box" v-else>
+    <div class="mobile_box" v-else-if="isMobile===1">
       <div class="address_box">
         <div class="item" v-for="a,k in data">
           <div class="address_desc" @click="selectAddress(k)">
@@ -201,7 +201,7 @@
           .address_desc{
             width:70%;
             .address_title{
-              font-size: 0.6rem;
+              font-size: 0.3rem;
               font-weight: bold;
               padding:5px 0;
             }

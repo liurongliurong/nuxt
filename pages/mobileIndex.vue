@@ -45,10 +45,6 @@
             </p>
           </div>
         </div>
-        <!-- <div class="footer">
-          <a class="button" @click="jump()">跳过</a>
-          <p class="introduce">Clould mining<i>|</i>Miner<i>|</i>Escrow</p>
-        </div> -->
       </div>
       <div class="page-3 page-common">
         <img class="logo" src="../assets/images/mobile/index/logo.png"/>
@@ -186,10 +182,10 @@ export default {
   .page-common {
     width: 100% !important;
     height: 100vh !important;
-    padding-top: 0.62rem;
+    padding-top: 0.34rem;
     .logo {
-      margin-left: 0.767rem;
-      width: 4.35rem;
+      margin-left: 0.42rem;
+      width: 2.38rem;
       display: block;
     }
     .main {
@@ -197,19 +193,19 @@ export default {
       height: auto;
       display: flex;
       align-items: center;
-      margin-top: 1.1rem;
+      margin-top: 0.6rem;
 
       .page-number {
         position: absolute;
         left: -98px;
-        top: 9.135rem;
+        top: 5rem;
         transform: rotate(90deg);
         display: flex;
         align-items: center;
         justify-content: center;
         hr {
           width: 128px;
-          margin-right: 0.913rem;
+          margin-right: 0.5rem;
           border: solid 1px #7888a5;
           border-width: 0 0 1px;
         }
@@ -219,7 +215,7 @@ export default {
           justify-content: center;
           i {
             font-style: normal;
-            font-size: 13px;
+            font-size: 0.26rem;
           }
           .slash {
             margin: 0 15px;
@@ -239,30 +235,29 @@ export default {
         margin: 0 auto;
       }
     }
+
     .footer {
       position: absolute;
-      bottom: 0.822rem;
-      right: 1.1rem;
+      bottom: 0.72rem;
+      right: 0.6rem;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-
       .button {
-        padding: 0.22rem 0.986rem;
-        margin-bottom: 0.657rem;
+        padding: 0.12rem 0.54rem;
+        margin-bottom: 0.36rem;
         color: #608ad8;
-        font-size: 0.548rem;
-        border: solid 1px #608ad8;
-        border-radius: 0.73rem;
+        font-size: 0.3rem;
+        border: solid 0.02rem #608ad8;
+        border-radius: 0.4rem;
       }
       .introduce {
         color: #fff;
         font-weight: normal;
-        font-size: 0.364rem;
-
+        font-size: 0.2rem;
         i {
           font-style: normal;
-          margin: 0 0.18rem;
+          margin: 0 0.1rem;
           color: #999;
         }
       }
@@ -273,35 +268,35 @@ export default {
       margin: 0 auto;
     }
     .main-slogen {
-      font-size: 0.475rem;
+      font-size: 0.26rem;
       color: #fff;
-      margin: 1.46rem auto 0;
+      margin: 0.8rem auto 0;
       text-align: center;
-      letter-spacing: 0.0364rem;
+      letter-spacing: 0.02rem;
     }
     .title {
-      font-size: 0.657rem;
+      font-size: 0.36rem;
       font-weight: bold;
       color: #fff;
       margin: 0 auto;
       text-align: center;
-      letter-spacing: 0.11rem;
-      padding: 0.438rem 0;
+      letter-spacing: 0.06rem;
+      padding: 0.24rem 0;
     }
     .main {
       margin-top: 8vh;
     }
     .article {
-      margin-top: 1.97rem;
+      margin-top: 1.08rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       .slogen {
-        letter-spacing: 0.0364rem;
-        margin-bottom: 0.548rem;
+        letter-spacing: 0.02rem;
+        margin-bottom: 0.3rem;
         color: #b0ccff;
-        font-size: 0.548rem;
+        font-size: 0.3rem;
       }
     }
   }
@@ -313,23 +308,23 @@ export default {
       }
     }
     .article {
-      margin-top: 0px;
-      padding: 0 0.73rem 0 1.827rem;
+      margin-top: 0;
+      padding: 0 0.4rem 0 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
       .item {
-        margin-bottom: 0.548rem;
+        margin-bottom: 0.3rem;
         .title {
-          font-size: 0.548rem;
+          font-size: 0.3rem;
           color: #b0ccff;
           font-weight: bold;
         }
         .content {
-          font-size: 0.475rem;
-          line-height: 0.73rem;
+          font-size: 0.26rem;
+          line-height: 0.4rem;
           color: #b0ccff;
         }
       }
@@ -344,34 +339,36 @@ export default {
     }
     .article {
       margin-top: 0;
-      padding: 0 0.9135rem;
+      padding: 0 0.5rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
       .title {
-        font-size: 0.548rem;
+        font-size: 0.3rem;
         color: #b0ccff;
-        margin-bottom: 0.328rem;
+        margin-bottom: 0.18rem;
       }
     }
+
     .footer {
       width: 80%;
       display: flex;
       align-items: center;
       right: 10%;
+
       .button {
-        width: 100%;
-        padding: 0.22rem 0.986rem;
-        margin-bottom: 0.657rem;
+        width: 80%;
+        padding: 0.12rem 0.54rem;
+        margin-bottom: 0.36rem;
         color: #fff;
-        font-size: 0.584rem;
+        font-size: 0.32rem;
         font-weight: bold;
         text-align: center;
         background: #01beb5;
-        border: solid 1px #01beb5;
-        border-radius: 0.548rem;
+        border: solid 0.02rem #01beb5;
+        border-radius: 0.3rem;
       }
     }
   }
@@ -385,10 +382,10 @@ export default {
       .login {
         width: auto;
         color: #fff;
-        margin-right: 0.767rem;
+        margin-right: 0.42rem;
         a {
           color: #fff;
-          font-size: 0.548rem;
+          font-size: 0.3rem;
         }
         span {
           margin: 0 5px;
@@ -398,21 +395,21 @@ export default {
     .introduce {
       display: flex;
       flex-direction: column;
-      padding-left: 0.548rem;
-      margin: 1.46rem 0 0 0.82rem;
-      border-left: solid 4px #1fbfa7;
+      padding-left: 0.3rem;
+      margin: 0.8rem 0 0 0.44rem;
+      border-left: solid 0.08rem #1fbfa7;
 
       .title {
-        font-size: 0.62rem;
+        font-size: 0.34rem;
         color: #fff;
-        margin-bottom: 0.767rem;
+        margin-bottom: 0.42rem;
       }
       .content {
-        font-size: 0.438rem;
+        font-size: 0.24rem;
         color: #a9adbb;
 
         :nth-child(1) {
-          margin-bottom: 0.18rem;
+          margin-bottom: 0.1rem;
         }
       }
     }
@@ -437,24 +434,24 @@ export default {
         justify-content: center;
         position: relative;
         .word {
-          width: 6.2rem;
+          width: 3.4rem;
           position: relative;
-          left: 3.64rem;
+          left: 2rem;
           .title {
-            font-size: 0.62rem;
+            font-size: 0.34rem;
             color: #fff;
-            margin-bottom: 0.364rem;
+            margin-bottom: 0.2rem;
           }
           .sub {
-            font-size: 0.438rem;
+            font-size: 0.24rem;
             color: rgba(255,255,255,0.5);
           }
         }
         .arrow {
           position: absolute;
-          right: 0.62rem;
-          width: 0.438rem;
-          height: 0.438rem;
+          right: 0.34rem;
+          width: 0.24rem;
+          height: 0.24rem;
           transform: rotate(45deg);
           border: solid 1px #fff;
           border-width: 1px 1px 0 0;

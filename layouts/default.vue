@@ -36,15 +36,14 @@
       }
     },
     mounted () {
+      // 7.5 = 750 / 100
       var width = document.documentElement.clientWidth
-      document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
+      document.documentElement.style.fontSize = (width / 7.5) + 'px'
       window.addEventListener('orientationchange', function () {
-        var width = document.documentElement.clientWidth
-        document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
+        document.documentElement.style.fontSize = (width / 7.5) + 'px'
       })
       window.addEventListener('resize', function () {
-        var width = document.documentElement.clientWidth
-        document.documentElement.style.fontSize = 23.4 * (width / 320) + 'px'
+        document.documentElement.style.fontSize = (width / 7.5) + 'px'
       })
       if (api.checkEquipment()) {
         this.$store.commit('SET_EQUIPMENT', 1)

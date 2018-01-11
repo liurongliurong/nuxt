@@ -1,6 +1,6 @@
 <template>
   <section class="money_flow">
-    <template v-if="!isMobile">
+    <template v-if="isMobile===0">
       <h2>资金流水</h2>
       <h3>流水详情</h3>
       <div class="detail_box">
@@ -36,21 +36,21 @@
             </tr>
           </tbody>
         </table>
-        <div class="nodata" v-if="show">
+        <div class="nodata" v-if="!list.length">
           <div class="nodata_img"></div>
           <p>暂无列表信息</p>
         </div>
         <Pager :len="len" :now="now" @setPage="setPage"></Pager>
       </div>
     </template>
-    <div class="mobile_box" v-else>
-      <p class="flow_p">
+    <div class="mobile_box" v-else-if="isMobile===1">
+      <p class="data_title">
         <span>资金用途</span>
         <span>金额（元）</span>
       </p>
-      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists">
-        <div class="moneyflow">
-          <div v-for="n, k in list" class="monrylist">
+      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len">
+        <div class="money_box">
+          <div v-for="n, k in list" class="money_list">
             <span class="left">
               <i>{{n.type_name}}</i>
               <em>{{n.create_time}}</em>
@@ -59,7 +59,11 @@
           </div>
         </div>
       </div>
-      <p v-if="loading"  class="loadmore">加载中······</p>
+      <p v-if="loading" class="load_more">加载中······</p>
+      <div class="nodata" v-if="!list.length">
+        <div class="nodata_img"></div>
+        <p>暂无列表信息</p>
+      </div>
     </div>
     <MyMask :form="Withdrawals" title="资金提现" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
       <p slot="fee">手续费：{{chargeMoney|format}}元<span class="fee">({{fee*100+'%'}})</span></p>
@@ -88,7 +92,6 @@
         list: [],
         edit: '',
         Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
-        show: false,
         loading: false,
         len: 0,
         now: 1,
@@ -222,7 +225,7 @@
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .money_flow{
-    padding:0 15px;
+    // padding:0 15px;
     h2{
       padding:0 15px !important;
     }
@@ -256,71 +259,60 @@
     .detail_table{
       @include data_table
     }
-    h2,h3,.detail_box,.detail_table{
-      @include mobile_hide
-    }
     .mobile_box{
-      @include mobile_show
-      width: 100%;
-      background: #f5f5f9;
-      .flow_p{
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
+      .data_title{
+        @include flex(space-between)
         padding:0 .5rem;
-        height: 2rem;
-        line-height:2rem;
-        background: white;
+        height: 0.73rem;
+        line-height:0.73rem;
+        background: #f5f5f9;
         color: #999999;
-        font-size: 0.6rem;
-        padding-bottom:.4rem;
+        padding:0 0.3rem;
+        font-size: 0.25rem;
         box-sizing: border-box;
       }
-      .moneyflow{
+      .load_more{
+        height: 1.3rem;
+        text-align: center;
+        line-height: 1.3rem;
+      }
+      .money_box{
         width: 100%;
         overflow: hidden;
-        background: white;
-        .monrylist{
+        .money_list{
           width: 100%;
           height: 100%;
-          padding:0 .5rem;
+          padding:0.3rem .3rem;
           box-sizing: border-box;
           display: flex;
           justify-content: space-between;
           border-top:1px solid #ddd;
           .left i{
             display: block;
-            font-size: .6rem;
-            padding-top: .5rem;
+            font-size: .25rem;
           }
           .left em{
             display: block;
-            font-size: .45rem;
-            padding-top: .3rem;
+            font-size: .25rem;
             color: #a9a9a9;
+            padding-top: 0.1rem;
             font-style: normal;
           }
           .right{
-            line-height: 3rem;
+            line-height: 0.88rem;
             color: #01beb5;
             font-weight: 800;
-            font-size: 0.6rem;
+            font-size: 0.3rem;
             &.active{
               color: red;
             }
           }
         }
       }
+      @include nodata
     }
     @media screen and (max-width: $mobile) {
       padding-bottom:61px;
     }
   }
-  .loadmore{
-        width: 100%;
-        height: 2rem;
-        text-align: center;
-        line-height: 2rem;
-        background: white;
-    }
 </style>

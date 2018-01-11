@@ -200,7 +200,7 @@
     width: 100%;
     overflow: hidden;
     background: white;
-    padding:0 0.5rem;
+    padding:0 0.3rem;
     box-sizing: border-box;
     .quicknews_lists1{
       width: 100%;
@@ -208,9 +208,9 @@
         border-bottom: 1px solid #bfbfbf;
         width: 100%;
         overflow: hidden;
-        padding: 0.5rem;
+        padding: 0.2rem 0;
         h4{
-          font-size: 0.6rem;
+          font-size: 0.3rem;
           font-weight: 800;
           padding:0.1rem 0;
           width: 100%;
@@ -219,26 +219,25 @@
           overflow: hidden;
         }
         p{
-          padding: 0.2rem 0;
           box-sizing: border-box;
+          font-size: 0.22rem;
         }
         .time{
-          padding-top:.2rem;
+          padding-top: 0.1rem;
+          font-size: 0.3rem;
           span{
             color: #999;
-            margin-right: .3rem;
-            font-size: 0.8rem;
-            position: relative;
-            top: .05rem;
+            margin-right: .2rem;
+            font-size: 0.3rem;
           }
         }
       }
     }
     .loadmore{
         width: 100%;
-        height: 2rem;
+        height: 1.06rem;
         text-align: center;
-        line-height: 2rem;
+        line-height: 1.06rem;
     }
   }
 </style>

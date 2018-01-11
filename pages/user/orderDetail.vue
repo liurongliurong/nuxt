@@ -250,7 +250,7 @@
       .detail_box{
         background: #fff;
         color:$light_text;
-        padding:0.4rem;
+        padding:0.3rem;
         &:first-child{
           border-top:1px solid $border;
         }
@@ -266,7 +266,7 @@
           }
           &.miner_name{
             color:#000;
-            font-size: 0.57rem;
+            font-size: 0.34rem;
             margin-bottom:0.2rem
           }
         }
@@ -320,7 +320,7 @@
           }
         }
         &:not(:last-child){
-          margin-bottom:0.4rem;
+          margin-bottom:0.2rem;
         }
       }
       .detail_btn{

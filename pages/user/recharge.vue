@@ -8,7 +8,7 @@
         <p>开户银行：杭州联合农村商业银行股份有限公司吴山支行</p>
         <p>银行卡号：2010 0018 4219 726</p>
         <div class="recharge_process">
-          <div>流程说明：</div>
+          <div class="h3">流程说明：</div>
           <div class="process">
             <div class="item active" v-for="p,k in processText">
               <i>{{k+1}}</i>
@@ -49,8 +49,8 @@
         processText: ['银行转账', '提交申请', '审核通过'],
         processStatus: 2,
         form: [
-          [{name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', len: 7}, {name: 'bank_num', type: 'text', title: '充值银行卡', placeholder: '请输入充值银行卡', value: 'bank_num', pattern: 'bankCard'}, {name: 'request_id', type: 'text', title: '充值流水号', placeholder: '请输入充值流水号', pattern: 'int'}],
-          [{name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', len: 6}]
+          [{name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', pattern: 'bigMoney', len: 7}, {name: 'bank_num', type: 'text', title: '充值银行卡', placeholder: '请输入充值银行卡', value: 'bank_num', pattern: 'bankCard'}, {name: 'request_id', type: 'text', title: '充值流水号', placeholder: '请输入充值流水号', pattern: 'int'}],
+          [{name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', pattern: 'bigMoney', len: 6}]
         ],
         rechargeType: ['银行卡充值', '支付宝充值'],
         rechargeNo: 0
@@ -179,9 +179,6 @@
           width: 80px;
         }
       }
-      button{
-        margin:0
-      }
     }
     @media screen and (max-width: $mobile) {
       background:#f4f4f4;
@@ -214,8 +211,14 @@
         margin-bottom:15px;
         .recharge_info{
           font-size: 0.6rem;
+          p{
+            font-size: 0.3rem;
+          }
           .recharge_process{
             display: block;
+            .h3{
+              font-size:0.3rem !important;
+            }
             .process{
               width:100%;
               .item{
@@ -255,9 +258,10 @@
         }
         button{
           width:calc(100% - 30px);
-          font-size: 0.6rem;
+          font-size: 0.4rem;
           margin-bottom:15px;
           margin-left:15px;
+          line-height: 2.2;
         }
       }
     }

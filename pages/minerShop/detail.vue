@@ -21,7 +21,7 @@
         <button disabled v-if="detail.status===7||detail.status===2">立即购买</button>
         <button disabled v-else-if="detail.status===3">产品撤销</button>
         <button disabled v-else-if="detail.status===4">立即购买</button>
-        <button @click="checkPay()" v-else>立即购买</button>
+        <button @click="checkPay" v-else>立即购买</button>
       </div>
       <div class="popup" v-if="sheetVisible" @click="closeMask">
         <div class="popup_con buy_box">
@@ -36,10 +36,10 @@
             </div>
           </div>
           <div class="buy_num">
-            <div>购买数量<span class="buy_tips">({{parseInt(detail.single_limit_amount)||1}}台起售)</span></div>
+            <div>购买数量</div>
             <div class="input_box">
               <span @click="changeNum(+number-1)">-</span>
-              <input type="text" v-model="number" placeholder="购买数量" @blur="changeNum(number)">
+              <input type="text" v-model="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum(number)">
               <span @click="changeNum(+number+1)">+</span>
             </div>
           </div>
@@ -52,7 +52,7 @@
             <div class="item">{{(detail.one_amount_value*number)|format}}元</div>
           </div>
           <div class="mobile_btn" style="z-index:9999999;">
-            <button @click="goPay($event, false)">立即购买</button>
+            <button @click="goPay(false)">立即购买</button>
           </div>
         </div>
       </div>
@@ -258,7 +258,6 @@
     .mobile_box{
       .popup{
         .buy_box{
-          width:100vw;
           padding:0 15px;
           .img_text,.buy_num{
             padding: 15px 0;
@@ -272,13 +271,13 @@
               img{
                 height:90px;
                 width: 130px;
-                object-fit:cover
+                object-fit:contain
               }
             }
             .popup_text{
               .price{
                 color:$orange;
-                font-size: 0.55rem;
+                font-size: 0.36rem;
               }
               .name{
                 font-weight: bold;
@@ -301,21 +300,21 @@
                 width:58%
               }
             }
-            .buy_tips{
-              font-size: 0.4rem;
-              color:$orange
-            }
           }
           .buy_text{
             @include flex(space-between)
             padding-top:15px;
             &.last{
               padding-bottom:20px;
+              .item:last-child{
+                color: $orange;
+              }
             }
           }
           .mobile_btn{
             position: relative;
-            border:0
+            border: 0;
+            padding: 9px 0;
           }
         }
       }

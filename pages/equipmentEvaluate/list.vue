@@ -271,33 +271,32 @@
     background: white;
     .equipment_lists{
       width: 100%;
-      padding:0 0.5rem;
+      padding:0 0.3rem;
       box-sizing: border-box;
-      padding-bottom: 0.5rem;
+      padding-bottom: 0.3rem;
       .equipment_list{
         border-bottom: 1px solid #bfbfbf;
         width: 100%;
         overflow: hidden;
-        padding: 0.5rem 0;
+        padding: 0.3rem 0;
         h4{
-          font-size: 0.6rem;
+          font-size: 0.3rem;
           font-weight: 800;
-          padding-bottom: 0.3rem;
+          padding-bottom: 0.23rem;
         }
         p{
           color: #999;
-          height: 1.5rem;
+          height: 0.55rem;
           font-size: 0.5rem;
-          line-height:0.75rem;
           padding:0;
           margin:0;
           overflow: hidden;
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.23rem;
         }
         .opacity{
           width: 100%;
           position: relative;
-          height: 3.5rem;
+          height: 2.3rem;
           img{
             width: 100%;
             position: absolute;
@@ -305,48 +304,50 @@
             height: auto;
             top:0;
             height: 100%;
+            object-fit: contain;
           }
           span{
             position: absolute;
             left: 0;
             top:0;
             display: block;
-            width: 2.5rem;
-            height: 1rem;
+            width: 0.97rem;
+            height: 0.37rem;
             background: #01beb5;
             color:white;
-            font-size: 0.4rem;
+            font-size: 0.3rem;
             text-align: center;
-            line-height: 1rem;
+            line-height: 0.37rem;
           }
         }
       }
     }
     .loadmore{
         width: 100%;
-        height: 2rem;
+        height: 1.08rem;
         text-align: center;
-        line-height: 2rem;
+        line-height: 1.08rem;
     }
     .quicknews_content{
       width: 100%;
       padding-bottom: 50px;
       background: white;
       .title{
-        padding: 0.5rem;
+        padding: 0.3rem;
+        padding-bottom: 0;
       }
       span{
         font-weight: 800;
-        font-size: 0.7rem;
+        font-size: 0.3rem;
       }
       a{
         float: right;
         color:#327fff;
-        font-size: 0.5rem;
+        font-size: 0.3rem;
       }
       .info_quick{
         width: 100%;
-        padding:0 0.5rem;
+        padding:0 0.3rem;
       }
     }
     .showno{
