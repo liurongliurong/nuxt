@@ -5,7 +5,7 @@
       <div class="header_conten">
         <div class="logo">
           <nuxt-link to="/">
-            <img :src="require('@/assets/images/mobile/logo3.png')">
+            <img :src="require('@/assets/images/mobile/index/logo.png')">
           </nuxt-link>
         </div>
         <div class="title">{{title}}</div>
@@ -86,7 +86,7 @@
       padding: 0.22rem 0.3rem;
       box-sizing: border-box;
       .logo {
-        width: 1.67rem;
+        width: 1.8rem;
         height: auto;
         img{
           position: relative;
@@ -102,7 +102,7 @@
         position: relative;
         :nth-child(1){
           font-size: 0.42rem;
-          margin-right: 0.58rem;
+          margin-right: 0.28rem;
           color:#fff;
         }
         .header_mobile{
