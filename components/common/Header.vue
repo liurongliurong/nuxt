@@ -51,7 +51,7 @@
         this.showNav = !this.showNav
       },
       isMobileTitle () {
-        if (this.isMobilePage.indexOf($route.name)) {
+        if (this.isMobilePage.indexOf($route.name) > -1) {
           return true
         }
         return false
