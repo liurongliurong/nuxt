@@ -15,7 +15,7 @@
             <tr v-for="d, m in td">
             <td><span>{{d.name}}</span> - {{d.chinese_name}}</td>
             <td>¥ {{d.price}}</td>
-            <td>¥ {{(d.market_cap_usd / 100000000).toFixed(2)}}</td>
+            <td>$ {{(d.market_cap_usd / 100000000).toFixed(2)}}</td>
             <td>{{d.qwsl}} <span>{{d.unit}}</span></td>
             <td>{{d.output}}</td>
             </tr>

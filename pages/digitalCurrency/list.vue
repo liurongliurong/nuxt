@@ -49,14 +49,16 @@
     methods: {
       getList () {
         var self = this
-        util.post('showCoinInfo', {sign: api.serialize({token: this.token})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.toplists = res.main_coin
-            self.bottomlists = res.other_coin
+        if (!this.isMobile) {
+          util.post('showCoinInfo', {sign: api.serialize({token: this.token})}).then(function (res) {
+            api.checkAjax(self, res, () => {
+              self.toplists = res.main_coin
+              self.bottomlists = res.other_coin
+            })
+          }).catch(res => {
+            console.log(res)
           })
-        }).catch(res => {
-          console.log(res)
-        })
+        }
       },
       loadMore () {
         var self = this

@@ -11,8 +11,16 @@
     <p class="address"><span class="left">{{n.unit?n.unit: 'BitCoin'}}</span><span class="right">{{n.MinerAddress?n.MinerAddress: '未定'}}</span></p>
     <div class="progress_info1">
       <div class="progress_box1">
-        <div class="box1" :style="{width:((n.buyed_amount/n.amount)*100).toFixed(1)+'%'}"></div>
-        </div>
+        <template v-if="n.status===2">
+          <div class="box1" :style="{width:100 +'%'}"></div>
+        </template>
+        <template v-else-if="n.status===4">
+          <div class="box1" :style="{width:0 +'%'}"></div>
+        </template>
+        <template v-else>
+          <div class="box1" :style="{width:((n.buyed_amount/n.amount)*100).toFixed(1)+'%'}"></div>
+        </template>
+      </div>
     </div>
     <div class="items">
       <div class="item_one" v-for="item,d in items">

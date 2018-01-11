@@ -43,8 +43,8 @@
   @import '~assets/css/style.scss';
   .mobile_header{
     width: 100%;
-    height: 45px;
-    padding: 0 15px;
+    height: 0.88rem;
+    padding: 0.26rem 0.3rem;
     box-sizing: border-box;
     background: #fff;
     @include flex;

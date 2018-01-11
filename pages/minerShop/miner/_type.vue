@@ -38,6 +38,8 @@
     methods: {
       fetchData (sort, more) {
         var self = this
+        this.cloudMinerData = []
+        this.minerData = []
         this.type = this.$route.params.type
         var obj = {token: this.token, page: this.now, product_type: '1'}
         var url = ''
@@ -80,19 +82,23 @@
       setStatus (n) {
         this.now = 1
         this.status = n
-        this.fetchData()
+        if (this.isMobile) {
+          this.fetchData(this.status, 1)
+        } else {
+          this.fetchData(this.status)
+        }
       },
       getMobileData (isMore) {
         if (isMore) {
           this.now++
           this.fetchData(0, 1)
-        } else {
-          this.fetchData()
         }
       },
       setPage (n) {
         this.now = n
-        this.fetchData()
+        if (!this.isMobile) {
+          this.fetchData()
+        }
       }
     },
     watch: {
@@ -100,7 +106,9 @@
     },
     mounted () {
       if (!this.isMobile) {
-        this.fetchData()
+        this.fetchData(this.status)
+      } else {
+        this.fetchData(this.status, 1)
       }
     },
     computed: {

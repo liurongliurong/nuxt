@@ -18,7 +18,7 @@
       <div class="mobilequicknews">
         <h1 v-if="!showcontent">主流矿机制造商</h1>
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="quicknews_lists" v-if="!showcontent">
-          <div v-for="item, k in museum1" :key="k" @click="clickcontent(item.id)">
+          <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)">
             <img :src="item.image"/>
             <p>{{ item.title}}</p>
           </div>
@@ -57,7 +57,6 @@
         museum: [],
         total: 0,
         loading: false,
-        museum1: [],
         showcontent: false,
         content: '',
         allid: []
@@ -73,15 +72,21 @@
       }
     },
     methods: {
-      getList () {
+      getList (more) {
         var self = this
         util.post('NewsManfacturerList', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            self.museum = res.list
-            self.allid = res.id_list
-            localStorage.setItem('all_id', JSON.stringify(self.allid))
+            if (more) {
+              for (let i = 0, len = res.list.length; i < len; i++) {
+                self.museum.push(res.list[i])
+              }
+            } else {
+              self.museum = res.list
+              self.allid = res.id_list
+              localStorage.setItem('all_id', JSON.stringify(self.allid))
+            }
             if (self.now > 1) return false
-            self.len = Math.ceil(res.total / 5)
+            self.len = Math.ceil(res.total_num / 6)
           })
         }).catch(res => {
           console.log(res)
@@ -92,24 +97,13 @@
         this.$router.push({path: '/manufacturer/detail/'})
       },
       loadMore () {
-        var self = this
-        this.loading = true
-        if (this.total > this.museum1.length || this.museum1.length === 0) {
-          let time = this.museum1.length === 0 ? 0 : 1000
+        if (this.now <= this.len ) {
+          this.loading = true
+          this.now++
+          this.getList(1)
           setTimeout(() => {
-            util.post('NewsManfacturerList', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
-              api.checkAjax(self, res, () => {
-                self.total = res.total
-                for (let i = 0, len = res.list.length; i < len; i++) {
-                  self.museum1.push(res.list[i])
-                }
-                self.loading = false
-                self.now++
-              })
-            }).catch(res => {
-              console.log(res)
-            })
-          }, time)
+            this.loading = false
+          }, 1000)
         } else {
           this.loading = false
         }

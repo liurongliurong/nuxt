@@ -71,20 +71,6 @@
         </div>
       </div>
       <div class="page-4 page-common">
-        <!-- <header>
-          <span> </span>
-          <div class="login" v-if="token === 0">
-            <a @click="goToPage('/auth/regist', 3)">注册</a>
-            <span>|</span>
-            <a @click="goToPage('/auth/login', 3)">登录</a>
-          </div>
-          <div class="login" v-else>
-            <a @click="goToPage('/mobile/personcenter', 3)">个人中心</a>
-          </div>
-        </header>
-        <div class="swiper" @click="goToPage('/minerShop/activity', 3)">
-          <img src="../assets/images/swiper/mobile4.jpg"/>
-        </div> -->
         <header>
           <img class="logo" src="../assets/images/mobile/index/logo.png" />
           <div class="login" v-if="token === 0">
