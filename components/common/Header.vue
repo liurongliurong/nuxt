@@ -5,7 +5,7 @@
       <div class="header_conten">
         <div class="logo">
           <nuxt-link to="/">
-            <img :src="require('@/assets/images/mobile/logo3.png')">
+            <img :src="require('@/assets/images/mobile/index/logo.png')">
           </nuxt-link>
         </div>
         <div class="title">{{title}}</div>
@@ -83,15 +83,13 @@
       height: 100%;
       display: flex;
       justify-content: space-between;
-      padding: 0.22rem 0.3rem;
+      padding: 0 0.3rem;
+      line-height: 0.88rem;
       box-sizing: border-box;
       .logo {
-        width: 1.67rem;
+        width: 1.8rem;
         height: auto;
-        img{
-          position: relative;
-          top: -0.07rem;
-        }
+        line-height: 0.6rem;
       }
       .title{
         color: #fff;
@@ -102,15 +100,13 @@
         position: relative;
         :nth-child(1){
           font-size: 0.42rem;
-          margin-right: 0.58rem;
+          margin-right: 0.28rem;
           color:#fff;
         }
         .header_mobile{
           font-size: 0.32rem;
         }
         .navlink{
-          position: relative;
-          top: -0.02rem;
           font-size: 0.37rem;
           color: #fff;
         }
