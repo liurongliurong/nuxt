@@ -16,7 +16,7 @@
             <option :value="v.name" v-for="v,k in county" :selected="n===v.name">{{v.name}}</option>
           </select>
         </div>
-        <span :title="f.pattern&&check.tips" :tips="f.placeholder"></span>
+        <span class="tips" :title="f.pattern&&check.tips" :tips="f.placeholder"></span>
       </div>
       <label class="checkbox" v-else>
         <input type="checkbox" :name="f.name" :checked="val&&val[f.name]">
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   import city from '@/util/city'
   import api from '@/util/function'
   export default {
@@ -54,7 +55,7 @@
         this.val[e.target.name] = e.target.value
         var ele = e.target
         var ff = document.querySelector('.form')
-        api.checkFiled(ele, ff)
+        api.checkFiled(ele, ff, this.isMobile)
       },
       selectCity (arr, value) {
         return arr.filter((v) => v.name === value)
@@ -90,14 +91,11 @@
       this.province = city
       this.setCity(this.p)
       this.setCounty(this.c)
+    },
+    computed: {
+      ...mapState({
+        isMobile: state => state.isMobile
+      })
     }
   }
 </script>
-
-<style type="text/css" lang="scss">
-  @import '../../assets/css/style.scss';
-  .address_form{
-    padding:40px 130px;
-    @include form(v)
-  }
-</style>

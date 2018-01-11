@@ -142,12 +142,17 @@
         this.$router.replace({path: '/mobileIndex'})
         return false
       }
+      if (this.callUrl === 'index') {
+        api.tips('欢迎来到算力网！')
+        this.$store.commit('SET_URL', '')
+      }
       window.addEventListener('resize', this.goMobile, false)
       this.getComputeData()
     },
     computed: {
       ...mapState({
-        isMobile: state => state.isMobile
+        isMobile: state => state.isMobile,
+        callUrl: state => state.callUrl
       })
     }
   }

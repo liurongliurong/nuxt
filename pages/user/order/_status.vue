@@ -271,7 +271,7 @@
         var self = this
         util.post(requestUrl, {sign: api.serialize({token: this.token, user_id: this.user_id, order_id: id})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips('操作成功', self.isMobile, () => {
+            api.tips('操作成功', () => {
               self.fetchData()
             })
           })
@@ -283,7 +283,7 @@
       },
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, this.isMobile)
+        var data = api.checkForm(form, this.isMobile)
         var url = ''
         var sendData = {token: this.token, user_id: this.user_id, order_id: this.order_id}
         var tipsStr = ''
@@ -307,7 +307,7 @@
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.closeMask()
-            api.tips(tipsStr, self.isMobile, () => {
+            api.tips(tipsStr, () => {
               self.fetchData()
             })
           })

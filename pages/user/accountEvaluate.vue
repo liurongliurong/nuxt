@@ -67,7 +67,7 @@
             util.post('show_risk_score', {sign: api.serialize(sendData)}).then(function (data) {
               if (data && !data.code) {
                 self.$store.commit('SET_INFO', {risk: data})
-                api.tips('测评成功', self.isMobile, () => {
+                api.tips('测评成功', () => {
                   self.$router.push({name: 'user-lpCenter'})
                 })
               }

@@ -6,10 +6,6 @@
         <button class="btn" name="btn">提交申请</button>
       </form>
     </div>
-    <div class="link" v-if="!isMobile">
-      <img src="../../assets/images/BDC-2.png"/>
-      客服热线： 0571-28221076 &nbsp;&nbsp;&nbsp;工作日 （9:00~18:00）
-    </div>
   </section>
 </template>
 
@@ -32,12 +28,12 @@
       submit () {
         let self = this
         var form = document.querySelector('.form')
-        var data = api.checkFrom(form, 1)
+        var data = api.checkForm(form, this.isMobile)
         if (!data) return false
         form.btn.setAttribute('disabled', true)
         util.post('depositMessage', {sign: api.serialize(Object.assign(data, {token: this.token}))}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips('提交成功，稍后工作人员会与您联系', self.isMobile, () => {
+            api.tips('提交成功，稍后工作人员会与您联系', () => {
               self.$router.push({name: 'index'})
             })
           }, form.btn)
@@ -56,8 +52,8 @@
     },
     computed: {
       ...mapState({
-        token: state => state.info.token,
-        isMobile: state => state.isMobile
+        isMobile: state => state.isMobile,
+        token: state => state.info.token
       })
     }
   }
@@ -76,25 +72,6 @@
         .input{
           background: #fff;
         }
-      }
-    }
-    .link{
-      width: 100%;
-      height: 2rem;
-      position: fixed;
-      bottom:0;
-      border-top:1px solid #bfbfbf;
-      padding:0 .5rem;
-      line-height:2rem;
-      box-sizing: border-box;
-      font-size:0.45rem;
-      color: #bdbdbe;
-      img{
-        width:.7rem;
-        height:.7rem; 
-        position: relative;
-        top:-.65rem;
-        margin-right: .5rem;
       }
     }
   }

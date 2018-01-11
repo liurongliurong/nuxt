@@ -1,7 +1,7 @@
 <template>
   <div class="sort">
     <div class="box" v-if="isMobile===0">
-      <div class="sort_title" v-if="!page">
+      <div class="sort_title">
         <h1>项目列表</h1>
         <!-- <div class="input_box">
           <input type="text">

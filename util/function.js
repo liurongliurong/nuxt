@@ -118,20 +118,20 @@ api.countDown = (e) => {
     }
   }, 1000)
 }
-api.checkFrom = (form, ismobile) => {
-  var result = api.validityForm(form, ismobile)
+api.checkForm = (form, isMobile) => {
+  var result = api.validityForm(form, isMobile)
   if (!result.status) {
     return result
   }
 }
-api.validityForm = (form, ismobile) => {
+api.validityForm = (form, isMobile) => {
   var data = {}
   var icon = 0
   var n = ''
   for (var i = 0; i <= form.length - 2; i++) {
     var ele = form[i]
     if (ele.value) {
-      if (api.checkFiled(ele, form, ismobile)) {
+      if (api.checkFiled(ele, form, isMobile)) {
         if (ele.getAttribute('isChange')) {
           data[ele.name] = encodeURIComponent(ele.value)
         } else {
@@ -143,10 +143,8 @@ api.validityForm = (form, ismobile) => {
         break
       }
     } else {
-      api.errorTip(ele, ele.placeholder, ismobile)
-      if (!ismobile) {
-        api.setTips(ele, 'null')
-      }
+      isMobile && api.tips(ele.placeholder)
+      api.setTips(ele, 'null')
       icon = 2
       n = i
       break
@@ -171,26 +169,20 @@ api.clearForm = (form) => {
     ele.setAttribute('disabled', false)
   }
 }
-api.errorTip = (ele, str, ismobile) => {
-  if (ismobile) {
-    api.tips(str, 1)
-  }
-}
-api.checkFiled = (ele, form, ismobile) => {
+api.checkFiled = (ele, form, isMobile) => {
   if (!(ele.checkValidity ? ele.checkValidity() : api.check(ele.pattern || ele.getAttribute('pattern'), ele.value))) {
     api.setTips(ele, 'invalid')
-    api.errorTip(ele, ele.title, ismobile)
+    isMobile && api.tips(ele.title)
     return false
   } else if ((ele.name === 'imgCode' && ele.value && (ele.value.toLowerCase() !== api.getStorge('suanli').imgCode.toLowerCase())) || (ele.name === 'password1' && form.password.value && form.password1.value && ele.value !== form.password.value)) {
     api.setTips(ele, 'error')
-    if (ismobile && ele.name === 'password1') {
-      api.errorTip(ele, '两次密码不一致', 1)
-    } else if (ismobile && ele.name === 'imgCode') {
-      api.errorTip(ele, '图形验证码错误', 1)
+    if (isMobile && (ele.name === 'password1')) {
+      api.tips('两次密码不一致')
+    } else if (isMobile && (ele.name === 'imgCode')) {
+      api.tips('图形验证码错误')
     }
     return false
   } else {
-    api.setTips(ele, 'valid')
     return true
   }
 }
@@ -207,16 +199,13 @@ api.checkCode = (ele) => {
 }
 api.setTips = (ele, str) => {
   ele.setAttribute('data-status', str)
+  ele.focus()
   setTimeout(() => {
     ele.setAttribute('data-status', '')
   }, 2000)
 }
-api.tips = (str, isMobile, callback) => {
-  if (isMobile) {
-    var ele = document.querySelector('.toast') || document.getElementsByClassName('toast')[0]
-  } else {
-    var ele = document.querySelector('.web_tips') || document.getElementsByClassName('web_tips')[0]
-  }
+api.tips = (str, callback) => {
+  var ele = document.querySelector('.toast') || document.getElementsByClassName('toast')[0]
   ele.innerHTML = str
   ele.style.opacity = 1
   setTimeout(() => {
@@ -225,7 +214,7 @@ api.tips = (str, isMobile, callback) => {
     if (callback) {
       callback()
     }
-  }, 4000)
+  }, 2000)
 }
 api.checkAjax = (obj, res, callback, btn, failback) => {
   if (res === 'repeatLogin') {

@@ -40,9 +40,9 @@
       }
     },
     methods: {
-      login () {
-        var form = document.querySelector('.form')
-        var data = api.checkFrom(form, api.checkEquipment())
+      login (e) {
+        var form = e.target
+        var data = api.checkForm(form, this.isMobile)
         if (!data) return false
         data.password = md5(data.password)
         var self = this
@@ -53,24 +53,23 @@
             util.post('getAll', {sign: api.serialize(res)}).then(function (data) {
               self.$store.commit('SET_INFO', data)
             })
-            api.tips('欢迎来到算力网！', self.isMobile, () => {
-              if (self.callUrl) {
-                self.$router.push({path: self.callUrl})
-                self.$store.commit('SET_URL', '')
-              } else {
-                self.$router.push({path: '/'})
-              }
-            })
+            if (self.callUrl) {
+              self.$router.push({path: self.callUrl})
+              self.$store.commit('SET_URL', '')
+            } else {
+              self.$router.push({path: '/'})
+              self.$store.commit('SET_URL', 'index')
+            }
           }, form.btn)
         }).catch(res => {
-          api.tips('您的网络情况不太好，请稍后再尝试', self.isMobile)
+          api.tips('您的网络情况不太好，请稍后再尝试')
         })
       }
     },
     computed: {
       ...mapState({
-        callUrl: state => state.callUrl,
-        isMobile: state => state.isMobile
+        isMobile: state => state.isMobile,
+        callUrl: state => state.callUrl
       })
     },
     mounted() {
