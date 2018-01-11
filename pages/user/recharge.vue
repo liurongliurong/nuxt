@@ -49,8 +49,8 @@
         processText: ['银行转账', '提交申请', '审核通过'],
         processStatus: 2,
         form: [
-          [{name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', pattern: 'bigMoney', len: 7}, {name: 'bank_num', type: 'text', title: '充值银行卡', placeholder: '请输入充值银行卡', value: 'bank_num', pattern: 'bankCard'}, {name: 'request_id', type: 'text', title: '充值流水号', placeholder: '请输入充值流水号', pattern: 'int'}],
-          [{name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', pattern: 'bigMoney', len: 6}]
+          [{name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', len: 7}, {name: 'bank_num', type: 'text', title: '充值银行卡', placeholder: '请输入充值银行卡', value: 'bank_num', pattern: 'bankCard'}, {name: 'request_id', type: 'text', title: '充值流水号', placeholder: '请输入充值流水号', pattern: 'int'}],
+          [{name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', len: 6}]
         ],
         rechargeType: ['银行卡充值', '支付宝充值'],
         rechargeNo: 0
