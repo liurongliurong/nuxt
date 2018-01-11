@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <PcHeader class="pc_header" v-if="isMobile===0"></PcHeader>
-    <div class="mobile_header" v-if="isMobile===1&&isMobileTitle()">
+    <div class="mobile_header" v-if="isMobile===1&&showTitle()">
       <div class="header_conten">
         <div class="logo">
           <nuxt-link to="/">
@@ -39,14 +39,14 @@
           {title: 'BDC托管', path: '/bdc'},
           {title: '产业资讯', path: '/mobile/property'},
         ],
-        isMobilePage: ['index', 'bdc']
+        isMobilePage: ['index', 'bdc', 'minerShop-miner-type']
       }
     },
     methods: {
-      showNavlink () {
+      showNavlink() {
         this.showNav = !this.showNav
       },
-      isMobileTitle () {
+      showTitle() {
         if (this.isMobilePage.indexOf(this.$route.name) > -1) {
           return true
         }
