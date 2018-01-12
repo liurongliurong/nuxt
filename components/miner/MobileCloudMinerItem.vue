@@ -32,6 +32,7 @@
 
 <script>
   import Vue from 'vue'
+  import api from '@/util/function'
   export default {
     props: {
       itemData: {
@@ -83,7 +84,7 @@
         }
         .coin_sign, .sell_type {
           border: solid 1px #327fff;
-          border-radius: 8px;
+          border-radius: 5px;
           color: #327fff;
           padding: 0 0.18rem;
           font-size: 0.22rem;

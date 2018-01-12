@@ -8,7 +8,10 @@
         </template>
         <template v-else-if="isMobile===1">
           <div class="tab_cloud_miner">
-            <span v-for="item in tabCloudMiner" :class="{tab_cloud_active: item.active}">{{item.name}}</span>
+            <span class="tab_item" v-for="item in tabCloudMiner" @click="switchTab(item)" :class="{tab_cloud_active: tabActive === item.active}">
+            {{item.name}}
+            <i v-if="tabActive === item.active"></i>
+            </span>
           </div>
           <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists">
             <MobileCloudMinerItem v-for="item,key in cloudMinerData" :itemData="item" @click="goPay(item.id)" :key="key"></MobileCloudMinerItem>
@@ -53,9 +56,10 @@
     data () {
       return {
         loading: false,
+        tabActive: 'cloud',
         tabCloudMiner: [
-          {name: '云算力市场', active: true},
-          {name: '转售市场', active: false}
+          {name: '云算力市场', active: 'cloud'},
+          {name: '转售市场', active: 'sale'}
         ]
       }
     },
@@ -80,6 +84,9 @@
       goPay (id) {
         api.setStorge('suanli', {proId: id, proType: '2'})
         this.$router.push({path: '/minerShop/detail/'})
+      },
+      switchTab(tab) {
+        this.tabActive = tab.active
       }
     },
     watch: {
@@ -111,12 +118,27 @@
       .data{
         .tab_cloud_miner {
           @include flex(space-around, center)
-          margin-top: 0.88rem;
-          padding: 0.26rem 0;
+          height: 0.96rem;
           background: #327fff;
           color: #fff;
           font-size: 0.3rem;
-          position: relative;
+          position: fixed;
+          top: 0.88rem;
+          width: 100%;
+          z-index: 1;
+
+          .tab_item {
+            @include flex(center, center, column)
+            padding: 0.26rem;
+            position: relative;
+            i {
+              width: 0.35rem;
+              border: solid 1px #fff;
+              position: absolute;
+              left: 41%;
+              bottom: 6px;
+            }
+          }
 
           .tab_cloud_active {
             font-weight: bold;
@@ -126,7 +148,7 @@
           @include cloud_miner_box
         }
         .list_lists {
-          padding-top: 0.2rem;
+          padding-top: 2.04rem;
         }
       }
     }
