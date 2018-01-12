@@ -1,7 +1,7 @@
 <template>
   <div :class="'popup'">
     <div :class="'popup_con '+position">
-      <div class="popup_title">
+      <div class="popup_title" v-if="position!=='middle'">
         <span>{{title}}</span>
         <span class="icon_close" @click="closeMask"></span>
       </div>
