@@ -11,7 +11,7 @@
             <div @click="goDetail(n.id)">查看详情</div>
           </div>
         </div>
-        <Pager :len="len" style="padding-top:0;"></Pager>
+        <Pager :len="len" style="padding-top:0;" v-if="!isMobile" :now="now" @setPage="setPage"></Pager>
       </div>
     </template>
     <template v-else-if="isMobile === 1">
@@ -91,6 +91,12 @@
         }).catch(res => {
           console.log(res)
         })
+      },
+      setPage (n) {
+        this.now = n
+        if (!this.isMobile) {
+          this.getList()
+        }
       },
       goDetail (id) {
         localStorage.setItem('icon_id', JSON.stringify([id]))

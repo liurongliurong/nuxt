@@ -27,7 +27,7 @@
                 <div @click="goDetail(n.id)" class="button" style="margin-top:0 !important;">查看详情</div>
               </div>
             </div>
-            <Pager :len="len"  style="padding-top:0;"></Pager>
+            <Pager :len="len"  style="padding-top:0;" v-if="!isMobile" :now="now" @setPage="setPage"></Pager>
           </div> 
         </div>
       </div>
@@ -39,6 +39,7 @@
   import util from '@/util/index'
   import api from '@/util/function'
   import Pager from '@/components/common/Pager'
+  import { mapState } from 'vuex'
   export default {
     components: {
       Pager
@@ -82,10 +83,21 @@
       goDetail (id) {
         localStorage.setItem('icon_id', JSON.stringify([id]))
         this.$router.push({path: '/equipments/detail/'})
+      },
+      setPage (n) {
+        this.now = n
+        if (!this.isMobile) {
+          this.getList()
+        }
       }
     },
     mounted () {
       this.getList()
+    },
+    computed: {
+      ...mapState({
+        isMobile: state => state.isMobile
+      })
     }
   }
 </script>

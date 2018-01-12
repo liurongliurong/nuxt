@@ -29,13 +29,17 @@
       </div>
     </div>
     <MinerList :minerData="minerData">
-      <h2>
-        <div>
-          <span style="font-size:24px;">矿机推荐</span>
-          <span>保全网提供全流程区块链存证、保全服务</span>
+      <div class="product_list">
+        <div class="box">
+          <h2>
+            <div>
+              <span>矿机推荐</span>
+              <span>保全网提供全流程区块链存证、保全服务</span>
+            </div>
+            <router-link to="/minerShop/miner/1">更多矿机 ></router-link>
+          </h2>
         </div>
-        <router-link to="/minerShop/miner/1">更多矿机 ></router-link>
-      </h2>
+      </div>
     </MinerList>
     <CloudMinerList :cloudMinerData="cloudMinerData">
       <h2>

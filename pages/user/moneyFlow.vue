@@ -29,6 +29,7 @@
           <tbody>
             <tr v-for="l in list">
               <td v-for="v,k in nav">
+                <template v-if="k==='trade_content'">{{l[k] ? l[k]: '暂无'}}</template>
                 <template v-if="k==='value'">{{l[k]|currency(2,1)}}元</template>
                 <template v-else-if="k==='status'">{{l[k]==2&&'成功'}}</template>
                 <template v-else>{{l[k]}}</template>
