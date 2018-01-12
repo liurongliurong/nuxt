@@ -130,12 +130,11 @@ input::-webkit-input-placeholder {
     background: rgba(0,0,0,.5);
     z-index: 1000001;
     .popup_con{
-      position: absolute;
+      position: fixed;
       top:50%;
       left:50%;
+      transform: translate(-50%, -50%);
       width:680px;
-      margin-left:-340px;
-      margin-top:-323px;
       background: $white;
       .popup_title{
         position: relative;
@@ -201,13 +200,17 @@ input::-webkit-input-placeholder {
     }
     @media screen and (max-width: $mobile) {
       .popup_con{
-        width:100vw;
-        margin:0;
-        top: auto;
-        bottom:0;
-        left:0;
-        height:auto;
-        max-height:80vh;
+        &:not(.middle){
+          width:100vw;
+          top: auto;
+          bottom:0;
+          left:0;
+          transform: translate(0, 0);
+          max-height:80vh;
+        }
+        &.middle {
+          width:90%;
+        }
         .popup_title{
           font-size: 0.36rem;
           background: #fff;

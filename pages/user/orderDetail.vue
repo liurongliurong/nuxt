@@ -131,12 +131,12 @@
         }
         if (this.orderType === 3) {
           requestUrl = 'miner_contract'
-          data = {token: this.token, user_id: this.user_id, order_id: this.orderId}
+          data = {token: this.token, order_id: this.orderId}
         }
         util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             if (res === '暂无协议') {
-              api.tips(res, self.isMobile)
+              api.tips(res)
             } else {
               self.show = true
               self.contract = res
@@ -145,7 +145,7 @@
         })
       },
       getBaoquan () {
-        var data = {token: this.token, order_id: this.orderId, security_hash_type: this.orderType, user_id: this.user_id}
+        var data = {token: this.token, order_id: this.orderId, security_hash_type: this.orderType}
         var self = this
         // var newTab = window.open('about:blank')
         // var a = document.createElement('a')
@@ -198,7 +198,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         isMobile: state => state.isMobile
       })
     }

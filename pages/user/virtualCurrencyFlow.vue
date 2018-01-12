@@ -73,7 +73,7 @@
         this.nowEdit = sort || 0
         var self = this
         this.list = []
-        var data = {token: this.token, user_id: this.user_id, product_hash_type: this.nowEdit + 1, page: this.now, sort: ''}
+        var data = {token: this.token, product_hash_type: this.nowEdit + 1, page: this.now, sort: ''}
         util.post('userCoinList', {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.list = res.value_list
@@ -86,7 +86,7 @@
       getData () {
         if (this.token !== 0) {
           var self = this
-          util.post('userCoin', {sign: api.serialize({token: this.token, user_id: this.user_id, product_hash_type: '1'})}).then(function (res) {
+          util.post('userCoin', {sign: api.serialize({token: this.token, product_hash_type: '1'})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res
             })
@@ -112,7 +112,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         hashType: state => state.hashType
       })
     }

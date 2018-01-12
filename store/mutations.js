@@ -7,7 +7,6 @@ export default {
   },
   [LOGOUT] (state) {
     state.info = {
-      user_id: '',
       mobile: '',
       token: 0
     }

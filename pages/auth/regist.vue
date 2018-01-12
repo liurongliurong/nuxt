@@ -4,7 +4,7 @@
       <h2>欢迎注册算力网</h2>
       <FormField :form="form" @onChange="onChange" @onFocus="onFocus"></FormField>
       <label for="accept">
-        <input type="checkbox" id="accept" name="accept">
+        <input type="checkbox" id="accept" name="accept" checked>
         <span>阅读并接受<a class="accept_link" href="javascript:;" @click="show=true">《用户使用协议》</a></span>
         <span class="select_accept">请选择</span>
       </label>
@@ -51,13 +51,21 @@
         auth: [{name: 'truename', type: 'text', title: '真实姓名', placeholder: '请输入姓名', isChange: true}, {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true}, {name: 'idcard', type: 'text', title: '证件号码', placeholder: '请输入您的证件号码', pattern: 'idCard'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
         show: false,
         card_type: '中国大陆身份证',
-        registed: false
+        registed: false,
+        mobileStatus: true
       }
     },
     methods: {
-      regist () {
-        var form = document.querySelector('.regist')
-        var data = api.checkFrom(form, this.isMobile)
+      regist (e) {
+        var form = e.target
+        if (!this.mobileStatus) {
+          api.setTips(form.mobile, 'error')
+          if (this.isMobile) {
+            api.tips('该用户已存在')
+          }
+          return false
+        }
+        var data = api.checkForm(form, this.isMobile)
         if (!data) return false
         if (!form.accept.checked) {
           form.accept.setAttribute('data-status', 'invalid')
@@ -69,7 +77,7 @@
         var self = this
         util.post('/register', {sign: api.serialize(Object.assign(data, {token: 0}))}).then(res => {
           api.checkAjax(self, res, () => {
-            api.tips('恭喜您注册成功！', self.isMobile, () => {
+            api.tips('恭喜您注册成功！', () => {
               if (self.isMobile) {
                 self.$router.push({name: 'index'})
               } else {
@@ -87,17 +95,24 @@
         this.show = false
       },
       onChange (obj) {
-        var ele = obj.e.target
+        this.checkMobile(obj.e.target)
+      },
+      checkMobile (ele) {
         var value = ele.value
         var re = new RegExp('^1[34578][0-9]{9}$')
         var self = this
         if (value && re.test(value)) {
           util.post('checkMobile', {sign: 'token=0&mobile=' + value}).then(res => {
             if (res.code === '2000') {
-              ele.setAttribute('data-status', 'error')
-              ele.setAttribute('data-error', true)
+              api.setTips(ele, 'error')
+              ele.setAttribute('data-error', 'true')
+              self.mobileStatus = false
+              if (self.isMobile) {
+                api.tips('该用户已存在')
+              }
             } else {
-              ele.setAttribute('data-error', false)
+              ele.setAttribute('data-error', 'false')
+              self.mobileStatus = true
             }
           })
         }
@@ -131,22 +146,22 @@
       },
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, this.isMobile)
+        var data = api.checkForm(form, this.isMobile)
         var url = 'user_truename'
         var callbackUrl = 'show_user_truename'
         var val = 'true_name'
-        var sendData = {token: this.token, user_id: this.user_id}
+        var sendData = {token: this.token}
         var tipsStr = '实名认证已提交，请您耐心等待几秒即可看到认证结果'
         var tipsStr2 = '恭喜您实名认证成功'
         if (!data) return false
         var self = this
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips(tipsStr, self.isMobile)
+            api.tips(tipsStr)
             self.$store.commit('SET_INFO', {[val]: {status: 0}})
             setTimeout(() => {
               self.requestData(callbackUrl, sendData, val, () => {
-                api.tips(tipsStr2, self.isMobile)
+                api.tips(tipsStr2)
               })
             }, 7000)
           })
@@ -170,7 +185,6 @@
       ...mapState({
         isMobile: state => state.isMobile,
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile
       })
     },

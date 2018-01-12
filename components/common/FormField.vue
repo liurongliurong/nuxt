@@ -83,7 +83,7 @@
           e.target.className = ''
         }
         var ff = ele.parentNode.parentNode.parentNode
-        api.checkFiled(ele, ff)
+        api.checkFiled(ele, ff, this.isMobile)
       },
       changeCode () {
         var ele = document.querySelector('#code')
@@ -101,25 +101,25 @@
         }
         if (telEle.getAttribute('data-error') === 'true') {
           api.setTips(telEle, 'error')
-          telEle.focus()
+          if (this.isMobile) {
+            api.tips('该用户已存在')
+          }
           return false
         }
         if (imgCode) {
           if (imgCode.value && imgCode.value.toLowerCase() !== api.getStorge('suanli').imgCode.toLowerCase()) {
             api.setTips(imgCode, 'error')
-            imgCode.focus()
             return false
           }
           if (!imgCode.value) {
             api.setTips(imgCode, 'null')
-            imgCode.focus()
             return false
           }
         }
         if (price && num) {
           var money = price * num
           if (+this.balance < money) {
-            api.tips('余额不足，请先充值', this.isMobile)
+            api.tips('余额不足，请先充值')
             return false
           }
         }
@@ -128,7 +128,7 @@
           if (!this.isMobile) {
             api.setTips(form.code, 'success')
           } else {
-            api.tips('发送成功', 1)
+            api.tips('发送成功')
           }
           api.countDown(e)
           ele.setAttribute('disabled', true)
@@ -144,7 +144,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         bank_card: state => state.info.bank_card,
         mobile: state => state.info.mobile,
         hashType: state => state.hashType,

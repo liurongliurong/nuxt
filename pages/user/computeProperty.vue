@@ -60,13 +60,13 @@
             <p>{{d}}</p>
             <!-- <span class="currency">{{computeData[k]|format(8)}}</span>  -->
             <template v-if="k==='today_hash'">
-              <span class="currency">{{(qwsl.price * computeData.balance_account)|format(1)}}</span>
+              <span class="currency">{{(computeData.coin_price * computeData.balance_account)|format(1)}}</span>
             </template>
             <template v-else-if="k==='total_hash'">
-              <span class="currency">{{output}}</span>
+              <span class="currency">{{computeData.output&&computeData.output.split(" ")[0]}}</span>
             </template>
             <template v-else>
-              <span class="currency">{{qwsl.price}}</span>
+              <span class="currency">{{computeData.coin_price}}</span>
             </template>
             <template v-if="k==='total_hash'">
               <span class="">{{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}} /T/天</span>
@@ -108,6 +108,7 @@
         <p v-if="edit==='Withdrawals'">手续费：{{total_price * fee|format}}元<span class="fee">({{fee*100+'%'}})</span></p>
         <p v-if="edit==='GetIncome'">手续费：0.0002btc</p>
       </template>
+      <opr-select slot="select_opr" :no="maskNo" @closeMask="closeMask"></opr-select>
     </MyMask>
   </section>
 </template>
@@ -117,9 +118,10 @@
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import MyMask from '@/components/common/Mask'
+  import OprSelect from '@/components/common/OprSelect'
   export default {
     components: {
-      MyMask
+      MyMask, OprSelect
     },
     data () {
       return {
@@ -144,16 +146,15 @@
         fee: 0,
         total_price: 0,
         qwsl: '',
-        output: ''
+        output: '',
+        maskNo: 0
       }
     },
     methods: {
       openMask (str, title) {
         this.total_price = 0
         if (!(this.true_name && this.true_name.status === 1)) {
-          api.tips('请先实名认证', this.isMobile, () => {
-            this.$router.push({name: 'user-account'})
-          })
+          this.goAuth ('立即认证', 0)
           return false
         }
         var requestUrl = ''
@@ -165,32 +166,28 @@
         }
         if (str === 'GetIncome') {
           if (!this.address.length) {
-            api.tips('请先绑定算力地址', this.isMobile, () => {
-              this.$router.push({name: 'user-account'})
-            })
+            this.goAuth ('立即绑定', 2)
             return false
           }
           if (+this.computeData.balance_account <= 0) {
-            api.tips('您的账户余额不足，不能提取收益', this.isMobile)
+            api.tips('您的账户余额不足，不能提取收益')
             return false
           }
           var nowHash = this.hashType[this.nowEdit]
           requestUrl = 'showWithdrawCoin'
-          data = {token: this.token, user_id: this.user_id, product_hash_type: nowHash && nowHash.id}
+          data = {token: this.token, product_hash_type: nowHash && nowHash.id}
         }
         if (str === 'Withdrawals') {
           if (!(this.bank_card && this.bank_card.status === 1)) {
-            api.tips('请先绑定银行卡', this.isMobile, () => {
-              this.$router.push({name: 'user-account'})
-            })
+            this.goAuth ('立即绑定', 1)
             return false
           }
           if (+this.moneyData.balance_account <= 0) {
-            api.tips('您的账户余额不足，不能提现', this.isMobile)
+            api.tips('您的账户余额不足，不能提现')
             return false
           }
           requestUrl = 'showWithdraw'
-          data = {token: this.token, user_id: this.user_id}
+          data = {token: this.token}
         }
         var self = this
         util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
@@ -222,7 +219,7 @@
         var nowHash = this.hashType[this.nowEdit]
         this.form.GetIncome[0].value = nowHash.name
         this.form.GetIncome[1].tipsUnit = nowHash.name.toLowerCase()
-        var sendData = {token: this.token, user_id: this.user_id, product_hash_type: (nowHash && nowHash.id) || '1'}
+        var sendData = {token: this.token, product_hash_type: (nowHash && nowHash.id) || '1'}
         util.post('myHashAccount', {sign: api.serialize(sendData)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.computeData = res
@@ -241,9 +238,9 @@
       },
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, 1)
+        var data = api.checkForm(form, this.isMobile)
         var url = ''
-        var sendData = {token: this.token, user_id: this.user_id}
+        var sendData = {token: this.token}
         var tipsStr = ''
         switch (this.edit) {
           case 'Withdrawals':
@@ -261,7 +258,7 @@
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.closeMask()
-            api.tips(tipsStr, self.isMobile)
+            api.tips(tipsStr)
           }, form.btn)
         })
       },
@@ -276,19 +273,11 @@
       getData () {
         if (this.token !== 0 && this.hashType.length) {
           var self = this
-          util.post('myAccount', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
+          util.post('myAccount', {sign: api.serialize({token: this.token})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.moneyData = res
               self.priceall = +self.moneyData.freeze_account + (+self.moneyData.balance_account)
             })
-          })
-          util.post('showCoinData', {sign: api.serialize({token: this.token})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.qwsl = res[0]
-              self.output = res[0].output.split(" ")[0]
-            })
-          }).catch(res => {
-            console.log(res)
           })
           this.getList()
         } else {
@@ -296,6 +285,13 @@
             this.getData()
           }, 5)
         }
+      },
+      goAuth (str, n) {
+        window.scroll(0, 0)
+        document.body.style.overflow = 'hidden'
+        this.editText = str
+        this.maskNo = n
+        this.edit = 'auth'
       }
     },
     mounted () {
@@ -308,7 +304,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
         true_name: state => state.info.true_name,
         bank_card: state => state.info.bank_card,

@@ -96,7 +96,7 @@
       items () {
         if (this.token !== 0 && this.detailId) {
           var self = this
-          util.post('getLoanListDetail', {sign: api.serialize({token: this.token, user_id: this.user_id, loan_id: this.detailId})}).then(function (res) {
+          util.post('getLoanListDetail', {sign: api.serialize({token: this.token, loan_id: this.detailId})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.moneydata = res
               self.item = res.list
@@ -109,18 +109,18 @@
         }
       },
       submit (e) {
-        var ff = e.target
-        var data = api.checkFrom(ff)
+        var form = e.target
+        var data = api.checkForm(form, this.isMobile)
         if (!data) return false
-        ff.btn.setAttribute('disabled', true)
+        form.btn.setAttribute('disabled', true)
         var self = this
-        util.post('repayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repaymentId, product_hash_type: 1, mode: this.model, mobile: ff.mobile.value, code: ff.code.value})}).then(function (res) {
+        util.post('repayment', {sign: api.serialize({token: this.token, repayment_id: this.repaymentId, product_hash_type: 1, mode: this.model, mobile: form.mobile.value, code: form.code.value})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips('提交成功', self.isMobile, () => {
+            api.tips('提交成功', () => {
               self.show = false
               window.location.reload()
             })
-          }, ff.btn)
+          }, form.btn)
         })
       },
       onChange (e) {
@@ -128,15 +128,15 @@
         this.form[1].value = this.loanData[this.model].data1 + this.loanData[this.model].unit
         this.form[2].value = this.loanData[this.model].data2 + this.loanData[this.model].unit
         if (+this.loanData[this.model].data1 < +this.loanData[this.model].data2) {
-          var ff = document.querySelector('.form')
+          var form = document.querySelector('.form')
           api.tips('余额不足')
-          ff.btn.setAttribute('disabled', true)
+          form.btn.setAttribute('disabled', true)
         }
       },
       openMask (id) {
         this.repaymentId = id
         var self = this
-        util.post('showRepayment', {sign: api.serialize({token: this.token, user_id: this.user_id, repayment_id: this.repaymentId, product_hash_type: 1, mode: 0})}).then(function (res) {
+        util.post('showRepayment', {sign: api.serialize({token: this.token, repayment_id: this.repaymentId, product_hash_type: 1, mode: 0})}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.loanData[0].data1 = res.user_coin_value
             self.loanData[0].data2 = res.coin_repayment
@@ -168,9 +168,7 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
-        mobile: state => state.info.mobile,
-        isMobile: state => state.isMobile
+        mobile: state => state.info.mobile
       })
     },
     filters: {

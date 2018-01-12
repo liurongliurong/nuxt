@@ -84,7 +84,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         isMobile: state => state.isMobile
       })
     }

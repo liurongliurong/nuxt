@@ -57,14 +57,22 @@
         </form>
       </div>
     </div>
+    <MyMask title="立即认证" v-if="mask" @closeMask="closeMask">
+      <opr-select slot="select_opr" :no="0" @closeMask="closeMask"></opr-select>
+    </MyMask>
   </section>
 </template>
 
 <script>
   import api from '@/util/function'
   import util from '@/util'
+  import MyMask from '@/components/common/Mask'
+  import OprSelect from '@/components/common/OprSelect'
   import { mapState } from 'vuex'
   export default {
+    components: {
+      MyMask, OprSelect
+    },
     data () {
       return {
         data: {},
@@ -74,16 +82,17 @@
         content: '',
         contract: {},
         no: '',
-        scodeInfo: {}
+        scodeInfo: {},
+        mask: false
       }
     },
     methods: {
       submit () {
         var form = document.querySelector('.form_content')
-        var data = api.checkFrom(form)
+        var data = api.checkForm(form, this.isMobile)
         var self = this
         if (!data) return false
-        util.post('ScodeVerify', {sign: api.serialize({token: this.token, user_id: this.user_id, s_code: form.scode.value})}).then(function (res) {
+        util.post('ScodeVerify', {sign: api.serialize({token: this.token, s_code: form.scode.value})}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.edit = false
             document.body.style.overflow = 'auto'
@@ -100,6 +109,7 @@
       },
       closeMask () {
         this.edit = false
+        this.mask = false
         document.body.style.overflow = 'auto'
       },
       test (e) {
@@ -118,13 +128,11 @@
           return false
         }
         if (!(this.true_name && this.true_name.status === 1)) {
-          api.tips('请先实名认证', this.isMobile, () => {
-            this.$router.push({name: 'user-account'})
-          })
+          this.goAuth()
           return false
         }
         var self = this
-        var sCodeData = {token: this.token, user_id: this.user_id, s_code: ele.value}
+        var sCodeData = {token: this.token, s_code: ele.value}
         util.post('ScodeVerify', {sign: api.serialize(sCodeData)}).then(function (res) {
           api.checkAjax(self, res, () => {
             if (self.risk && self.risk.user_risk_score < 0) {
@@ -139,9 +147,9 @@
       },
       agree () {
         var self = this
-        util.post('sign_contract', {sign: api.serialize(Object.assign({token: this.token, user_id: this.user_id}, self.contract))}).then(function (res) {
+        util.post('sign_contract', {sign: api.serialize(Object.assign({token: this.token}, self.contract))}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips(res, self.isMobile)
+            api.tips(res)
             self.show = 2
             util.post('scode_info', {sign: 'token=' + self.token}).then(function (data) {
               if (data && !data.code) {
@@ -170,7 +178,7 @@
                 return false
               }
               if (res.s_code && res.risk && res.risk.user_risk_score > 0 && !res.list[res.s_code].is_contract) {
-                var sCodeData = {token: self.token, user_id: self.user_id, s_code: res.s_code}
+                var sCodeData = {token: self.token, s_code: res.s_code}
                 util.post('show_contract', {sign: api.serialize(sCodeData)}).then(function (r) {
                   api.checkAjax(self, r, () => {
                     self.show = 3
@@ -188,6 +196,11 @@
             this.getData()
           }, 5)
         }
+      },
+      goAuth () {
+        window.scroll(0, 0)
+        document.body.style.overflow = 'hidden'
+        this.mask = true
       }
     },
     mounted () {
@@ -196,7 +209,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         true_name: state => state.info.true_name,
         risk: state => state.info.risk,
         scode: state => state.info.scode,

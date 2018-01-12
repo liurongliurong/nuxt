@@ -1,6 +1,6 @@
 <template>
-  <div class="popup">
-    <div class="popup_con">
+  <div :class="'popup'">
+    <div :class="'popup_con '+position">
       <div class="popup_title">
         <span>{{title}}</span>
         <span class="icon_close" @click="closeMask"></span>
@@ -22,7 +22,9 @@
           </label>
         </div>
       </template>
-      <slot name="pay_type" v-else></slot>
+      <slot name="pay_type" v-if="title==='选择支付方式'"></slot>
+      <slot name="select_opr" v-if="title==='立即认证'||title==='立即绑定'"></slot>
+      <solt name="chart" v-if="title==='收益图表'"></solt>
     </div>
   </div>
 </template>
@@ -47,6 +49,10 @@
       },
       val: {
         type: Object
+      },
+      position: {
+        type: String,
+        default: ''
       }
     },
     filters: {

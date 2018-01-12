@@ -62,7 +62,7 @@
         var self = this
         util.post('setDefault', {sign: api.serialize({token: this.token, post_id: id})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips('设置成功', self.isMobile)
+            api.tips('设置成功')
             self.fetchData()
           })
         })
@@ -73,7 +73,7 @@
       },
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, this.isMobile)
+        var data = api.checkForm(form, this.isMobile)
         var url = ''
         var strTips = ''
         if (!data) return false
@@ -92,7 +92,7 @@
         util.post(url, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.fetchData()
-            api.tips(strTips, self.isMobile)
+            api.tips(strTips)
             self.closeMask()
           }, form.btn)
         })
@@ -104,14 +104,14 @@
         var self = this
         util.post('deleteAddress', {sign: api.serialize({token: this.token, post_id: id})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips('删除成功', self.isMobile)
+            api.tips('删除成功')
             self.fetchData()
           })
         })
       },
       openMask (k) {
         if (this.data.length >= 15) {
-          api.tips('您的地址条数已达到上限，请删除后再添加', this.isMobile)
+          api.tips('您的地址条数已达到上限，请删除后再添加')
           return false
         }
         this.addressData = {}
@@ -125,7 +125,7 @@
       fetchData () {
         if (this.token !== 0) {
           var self = this
-          util.post('showAddress', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
+          util.post('showAddress', {sign: api.serialize({token: this.token})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res
             })
@@ -156,7 +156,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         isMobile: state => state.isMobile,
         addressObj: state => state.addressData
       })

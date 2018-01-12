@@ -32,7 +32,7 @@
             <div class="popup_text">
               <div class="price">￥{{detail.one_amount_value}}</div>
               <div class="name">{{detail.name}}</div>
-              <div class="left">剩余可售{{detail.leftNum}}台</div>
+              <div class="left">剩余可售{{detail.leftNum}}台<span class="detail_limit_text">({{(parseInt(detail.single_limit_amount)||1)+'台起售'}})</span></div>
             </div>
           </div>
           <div class="buy_num">
@@ -57,6 +57,9 @@
         </div>
       </div>
     </div>
+    <my-mask title="立即认证" :position="maskPosition" @closeMask="closeMask" v-if="mask">
+      <opr-select slot="select_opr" :no="0" @closeMask="closeMask"></opr-select>
+    </my-mask>
   </section>
 </template>
 
@@ -68,9 +71,11 @@
   import MobileProductInfo from '@/components/miner/MobileProductInfo'
   import BaseInfo from '@/components/miner/BaseInfo'
   import MobileBaseInfo from '@/components/miner/MobileBaseInfo'
+  import MyMask from '@/components/common/Mask'
+  import OprSelect from '@/components/common/OprSelect'
   export default {
     components: {
-      ProductInfo, MobileProductInfo, MobileBaseInfo, BaseInfo
+      ProductInfo, MobileProductInfo, MobileBaseInfo, BaseInfo, MyMask, OprSelect
     },
     data () {
       return {
@@ -80,11 +85,13 @@
         params: {chips_num: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '矿机尺寸', minerOuterSize: '外箱尺寸', cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
         statusObj: {1: {title: '热销中', color: 'red'}, 2: {title: '已售罄', color: 'gray'}, 3: {title: '产品撤销', color: 'gray'}, 4: {title: '预热中', color: 'red'}},
         str: {4: '预热中', 5: '可售', 7: '已售馨', 10: '活动'},
-        number: '',
+        number: 1,
         buyStatus: 0,
         params1: '',
         params2: '',
-        sheetVisible: false
+        sheetVisible: false,
+        mask: false,
+        maskPosition: ''
       }
     },
     methods: {
@@ -92,7 +99,7 @@
         var startTime = this.detail.sell_start_time
         var now = Date.parse(new Date()) / 1000
         if (now < startTime) {
-          api.tips('暂未开售，开售时间为：' + api.date(new Date(startTime * 1000)), this.isMobile)
+          api.tips('暂未开售，开售时间为：' + api.date(new Date(startTime * 1000)))
           return false
         }
         if (!this.token) {
@@ -102,13 +109,8 @@
           return false
         }
         if (!(this.true_name && this.true_name.status === 1)) {
-          api.tips('请先实名认证', this.isMobile, () => {
-            if (this.isMobile) {
-              this.$router.push({name: 'mobile-administration'})
-            } else {
-              this.$router.push({name: 'user-account'})
-            }
-          })
+          this.mask = true
+          this.maskPosition = 'middle'
           return false
         }
         if (this.isMobile) {
@@ -127,10 +129,11 @@
       },
       closeMask (e) {
         var popup = document.querySelector('.popup')
-        if (e.target === popup) {
+        if (e && (e.target === popup)) {
           document.body.style.overflow = 'auto'
           this.sheetVisible = false
         }
+        this.mask = false
       },
       goPay (isLoan) {
         if (this.number < 1) {
@@ -140,7 +143,7 @@
               this.buyStatus = 0
             }, 2000)
           } else {
-            api.tips('请输入或添加至少1台矿机', 1)
+            api.tips('请输入或添加至少1台矿机')
           }
           return false
         }
@@ -159,7 +162,7 @@
           }, 2000)
         }
         this.number = +n < minNum || isNaN(+n) || typeof +n !== 'number' ? minNum : isOver ? this.detail.leftNum : n
-        this.number = parseInt(this.number).toFixed(0)
+        this.number = parseInt(this.number)
       },
       getData () {
         if (this.params1) {
@@ -178,6 +181,7 @@
               self.detail.leftNum = res.amount - res.buyed_amount
               self.detail = Object.assign(self.detail, res)
               self.detail.sellProgress = ((+self.detail.buyed_amount)/self.detail.amount*100).toFixed(0)+'%'
+              self.number = parseInt(self.detail.single_limit_amount)
               if (self.params2 !== '1') {
                 self.detail = Object.assign(self.detail, res.has_product_miner_base)
                 self.detail.name = res.product_name
@@ -192,10 +196,6 @@
               }
             })
           })
-          if (this.addressObj.id) {
-            this.number = this.addressObj.num
-            this.getBuyInfo()
-          }
         } else {
           setTimeout(() => {
             this.getData()
@@ -216,7 +216,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         true_name: state => state.info.true_name,
         isMobile: state => state.isMobile,
         addressObj: state => state.addressData
@@ -321,6 +320,10 @@
       .mobile_btn{
         @include mobile_footer_btn
       }
+    }
+    .detail_limit_text{
+      font-size: 12px;
+      color:$light_black;
     }
   }
 </style>

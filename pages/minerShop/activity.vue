@@ -274,7 +274,7 @@
         var startTime = this.data.activity_time
         var now = Date.parse(new Date()) / 1000
         if (now < startTime) {
-          api.tips('活动未开始，开始时间为：' + api.date(new Date(startTime * 1000)), this.isMobile)
+          api.tips('活动未开始，开始时间为：' + api.date(new Date(startTime * 1000)))
           return false
         }
         var ele = document.querySelector('#accept')
@@ -307,8 +307,8 @@
         var url = 'productMall'
         // var url = 'saveMiner'
         var callbackUrl = location.protocol + '//' + location.host + (this.isMobile ? '/mobile/order/0' : '/user/order/0')
-        // var data = {miner_id: this.data.miner_id, number: this.number, mode: '2', token: this.token, user_id: this.user_id, amount: this.totalPrice, url: callbackUrl}
-        var data = {product_id: this.data.product_id, num: this.number, token: this.token, user_id: this.user_id, amount: this.totalPrice}
+        // var data = {miner_id: this.data.miner_id, number: this.number, mode: '2', token: this.token, amount: this.totalPrice, url: callbackUrl}
+        var data = {product_id: this.data.product_id, num: this.number, token: this.token, amount: this.totalPrice}
         if (this.payNo === 2) {
           data = Object.assign({mode: '1', url: callbackUrl}, data)
         } else {
@@ -316,7 +316,7 @@
         }
         var self = this
         if (api.checkWechat()) {
-          api.tips('请在浏览器里打开', 1)
+          api.tips('请在浏览器里打开')
           return false
         }
         util.post(url, {sign: api.serialize(data)}).then(function (res) {
@@ -335,7 +335,7 @@
                 })
               })
             } else {
-              api.tips('恭喜您购买成功！', self.isMobile, () => {
+              api.tips('恭喜您购买成功！', () => {
                 location.href =  callbackUrl
               })
             }
@@ -355,7 +355,7 @@
       },
       check (ele, str) {
         if (this.isMobile) {
-          api.tips(str, 1)
+          api.tips(str)
         } else {
           this.tips = str
           ele.setAttribute('data-status', 'invalid')
@@ -366,12 +366,12 @@
       },
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, this.isMobile)
+        var data = api.checkForm(form, this.isMobile)
         if (!data) return false
-        var sendData = {token: this.token, user_id: this.user_id}
+        var sendData = {token: this.token}
         if (this.nowForm === 'address') {
           this.addressData = data
-          api.tips('收货地址已提交，点击“立即支付”完成购买', this.isMobile)
+          api.tips('收货地址已提交，点击“立即支付”完成购买')
           this.closeMask(this.isMobile)
         } else if (this.nowForm === 'payType') {
           this.goPay(data)
@@ -383,11 +383,11 @@
           var self = this
           util.post('user_truename', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
             api.checkAjax(self, res, () => {
-              api.tips(tipsStr, self.isMobile)
+              api.tips(tipsStr)
               self.$store.commit('SET_INFO', {[val]: {status: 0}})
               setTimeout(() => {
                 self.requestData('show_user_truename', sendData, val, () => {
-                  api.tips(tipsStr2, self.isMobile)
+                  api.tips(tipsStr2)
                   // self.openContract(3, self.isMobile)
                 })
               }, 7000)
@@ -432,7 +432,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
         true_name: state => state.info.true_name,
         isMobile: state => state.isMobile,

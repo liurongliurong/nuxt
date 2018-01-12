@@ -54,7 +54,7 @@
         ],
         form: {
           auth: [{name: 'truename', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true}, {name: 'idcard', type: 'text', title: '证件号码', placeholder: '请输入您的证件号码', pattern: 'idCard'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
-          card: [{name: 'card_no', type: 'text', title: '银行卡号', placeholder: '请输入银行卡号', pattern: 'bankCard', changeEvent: true}, {name: 'open_bank', type: 'text', title: '开户银行', placeholder: '自动识别或手动输入开户银行', isChange: true}, {name: 'bank_branch', type: 'text', title: '开户支行', placeholder: '请输入开户支行名称', isChange: true}, {name: 'bank', type: 'select', title: '开户行地址', isChange: true}, {name: 'mobile', type: 'text', title: '银行预留手机号', placeholder: '请输入银行预留手机号', pattern: 'tel'}, {name: 'code', type: 'text', title: '手机验证码', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
+          card: [{name: 'card_no', type: 'text', title: '银行卡号', placeholder: '请输入银行卡号', pattern: 'bankCard', changeEvent: true}, {name: 'open_bank', type: 'text', title: '开户银行', placeholder: '请输入开户银行', isChange: true}, {name: 'bank_branch', type: 'text', title: '开户支行', placeholder: '请输入开户支行名称', isChange: true}, {name: 'bank', type: 'select', title: '开户行地址', isChange: true}, {name: 'mobile', type: 'text', title: '银行预留手机号', placeholder: '请输入银行预留手机号', pattern: 'tel'}, {name: 'code', type: 'text', title: '手机验证码', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
           address: [{name: 'product_hash_type', type: 'select', title: '算力类型', option: []}, {name: 'address', type: 'text', title: '算力地址', placeholder: '请输入对应算力地址', pattern: 'computeAddress'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
           login: [{name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}, {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password'}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}]
         },
@@ -67,11 +67,12 @@
     methods: {
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, this.isMobile)
+        var data = api.checkForm(form, this.isMobile)
+        if (!data) return false
         var url = ''
         var callbackUrl = ''
         var val = ''
-        var sendData = {token: this.token, user_id: this.user_id}
+        var sendData = {token: this.token}
         var tipsStr = ''
         var tipsStr2 = ''
         switch (this.edit) {
@@ -100,18 +101,19 @@
           case 'login':
             url = 'changeLoginPassword'
             tipsStr = '修改成功'
+            data.password = md5(data.password)
+            data.password1 = md5(data.password1)
             break
         }
-        if (!data) return false
         var self = this
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips(tipsStr, self.isMobile)
+            api.tips(tipsStr)
             if (self.edit === 'auth' || self.edit === 'card') {
               self.$store.commit('SET_INFO', {[val]: {status: 0}})
               setTimeout(() => {
                 self.requestData(callbackUrl, sendData, val, () => {
-                  api.tips(tipsStr2, self.isMobile)
+                  api.tips(tipsStr2)
                 })
               }, 7000)
             } else if (self.edit === 'address') {
@@ -190,7 +192,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
         true_name: state => state.info.true_name,
         bank_card: state => state.info.bank_card,

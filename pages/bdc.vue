@@ -126,18 +126,18 @@
       }
     },
     methods: {
-      submit () {
+      submit (e) {
         let self = this
-        var ff = document.querySelector('.data_form')
-        var data = api.validityForm(ff)
+        var form = e.target
+        var data = api.validityForm(form)
         if (data.status && data.status === 2) {
-          this.tips = ff[data.n].placeholder
+          this.tips = form[data.n].placeholder
           return false
         } else if (data.status && data.status === 1) {
-          this.tips = ff[data.n].title
+          this.tips = form[data.n].title
           return false
         }
-        util.post('depositMessage', {sign: api.serialize({token: this.token, dep_name: encodeURIComponent(ff.dep_name.value), dep_tel: ff.dep_tel.value, dep_bdc_id: ff.dep_bdc_id.value, dep_type: encodeURIComponent(ff.dep_type.value), dep_number: ff.dep_number.value, code: ff.code.value})}).then(function (res) {
+        util.post('depositMessage', {sign: api.serialize({token: this.token, dep_name: encodeURIComponent(form.dep_name.value), dep_tel: form.dep_tel.value, dep_bdc_id: form.dep_bdc_id.value, dep_type: encodeURIComponent(form.dep_type.value), dep_number: form.dep_number.value, code: form.code.value})}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.success = true
             setTimeout(function () {

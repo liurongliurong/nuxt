@@ -43,23 +43,13 @@
         <span>算力收益图表</span>
       </li>
     </ul>
-    <div class="popup" v-if="showModal">
-      <div class="popup_con">
-        <div class="popup_title">
-          <span v-if="edit===1">提取收益</span>
-          <span v-if="edit===2">收益图表</span>
-          <span class="icon_close" @click="closeEdit"></span>
-        </div>
-        <form class="form" @submit.prevent="submit" novalidate v-if="edit===1">
-          <FormField :form="GetIncome" @onChange="onChange"></FormField>
-          <p>手续费：0.002btc</p>
-          <button name="btn">提交</button>
-        </form>
-        <div class="popup_chart" v-if="edit===2">
-          <IncomeChart></IncomeChart>
-        </div>
+    <MyMask :form="edit===3?[]:GetIncome" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
+      <p slot="fee">手续费：0.0002btc</p>
+      <opr-select slot="select_opr" :no="maskNo" @closeMask="closeMask"></opr-select>
+      <div class="popup_chart" name="chart">
+        <IncomeChart></IncomeChart>
       </div>
-    </div>
+    </MyMask>
   </section>
 </template>
 
@@ -69,9 +59,11 @@
   import { mapState } from 'vuex'
   import FormField from '@/components/common/FormField'
   import IncomeChart from '@/pages/user/incomeChart'
+  import MyMask from '@/components/common/Mask'
+  import OprSelect from '@/components/common/OprSelect'
   export default {
     components: {
-      FormField, IncomeChart
+      FormField, IncomeChart, MyMask, OprSelect
     },
     data () {
       return {
@@ -83,13 +75,14 @@
         GetIncome: [{name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType', value: ''}, {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', value2: 0, tipsUnit: ''}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
         showSelect: false,
         edit: 0,
-        showModal: false,
         fee: 0,
         total_price: 0,
         amount: 0,
         product_hash_type: '',
         qwsl: '',
-        output: ''
+        output: '',
+        title: '',
+        maskNo: 0
       }
     },
     methods: {
@@ -124,7 +117,7 @@
         var nowHash = this.hashType[this.nowEdit]
         this.GetIncome[0].value =  nowHash.name
         this.GetIncome[1].tipsUnit = nowHash.name.toLowerCase()
-        var sendData = {token: this.token, user_id: this.user_id, product_hash_type: nowHash.id || '1'}
+        var sendData = {token: this.token, product_hash_type: nowHash.id || '1'}
         util.post('myHashAccount', {sign: api.serialize(sendData)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.computeData = res
@@ -140,23 +133,19 @@
         if (k === 1) {
           this.total_price = 0
           if (!(this.true_name && this.true_name.status === 1)) {
-            api.tips('请先实名认证', 1, () => {
-              this.$router.push({name: 'mobile-administration'})
-            })
+            this.goAuth ('立即认证', 0)
             return false
           }
           if (!this.address.length) {
-            api.tips('请先绑定算力地址', 1, () => {
-              this.$router.push({name: 'mobile-administration'})
-            })
+            this.goAuth ('立即绑定', 2)
             return false
           }
           if (+this.computeData.balance_account <= 0 && this.edit !== 2) {
-            api.tips('您的账户余额不足，不能提取收益', 1)
+            api.tips('您的账户余额不足，不能提取收益')
             return false
           }
           var requestUrl = 'showWithdrawCoin'
-          var data = {token: this.token, user_id: this.user_id, product_hash_type: this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id}
+          var data = {token: this.token, product_hash_type: this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id}
           this.product_hash_type = this.hashType[this.nowEdit].name.toUpperCase()
           var self = this
           util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
@@ -165,30 +154,25 @@
               self.amount = res.coin_account
               self.GetIncome[1].value2 = res.coin_account
               self.edit = k
-              self.showModal = true
+              self.title = '提取收益'
             })
           })
         } else {
           this.edit = k
-          this.showModal = true
+          this.title = '收益图表'
         }
       },
       submit () {
         var form = document.querySelector('.form')
-        // if (document.querySelector('.form')[1].value < 0.001) {
-        //   document.querySelector('.form')[1].value = '最小提取0.001'
-        //   document.querySelector('.form')[1].style = 'color:red'
-        //   return false
-        // }
-        var data = api.checkFrom(form, 1)
-        var sendData = {token: this.token, user_id: this.user_id}
+        var data = api.checkForm(form, this.isMobile)
+        var sendData = {token: this.token}
         if (!data) return false
         form.btn.setAttribute('disabled', true)
         var self = this
         util.post('withdrawCoin', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
-            self.showModal = false
-            api.tips('提币成功', 1)
+            self.edit = 0
+            api.tips('提币成功')
           }, form.btn)
         })
       },
@@ -199,8 +183,13 @@
         }
         this.total_price = obj.e.target.value
       },
-      closeEdit () {
-        this.showModal = false
+      closeMask () {
+        this.edit = 0
+      },
+      goAuth (str, n) {
+        this.title = str
+        this.maskNo = n
+        this.edit = 3
       }
     },
     mounted () {
@@ -209,7 +198,7 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
+        isMobile: state => state.isMobile,
         mobile: state => state.info.mobile,
         hashType: state => state.hashType,
         true_name: state => state.info.true_name,

@@ -61,13 +61,13 @@
           rickType = '进取型'
         }
         var self = this
-        var sendData = {token: this.token, user_id: this.user_id}
+        var sendData = {token: this.token}
         util.post('risk_score', {sign: api.serialize(Object.assign({user_risk_score: score, risk_type: encodeURIComponent(rickType)}, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             util.post('show_risk_score', {sign: api.serialize(sendData)}).then(function (data) {
               if (data && !data.code) {
                 self.$store.commit('SET_INFO', {risk: data})
-                api.tips('测评成功', self.isMobile, () => {
+                api.tips('测评成功', () => {
                   self.$router.push({name: 'user-lpCenter'})
                 })
               }
@@ -79,7 +79,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         isMobile: state => state.isMobile
       })
     }

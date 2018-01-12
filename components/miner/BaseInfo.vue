@@ -33,7 +33,7 @@
             <input type="text" :value="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum($event.target.value)">
             <span @click="changeNum(+number+1)">+</span>
           </div>
-          <p class="miner_number">库存{{detail.leftNum}}台</p>
+          <p class="miner_number">库存{{detail.leftNum}}台<span class="detail_limit_text">({{(parseInt(detail.single_limit_amount)||1)+'台起售'}})</span></p>
         </div>
         <button class="btn" disabled v-if="detail.status===2">已售罄</button>
         <button class="btn" disabled v-else-if="detail.status===3">产品撤销</button>
@@ -71,7 +71,7 @@
         </div>
       </div>
       <div class="cloud_miner_right">
-        <div class="price_text">我要购买</div>
+        <div class="price_text">我要购买<span class="detail_limit_text">({{(parseInt(detail.single_limit_amount)||1)+'台起售'}})</span></div>
         <div class="input_box">
           <input type="text" :value="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum($event.target.value)">
           <span>台</span>
@@ -97,7 +97,7 @@
         type: String
       },
       number: {
-        type: String
+        type: Number
       },
       buyStatus: {
         type: Number

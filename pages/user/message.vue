@@ -79,7 +79,7 @@
       },
       setRead (i) {
         var self = this
-        util.post('isRead', {sign: api.serialize({token: this.token, user_id: this.user_id, is_read: 0})}).then(function (res) {
+        util.post('isRead', {sign: api.serialize({token: this.token, is_read: 0})}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.$router.push({name: 'user-message'})
             self.fetchData()
@@ -89,7 +89,7 @@
       fetchData (more) {
         if (this.token !== 0) {
           var self = this
-          util.post('MessageList', {sign: api.serialize({token: this.token, user_id: this.user_id, page: this.now})}).then(function (res) {
+          util.post('MessageList', {sign: api.serialize({token: this.token, page: this.now})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.$store.commit('SET_INFO', {unread_num: res.unread_num})
               if (more) {
@@ -114,7 +114,7 @@
           var self = this
           var messageid = id
           this.contentShow = false
-          util.post('Messagecontent', {sign: api.serialize({token: this.token, user_id: this.user_id, message_id: messageid})}).then(function (res) {
+          util.post('Messagecontent', {sign: api.serialize({token: this.token, message_id: messageid})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.content = res
             })
@@ -144,7 +144,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         unread_num: state => state.info.unread_num,
         isMobile: state => state.isMobile
       })

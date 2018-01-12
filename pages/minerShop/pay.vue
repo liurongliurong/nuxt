@@ -166,9 +166,9 @@
         </div>
       </form>
     </div>
-    <MyMask :form="addressForm" :title="title" :contract="contract" v-if="edit" @submit="submit" @closeMask="closeMask">
+    <my-mask :form="addressForm" :title="title" :contract="contract" v-if="edit" @submit="submit" @closeMask="closeMask">
       <pay-type slot="pay_type" @setPayNo="setPayNo" :payNo="payNo" :balance="+balance"></pay-type>
-    </MyMask>
+    </my-mask>
   </section>
 </template>
 
@@ -197,7 +197,7 @@
         address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}, {name: 'is_default', type: 'radio', title: '是否设为默认地址'}],
         tips: '请同意服务条款',
         totalPrice: 0,
-        accept: false,
+        accept: true,
         edit: false,
         contract: '',
         addressShowData: [],
@@ -232,7 +232,7 @@
             return false
           } else if (!api.check('^[0-9]{6}$', ff.code.value)) {
             if (this.isMobile) {
-              api.tips('请输入6位数字', 1)
+              api.tips('请输入6位数字')
             }
             return false
           }
@@ -258,7 +258,7 @@
           if (this.payNo === 2) {
             data = Object.assign({url: callbackUrl, mode: '2'}, data)
           }
-          data = Object.assign({post_id: this.addressObject.id, user_id: this.user_id, miner_id: this.params1, number: this.number}, data)
+          data = Object.assign({post_id: this.addressObject.id, miner_id: this.params1, number: this.number}, data)
         } else {
           callbackUrl += 'order/0'
           if (this.detail.isLoan) {
@@ -272,7 +272,7 @@
             if (this.payNo === 2) {
               data = Object.assign({url: callbackUrl, mode: '1'}, data)
             }
-            data = Object.assign({product_id: this.params1, num: this.number, user_id: this.user_id}, data)
+            data = Object.assign({product_id: this.params1, num: this.number}, data)
           }
         }
         var self = this
@@ -288,7 +288,7 @@
         if (this.payNo === 2) {
           this.alipay(url, data)
         } else {
-          api.tips(str, this.isMobile, () => {
+          api.tips(str, () => {
             if (this.isMobile) {
               this.$router.push({path: url})
             } else {
@@ -300,7 +300,7 @@
       },
       alipay (url, data) {
         if (api.checkWechat()) {
-          api.tips('请在浏览器里打开', 1)
+          api.tips('请在浏览器里打开')
           return false
         }
         var self = this
@@ -313,7 +313,7 @@
       },
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, this.isMobile)
+        var data = api.checkForm(form, this.isMobile)
         if (!data) return false
         data.is_default = 1
         data.token = this.token
@@ -321,7 +321,7 @@
         util.post('addAddress', {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.getAddress()
-            api.tips('添加成功', self.isMobile)
+            api.tips('添加成功')
             self.closeMask()
           }, form.btn)
         })
@@ -356,7 +356,7 @@
       },
       tip (str, ele) {
         if (this.isMobile) {
-          api.tips(str, 1)
+          api.tips(str)
         } else {
           this.tips = str
           ele.setAttribute('data-status', 'invalid')
@@ -375,7 +375,7 @@
       },
       getAddress () {
         var self = this
-        util.post('showAddress', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
+        util.post('showAddress', {sign: api.serialize({token: this.token})}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.addressData = res
             self.addressShowData = self.addressData.slice(0, 3)
@@ -404,7 +404,7 @@
         var self = this
         util.post('setDefault', {sign: api.serialize({token: this.token, post_id: id})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips('设置成功', self.isMobile)
+            api.tips('设置成功')
             self.getAddress()
           })
         })
@@ -483,7 +483,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
         isMobile: state => state.isMobile,
         trade_password: state => state.info.trade_password,

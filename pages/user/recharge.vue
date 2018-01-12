@@ -23,10 +23,11 @@
     <nav>
       <div :class="['item', {active:rechargeNo===k}]" v-for="r,k in rechargeType" @click="changeType(k)">{{r}}</div>
     </nav>
-    <form class="form" @submit.prevent="submit" novalidate>
+    <form class="form" @submit.prevent="submit" novalidate v-if="(rechargeNo&&!isWechat)||!rechargeNo">
       <FormField :form="form[rechargeNo]"></FormField>
       <button name="btn">{{rechargeNo?'去支付':'提交申请'}}</button>
     </form>
+    <p class="recharge_tips" v-if="isWechat&&rechargeNo">微信端暂不支持支付宝充值，建议在手机浏览器或电脑端操作</p>
   </section>
 </template>
 
@@ -39,11 +40,6 @@
     components: {
       FormField
     },
-    props: {
-      page: {
-        type: String
-      }
-    },
     data () {
       return {
         processText: ['银行转账', '提交申请', '审核通过'],
@@ -53,20 +49,20 @@
           [{name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', pattern: 'bigMoney', len: 6}]
         ],
         rechargeType: ['银行卡充值', '支付宝充值'],
-        rechargeNo: 0
+        rechargeNo: 0,
+        isWechat: false
       }
     },
     methods: {
       submit () {
         var form = document.querySelector('.form')
-        var data = api.checkFrom(form, this.isMobile)
+        var data = api.checkForm(form, this.isMobile)
         var sendData = {token: this.token}
         var callbackUrl = ''
         if (!data) return false
         var self = this
         form.btn.setAttribute('disabled', true)
         if (this.rechargeNo) {
-          // api.tips('暂不能充值', this.isMobile)
           util.post('applyBalanceRecharge', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
             api.checkAjax(self, res, () => {
               res.subject = encodeURIComponent(res.subject)
@@ -88,7 +84,7 @@
             api.checkAjax(self, res, () => {
               form.amount.value = ''
               form.request_id.value = ''
-              api.tips('提交成功，请等待工作人员确认', self.isMobile, () => {
+              api.tips('提交成功，请等待工作人员确认', () => {
                 if (self.callUrl) {
                   self.$router.push({path: self.callUrl})
                   self.$store.commit('SET_URL', '')
@@ -107,10 +103,14 @@
       ...mapState({
         callUrl: state => state.callUrl,
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         isMobile: state => state.isMobile,
         unread_num: state => state.unread_num
       })
+    },
+    mounted () {
+      if (api.checkWechat()) {
+        this.isWechat = true
+      }
     }
   }
 </script>
@@ -179,6 +179,14 @@
           width: 80px;
         }
       }
+    }
+    .recharge_tips{
+      background: #fff;
+      padding:25px;
+      text-align: center;
+      font-size: 12px;
+      color:$light_text;
+      border-top:1px solid $border;
     }
     @media screen and (max-width: $mobile) {
       background:#f4f4f4;

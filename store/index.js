@@ -7,7 +7,6 @@ Vue.use(Vuex)
 
 const state = {
   info: {
-    user_id: '',
     mobile: '',
     token: 0,
     true_name: '',

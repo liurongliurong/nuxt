@@ -202,7 +202,7 @@
           if (this.nowEdit === 3) {
             this.status = 1
           }
-          util.post('fundOrder', {sign: api.serialize({token: this.token, user_id: this.user_id, type: this.nowEdit, status: this.status, page: this.now})}).then(function (res) {
+          util.post('fundOrder', {sign: api.serialize({token: this.token, type: this.nowEdit, status: this.status, page: this.now})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res.list
               if (self.now > 1) return false
@@ -234,7 +234,7 @@
             data = {order_id: id}
           }
           var self = this
-          util.post(requestUrl, {sign: api.serialize(Object.assign({token: this.token, user_id: this.user_id}, data))}).then(function (res) {
+          util.post(requestUrl, {sign: api.serialize(Object.assign({token: this.token}, data))}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.editText = title
               if (str === 'sold') {
@@ -269,9 +269,9 @@
           requestUrl = 'backOutSellMiner'
         }
         var self = this
-        util.post(requestUrl, {sign: api.serialize({token: this.token, user_id: this.user_id, order_id: id})}).then(function (res) {
+        util.post(requestUrl, {sign: api.serialize({token: this.token, order_id: id})}).then(function (res) {
           api.checkAjax(self, res, () => {
-            api.tips('操作成功', self.isMobile, () => {
+            api.tips('操作成功', () => {
               self.fetchData()
             })
           })
@@ -283,9 +283,9 @@
       },
       submit (e) {
         var form = e.target
-        var data = api.checkFrom(form, this.isMobile)
+        var data = api.checkForm(form, this.isMobile)
         var url = ''
-        var sendData = {token: this.token, user_id: this.user_id, order_id: this.order_id}
+        var sendData = {token: this.token, order_id: this.order_id}
         var tipsStr = ''
         switch (this.edit) {
           case 'sold':
@@ -299,7 +299,7 @@
           case 'againRent':
             url = 'saveSubletHash'
             tipsStr = '转租成功'
-            sendData = {token: this.token, user_id: this.user_id, transfer_record_id: this.order_id}
+            sendData = {token: this.token, transfer_record_id: this.order_id}
             break
         }
         if (!data) return false
@@ -307,7 +307,7 @@
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.closeMask()
-            api.tips(tipsStr, self.isMobile, () => {
+            api.tips(tipsStr, () => {
               self.fetchData()
             })
           })
@@ -358,7 +358,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
         scode: state => state.info.scode,
         isMobile: state => state.isMobile
