@@ -53,7 +53,7 @@
         this.$store.dispatch('getInfo')
       }
       var self = this
-      util.post('getAll', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
+      util.post('getAll', {sign: api.serialize({token: this.token})}).then(function (res) {
         api.checkAjax(self, res, () => {
           self.$store.commit('SET_INFO', res)
         })
@@ -67,7 +67,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         isMobile: state => state.isMobile
       })
     }

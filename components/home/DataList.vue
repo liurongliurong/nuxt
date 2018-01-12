@@ -15,11 +15,12 @@
             <tr v-for="l,i in cloudMinerData" @click="goPay(l.product_id||l.id, '2')">
               <td v-for="v,k in nav">
                 <template v-if="k==='name'"><i class="iconfont">&#xe605;</i>{{l[k]}}</template>
+                <template v-else-if="k==='amount'">{{+l[k]}} 台</template>
                 <template v-else-if="k==='left_num'">{{l.amount-(l.sell_amount||l.buyed_amount)+v.unit}}</template>
                 <template v-else>{{l[k]+[v.unit]}}</template>
               </td>
               <td>
-                <a class="btn" v-if="l.status===4">预热</a> 
+                <a class="btn" v-if="l.status===4">预热</a>
                 <a class="btn" v-else-if="l.amount-(l.sell_amount||l.buyed_amount)>0">立即购买</a> 
                 <button class="btn" disabled v-else>已售罄</button>
               </td>

@@ -117,7 +117,7 @@
         var nowHash = this.hashType[this.nowEdit]
         this.GetIncome[0].value =  nowHash.name
         this.GetIncome[1].tipsUnit = nowHash.name.toLowerCase()
-        var sendData = {token: this.token, user_id: this.user_id, product_hash_type: nowHash.id || '1'}
+        var sendData = {token: this.token, product_hash_type: nowHash.id || '1'}
         util.post('myHashAccount', {sign: api.serialize(sendData)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.computeData = res
@@ -145,7 +145,7 @@
             return false
           }
           var requestUrl = 'showWithdrawCoin'
-          var data = {token: this.token, user_id: this.user_id, product_hash_type: this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id}
+          var data = {token: this.token, product_hash_type: this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id}
           this.product_hash_type = this.hashType[this.nowEdit].name.toUpperCase()
           var self = this
           util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
@@ -165,7 +165,7 @@
       submit () {
         var form = document.querySelector('.form')
         var data = api.checkForm(form, this.isMobile)
-        var sendData = {token: this.token, user_id: this.user_id}
+        var sendData = {token: this.token}
         if (!data) return false
         form.btn.setAttribute('disabled', true)
         var self = this
@@ -199,7 +199,6 @@
       ...mapState({
         token: state => state.info.token,
         isMobile: state => state.isMobile,
-        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
         hashType: state => state.hashType,
         true_name: state => state.info.true_name,
