@@ -39,7 +39,7 @@
           {title: 'BDC托管', path: '/bdc'},
           {title: '产业资讯', path: '/mobile/property'},
         ],
-        isMobilePage: ['index', 'bdc', 'minerShop-miner-type']
+        isMobilePage: ['index', 'bdc']
       }
     },
     methods: {
