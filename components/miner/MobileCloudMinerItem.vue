@@ -3,10 +3,8 @@
     <div class="item_title">
       <div class="left">
         <span class="name">{{itemData.name}}</span>
-        <!-- <span :class="'icon_currency '+itemData.hashtype&&itemData.hashtype.name" ></span>
         <span :class="['sell_type', {active: itemData.sell_type===2}]" v-if="itemData.status!==7">{{(itemData.sell_type===2&&'转售')||str[itemData.status]||(itemData.status===10&&'活动')}}</span>
-        <span class="sell_type gray" v-if="itemData.status&&(itemData.status===2||itemData.status===3)||(itemData.amount-itemData.buyed_amount<=0)">已售罄</span> -->
-        <span class="sell_type">热销</span>
+        <span class="sell_type gray" v-if="itemData.status&&(itemData.status===2||itemData.status===3)||(itemData.amount-itemData.buyed_amount<=0)">已售罄</span>
         <span class="coin_sign" v-if="itemData.hashtype">{{itemData.hashtype.name}}</span>
       </div>
       <div class="right">
@@ -15,8 +13,8 @@
     </div>
     <div class="item_info">
       <div class="info">
-        <span class="price"><b>{{itemData.one_amount_value}}</b>元</span>
-        <span class="info_name">预计今日收益</span>
+        <span class="price"><b>{{itemData.hash_income}}</b>元</span>
+        <span class="info_name">预计每日收益</span>
       </div>
       <div class="info">
         <span>{{itemData.one_amount_value}}元</span>
@@ -95,6 +93,10 @@
           margin-right: 0.2rem;
           background: #ff721f;
           border: solid 1px #ff721f;
+          &.gray {
+            background: $border;
+            border-color:$border;
+          }
         }
       }
       .right {
@@ -103,7 +105,7 @@
       }
     }
 
-    .item_info{
+    .item_info {
       @include flex(space-between,center)
       padding: 0.4rem 0;
 
@@ -127,5 +129,4 @@
     }
 
   }
-  @include progress
 </style>

@@ -25,34 +25,25 @@
       </div>
       <div class="popup" v-if="sheetVisible" @click="closeMask">
         <div class="popup_con buy_box">
-          <div class="img_text">
-            <div class="popup_img">
-              <img :src="detail.product_img||detail.minerPicture" alt="">
-            </div>
-            <div class="popup_text">
-              <div class="price">￥{{detail.one_amount_value}}</div>
-              <div class="name">{{detail.name}}</div>
-              <div class="left">剩余可售{{detail.leftNum}}台<span class="detail_limit_text">({{(parseInt(detail.single_limit_amount)||1)+'台起售'}})</span></div>
-            </div>
+          <div class="buy_title" @click="sheetVisible = false">选择购买数量</div>
+          <div class="buy_text">
+            <div>单价</div>
+            <div>{{detail.one_amount_value}}元/台</div>
           </div>
-          <div class="buy_num">
-            <div>购买数量</div>
+          <div class="buy_text">
+            <div>数量</div>
             <div class="input_box">
               <span @click="changeNum(+number-1)">-</span>
               <input type="text" v-model="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum(number)">
               <span @click="changeNum(+number+1)">+</span>
             </div>
           </div>
-          <div class="buy_text">
-            <div class="item">购买算力</div>
-            <div class="item">{{(detail.hash*number)|format}}T</div>
-          </div>
           <div class="buy_text last">
-            <div class="item">支付金额</div>
+            <div class="item">总价</div>
             <div class="item">{{(detail.one_amount_value*number)|format}}元</div>
           </div>
-          <div class="mobile_btn" style="z-index:9999999;">
-            <button @click="goPay(false)">立即购买</button>
+          <div class="mobile_btn">
+            <button @click="goPay(false)">确认购买</button>
           </div>
         </div>
       </div>
@@ -147,7 +138,7 @@
           }
           return false
         }
-        var data = {name: this.detail.name ? this.detail.name : this.detail.product_name, one_amount_value: this.detail.one_amount_value || '', number: this.number || '', hash: this.detail.hash || '', hashType: this.detail.hashType || '', incomeType: this.detail.incomeType || '', output: this.detail.output || '', total_electric_fee: this.detail.total_electric_fee || '', batch_area: this.detail.batch_area || '', isLoan: isLoan}
+        var data = {name: this.detail.name ? this.detail.name : this.detail.product_name, one_amount_value: this.detail.one_amount_value || '', number: this.number || '', hash: this.detail.hash || '', hashType: this.detail.hashType || '', incomeType: this.detail.incomeType || '', output: this.detail.output || '', total_electric_fee: this.detail.total_electric_fee || '', batch_area: this.detail.batch_area || '', isLoan: isLoan, img: this.detail.product_img||this.detail.minerPicture}
         api.setStorge('info', data)
         this.$router.push({name: 'minerShop-pay'})
       },
@@ -257,54 +248,45 @@
     .mobile_box{
       .popup{
         .buy_box{
-          padding:0 15px;
-          .img_text,.buy_num{
+          font-size: 16px;
+          .buy_title,.buy_text{
+            border-bottom: 1px solid $border;
+          }
+          .buy_title {
+            position: relative;
             padding: 15px 0;
-          }
-          .img_text{
-            @include flex
-            .popup_img{
-              width:130px;
-              margin-right:15px;
-              height:90px;
-              img{
-                height:90px;
-                width: 130px;
-                object-fit:contain
-              }
-            }
-            .popup_text{
-              .price{
-                color:$orange;
-                font-size: 0.36rem;
-              }
-              .name{
-                font-weight: bold;
-              }
-            }
-          }
-          .buy_num{
-            border-top:1px solid $border;
-            border-bottom:1px solid $border;
-            @include flex(space-between)
-            .input_box{
-              line-height: 30px;
-              border:1px solid $border;
-              @include number_box
-              span{
-                width:18%;
-                color:$text !important
-              }
-              input{
-                width:58%
-              }
+            text-align: center;
+            &:before {
+              content: '';
+              @include position(23,15)
+              @include block(12)
+              @include arrow(left, #bababa, 1)
             }
           }
           .buy_text{
             @include flex(space-between)
-            padding-top:15px;
+            margin: 0 15px;
+            padding: 10px 0;
+            .input_box{
+              width:160px;
+              line-height: 30px;
+              border:1px solid $border;
+              @include flex
+              span{
+                width:30%;
+                color:$light_text;
+                font-size: 22px;
+                text-align: center;
+              }
+              input{
+                width:40%;
+                border-left: 1px solid $border;
+                border-right: 1px solid $border;
+                line-height: 30px;
+                text-align: center;
+              }
+            }
             &.last{
-              padding-bottom:20px;
               .item:last-child{
                 color: $orange;
               }
@@ -313,7 +295,14 @@
           .mobile_btn{
             position: relative;
             border: 0;
-            padding: 9px 0;
+            padding: 15px;
+            button{
+              background: transparent;
+              color: $blue;
+              border: 1px solid $blue;
+              font-size: 16px;
+              line-height: 2.2;
+            }
           }
         }
       }

@@ -16,7 +16,7 @@
     $blue_border:#b1c4e5;
     $red:#ea2c2c;
     $light_red:#e65c65;
-    $orange:#FE5038;
+    $orange:#ff721f;
     $green:#5cbe53;
     $green_border:#c2ee93;
     $green_bg:#f1ffe2;
@@ -1277,7 +1277,7 @@
     button {
       width:100%;
       border:0;
-      background-color: $orange;
+      background-color: $blue;
       color:#fff;
       line-height: 3;
       &:disabled{
