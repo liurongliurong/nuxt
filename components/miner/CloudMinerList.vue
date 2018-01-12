@@ -7,16 +7,10 @@
           <CloudMinerItem v-for="d,k in cloudMinerData" :d="d" :key="k"></CloudMinerItem>
         </template>
         <template v-else-if="isMobile===1">
-          <div class="tab_cloud_miner">
-            <span class="tab_item" v-for="item in tabCloudMiner" @click="switchTab(item)" :class="{tab_cloud_active: tabActive === item.active}">
-            {{item.name}}
-            <i v-if="tabActive === item.active"></i>
-            </span>
-          </div>
           <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists">
-            <MobileCloudMinerItem v-for="item,key in cloudMinerData" :itemData="item" @click="goPay(item.id)" :key="key"></MobileCloudMinerItem>
+            <MobileCloudMinerItem v-for="d,k in cloudMinerData" :d="d" @click="goPay(d.id)" :key="k"></MobileCloudMinerItem>
           </div>
-          <p v-if="loading" class="loadmore">加载中······</p>
+          <p v-if="loading"  class="loadmore">加载中······</p>
         </template>
         <div class="nodata" v-if="$parent.show">
           <div class="nodata_img"></div>
@@ -55,12 +49,7 @@
     },
     data () {
       return {
-        loading: false,
-        tabActive: 'cloud',
-        tabCloudMiner: [
-          {name: '云算力市场', active: 'cloud'},
-          {name: '转售市场', active: 'sale'}
-        ]
+        loading: false
       }
     },
     asyncData ({ params }) {
@@ -84,9 +73,6 @@
       goPay (id) {
         api.setStorge('suanli', {proId: id, proType: '2'})
         this.$router.push({path: '/minerShop/detail/'})
-      },
-      switchTab(tab) {
-        this.tabActive = tab.active
       }
     },
     watch: {
@@ -116,39 +102,8 @@
         @include data_title
       }
       .data{
-        .tab_cloud_miner {
-          @include flex(space-around, center)
-          height: 0.96rem;
-          background: #327fff;
-          color: #fff;
-          font-size: 0.3rem;
-          position: fixed;
-          top: 0.88rem;
-          width: 100%;
-          z-index: 1;
-
-          .tab_item {
-            @include flex(center, center, column)
-            padding: 0.26rem;
-            position: relative;
-            i {
-              width: 0.35rem;
-              border: solid 1px #fff;
-              position: absolute;
-              left: 41%;
-              bottom: 6px;
-            }
-          }
-
-          .tab_cloud_active {
-            font-weight: bold;
-          }
-        }
         .item{
           @include cloud_miner_box
-        }
-        .list_lists {
-          padding-top: 2.04rem;
         }
       }
     }
