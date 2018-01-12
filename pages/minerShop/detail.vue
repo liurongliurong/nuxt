@@ -57,7 +57,7 @@
         </div>
       </div>
     </div>
-    <my-mask title="立即认证" @closeMask="closeMask" v-if="mask">
+    <my-mask title="立即认证" :position="maskPosition" @closeMask="closeMask" v-if="mask">
       <opr-select slot="select_opr" :no="0" @closeMask="closeMask"></opr-select>
     </my-mask>
   </section>
@@ -90,7 +90,8 @@
         params1: '',
         params2: '',
         sheetVisible: false,
-        mask: false
+        mask: false,
+        maskPosition: ''
       }
     },
     methods: {
@@ -109,6 +110,7 @@
         }
         if (!(this.true_name && this.true_name.status === 1)) {
           this.mask = true
+          this.maskPosition = 'middle'
           return false
         }
         if (this.isMobile) {
