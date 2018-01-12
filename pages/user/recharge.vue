@@ -103,7 +103,6 @@
       ...mapState({
         callUrl: state => state.callUrl,
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         isMobile: state => state.isMobile,
         unread_num: state => state.unread_num
       })

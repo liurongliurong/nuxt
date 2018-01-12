@@ -144,7 +144,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         bank_card: state => state.info.bank_card,
         mobile: state => state.info.mobile,
         hashType: state => state.hashType,

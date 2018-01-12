@@ -175,7 +175,7 @@
           }
           var nowHash = this.hashType[this.nowEdit]
           requestUrl = 'showWithdrawCoin'
-          data = {token: this.token, user_id: this.user_id, product_hash_type: nowHash && nowHash.id}
+          data = {token: this.token, product_hash_type: nowHash && nowHash.id}
         }
         if (str === 'Withdrawals') {
           if (!(this.bank_card && this.bank_card.status === 1)) {
@@ -187,7 +187,7 @@
             return false
           }
           requestUrl = 'showWithdraw'
-          data = {token: this.token, user_id: this.user_id}
+          data = {token: this.token}
         }
         var self = this
         util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
@@ -219,7 +219,7 @@
         var nowHash = this.hashType[this.nowEdit]
         this.form.GetIncome[0].value = nowHash.name
         this.form.GetIncome[1].tipsUnit = nowHash.name.toLowerCase()
-        var sendData = {token: this.token, user_id: this.user_id, product_hash_type: (nowHash && nowHash.id) || '1'}
+        var sendData = {token: this.token, product_hash_type: (nowHash && nowHash.id) || '1'}
         util.post('myHashAccount', {sign: api.serialize(sendData)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.computeData = res
@@ -240,7 +240,7 @@
         var form = e.target
         var data = api.checkForm(form, this.isMobile)
         var url = ''
-        var sendData = {token: this.token, user_id: this.user_id}
+        var sendData = {token: this.token}
         var tipsStr = ''
         switch (this.edit) {
           case 'Withdrawals':
@@ -273,7 +273,7 @@
       getData () {
         if (this.token !== 0 && this.hashType.length) {
           var self = this
-          util.post('myAccount', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
+          util.post('myAccount', {sign: api.serialize({token: this.token})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.moneyData = res
               self.priceall = +self.moneyData.freeze_account + (+self.moneyData.balance_account)
@@ -304,7 +304,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
         true_name: state => state.info.true_name,
         bank_card: state => state.info.bank_card,

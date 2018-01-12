@@ -97,7 +97,7 @@
         if (this.token !== 0) {
           var self = this
           this.item = []
-          util.post('getLoanList', {sign: api.serialize({token: this.token, user_id: this.user_id, status: this.status, page: this.now})}).then(function (res) {
+          util.post('getLoanList', {sign: api.serialize({token: this.token, status: this.status, page: this.now})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.item = res
               self.showImg = !res.length
@@ -130,8 +130,7 @@
     },
     computed: {
       ...mapState({
-        token: state => state.info.token,
-        user_id: state => state.info.user_id
+        token: state => state.info.token
       })
     },
     filters: {

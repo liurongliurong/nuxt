@@ -150,7 +150,7 @@
         var url = 'user_truename'
         var callbackUrl = 'show_user_truename'
         var val = 'true_name'
-        var sendData = {token: this.token, user_id: this.user_id}
+        var sendData = {token: this.token}
         var tipsStr = '实名认证已提交，请您耐心等待几秒即可看到认证结果'
         var tipsStr2 = '恭喜您实名认证成功'
         if (!data) return false
@@ -185,7 +185,6 @@
       ...mapState({
         isMobile: state => state.isMobile,
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile
       })
     },

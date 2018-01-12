@@ -124,8 +124,7 @@
     },
     computed: {
       ...mapState({
-        token: state => state.info.token,
-        user_id: state => state.info.user_id
+        token: state => state.info.token
       })
     }
   }

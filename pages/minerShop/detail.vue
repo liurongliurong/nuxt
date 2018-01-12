@@ -214,7 +214,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         true_name: state => state.info.true_name,
         isMobile: state => state.isMobile,
         addressObj: state => state.addressData
