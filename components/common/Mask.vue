@@ -1,6 +1,6 @@
 <template>
-  <div class="popup">
-    <div class="popup_con">
+  <div :class="'popup'">
+    <div :class="'popup_con '+position">
       <div class="popup_title">
         <span>{{title}}</span>
         <span class="icon_close" @click="closeMask"></span>
@@ -49,6 +49,10 @@
       },
       val: {
         type: Object
+      },
+      position: {
+        type: String,
+        default: ''
       }
     },
     filters: {
