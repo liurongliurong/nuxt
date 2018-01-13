@@ -17,7 +17,7 @@
       <div class="sort_allitems">
         <span class="sort_allitems_title">排序方式</span>
         <div :class="['item', 'next', {active1: !sort[edit]}]" @click="setSort()">综合排序</div>
-        <div :class="['item', {active: edit==k}, {up: edit!=k},{active1: sort[edit]}]" v-for="s,k in sort" @click="setSort(k)">{{s.title}}<span class="iconfont">&#xe611;</span></div>
+        <div :class="['item', {active: edit==k}, {up: edit==k&&no==1}]" v-for="s,k in sort" @click="setSort(k)">{{s.title}}<span class="iconfont">&#xe611;</span></div>
       </div>
     </div>
     <div class="mobile_sort" v-else-if="isMobile===1">
@@ -44,20 +44,27 @@
     },
     data () {
       return {
-        edit: -1
+        edit: -1,
+        no: -1
       }
     },
     methods: {
-      setSort (n) {
+      setSort (n, i) {
         if (this.edit === n) {
-          this.edit = -1
+          if (this.no === 1) {
+            this.no = 0
+          } else {
+            this.no = 1
+          }
         } else {
-          this.edit = (n >= 0) ? n : -1
+          this.no = 0
         }
-        n = (this.edit !== -1) ? n : ''
-        this.$emit('fetchData', n)
+        this.edit = (n >= 0) ? n : -1
+        var param = (this.edit !== -1) ? [n, this.no] : ''
+        this.$emit('fetchData', param)
       },
       setStatus (n) {
+        this.no = -1
         this.$emit('setStatus', n)
       }
     },
@@ -204,7 +211,7 @@
         vertical-align: text-bottom;
         font-size: 26px;
         transition: all .3s;
-        transform:rotate(180deg);
+        transform:rotate(0deg);
         position: relative;
         top: -9px;
       }
@@ -212,12 +219,12 @@
         color:$blue;
         .iconfont{
           position: relative;
-          top: 10px;
         }
       }
       &.up{
         .iconfont{
-          transform:rotate(0deg);
+          transform:rotate(180deg);
+          top: 10px;
         }
       }
     }

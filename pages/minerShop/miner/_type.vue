@@ -21,7 +21,7 @@
     },
     data () {
       return {
-        sort: [{title: '价格', option: 'price_desc'}, {title: '算力', option: 'base_desc'}, {title: '剩余总数', option: 'num_desc'}],
+        sort: [{title: '价格', option: ['price_asc', 'price_desc']}, {title: '算力', option: ['base_asc','base_desc']}, {title: '剩余总数', option: ['num_asc', 'num_desc']}],
         sortNav: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 1, title: '热销'}, {code: 4, title: '预热'}, {code: 2, title: '已售罄'}]}],
         sortNav2: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 5, title: '热销'}, {code: 4, title: '预热'}, {code: 10, title: '活动'}, {code: 1000, title: '转售'}, {code: 7, title: '已售罄'}]}],
         cloudMinerData: [],
@@ -29,7 +29,8 @@
         len: 0,
         now: 1,
         show: false,
-        status: 0
+        status: 0,
+        sortText: ''
       }
     },
     asyncData ({ params }) {
@@ -43,8 +44,8 @@
         this.type = this.$route.params.type
         var obj = {token: this.token, page: this.now, product_type: '1'}
         var url = ''
-        if (sort > 0 && this.sort[sort] && this.sort[sort].option) {
-          obj = Object.assign({sort: this.sort[sort].option}, obj)
+        if (sort !== '' && sort.length) {
+          obj = Object.assign({sort: this.sort[sort[0]].option[sort[1]]}, obj)
         }
         if (this.status) {
           obj = Object.assign({status: this.status}, obj)
@@ -106,9 +107,9 @@
     },
     mounted () {
       if (!this.isMobile) {
-        this.fetchData(this.status)
+        this.fetchData('')
       } else {
-        this.fetchData(this.status, 1)
+        this.fetchData('', 1)
       }
     },
     computed: {
