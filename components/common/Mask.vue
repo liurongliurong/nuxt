@@ -1,5 +1,5 @@
 <template>
-  <div :class="'popup'">
+  <div class="popup">
     <div :class="'popup_con '+position">
       <div class="popup_title">
         <span>{{title}}</span>

@@ -190,7 +190,7 @@
     },
     methods: {
       fetchData (sort) {
-        this.status = sort || 1
+        this.status = parseInt(sort) || 1
         this.nowEdit = +this.$route.params.status
         this.getData()
       },
@@ -204,7 +204,7 @@
           }
           util.post('fundOrder', {sign: api.serialize({token: this.token, type: this.nowEdit, status: this.status, page: this.now})}).then(function (res) {
             api.checkAjax(self, res, () => {
-              self.data = res.list
+              self.data = (res && res.list) || []
               if (self.now > 1) return false
               self.len = Math.ceil(res.total_num / 15)
             })
