@@ -148,7 +148,7 @@ export default {
       let bIsUcBrowser = sUserAgent.match(/ucbrowser/i)
       var bIsAndroid = sUserAgent.match(/android/i)
 
-      alert(sUserAgent)
+      // alert(sUserAgent)
       if (bIsSafari) {
         this.opts = Object.assign({}, this.opts, {touchMovePrevent: false})
       } else {
