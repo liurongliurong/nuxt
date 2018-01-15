@@ -99,10 +99,10 @@
           this.item = []
           util.post('getLoanList', {sign: api.serialize({token: this.token, status: this.status, page: this.now})}).then(function (res) {
             api.checkAjax(self, res, () => {
-              self.item = res
-              self.showImg = !res.length
+              self.item = res.list
+              self.showImg = !res.total_num
               if (self.now > 1) return false
-              self.len = Math.ceil(res.length / 15)
+              self.len = Math.ceil(res.total_num / 15)
             })
           })
         } else {

@@ -206,7 +206,8 @@
         params1: '',
         params2: '',
         detail: {},
-        number: 0
+        number: 0,
+        balance: 0
       }
     },
     methods: {
@@ -403,6 +404,7 @@
           var self = this
           util.post(url, {sign: api.serialize(data)}).then(function (res) {
             api.checkAjax(self, res, () => {
+              self.balance = +res.balance
               if (res.output) {
                 self.detail.output = res.output
                 self.detail.total_electric_fee = res.total_electric_fee
@@ -451,8 +453,7 @@
         mobile: state => state.info.mobile,
         isMobile: state => state.isMobile,
         trade_password: state => state.info.trade_password,
-        addressObj: state => state.addressData,
-        balance: state => state.info.balance
+        addressObj: state => state.addressData
       })
     }
   }

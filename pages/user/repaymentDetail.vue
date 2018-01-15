@@ -123,8 +123,8 @@
           }, form.btn)
         })
       },
-      onChange (e) {
-        this.model = e.target.value
+      onChange (obj) {
+        this.model = obj.e.target.value
         this.form[1].value = this.loanData[this.model].data1 + this.loanData[this.model].unit
         this.form[2].value = this.loanData[this.model].data2 + this.loanData[this.model].unit
         if (+this.loanData[this.model].data1 < +this.loanData[this.model].data2) {

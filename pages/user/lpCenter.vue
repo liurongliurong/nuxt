@@ -38,15 +38,14 @@
         <button @click="agree">我同意，签合同</button>
       </div>
     </div>
-    <div class="mask" v-if="edit">
-      <div class="form_box">
-        <div class="close" @click="closeMask()">
-          <span class="icon"></span>
-          <span>关闭</span>
+    <div class="popup" v-if="edit">
+      <div class="popup_con">
+        <div class="popup_title">
+          <span>验证S码</span>
+          <span class="icon_close" @click="closeMask"></span>
         </div>
-        <h2>验证S码</h2>
-        <form class="form_content" @submit.prevent="submit" novalidate>
-          <p>请输入S码绑定算力产业基金</p>
+        <form class="form form_content" @submit.prevent="submit" novalidate>
+          <!-- <p>请输入S码绑定算力产业基金</p> -->
           <div class="input">
             <span>S码</span>
             <span>*</span>
@@ -239,23 +238,6 @@
     }
     .detail_table{
       @include detail
-    }
-    .mask{
-      @include mask
-      .form_box{
-        h2{
-          padding: 10px 25px;
-          border-bottom: 1px solid #e8e8e8;
-          margin-bottom:0
-        }
-        .form_content{
-          padding:20px 100px;
-          @include form(v)
-          p{
-            margin-bottom:15px
-          }
-        }
-      }
     }
     .no_scode{
       width:100%;
