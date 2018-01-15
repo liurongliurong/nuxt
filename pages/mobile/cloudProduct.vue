@@ -24,9 +24,9 @@
       return {
         formTitle: ['产品名称', '数量', '算力'],
         formData: [
-          {name: '元旦乐1号', count: '1台', suanLi: '1T'},
-          {name: '元旦乐1号', count: '1台', suanLi: '1T'},
-          {name: '元旦乐1号', count: '1台', suanLi: '1T'}
+          {name: '蚂蚁S9', count: '1台', suanLi: '1T'},
+          {name: 'A740', count: '1台', suanLi: '1T'},
+          {name: '以比特E9+', count: '1台', suanLi: '1T'}
         ]
       }
     },
