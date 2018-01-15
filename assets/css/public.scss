@@ -148,6 +148,20 @@ input::-webkit-input-placeholder {
           @include close
           top:15px;
         }
+        .mobile_close{
+          @include position(20,18)
+          @include block(12)
+          @include arrow(left, #bababa, 1)
+          display: none
+        }
+        @media screen and (max-width: $mobile) {
+          .mobile_close {
+            display: block;
+          }
+          .icon_close {
+            display: none
+          }
+        }
       }
       .popup_body{
         width: 100%;

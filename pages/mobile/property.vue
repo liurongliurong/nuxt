@@ -43,10 +43,10 @@
         <span>算力收益图表</span>
       </li>
     </ul>
-    <MyMask :form="edit===3?[]:GetIncome" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
+    <MyMask :form="edit===2?[]:GetIncome" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
       <p slot="fee">手续费：0.0002btc</p>
       <opr-select slot="select_opr" :no="maskNo" @closeMask="closeMask"></opr-select>
-      <div class="popup_chart" name="chart">
+      <div class="popup_chart" slot="chart">
         <IncomeChart></IncomeChart>
       </div>
     </MyMask>

@@ -23,9 +23,8 @@
         <button disabled v-else-if="detail.status===4">立即购买</button>
         <button @click="checkPay" v-else>立即购买</button>
       </div>
-      <div class="popup" v-if="sheetVisible" @click="closeMask">
-        <div class="popup_con buy_box">
-          <div class="buy_title" @click="sheetVisible = false">选择购买数量</div>
+      <my-mask title="选择购买数量" @closeMask="closeMask" @click="closeMask" v-if="sheetVisible">
+        <template slot="buy_box">
           <div class="buy_text">
             <div>单价</div>
             <div>{{detail.one_amount_value}}元/台</div>
@@ -45,8 +44,8 @@
           <div class="mobile_btn">
             <button @click="goPay(false)">确认购买</button>
           </div>
-        </div>
-      </div>
+        </template>
+      </my-mask>
     </div>
     <my-mask title="立即认证" :position="maskPosition" @closeMask="closeMask" v-if="mask">
       <opr-select slot="select_opr" :no="0" @closeMask="closeMask"></opr-select>
@@ -119,11 +118,8 @@
         this.sheetVisible = true
       },
       closeMask (e) {
-        var popup = document.querySelector('.popup')
-        if (e && (e.target === popup)) {
-          document.body.style.overflow = 'auto'
-          this.sheetVisible = false
-        }
+        document.body.style.overflow = 'auto'
+        this.sheetVisible = false
         this.mask = false
       },
       goPay (isLoan) {
@@ -222,7 +218,7 @@
   @import '~assets/css/style.scss';
   .product{
     background: #f7f8fa;
-    padding-bottom: 50px;
+    padding-bottom: 57px;
     .top_nav{
       background-image: url('~assets/images/miner_shop/miner_bg.jpg');
       width: 100%;
@@ -249,22 +245,9 @@
       .popup{
         .buy_box{
           font-size: 16px;
-          .buy_title,.buy_text{
-            border-bottom: 1px solid $border;
-          }
-          .buy_title {
-            position: relative;
-            padding: 15px 0;
-            text-align: center;
-            &:before {
-              content: '';
-              @include position(23,15)
-              @include block(12)
-              @include arrow(left, #bababa, 1)
-            }
-          }
           .buy_text{
             @include flex(space-between)
+            border-bottom: 1px solid $border;
             margin: 0 15px;
             padding: 10px 0;
             .input_box{
@@ -300,8 +283,6 @@
               background: transparent;
               color: $blue;
               border: 1px solid $blue;
-              font-size: 16px;
-              line-height: 2.2;
             }
           }
         }

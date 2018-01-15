@@ -1141,19 +1141,7 @@
   @mixin accept_label{
     color: #666;
     input{
-      @include checkbox(18,5px)
-      &:checked{
-        background: $orange;
-        border-color: $orange;
-      }
-      & ~ span.select_accept{
-        opacity: 0;
-        color: #ff721f;
-        font-size: 12px;
-      }
-      &[data-status='invalid'] ~ span.select_accept{
-        opacity: 1;
-      }
+      @include checkbox(18)
     }
   }
 // mobile hide
@@ -1279,7 +1267,8 @@
       border:0;
       background-color: $blue;
       color:#fff;
-      line-height: 3;
+      font-size: 16px;
+      line-height: 2.4;
       &:disabled{
         // opacity: 0.7;
         background: #b5b0af;
@@ -1374,27 +1363,39 @@
     color: $text;
     padding-bottom:32px;
     .pay_item{
-      padding:0 15px;
-      @include flex(space-between)
+      margin:0 15px;
       line-height: 50px;
-      span.val{
-        color:$light_text;
-        margin-left:15px;
+      position: relative;
+      span{
+        .val{
+          color:$light_text;
+          margin-left:15px;
+        }
+        &.zhifubao:before,&.yue:before{
+          font-family:"iconfont" !important;
+          font-size: 20px;
+          line-height: 25px;
+          vertical-align: sub;
+          margin-right:5px;
+        }
+        &.yue:before{
+          content:'\e60c'
+        }
+        &.zhifubao:before{
+          content:'\e615';
+          color:#00AAF0
+        }
       }
       a{
-        color:$blue
+        color:$blue;
+        margin-left: 20px;
       }
-      &.active{
-        position: relative;
-        .pay_item_left{
-          width:80%;
-          &:after{
-            content:'\e613';
-            font-family: 'iconfont';
-            color:$blue;
-            margin-left:1rem
-          }
-        }
+      &.active:after{
+        position: absolute;
+        content:'\e613';
+        font-family: 'iconfont';
+        color:$blue;
+        right: 0;
       }
       &:not(:last-child){
         border-bottom:1px solid $border;

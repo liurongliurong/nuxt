@@ -1,9 +1,10 @@
 <template>
   <div :class="'popup'">
-    <div :class="'popup_con '+position">
+    <div :class="['popup_con '+position, {buy_box:title==='选择购买数量'}]">
       <div class="popup_title" v-if="position!=='middle'">
         <span>{{title}}</span>
         <span class="icon_close" @click="closeMask"></span>
+        <span class="mobile_close" @click="closeMask"></span>
       </div>
       <form class="form form_content" @submit.prevent="submit" novalidate v-if="form&&form.length">
         <AddressInput :form="form" :val="val" v-if="val"></AddressInput>
@@ -22,9 +23,10 @@
           </label>
         </div>
       </template>
-      <slot name="pay_type" v-if="title==='选择支付方式'"></slot>
+      <slot name="pay_type" v-if="title==='支付方式'"></slot>
       <slot name="select_opr" v-if="title==='立即认证'||title==='立即绑定'"></slot>
-      <solt name="chart" v-if="title==='收益图表'"></solt>
+      <slot name="chart" v-if="title==='收益图表'"></slot>
+      <slot name="buy_box" v-if="title==='选择购买数量'"></slot>
     </div>
   </div>
 </template>
