@@ -50,6 +50,7 @@
         <IncomeChart></IncomeChart>
       </div>
     </MyMask>
+    <coin-returns></coin-returns>
   </section>
 </template>
 
@@ -61,9 +62,10 @@
   import IncomeChart from '@/pages/user/incomeChart'
   import MyMask from '@/components/common/Mask'
   import OprSelect from '@/components/common/OprSelect'
+  import coinReturns from '@/components/mobile/coinReturns'
   export default {
     components: {
-      FormField, IncomeChart, MyMask, OprSelect
+      FormField, IncomeChart, MyMask, OprSelect, coinReturns
     },
     data () {
       return {
