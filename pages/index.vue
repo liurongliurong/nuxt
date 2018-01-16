@@ -87,7 +87,7 @@
         computeData: {},
         computeRealData: {},
         timer: 0,
-        banners: [{img: require('@/assets/images/swiper/2_1.jpg'), link: '/minerShop/list', text: '开启挖矿之旅'}, {img: require('@/assets/images/swiper/1_1.jpg'), link: '/bdc', text: '前往申请机位', pos: 'center'}]
+        banners: [{img: require('@/assets/images/swiper/2_1.jpg'), link: '/minerShop/list', text: '开启收益之旅'}, {img: require('@/assets/images/swiper/1_1.jpg'), link: '/bdc', text: '前往申请机位', pos: 'center'}]
       }
     },
     methods: {
