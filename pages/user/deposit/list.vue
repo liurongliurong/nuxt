@@ -1,12 +1,8 @@
 <template>
-  <section class="order">
-    <div class="order_title1">
-      <div class="text1">
-        <span class="text_title">托管信息</span>
-      </div>
-    </div>
-    <div class="order_box">
-      <table style="margin-top:0;">
+  <section class="deposit">
+    <h2>托管信息</h2>
+    <div class="deposit_box">
+      <table>
         <thead>
           <tr>
             <th v-for="n,k in th">{{n.title}}{{n.unit?'('+n.unit+')':''}}</th>
@@ -80,90 +76,10 @@
 
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
-  .order{
-    .order_title1{
-      @include gap(25,h)
-      padding-top:15px;
-      .text1{
-        @include select_list
-      }
-    }
-    .order_box{
-      padding:20px 25px;
-      table{
-        width: 100%;
-        text-align: center;
-        thead{
-          tr{
-            border-bottom:1px solid $border;
-            background: #f7f8fa;
-            color: $light_text;
-            border-top:1px solid $border;
-            border-bottom:0;
-            th{
-              font-size: 12px;
-              font-weight: normal;
-              line-height: 50px;
-            }
-          }
-        }
-        tbody{
-          tr{
-            border-bottom:1px solid $border;
-            td{
-              line-height:54px;
-              i.icon_currency{
-                vertical-align: sub;
-                margin-left:5px
-              }
-              .nuxt-link-active{
-                background: #327fff;
-                color:white;
-              }
-              &:last-child{
-                width:186px;
-                button,a{
-                  line-height: 34px;
-                  @include gap(15,h)
-                }
-                button{
-                  @include button($blue)
-                  margin-right:5px;
-                  &.sold{
-                    margin-bottom:8px
-                  }
-                  &:disabled{
-                    background: #759fe4;
-                    border-color:#759fe4;
-                    cursor: no-drop;
-                  }
-                }
-                a{
-                  display: block;
-                  margin: 0 auto;
-                  width: 88px;
-                  height: 36px !important;
-                  padding:0;
-                  @include button($blue,border)
-                  border-radius: 5px;
-                  .btn:not(:disabled){
-                    @include button($orange)
-                    cursor: pointer;
-                  }
-                }
-              }
-            }
-            &:hover{
-              background: #f7f8fa;
-            }
-            &:hover .blue{
-              background: #327fff;
-              color:white;
-            }
-          }
-        }
-      }
-      @include nodata
+  .deposit{
+    padding:0 15px;
+    .deposit_box{
+      @include button_table
     }
   }
 </style>

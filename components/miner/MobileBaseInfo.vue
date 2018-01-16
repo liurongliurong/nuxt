@@ -135,7 +135,8 @@
       //     background: $border;
       //     .box{
       //       @include position
-      //       @include process_color
+      //       background: linear-gradient(to right, #337eff 20%, #c72abc);
+      //       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#337eff', endColorstr='#c72abc',GradientType=1 );
       //     }
       //   }
       //   .progress_text{

@@ -187,7 +187,7 @@
         }
         .now,.other .item{
           @include flex(space-between)
-          @include gap(10,h)
+          padding: 0 10px;
           cursor: pointer;
           .text{
             width:75%;

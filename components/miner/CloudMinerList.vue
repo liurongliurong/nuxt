@@ -97,9 +97,6 @@
     background: #f6f7f9;
     .box{
       @include main
-      h2{
-        @include data_title
-      }
       .data{
         .item{
           @include cloud_miner_box

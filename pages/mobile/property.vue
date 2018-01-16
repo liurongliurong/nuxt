@@ -23,7 +23,7 @@
         <div class="coin_data">
           <div class="val">
             <span class="val_title">{{property.coin_btc}}BTC:</span>
-            <span class="val_num">{{property.coin_cny}}</span>
+            <span class="val_num">≈{{property.coin_cny}}</span>
           </div>
           <div class="opr">
             <span @click="openMask(1)">提币</span>
@@ -39,10 +39,10 @@
       <div class="chart_title">近七日收益折线图（人民币结算）</div>
       <income-chart></income-chart>
     </div>
-    <MyMask :form="edit===2?[]:GetIncome" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
+    <my-mask :form="form" :title="title" :position="maskPosition" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
       <p slot="fee">手续费：0.0002btc</p>
       <opr-select slot="select_opr" :no="maskNo" @closeMask="closeMask"></opr-select>
-    </MyMask>
+    </my-mask>
     <coin-returns></coin-returns>
   </section>
 </template>
@@ -63,7 +63,14 @@
     data () {
       return {
         nowEdit: 0,
-        GetIncome: [{name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType', value: ''}, {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', value2: 0, tipsUnit: ''}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
+        GetIncome: [
+          {name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType', value: ''},
+          {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', value2: 0, tipsUnit: ''},
+          {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
+          {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
+        ],
+        form: [],
+        maskPosition: '',
         edit: 0,
         fee: 0,
         total_price: 0,
@@ -94,19 +101,23 @@
         }
       },
       openMask (k) {
+        this.form = []
         this.total_price = 0
         if (!(this.true_name && this.true_name.status === 1)) {
           this.goAuth ('立即认证', 0)
+          this.maskPosition = 'middle'
           return false
         }
         if (!this.address.length) {
           this.goAuth ('立即绑定', 2)
+          this.maskPosition = 'middle'
           return false
         }
         if (+this.property.coin_btc <= 0 && this.edit !== 2) {
           api.tips('您的账户余额不足，不能提取收益')
           return false
         }
+        this.form = this.GetIncome
         var requestUrl = 'showWithdrawCoin'
         var data = {token: this.token, product_hash_type: this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id}
         this.product_hash_type = this.hashType[this.nowEdit].name.toUpperCase()

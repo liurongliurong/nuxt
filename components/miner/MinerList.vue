@@ -91,12 +91,9 @@
   @import '../../assets/css/style.scss';
   .miner_list{
     background: #f6f7f9;
-    padding-top: 20px;
+    padding-top: 50px;
     .miner_list_box{
       @include main
-      h2{
-        @include data_title
-      }
       .loadmore{
         width: 100%;
         height: 0.89rem;

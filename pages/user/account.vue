@@ -211,7 +211,12 @@
 <style lang="scss">
   @import '~assets/css/style.scss';
   .account{
-    .mobile_box{
+    .pc_box {
+      h2 {
+        padding: 0 28px !important;
+      }
+    }
+    .mobile_box {
       width: 100%;
       height: 100%;
       background: #f5f5f9;

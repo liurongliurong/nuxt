@@ -251,7 +251,7 @@
     .home_title{
       .main{
         @include main
-        @include gap(30,v,margin)
+        margin: 30px auto;
         h1,p{
           text-align: center;
           color: #002059;

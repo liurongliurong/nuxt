@@ -128,7 +128,7 @@
       border-bottom:1px solid $border
     }
     .detail_box{
-      @include gap(25,v)
+      padding: 25px;
       margin-bottom:10px;
       .data{
         width:70%;

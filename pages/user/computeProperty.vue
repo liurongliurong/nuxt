@@ -320,11 +320,8 @@
   @import '~assets/css/style.scss';
   .compute_property{
     padding:0 15px;
-    h2{
-      padding:0 15px !important;
-    }
     .compute_box{
-      @include gap(25,v)
+      margin: 25px 0;
       @include flex(space-between)
       margin-bottom:10px;
       .data{
@@ -368,7 +365,7 @@
       }
       .btn{
         @include detail_btn
-        @include gap(25,h)
+        padding: 0 25px;
         a{
           @include button($orange)
         }

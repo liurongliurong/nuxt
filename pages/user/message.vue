@@ -155,9 +155,6 @@
   @import '~assets/css/style.scss';
   .message{
     padding:0 15px;
-    h2{
-      padding:0 15px !important;
-    }
     h3{
       .read{
         float: right;
@@ -171,7 +168,7 @@
         line-height: 50px;
         border-bottom:1px solid $border;
         @include flex(space-between)
-        @include gap(15,h)
+        padding: 0 15px;
         cursor: pointer;
         color: $text;
         .title,.time{
@@ -188,7 +185,7 @@
           text-align: right;
         }
         .text{
-          width:leave(480);
+          width:calc(100% - 480px);
           @include ellipsis
           color:#bfbfbf
         }

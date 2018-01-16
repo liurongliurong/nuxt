@@ -239,12 +239,12 @@
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .money_flow{
-    // padding:0 15px;
-    h2{
-      padding:0 15px !important;
+    padding:0 15px;
+    h2 {
+      border-bottom: 1px solid $border;
     }
     .detail_box{
-      @include gap(25,v)
+      padding: 25px 0;
       @include flex(space-between)
       margin-bottom:10px;
       .data{
@@ -261,7 +261,7 @@
       }
       .btn{
         @include detail_btn
-        @include gap(50,h)
+        padding: 0 50px;
         button:first-child{
           @include button($orange)
         }
@@ -324,9 +324,6 @@
         }
       }
       @include nodata
-    }
-    @media screen and (max-width: $mobile) {
-      padding-bottom:61px;
     }
   }
 </style>

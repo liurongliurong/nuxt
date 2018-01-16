@@ -203,13 +203,12 @@
         }
         .main_content{
           background: $white;
-          width:leave(235);
+          width:calc(100% - 235px);
           min-height: 600px;
           border-radius:5px;
           h2{
             line-height: 52px;
-            padding:0 28px;
-            border-bottom: 1px solid $border;
+            padding:0 15px;
           }
           h3{
             background: #f7f8fa;

@@ -83,6 +83,7 @@
     </div>
   </div>
 </template>
+
 <script>
   import util from '@/util'
   import api from '@/util/function'
@@ -202,6 +203,7 @@
     }
   }
 </script>
+
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .bdc{
@@ -216,8 +218,8 @@
       z-index:-1
     }
     .top_box{
-      margin-top:-558px;
       @include main
+      margin-top:-558px;
       overflow: hidden;
       padding: 20px 0;
       .bdc_box{

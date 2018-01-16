@@ -43,8 +43,17 @@
     name: 'header',
     data () {
       return {
-        nav: [{name: 'miner/1', text: '品牌矿机', link: '/minerShop/miner/1'}, {name: 'miner/2', text: '云算力', link: '/minerShop/miner/2'}, {name: 'bdc', text: 'BDC托管', link: '/bdc'}, {name: 'industryInformation', text: '产业资讯', link: '/industryInformation'}],
-        path: {frame_header: ['regist', 'passwordRetrieval', '/minerShop/activity', '/minerShop/list', 'user', 'account', '/detail', '/pay', '/currency', 'webInfo', 'article/agreement', 'minerShop/miner', '/industryInformation', 'computeNews', 'transaction', 'quickNews', 'digitalCurrency', 'equipments', 'equipmentEvaluate', 'manufacturer', 'computeChart'], border: ['login', 'bdc'], shadow: ['regist', 'passwordRetrieval'], web_box: ['webInfo', 'minerShop/miner']},
+        nav: [
+          {name: 'miner/1', text: '品牌矿机', link: '/minerShop/miner/1'},
+          {name: 'miner/2', text: '云算力', link: '/minerShop/miner/2'},
+          {name: 'bdc', text: 'BDC托管', link: '/bdc'},
+          {name: 'industryInformation', text: '产业资讯', link: '/industryInformation'}
+        ],
+        path: {
+          frame_header: ['regist', 'passwordRetrieval', '/minerShop/activity', '/minerShop/list', 'user', 'account', '/detail', '/pay', '/currency', 'webInfo', 'article/agreement', 'minerShop/miner', '/industryInformation', 'computeNews', 'transaction', 'quickNews', 'digitalCurrency', 'equipments', 'equipmentEvaluate', 'manufacturer', 'computeChart'],
+          border: ['login', 'bdc'],
+          shadow: ['regist', 'passwordRetrieval'], web_box: ['webInfo', 'minerShop/miner']
+        },
         headerClass: ''
       }
     },
@@ -158,10 +167,9 @@
       }
       .side_nav{
         a{
-          @include gap(10,h)
+          padding: 0 10px;
           &.btn{
             line-height: 1.8;
-            @include gap(0,h)
             display: inline-block;
             width:70px;
             text-align: center;

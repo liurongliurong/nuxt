@@ -134,7 +134,7 @@
       }
       .input{
         span:nth-child(2){
-          @include gap(10,h)
+          padding: 0 10px;
           top:15px;
           bottom:15px
         }

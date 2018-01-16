@@ -506,10 +506,26 @@
           .input_box{
             background: #fff;
             line-height: 2.4;
-            @include number_box
             border-radius:5px;
             overflow:hidden;
             margin:10px 0;
+            @include flex(space-between)
+            span{
+              width:10%;
+              text-align: center;
+              background: $border;
+              font-size: 18px;
+              font-weight: bold;
+              color: #c5c5c5;
+              cursor: pointer;
+              user-select:none;
+              &:last-child{
+                color: $orange;
+              }
+            }
+            input{
+              width:75%
+            }
           }
           p{
             line-height: 2;
@@ -813,7 +829,6 @@
             color:#fff
           }
         }
-        @include accept_label
         color:#fff;
         .select_accept{
           display: block;

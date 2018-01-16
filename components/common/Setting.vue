@@ -78,7 +78,78 @@
   .setting{
     padding:25px 30px;
     .item{
-      @include menu
+      &:not(.address_item){
+        @include flex(space-between)
+        padding:15px;
+        border:1px solid #e5e5e5;
+      }
+      &.success{
+        .icon{
+          position: relative;
+          background: $green;
+          &:before{
+            content:'';
+            @include right
+          }
+        }
+        .con_title{
+          color: $green;
+        }
+      }
+      &.fail{
+        .icon{
+          text-align: center;
+          background: $fail;
+          color: $white;
+          &:before{
+            content:'!'
+          }
+        }
+        .con_title{
+          color: $fail;
+        }
+      }
+      &:not(:last-child){
+        margin-bottom:25px;
+      }
+      &.address_item{
+        .item:not(:last-child){
+          margin-bottom: 0;
+          border-bottom:0
+        }
+        .item:not(:first-child){
+          .val{
+            text-align: left;
+            padding-left:19%;
+            width:80%
+          }
+        }
+      }
+      .icon{
+        @include block(18,50%)
+      }
+      .con_title{
+        width: 13%;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      .desc{
+        width:38%;
+      }
+      .val{
+        width: 22%;
+        color: $light_text;
+        text-align: center;
+        span{
+          color: $text;
+        }
+      }
+      .opr{
+        width: 17%;
+        text-align: right;
+        color: $blue;
+        cursor: pointer;
+      }
     }
   }
 </style>

@@ -25,7 +25,6 @@
       </template>
       <slot name="pay_type" v-if="title==='支付方式'"></slot>
       <slot name="select_opr" v-if="title==='立即认证'||title==='立即绑定'"></slot>
-      <slot name="chart" v-if="title==='收益图表'"></slot>
       <slot name="buy_box" v-if="title==='选择购买数量'"></slot>
     </div>
   </div>

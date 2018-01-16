@@ -119,7 +119,7 @@
       .box{
         .box_foot{
           @include flex(space-between,flex-start)
-          @include gap(25,v)
+          padding: 25px 0;
           margin-bottom:10px;
           @include main
           line-height: 2.4;
@@ -153,7 +153,7 @@
               margin-bottom:5px;
               a{
                 color:#01215c;
-                @include gap(20,h)
+                padding: 0 20px;
                 border-left:1px solid $light_text;
                 &:first-child{
                   padding-left:0;
@@ -164,7 +164,7 @@
             .service{
               margin-bottom:20px;
               a{
-                @include gap(30,h)
+                padding: 0 30px;
                 &:nth-child(2){
                   padding-left:0
                 }
@@ -239,7 +239,7 @@
             color:#01215c;
           }
           div{
-            @include gap(30,h)
+            padding: 0 30px;
             @include flex
             a{
               width:100px;

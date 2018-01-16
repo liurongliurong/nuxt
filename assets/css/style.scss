@@ -2,6 +2,7 @@
   // 长度
     $main_width:1180px;
     $mobile:768px;
+    $mobile_style:screen and (max-width: $mobile);
   // 颜色
     $white:#fff;
     $light_white:#cbcbcb;
@@ -24,20 +25,6 @@
     $fail_border:#fec6ad;
     $fail_bg:#ffedda;
     $purple: #A53ECB;
-// 内外边距
-  @mixin gap($value:5,$item:all,$type:padding) {
-    @if $item == all {
-      #{$type}: #{$value}px;
-    } @else if $item == h {
-      #{$type}-left: #{$value}px;
-      #{$type}-right: #{$value}px;
-    } @else if $item == v {
-      #{$type}-top: #{$value}px;
-      #{$type}-bottom: #{$value}px;
-    } @else {
-      #{$type}-#{$item}: #{$value}px;
-    }
-  }
 // 进度条(横向或圆形)
   // *$type:1=>'横向';2=>'圆形',noColor=>'初始颜色', yesColor=>'过去的颜色'*
   @mixin progress($type:2, $height: 5, $noColor: #ccc, $yesColor: #ffb386, $width:76, $top: 0.5, $right: 1, $paddingTop: 6, $border: 20) {
@@ -135,11 +122,6 @@
       // text-align-last:auto
     }
   }
-// 全部
-  @mixin all($w:100%,$h:100%){
-    width: $w;
-    height: $h;
-  }
 // pos_value
   @mixin position($top:0,$left:0,$bottom:0,$right:0) {
     position: absolute;
@@ -147,15 +129,6 @@
     right: #{$right}px;
     bottom: #{$bottom}px;
     left: #{$left}px;
-  }
-// center
-  @mixin center($value:auto) {
-    @if $value == auto {
-      margin-left: auto;
-      margin-right: auto;
-    } @else {
-      vertical-align: $value;
-    }
   }
 // block
   @mixin block($value:20,$radius:0) {
@@ -188,33 +161,6 @@
       text-overflow: ellipsis;
       overflow: hidden;
     }
-  }
-// 图片自适应
-  @mixin fitimg($w:70,$h:70,$v:middle,$type:cover) {
-    width: #{$w}px;
-    height: #{$h}px;
-    img{
-      width: 100%;
-      height: 100%;
-      object-fit: $type
-    }
-  }
-// 边框
-  @mixin border($type:bottom,$color:$border,$value:1) {
-    position: absolute;
-    background-color: #{$color};
-    content: '';
-    #{$type}: 0;
-    @if $type == 'left' or $type == 'right'{
-      top: 0;
-      width: #{$value}px;
-      height: 100%;
-    } @else {
-      left: 0;
-      width: 100%;
-      height: #{$value}px;
-    }
-    z-index: -1;
   }
 // 三角形
   @mixin triangle($type:right,$color:#dbdee5,$value:10) {
@@ -266,10 +212,6 @@
       display: inline-block;
       vertical-align:middle;
     }
-  }
-// 宽度
-  @function leave($value){
-    @return calc(100% - #{$value}px)
   }
 // 对号
   @mixin right($w:8,$h:5,$color:$white){
@@ -330,7 +272,7 @@
         top:10px;
         bottom:10px;
         left:90px;
-        @include gap(15,h)
+        padding: 0 15px;
         color:$red;
         border-right:1px solid $border;
         @include mobile_hide
@@ -356,58 +298,6 @@
           content:attr(tips)
         }
         @include mobile_hide
-      }
-    }
-    .password_level{
-      @include position(9,0,5,auto)
-      left:104%;
-      @include flex
-      display: none;
-      .item{
-        width:80px;
-        height:15px;
-        background: $border;
-        & + .item{
-          margin-left:2px;
-        }
-      }
-      &:before,&:after{
-        font-size: 12px;
-      }
-      &:before{
-        content:'密码强度';
-        width:52px;
-      }
-      &:after{
-        margin-left:3px;
-      }
-      @include mobile_hide
-    }
-    input.level ~ .password_level{
-      display: flex
-    }
-    input.level1 ~ .password_level{
-      .item:first-child{
-        background: #FF5F2D;
-      }
-      &:after{
-        content:'低'
-      }
-    }
-    input.level2 ~ .password_level{
-      .item:first-child,.item:nth-child(2){
-        background: #FFA31E;
-      }
-      &:after{
-        content:'中'
-      }
-    }
-    input.level3 ~ .password_level{
-      .item{
-        background: #8DC420;
-      }
-      &:after{
-        content:'高'
       }
     }
     input,.sel,.select{
@@ -503,9 +393,6 @@
       font-size: 14px;
       line-height: 38px;
       @media screen and (max-width: $mobile) {
-        // background: #ececec;
-        // border-color:#ececec;
-        // color:$light_text;
         line-height: 34px
       }
     }
@@ -551,7 +438,7 @@
       font-size: 24px;
       text-align:center;
       color:$blue;
-      @include gap(35,v,margin)
+      margin: 35px 0;
     }
     .input{
       @include input
@@ -589,35 +476,9 @@
       font-size: 18px;
       @include button($blue)
       line-height:2.6;
-      @include gap(20,v,margin)
-    }
-  }
-// good_table
-  @mixin table{
-    width:100%;
-    tr{
-      th{
-        font-size: 16px;
-      }
-      td{
-        line-height: 2.75;
-        color: $light_text;
-        &:nth-child(1){
-          color: $active
-        }
-        &:nth-child(6){
-          color: $red
-        }
-        a{
-          display: inline-block;
-          @include gap(10,h)
-          line-height: 2
-        }
-      }
-      &:hover td:last-child a{
-        background:$red;
-        color: $white;
-        border-radius:15px;
+      margin: 20px 0;
+      @media screen and (max-width: $mobile) {
+        line-height: 2.2
       }
     }
   }
@@ -643,7 +504,7 @@
         background: #f0f7fd;
       }
       .item_value{
-        width:leave(170);
+        width:calc(100% - 170px);
         span{
           float: right;
           font-size: 14px;
@@ -677,125 +538,9 @@
       transform:rotate(-45deg)
     }
   }
-// mask
-  @mixin mask{
-    @include position
-    background: rgba(0,0,0,.5);
-    z-index: 10;
-    .form_box{
-      position: absolute;
-      top:50%;
-      left:50%;
-      width:680px;
-      margin-left:-340px;
-      margin-top:-323px;
-      background: $white;
-      .close{
-        @include close
-      }
-      h2{
-        text-align: center;
-        background: #f3f9ff;
-      }
-    }
-  }
-// menu
-  @mixin menu{
-    &:not(.address_item){
-      @include flex(space-between)
-      padding:15px;
-      border:1px solid #e5e5e5;
-    }
-    &.success{
-      .icon{
-        position: relative;
-        background: $green;
-        &:before{
-          content:'';
-          @include right
-        }
-      }
-      .con_title{
-        color: $green;
-      }
-    }
-    &.fail{
-      .icon{
-        text-align: center;
-        background: $fail;
-        color: $white;
-        &:before{
-          content:'!'
-        }
-      }
-      .con_title{
-        color: $fail;
-      }
-    }
-    &:not(:last-child){
-      margin-bottom:25px;
-    }
-    &.address_item{
-      .item:not(:last-child){
-        margin-bottom: 0;
-        border-bottom:0
-      }
-      .item:not(:first-child){
-        .val{
-          text-align: left;
-          padding-left:19%;
-          width:80%
-        }
-      }
-    }
-    .icon{
-      @include block(18,50%)
-    }
-    .con_title{
-      width: 13%;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    .desc{
-      width:38%;
-    }
-    .val{
-      width: 22%;
-      color: $light_text;
-      text-align: center;
-      span{
-        color: $text;
-      }
-    }
-    .opr{
-      width: 17%;
-      text-align: right;
-      color: $blue;
-      cursor: pointer;
-    }
-  }
-// navigator
-  @mixin navigator{
-    @include gap(15,top)
-    a{
-      color:$text
-    }
-    span:nth-child(2n){
-      display: inline-block;
-      @include block(5)
-      color: $light_text;
-      vertical-align: middle;
-      @include gap(10,h,margin)
-      @include arrow(right,#CBCBCB,1)
-    }
-    span:last-child{
-      color:$light_text
-    }
-  }
 // pager
   @mixin pager($color:$blue){
     @include flex(flex-end)
-    // border-top:1px solid #bfbfbf;
     padding-top:20px;
     span{
       text-align: center;
@@ -805,7 +550,7 @@
       user-select:none;
       @include block(28)
       &:not(:last-child){
-        @include gap(10,right,margin)
+        margin-right: 10px;
       }
       &.pager_item.active,&.pager_item:hover{
         background:$color;
@@ -817,64 +562,20 @@
       }
       &:first-child,&:last-child{
         width:auto;
-        @include gap(20,h)
-      }
-    }
-  }
-// item
-  @mixin item($value:10,$type:solid){
-    &:not(:first-child){
-      @include gap($value,top)
-    }
-    &:not(:last-child){
-      @include gap($value,bottom)
-      border-bottom: 1px $type $border
-    }
-  }
-// btn_block
-  @mixin btnBlock{
-    width:100%;
-    color: $white;
-    background: $active;
-    font-size: 16px;
-    @include gap(10,v)
-    @include gap(15,v,margin)
-  }
-// title
-  @mixin title{
-    h1{
-      position:relative;
-      font-size: 22px;
-      margin-bottom: 15px;
-      padding-left: 15px;
-      &:before{
-        @include position
-        content:'';
-        top:8px;
-        width:4px;
-        height: 20px;
-        background:$active
+        padding: 0 20px;
       }
     }
   }
 // main_width
   @mixin main($w:$main_width){
     width:$w;
-    @include center
+    margin: 0 auto;
     @media screen and (max-width: 1178px) and (min-width: 768px){
       width:100%;
-      @include gap(20,h)
+      padding: 0 20px;
     }
     @media screen and (max-width: 768px){
       width:100%;
-    }
-  }
-// table
-  @mixin table{
-    width:100%;
-    text-align: center;
-    th{
-      font-weight: normal
     }
   }
 // detail_box
@@ -916,44 +617,85 @@
       }
     }
   }
-// data_table
-  @mixin data_table{
-    .sort{
-      background: #f5f8ff;
-      margin-bottom:10px;
-      @include gap(15,h)
-      border:0;
-      .item{
-        background: #f5f8ff;
-        line-height: 30px;
+// table
+  @mixin table($hover_color:#eee){
+    width:100%;
+    text-align: center;
+    tbody tr{
+      border-bottom:1px solid $border;
+      &:hover {
+        background: $hover_color;
       }
     }
+  }
+// data_table
+  @mixin data_table {
     table{
-      @include table
+      @include table(#f7f8fa)
       td{
         line-height: 55px;
+        button,a {
+          font-size: 12px;
+          line-height: 28px;
+          width: 80px;
+        }
+        button{
+          @include button($blue)
+          margin-right:5px;
+          &:disabled{
+            background: #759fe4;
+            border-color:#759fe4;
+          }
+        }
+        a {
+          display: inline-block;
+          @include button($blue,border)
+          border-radius: 5px;
+        }
       }
       thead{
+        border-top:1px solid $border;
+        background: #f7f8fa;
         tr{
-          background: #f7f8fa;
-          border-top:1px solid $border;
           th{
             font-size: 12px;
             color: $light_text;
-            line-height: 48px;
-          }
-        }
-      }
-      tbody{
-        tr{
-          border-bottom:1px solid $border;
-          &:hover{
-            background: #f7f8fa;
+            line-height: 50px;
+            font-weight: normal
           }
         }
       }
     }
     @include nodata
+  }
+// button_table
+  @mixin button_table {
+    @include data_table
+    table tbody tr{
+      &:hover td a{
+        background: #327fff;
+        color:white;
+      }
+    }
+  }
+// user_tab
+  @mixin user_tab{
+    nav {
+      a{
+        padding: 0 10px;
+        display: inline-block;
+        padding-bottom:10px;
+        border-bottom: 3px solid transparent;
+        color:#6b7d90;
+        & + a{
+          margin-left:30px
+        }
+        &:hover,&.active,&.nuxt-link-active{
+          border-color:#7e92a8
+        }
+      }
+    }
+    border-bottom: 1px solid $border;
   }
 // process
   @mixin process{
@@ -1017,7 +759,7 @@
       width:80px;
       border:1px solid $border;
       border-radius:3px;
-      @include gap(10,h)
+      padding: 0 10px;
       .title_now{
         font-weight: bold;
         height: 27px;
@@ -1044,7 +786,7 @@
         a{
           display: block;
           line-height: 2;
-          @include gap(10,h)
+          padding: 0 10px;
           &:hover{
             background: #eee
           }
@@ -1075,75 +817,6 @@
       }
     }
   }
-// article
-  @mixin article{
-    @include main
-    background: $white;
-    border-radius:5px;
-    min-height:800px;
-    h2{
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-      padding:18px 0;
-      border-bottom:1px solid $border
-    }
-    .box_content{
-      padding:40px 90px;
-      font-size: 16px;
-      h3{
-        font-weight: bold;
-        margin-bottom:20px;
-      }
-      h4{
-        margin-bottom:30px;
-      }
-      p{
-        margin-bottom:20px;
-        line-height: 2;
-        text-indent: 2em;
-        &.b{
-          font-weight: bold;
-        }
-      }
-      .btn{
-        text-align: center;
-        button,a{
-          padding:10px 50px;
-          @include button($blue)
-          font-size: 16px;
-          border-radius:5px
-        }
-      }
-    }
-  }
-// number_input
-  @mixin number_box{
-    @include flex(space-between)
-    span{
-      width:10%;
-      text-align: center;
-      background: $border;
-      font-size: 18px;
-      font-weight: bold;
-      color: #c5c5c5;
-      cursor: pointer;
-      user-select:none;
-      &:last-child{
-        color: $orange;
-      }
-    }
-    input{
-      width:75%
-    }
-  }
-// accept_label
-  @mixin accept_label{
-    color: #666;
-    input{
-      @include checkbox(18)
-    }
-  }
 // mobile hide
   @mixin mobile_hide{
     @media screen and (max-width: $mobile) {
@@ -1155,34 +828,6 @@
     display: none;
     @media screen and (max-width: $mobile) {
       display: block;
-    }
-  }
-// data_title
-  @mixin data_title{
-    @include flex(space-between)
-    @include gap(15,v,margin);
-    @include main
-    position: relative;
-    span:nth-child(1){
-      font-size: 24px;
-      font-weight: bold;
-    }
-    span:nth-child(2){
-      width:452px;
-      height:27px;
-      margin-left:20px;
-      font-size: 14px;
-      background: linear-gradient(to right, #b28850, #cfa972);
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b28850', endColorstr='#cfa972',GradientType=1 );
-      color:$white;
-      padding:3px 10px
-    }
-    a{
-      font-size: 16px;
-      color:#999;
-      &:hover{
-        color:$blue
-      }
     }
   }
 // address_data
@@ -1245,11 +890,6 @@
         font-weight: bold;
       }
     }
-  }
-// process_color
-  @mixin process_color{
-    background: linear-gradient(to right, #337eff 20%, #c72abc);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#337eff', endColorstr='#c72abc',GradientType=1 );
   }
 // mobile_footer_btn
   @mixin mobile_footer_btn{

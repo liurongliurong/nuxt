@@ -380,92 +380,27 @@
   .order_manage{
     .pc_box{
       .order_title{
-        @include gap(25,h)
+        padding: 0 25px;
         padding-top:15px;
-        border-bottom: 1px solid $border;
         .order_type_select{
           @include select_list
           margin-bottom:30px;
         }
-        nav{
-          a{
-            @include gap(10,h)
-            display: inline-block;
-            padding-bottom:10px;
-            border-bottom: 3px solid transparent;
-            color:#6b7d90;
-            & + a{
-              margin-left:30px
-            }
-            &:hover,&.active{
-              border-color:#7e92a8
-            }
-          }
-        }
+        @include user_tab
       }
       .order_box{
         padding:20px 25px;
-        table{
-          width: 100%;
-          text-align: center;
-          margin:0;
-          thead{
-            tr{
-              border-bottom:1px solid $border;
-              background: #f7f8fa;
-              color: $light_text;
-              border-top:1px solid $border;
-              border-bottom:0;
-              th{
-                font-size: 12px;
-                font-weight: normal;
-                line-height: 50px;
-              }
-            }
+        @include data_table
+        table tbody tr td{
+          i.icon_currency{
+            vertical-align: sub;
+            margin-left:5px
           }
-          tbody{
-            tr{
-              border-bottom:1px solid $border;
-              td{
-                line-height:56px;
-                i.icon_currency{
-                  vertical-align: sub;
-                  margin-left:5px
-                }
-                &:last-child{
-                  width:180px;
-                  button,a{
-                    font-size: 12px;
-                    line-height: 28px;
-                    @include gap(8,h)
-                  }
-                  button{
-                    @include button($blue)
-                    margin-right:5px;
-                    &:disabled{
-                      background: #759fe4;
-                      border-color:#759fe4;
-                      cursor: no-drop;
-                    }
-                  }
-                  a{
-                    display: inline-block;
-                    @include button($blue,border)
-                    border-radius: 5px;
-                    .btn:not(:disabled){
-                      @include button($orange)
-                      cursor: pointer;
-                    }
-                  }
-                }
-              }
-              &:hover{
-                background: #f7f8fa;
-              }
-            }
+          a:hover {
+            background: $blue;
+            color:#fff;
           }
         }
-        @include nodata
       }
     }
     .mobile_box{

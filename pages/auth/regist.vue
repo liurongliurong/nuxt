@@ -213,13 +213,67 @@
       .accept_link{
         color:$blue
       }
-      input{
-        margin-right: 10px;
-        & ~ span.select_accept{
-          display: none;
+      .input {
+        input{
+          margin-right: 10px;
+          & ~ span.select_accept{
+            display: none;
+          }
+          &[data-status='invalid'] ~ span.select_accept{
+            display: inline;
+          }
         }
-        &[data-status='invalid'] ~ span.select_accept{
-          display: inline;
+        .password_level{
+          @include position(9,0,5,auto)
+          left:104%;
+          @include flex
+          display: none;
+          .item{
+            width:80px;
+            height:15px;
+            background: $border;
+            & + .item{
+              margin-left:2px;
+            }
+          }
+          &:before,&:after{
+            font-size: 12px;
+          }
+          &:before{
+            content:'密码强度';
+            width:52px;
+          }
+          &:after{
+            margin-left:3px;
+          }
+          @include mobile_hide
+        }
+        input.level ~ .password_level{
+          display: flex
+        }
+        input.level1 ~ .password_level{
+          .item:first-child{
+            background: #FF5F2D;
+          }
+          &:after{
+            content:'低'
+          }
+        }
+        input.level2 ~ .password_level{
+          .item:first-child,.item:nth-child(2){
+            background: #FFA31E;
+          }
+          &:after{
+            content:'中'
+          }
+        }
+        input.level3 ~ .password_level{
+          .item{
+            background: #8DC420;
+          }
+          &:after{
+            content:'高'
+          }
         }
       }
     }

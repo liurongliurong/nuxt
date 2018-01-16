@@ -86,6 +86,10 @@
     },
     methods: {
       checkPay (isLoan) {
+        if (!this.detail.amount) {
+          api.tips('抱歉，库存不足')
+          return false
+        }
         var startTime = this.detail.sell_start_time
         var now = Date.parse(new Date()) / 1000
         if (now < startTime) {
