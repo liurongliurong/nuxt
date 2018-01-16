@@ -43,6 +43,7 @@
       <p slot="fee">手续费：0.0002btc</p>
       <opr-select slot="select_opr" :no="maskNo" @closeMask="closeMask"></opr-select>
     </MyMask>
+    <coin-returns></coin-returns>
   </section>
 </template>
 
@@ -54,9 +55,10 @@
   import IncomeChart from '@/pages/user/incomeChart'
   import MyMask from '@/components/common/Mask'
   import OprSelect from '@/components/common/OprSelect'
+  import coinReturns from '@/components/mobile/coinReturns'
   export default {
     components: {
-      FormField, IncomeChart, MyMask, OprSelect
+      FormField, IncomeChart, MyMask, OprSelect, coinReturns
     },
     data () {
       return {

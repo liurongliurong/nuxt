@@ -80,7 +80,9 @@
     }
     .form_content {
       height: 4.48rem;
+      padding: 0 0.3rem;
       overflow: scroll;
+      background: #fefefe;
       .form_item {
         @include flex(space-between, center);
         height: 1.28rem;
