@@ -31,8 +31,8 @@
         </div>
       </div>
       <div class="miner_data">
-        <span>共有云算力{{cloudMiner}}台</span>
-        <nuxt-link to="">了解详情></nuxt-link>
+        <span>共有云算力{{property.cloudMiner}}台，算力{{property.totalHash}}T</span>
+        <nuxt-link to="/mobile/cloudProduct">了解详情></nuxt-link>
       </div>
     </div>
     <div class="property_chart">
@@ -72,7 +72,7 @@
         title: '',
         maskNo: 0,
         cloudMiner: 2,
-        property: {balance: 0, frozen_balance: 0, coin_btc: 0, coin_cny: 0}
+        property: {balance: 0, frozen_balance: 0, coin_btc: 0, coin_cny: 0, cloudMiner: 2, totalHash: 100}
       }
     },
     methods: {
@@ -233,7 +233,7 @@
       }
     }
     .property_chart {
-      margin-top: 0.3rem;
+      margin: 0.3rem 0;
       background: #fff;
       .chart_title {
         padding: 0.2rem 0.3rem;
