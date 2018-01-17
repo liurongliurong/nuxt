@@ -40,7 +40,7 @@
           {title: '产业资讯', path: '/mobile/property'},
         ],
         isMobilePage: ['index', 'bdc', 'mobile-cloudProduct','mobile-assetDetail',
-        'mobile-property', 'mobile-personcenter', 'mobile-administration']
+        'mobile-property', 'mobile-personcenter', 'mobile-administration', 'mobile-assetsAddress']
       }
     },
     methods: {
