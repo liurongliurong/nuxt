@@ -6,7 +6,7 @@
       <label for="accept">
         <input type="checkbox" id="accept" name="accept" checked>
         <span>阅读并接受<a class="accept_link" href="javascript:;" @click="show=true">《用户使用协议》</a></span>
-        <span class="select_accept">请选择</span>
+        <!-- <span class="select_accept">请选择</span> -->
       </label>
       <button name="btn">注册</button>
     </form>

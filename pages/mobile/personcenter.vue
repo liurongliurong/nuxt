@@ -1,7 +1,6 @@
 <template>
   <div class="personcenter">
-    <div class="person_header">
-      <img src="~assets/images/person.png" class="bg"/> 
+    <div class="person_header"> 
       <div class="left">
         <div class="img"><img src="../../assets/images/jie-blue.png"/></div>
         <div class="cen">
@@ -67,7 +66,7 @@
           {name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0},
           {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
           {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
-        ]
+        ],
         balance_account: '',
         edit: 0,
         fee: 0,
@@ -190,17 +189,16 @@
     width: 100%;
     height: 100%;
     background: #f4f4f4;
-    padding-top: 0.88rem;
-
+    
     .person_header{
       width: 100%;
-      height: 1.5rem;
       background:#327fff;
-      padding: 0 0.3rem 0 0.7rem;
+      padding: 0.88rem 0.3rem 0 0.7rem;
       @include flex(space-between, center);
 
       .left{
         display: flex;
+        padding: 0.3rem 0;
         .img{
           width: 0.86rem;
           height: 0.86rem;

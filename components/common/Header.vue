@@ -1,17 +1,23 @@
 <template>
   <header class="header">
     <PcHeader class="pc_header" v-if="isMobile===0"></PcHeader>
-    <div class="mobile_header" v-if="isMobile===1&&showTitle()">
+    <div :class="['mobile_header', headerType, {scroll}]" v-if="isMobile===1&&showTitle()">
       <div class="header_conten">
         <div class="logo">
           <nuxt-link to="/">
-            <img :src="require('@/assets/images/mobile/logo3.png')">
+            <img class="fixed_logo" :src="require('@/assets/images/mobile/logo3.png')">
+            <img class="normal_logo" :src="require('@/assets/images/mobile/logo2.png')">
           </nuxt-link>
         </div>
         <div class="title">{{title}}</div>
         <div class="mobile_headerRight">
-          <span class="icon iconfont icon-geren" v-if="token === 0"></span>
-          <span class="header_mobile" v-else>{{mobile|format}}</span>
+          <!-- <span class="icon iconfont icon-geren" v-if="token === 0"></span> -->
+          <template v-if="token === 0">
+            <router-link to="/auth/regist">注册</router-link>
+            <span>|</span>
+            <router-link to="/auth/login">登录</router-link>
+          </template>
+          <router-link class="header_mobile iconfont" to="/mobile/personcenter" v-else>&#xe63f;</router-link>
           <span class="navlink icon iconfont icon-more" v-if="!showNav" @click="showNavlink"></span>
           <span class="navlink icon iconfont icon-close" v-if="showNav" @click="showNavlink"></span>
         </div>
@@ -24,6 +30,7 @@
     </div>
   </header>
 </template>
+
 <script>
   import { mapState } from 'vuex'
   import PcHeader from './header/pc'
@@ -33,14 +40,16 @@
     data () {
       return {
         showNav: false,
+        scroll: false,
+        headerType: '',
         navLink: [
           {title: '云算力', path: '/minerShop/miner/2'},
           {title: '品牌矿机', path: '/minerShop/miner/1'},
           {title: 'BDC托管', path: '/bdc'},
           {title: '产业资讯', path: '/mobile/property'},
         ],
-        isMobilePage: ['index', 'bdc', 'mobile-cloudProduct','mobile-assetDetail',
-        'mobile-property', 'mobile-personcenter', 'mobile-administration', 'mobile-assetsAddress']
+        isFixedHeader: ['index', 'bdc', 'mobile-cloudProduct','mobile-assetDetail', 'mobile-property', 'mobile-personcenter'],
+        isHeader: ['mobile-order', 'mobile-administration', 'mobile-assetsAddress']
       }
     },
     methods: {
@@ -48,10 +57,24 @@
         this.showNav = !this.showNav
       },
       showTitle() {
-        if (this.isMobilePage.indexOf(this.$route.name) > -1) {
+        if (this.isFixedHeader.indexOf(this.$route.name) > -1) {
+          this.headerType = 'fixed'
+          return true
+        }
+        if (this.isHeader.indexOf(this.$route.name) > -1) {
+          this.headerType = ''
           return true
         }
         return false
+      },
+      scrollFunc (e) {
+        if (!this.headerType) return false
+        var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
+        if (scrollTop > 0) {
+          this.scroll = true
+        } else {
+          this.scroll = false
+        }
       }
     },
     computed: {
@@ -67,18 +90,39 @@
     },
     components: {
       PcHeader
+    },
+    mounted () {
+      window.addEventListener('scroll', this.scrollFunc, false)
     }
   }
 </script>
+
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .mobile_header{
-    width: 100%;
     height: 0.88rem;
-    background: #327fff;
-    position: fixed;
-    top:0;
-    z-index: 9999;
+    &.scroll {
+      background: $blue;
+    }
+    &.fixed {
+      position: fixed;
+      top:0;
+      width: 100%;
+      z-index: 9999;
+      .header_conten {
+        &,a {
+          color: #fff;
+        }
+        .logo {
+          .fixed_logo {
+            display: inline;
+          }
+          .normal_logo {
+            display: none;
+          }
+        }
+      }
+    }
     .header_conten{
       width: 100%;
       height: 100%;
@@ -86,30 +130,34 @@
       justify-content: space-between;
       padding: 0 0.3rem;
       line-height: 0.88rem;
-      box-sizing: border-box;
+      &,a {
+        color: $text;
+        font-size: 12px;
+        margin: 0 5px;
+      }
       .logo {
         width: 1.8rem;
         height: auto;
         line-height: 0.6rem;
+        .fixed_logo {
+          display: none;
+        }
+        .normal_logo {
+          display: inline;
+        }
       }
       .title{
-        color: #fff;
         font-size: 0.32rem;
         letter-spacing: 0.05rem;
       }
       .mobile_headerRight{
         position: relative;
-        :nth-child(1){
-          font-size: 0.42rem;
-          margin-right: 0.28rem;
-          color:#fff;
-        }
         .header_mobile{
           font-size: 0.32rem;
+          margin-right: 0.28rem;
         }
         .navlink{
           font-size: 0.37rem;
-          color: #fff;
         }
       }
     }

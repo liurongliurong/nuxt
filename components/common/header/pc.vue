@@ -1,5 +1,5 @@
 <template>
-  <div :class="headerClass" :disabled="$route.name==='notFound'" :title="($route.name==='auth-login'||$route.name==='bdc')&&'border'">
+  <div :class="[headerClass, {bg_opacity:scroll}]" :disabled="$route.name==='notFound'" :title="($route.name==='auth-login'||$route.name==='bdc')&&'border'">
     <section class="box">
       <div class="nav_left1">
         <router-link class="logo" to="/"></router-link>
@@ -54,7 +54,8 @@
           border: ['login', 'bdc'],
           shadow: ['regist', 'passwordRetrieval'], web_box: ['webInfo', 'minerShop/miner']
         },
-        headerClass: ''
+        headerClass: '',
+        scroll: false
       }
     },
     computed: {
@@ -69,14 +70,11 @@
         this.$store.commit('LOGOUT')
       },
       test (e) {
-        var ele = document.querySelector('.fixed_header')
-        if (!ele) return false
+        if (this.headerClass.indexOf('frame_header') > -1) return false
         var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
-        if (scrollTop > 0 || this.showNav) {
-          ele.className = 'pc_header fixed_header bg_opacity'
+        if (scrollTop > 0) {
           this.scroll = true
         } else {
-          ele.className = 'pc_header fixed_header'
           this.scroll = false
         }
       },

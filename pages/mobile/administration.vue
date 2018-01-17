@@ -31,11 +31,10 @@
 .admin_istration {
   width: 100%;
   font-size: 0.3rem;
-  padding: 0.88rem 0 0;
   background: #f4f4f4;
+  padding-top: 0.3rem;
 
   .form_list {
-    margin-top: 0.2rem;
     padding-left: 0.3rem;
     background: #fff;
 

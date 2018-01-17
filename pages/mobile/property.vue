@@ -227,10 +227,7 @@
       color: #c1d7ff;
       font-size: 0.3rem;
       .property_data {
-        padding: 0 0.3rem 0.2rem;
-        .data_title {
-          padding-top: 0.4rem;
-        }
+        padding: 0.88rem 0.3rem 0.2rem;
         .data_value {
           color: #fff;
           font-size: 0.9rem;
