@@ -39,7 +39,8 @@
           {title: 'BDC托管', path: '/bdc'},
           {title: '产业资讯', path: '/mobile/property'},
         ],
-        isMobilePage: ['index', 'bdc', 'mobile-cloudProduct','mobile-assetDetail', 'mobile-property']
+        isMobilePage: ['index', 'bdc', 'mobile-cloudProduct','mobile-assetDetail',
+        'mobile-property', 'mobile-personcenter', 'mobile-administration']
       }
     },
     methods: {
