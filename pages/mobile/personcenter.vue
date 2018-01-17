@@ -1,7 +1,7 @@
 <template>
   <div class="personcenter">
     <div class="person_header">
-      <img src="../../assets/images/person.png" class="bg"/> 
+      <img src="~assets/images/person.png" class="bg"/> 
       <div class="left">
         <div class="img"><img src="../../assets/images/jie.png"/></div>
         <div class="cen">
@@ -30,7 +30,7 @@
       </router-link>
     </div>
     <button @click="logout" class="back">退出登录</button>
-    <MyMask :form="edit===3?[]:Withdrawals" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
+    <MyMask :form="edit===3?[]:withdrawals" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
       <p slot="fee">手续费：{{total_price * fee|decimal}}元<span class="fee">({{fee*100+'%'}})</span></p>
       <opr-select slot="select_opr" :no="maskNo" @closeMask="closeMask"></opr-select>
     </MyMask>
@@ -50,8 +50,20 @@
     },
     data () {
       return {
-        nav: [{name: '账户管理', link: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'}, {name: '地址管理', link: '/mobile/address', icon: 'icon-dingwei'}, {name: '资金流水', link: '/mobile/moneyFlow', icon: 'icon-wodezichan'}, {name: '订单管理', link: '/mobile/order/0', icon: 'icon-31shoucangxuanzhong'}, {name: '常见问题', link: '/mobile/help', icon: 'icon-yiwen'}, {name: '消息中心', link: '/mobile/message', icon: 'icon-31wangwangxuanzhong'}, {name: '意见反馈', link: '/mobile/advice', icon: 'icon-xiai'}],
-        Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
+        nav: [
+          {name: '账户管理', link: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'},
+          {name: '地址管理', link: '/mobile/address', icon: 'icon-dingwei'},
+          {name: '资金流水', link: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
+          {name: '订单管理', link: '/mobile/order/0', icon: 'icon-31shoucangxuanzhong'},
+          {name: '常见问题', link: '/mobile/help', icon: 'icon-yiwen'},
+          {name: '消息中心', link: '/mobile/message', icon: 'icon-31wangwangxuanzhong'},
+          {name: '意见反馈', link: '/mobile/advice', icon: 'icon-xiai'}
+        ],
+        withdrawals: [
+          {name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0},
+          {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
+          {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
+        ],
         balance_account: '',
         edit: 0,
         fee: 0,
@@ -109,7 +121,7 @@
             api.checkAjax(self, res, () => {
               self.feedetail = res
               self.fee = res.withdraw_fee
-              self.Withdrawals[0].value2 = parseInt(res.balance_account)
+              self.withdrawals[0].value2 = parseInt(res.balance_account)
             })
           })
         }
@@ -135,7 +147,7 @@
         })
       },
       onChange (obj) {
-        var amount = this.Withdrawals[0].value2
+        var amount = this.withdrawals[0].value2
         if (parseFloat(obj.e.target.value) > parseFloat(amount)) {
           obj.e.target.value = amount
         }

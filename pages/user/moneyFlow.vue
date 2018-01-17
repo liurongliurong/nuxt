@@ -16,7 +16,7 @@
         </div>
         <div class="btn">
           <button @click="openMask('recharge')">充值</button>
-          <button @click="openMask('Withdrawals')">提现</button>
+          <button @click="openMask('withdrawals')">提现</button>
         </div>
       </div>
       <div class="detail_table">
@@ -65,7 +65,7 @@
         <p>暂无列表信息</p>
       </div>
     </div>
-    <MyMask :form="edit==='auth'?[]:Withdrawals" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
+    <MyMask :form="edit==='auth'?[]:withdrawals" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
       <p slot="fee">手续费：{{chargeMoney|format}}元<span class="fee">({{fee*100+'%'}})</span></p>
       <opr-select slot="select_opr" :no="maskNo" @closeMask="closeMask"></opr-select>
     </MyMask>
@@ -93,7 +93,11 @@
         nav: {create_time: '时间', type_name: '交易类型', trade_content: '交易内容', value: '交易金额', remark: '备注', status: '状态'},
         list: [],
         edit: '',
-        Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
+        withdrawals: [
+          {name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0},
+          {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
+          {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
+        ],
         loading: false,
         len: 0,
         now: 1,
@@ -122,7 +126,7 @@
           this.goAuth ('立即认证', 0)
           return false
         }
-        if ((str === 'Withdrawals') && !this.bank_card) {
+        if ((str === 'withdrawals') && !this.bank_card) {
           this.goAuth ('立即绑定', 1)
           return false
         }
@@ -137,7 +141,7 @@
           api.checkAjax(self, res, () => {
             self.fee = res.withdraw_fee
             self.balance = parseInt(res.balance_account)
-            self.Withdrawals[0].value2 = self.balance
+            self.withdrawals[0].value2 = self.balance
             window.scroll(0, 0)
             document.body.style.overflow = 'hidden'
             self.edit = str

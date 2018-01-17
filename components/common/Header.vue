@@ -5,7 +5,7 @@
       <div class="header_conten">
         <div class="logo">
           <nuxt-link to="/">
-            <img :src="require('@/assets/images/mobile/index/logo.png')">
+            <img :src="require('@/assets/images/mobile/logo3.png')">
           </nuxt-link>
         </div>
         <div class="title">{{title}}</div>

@@ -126,7 +126,7 @@
           </div>
           <div class="data_price_number">
             <div class="data_price">￥{{detail.one_amount_value}}</div>
-            <div class="data_number">X{{detail.number}}</div>
+            <div class="data_number">&times;{{detail.number}}</div>
           </div>
         </div>
         <div class="confirm_price">
@@ -143,10 +143,9 @@
         <div class="address_text" v-if="addressObject.id">配送费用：第三方物流、费用到付</div>
       </div>
       <div class="confirm_info" v-if="params2!=='1'">
-        <div class="item" v-for="m in cloudMinerNav">
+        <div class="item" v-for="m in mobileCloudNav">
           <span>{{params[m].title}}</span>
-          <span v-if="m==='number'">{{number}}{{params[m].unit}}</span>
-          <span v-else>{{detail[m]||'暂无'}}{{params[m].unit}}</span>
+          <span>{{cloudMinerData[m]+params[m].unit}}</span>
         </div>
       </div>
       <form action="" class="form" @submit.prevent="pay" novalidate>
@@ -185,11 +184,27 @@
     },
     data () {
       return {
-        params: {name: {title: '矿机名称', unit: ''}, one_amount_value: {title: '矿机单价', unit: '元'}, number: {title: '购买数量', unit: '台'}, hash: {title: '每台算力', unit: 'T'}, hashType: {title: '算力类型', unit: ''}, incomeType: {title: '结算方式', unit: ''}, output: {title: '预期收益', unit: 'btc/T/天'}, total_electric_fee: {title: '预计支出费用', unit: 'btc/台/天'}, batch_area: {title: '批次所在区域', unit: ''}},
+        params: {
+          name: {title: '矿机名称', unit: ''},
+          one_amount_value: {title: '矿机单价', unit: '元'},
+          number: {title: '购买数量', unit: '台'},
+          hash: {title: '每台算力', unit: 'T'},
+          hashType: {title: '算力类型', unit: ''},
+          incomeType: {title: '结算方式', unit: ''},
+          output: {title: '预期收益', unit: 'btc/T/天'},
+          total_electric_fee: {title: '预计支出费用', unit: 'btc/台/天'},
+          batch_area: {title: '批次所在区域', unit: ''},
+          contract_time: {title: '合约周期', unit: ''},
+          electric_fee: {title: '电费', unit: '元/度'},
+          safeguard_time: {title: '停电维护', unit: ''},
+          settle_time: {title: '结算周期', unit: ''},
+          trust_fee: {title: '托管费', unit: '元/台/月'}
+        },
         proData1: ['name', 'one_amount_value', 'number'],
         proData2: ['name', 'one_amount_value', 'number', 'hash'],
         proText: ['hashType', 'hash', 'incomeType'],
         cloudMinerNav: ['output', 'total_electric_fee', 'batch_area'],
+        mobileCloudNav: ['electric_fee', 'trust_fee', 'contract_time', 'settle_time', 'safeguard_time'],
         thead: [{title: '选择'}, {title: '分期金额（元）'}, {title: '分期期数'}, {title: '手续费率'}, {title: '每期应还（元）'}, {title: '每期手续费（元）'}],
         form: [{name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6, value2: 0, value3: 0}],
         address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}, {name: 'is_default', type: 'radio', title: '是否设为默认地址'}],
@@ -206,6 +221,7 @@
         params1: '',
         params2: '',
         detail: {},
+        cloudMinerData: {},
         number: 0,
         balance: 0
       }
@@ -285,12 +301,11 @@
           this.alipay(url, data)
         } else {
           api.tips(str, () => {
-            if (this.isMobile) {
-              this.$router.push({path: url})
-            } else {
-              api.setStorge('info', {payType: this.params2, addressData: this.addressObject})
-              this.$router.push({path: '/minerShop/paySuccess'})
-            }
+            // if (this.isMobile) {
+            //   this.$router.push({path: url})
+            // } else {}
+            api.setStorge('info', {payType: this.params2, addressData: this.addressObject})
+            this.$router.push({path: '/minerShop/paySuccess'})
           })
         }
       },
@@ -401,23 +416,25 @@
             url = 'productOrder'
             data = Object.assign({product_id: this.params1}, data)
           }
-          var self = this
-          util.post(url, {sign: api.serialize(data)}).then(function (res) {
+          util.post(url, {sign: api.serialize(data)}).then((res) => {
             api.checkAjax(self, res, () => {
-              self.balance = +res.balance
+              this.balance = +res.balance
               if (res.output) {
-                self.detail.output = res.output
-                self.detail.total_electric_fee = res.total_electric_fee
+                this.detail.output = res.output
+                this.detail.total_electric_fee = res.total_electric_fee
               }
-              if (self.params2 === '2') {
-                self.content = res.part_content
+              if (this.params2 === '2') {
+                this.content = res.part_content
               } else {
-                self.content = res.content
+                this.content = res.content
               }
-              if (self.params2 !== '1') {
-                self.content1 = res.content1
+              if (this.params2 !== '1') {
+                this.content1 = res.content1
               }
             })
+          })
+          util.post('bdc_info', {sign: api.serialize({token: this.token, bdc_id: this.detail.bdc_id})}).then((res) => {
+            this.cloudMinerData = res
           })
         } else {
           setTimeout(() => {

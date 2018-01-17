@@ -93,8 +93,8 @@
       </div>
       <div class="order_data">
         <div class="item" v-for="d,k in data">
-          <p class="order_product_name" v-if="">
-            <span>{{nowEdit==3?(d.miner&&d.miner.name):d.product_name}}</span>
+          <p class="order_product_name">
+            <span>{{nowEdit==3?'矿机':'云算力'}}</span>
             <em>{{nowEdit==3?d.created_time:d.create_time}}</em>
           </p>
           <div class="order_product_value" v-if="status==2||status==3">
@@ -102,40 +102,59 @@
               <h4>{{d.total_price}}<em> 元</em></h4>
               <p>出售金额</p>
             </div>
-            <div class="line"></div>
             <div class="value_one">
               <h4 v-if="nowEdit!=3&&(nowEdit==0||status==1||status==4)">{{d.total_hash|format}}<em> T</em></h4>
               <h4 v-if="nowEdit==3">{{+d.buy_amount * (d.miner&&(+d.miner.hash))}}<em> T</em></h4>
               <p>总算力</p>
             </div>
-            <div class="line"></div>
             <div class="value_one">
               <h4 class="buy_number">{{d.selling_amount}}<em> 台</em></h4>
               <p>出售数量</p>
             </div>
           </div>
           <div class="order_product_value" v-else>
-            <div class="value_one">
+            <div class="order_value" @click="goDetail(nowEdit,d.id)">
+              <div class="order_text_img">
+                <div class="order_img">
+                  <img :src="d.picture||(d.miner&&d.miner.minerPicture)" alt="">
+                </div>
+                <div class="order_text">
+                  <div class="order_name">{{nowEdit==3?(d.miner&&d.miner.name):d.product_name}}</div>
+                  <div>{{d.hash||(d.miner&&(+d.miner.hash))}}T算力</div>
+                </div>
+              </div>
+              <div class="order_value_price">
+                <div class="price"><em>￥</em>{{d.one_amount_value||(d.miner&&(+d.miner.one_amount_value))}}</div>
+                <div>&times;{{parseInt(d.buy_amount)}}</div>
+              </div>
+            </div>
+            <div class="order_price">
+              <span>实付金额</span>
+              <span class="price"><em>￥</em>{{nowEdit!=3?d.total_price:d.pay_value}}</span>
+            </div>
+            <div class="order_btn">
+              <span @click="openMask('sold', '出售云算力', d.id)" v-if="nowEdit===0&&status==1&&!d.is_loan&&d.remain_miner&&d.status===8">出售云算力</span>
+              <span @click="quit('sold', d.id)" v-if="nowEdit===0&&status==2">撤销出售</span>
+            </div>
+            <!-- <div class="value_one">
               <h4 class="buy_number">{{nowEdit!=3?d.total_price:d.pay_value}}<em> 元</em></h4>
               <p>购买金额</p>
             </div>
-            <div class="line"></div>
             <div class="value_one">
               <h4 v-if="nowEdit!=3&&(nowEdit==0||status==1||status==4)">{{d.total_hash|format}}<em> T</em></h4>
               <h4 v-if="nowEdit==3">{{+d.buy_amount * (d.miner&&(+d.miner.hash))}}<em> T</em></h4>
               <p>总算力</p>
             </div>
-            <div class="line"></div>
             <div class="value_one">
               <h4>{{d.buy_amount}}<em> 台</em></h4>
               <p>购买数量</p>
-            </div>
+            </div> -->
           </div>
-          <div class="order_button">
+          <!-- <div class="order_button">
             <button class="left" @click="openMask('sold', '出售云算力', d.id)" v-if="nowEdit===0&&status==1&&!d.is_loan&&d.remain_miner&&d.status===8">出售云算力</button>
             <button @click="quit('sold', d.id)" v-if="nowEdit===0&&status==2">撤销出售</button>
             <button class="left" @click="goDetail(nowEdit,d.id)" v-if="nowEdit===3||(nowEdit!==2&&status!=2&&status!=3)">查看详情</button>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="nodata" v-if="!data.length">
@@ -456,17 +475,11 @@
         width:100%;
         overflow: hidden;
         .item{
-          width: 100%;
-          overflow: hidden;
-          background:white;
-          padding:0 .3rem;
-          box-sizing: border-box;
+          background:#fff;
+          margin-top: 0.2rem;
           .order_product_name{
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding:.2rem 0;
-            border-bottom: 1px solid #ddd;
+            @include flex(space-between)
+            padding: 0.2rem 0.3rem;
             span{
               color:#121212;
               font-size: 0.36rem;
@@ -478,55 +491,111 @@
             }
           }
           .order_product_value{
-            width: 100%;
-            @include flex(space-between)
-            padding:0.2rem 0;
-            .value_one{
-              text-align: center;
-              h4{
-                font-size:0.32rem;
-                em{
-                  font-style: normal;
-                  font-size: 0.28rem;
+            // @include flex(space-between)
+            .order_value {
+              @include flex(space-between,flex-start)
+              background: #fafaff;
+              color: $light_black;
+              .order_text_img {
+                @include flex(flex-start,flex-start)
+                .order_img {
+                  width: 90px;
+                  height: 70px;
+                  text-align: center;
+                  border: 1px solid $border;
+                  margin-right: 0.3rem;
+                  background: #fff;
+                  img{
+                    width:60px;
+                    height: 50px;
+                    margin-top: 10px;
+                    object-fit: contain;
+                  }
                 }
-                &.buy_number{
-                  color:#ff721f;
+                .order_text {
+                  .order_name {
+                    color: $text;
+                    font-size: 0.32rem;
+                  }
                 }
               }
-              p{
-                color: #999;
-              }
-              &:nth-child(3){
-                text-align: center;
-              }
-              &:nth-child(1){
-                text-align: left;
-              }
-              &:nth-child(5){
+              .order_value_price {
                 text-align: right;
+                .price {
+                  em {
+                    font-size: 12px;
+                  }
+                }
               }
             }
-            .line {
-              height: 0.5rem;
-              width: 1px;
-              background: $border;
+            .order_value,.order_price {
+              padding:0.2rem 0.3rem;
             }
-          }
-          .order_button{
-            text-align:right;
-            padding-bottom:0.2rem;
-            button{
-              background: #327fff;
-              color: #fff;
-              padding: 0.1rem 0.3rem;
-              & + button{
-                margin-left:10px;
+            .order_price {
+              text-align: right;
+              color: $light_black;
+              .price {
+                font-size: 0.4rem;
+                color: $text;
+                em {
+                  font-size: 12px;
+                }
               }
             }
+            .order_btn {
+              border-top: 1px solid $border;
+              margin:0 0.3rem;
+              padding:0.2rem 0;
+              text-align: right;
+              font-size: 12px;
+              span {
+                display: inline-block;
+                padding: 0.1rem 0.3rem;
+                color: $orange;
+                border: 1px solid $orange;
+              }
+              &:empty {
+                display: none;
+              }
+            }
+            // .value_one{
+            //   text-align: center;
+            //   h4{
+            //     font-size:0.32rem;
+            //     em{
+            //       font-style: normal;
+            //       font-size: 0.28rem;
+            //     }
+            //     &.buy_number{
+            //       color:#ff721f;
+            //     }
+            //   }
+            //   p{
+            //     color: #999;
+            //   }
+            //   &:nth-child(3){
+            //     text-align: center;
+            //   }
+            //   &:nth-child(1){
+            //     text-align: left;
+            //   }
+            //   &:nth-child(5){
+            //     text-align: right;
+            //   }
+            // }
           }
-          &:not(:last-child){
-            margin-bottom: 0.2rem;
-          }
+          // .order_button{
+          //   text-align:right;
+          //   padding-bottom:0.2rem;
+          //   button{
+          //     background: #327fff;
+          //     color: #fff;
+          //     padding: 0.1rem 0.3rem;
+          //     & + button{
+          //       margin-left:10px;
+          //     }
+          //   }
+          // }
         } 
         .pager{
           padding-top: 20px;
