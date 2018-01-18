@@ -1,5 +1,5 @@
 <template>
-  <div class="assets_address">
+  <div class="mail_address">
     <div class="address_list">
       <section v-for="item in formData" class="item">
         <div class="name">
@@ -49,7 +49,7 @@
 
 <style type="text/css" lang="scss">
 @import '~assets/css/style.scss';
-.assets_address {
+.mail_address {
   width: 100%;
   font-size: 0.3rem;
   padding: 1.08rem 0 0;

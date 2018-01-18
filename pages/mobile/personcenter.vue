@@ -1,6 +1,6 @@
 <template>
   <div class="person_center">
-    <div class="person_header"> 
+    <div class="person_header">
       <div class="left">
         <div class="img"><img src="../../assets/images/jie-blue.png"/></div>
         <div class="cen">
@@ -10,16 +10,6 @@
       </div>
       <em></em>
     </div>
-    <!-- <div class="price">
-      <div class="left">
-        <p>账户余额 (元)</p>
-        <h4>{{balance_account|decimal}}</h4>
-      </div>
-      <div class="right">
-        <button style="background:#26a2ff;"  @click="openMask(1)" class="button1">充 值</button>
-        <button @click="openMask(2)" class="button1">提 现</button>
-      </div>
-    </div> -->
     <div class="all_list">
       <router-link :to="n.link" class="route" v-for="n,k in nav" :key="k">
         <div class="left">
@@ -55,12 +45,9 @@
           {name: '消息中心', link: '/mobile/message', icon: 'icon-31wangwangxuanzhong'},
           {name: '账户流水', link: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
           {name: '个人认证', link: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
-          {name: '银行卡管理', link: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
-          {name: '收益地址管理', link: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'},
+          {name: '银行卡管理', link: '/mobile/bankCard', icon: 'icon-wodezichan'},
+          {name: '收益地址管理', link: '/mobile/assetsAddress', icon: 'icon-pinpaizhuanxiang'},
           {name: '账户设置', link: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'}
-          //{name: '地址管理', link: '/mobile/address', icon: 'icon-dingwei'},
-          //{name: '常见问题', link: '/mobile/help', icon: 'icon-yiwen'},
-          //{name: '意见反馈', link: '/mobile/advice', icon: 'icon-xiai'}
         ],
         withdrawals: [
           {name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0},
@@ -191,7 +178,7 @@
     background: #f4f4f4;
     padding-top: 0;
     padding-bottom: 1rem;
-    
+
     .person_header{
       width: 100%;
       background:#327fff;

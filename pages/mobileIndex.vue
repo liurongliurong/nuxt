@@ -182,7 +182,8 @@ export default {
   width: 100%;
   max-height: 100vh;
   background: #243461;
-
+  padding-top: 0;
+  
   .page-common {
     width: 100% !important;
     height: 100vh !important;

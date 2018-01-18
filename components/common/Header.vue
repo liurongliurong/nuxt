@@ -55,6 +55,9 @@
         this.showNav = !this.showNav
       },
       showTitle() {
+        if (this.$route.name === 'mobileIndex') {
+          return false;
+        }
         if (this.isBlueHeader.indexOf(this.$route.name) > -1) {
           this.headerType = 'blue'
         } else {

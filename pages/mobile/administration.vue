@@ -16,7 +16,6 @@
       return {
         formData: [
           {name: '邮寄地址', link: '/mobile/mailAddress'},
-          {name: '算力收益地址', link: '/mobile/assetsAddress'},
           {name: '密码重置', link: '1BTC'},
           {name: '常见问题', link: '/mobile/help'},
           {name: '意见反馈', link: '/mobile/advice'}
