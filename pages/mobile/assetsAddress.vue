@@ -49,7 +49,7 @@
 .assets_address {
   width: 100%;
   font-size: 0.3rem;
-  padding: 0.2rem 0.3rem 0;
+  padding: 1rem 0.3rem 0;
   background: #f4f4f4;
 
   .address_list {

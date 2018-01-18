@@ -423,14 +423,16 @@
       }
     }
     .mobile_box{
-      width: 100%;
       background: #f4f4f4;
       .type_nav_box{
+        position: fixed;
+        top: 0.88rem;
+        left: 0;
+        width: 100%;
         height: 45px;
         line-height: 45px;
         background: $white;
         @include flex(space-between)
-        border-bottom:1px solid #ddd;
         padding:0 0.3rem;
         .type_list{
           width: 20%;
@@ -444,12 +446,11 @@
           }
         }
         .nav_list{
-          position: absolute;
+          position: fixed;
           left:0;
-          top:45px;
+          top: calc(45px + 0.88rem);
           width: 100%;
-          height: calc(100vh - 2rem);
-          z-index:1000000;
+          height: calc(100vh - 45px - 0.88rem);
           background:rgba(0,0,0,.3);
           .item{
             @include flex(space-between)
@@ -472,8 +473,7 @@
         }
       }
       .order_data{
-        width:100%;
-        overflow: hidden;
+        padding-top: 45px;
         .item{
           background:#fff;
           margin-top: 0.2rem;
@@ -491,7 +491,6 @@
             }
           }
           .order_product_value{
-            // @include flex(space-between)
             .order_value {
               @include flex(space-between,flex-start)
               background: #fafaff;

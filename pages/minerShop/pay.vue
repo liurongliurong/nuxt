@@ -703,15 +703,16 @@
       }
     }
     .mobile_box {
-      min-height:100vh;
+      min-height: calc(100vh - 0.88rem);
       padding-bottom: 57px;
       font-size: 0.3rem;
       color:$text;
       background: #F1F2F7;
+      padding-top: 0.2rem;
       .mobile_address {
-        padding:15px 0.3rem;
+        padding: 15px 0.3rem;
         background: #fff;
-        margin-bottom:15px;
+        margin-bottom: 0.2rem;
         .address_box:before,.address_box:after,.address_btn:after {
           @include position(13,auto,auto,0)
         }
@@ -767,7 +768,7 @@
       .confirm_data {
         background: #fff;
         padding: 0.3rem;
-        margin-bottom: 15px;
+        margin-bottom: 0.2rem;
         .confirm_value,.confirm_price {
           @include flex(space-between)
         }
@@ -820,7 +821,7 @@
       .confirm_info {
         padding: 0.3rem;
         background: #fff;
-        margin-bottom:15px;
+        margin-bottom: 0.2rem;
         .item{
           @include flex(space-between)
           line-height: 30px;

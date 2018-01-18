@@ -278,12 +278,12 @@
       @include data_table
     }
     .mobile_box{
+      padding-top: 1rem;
       .data_title{
         @include flex(space-between)
         padding:0 .5rem;
         height: 0.73rem;
         line-height:0.73rem;
-        background: #f5f5f9;
         color: #999999;
         padding:0 0.3rem;
         font-size: 0.25rem;
@@ -328,6 +328,9 @@
         }
       }
       @include nodata
+    }
+    @media screen and (max-width: $mobile) {
+      padding: 1rem 15px 0;
     }
   }
 </style>

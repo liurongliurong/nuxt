@@ -221,6 +221,7 @@
   @import '~assets/css/style.scss';
   .mobile_propery {
     background:#f5f5f9;
+    padding-top: 0;
     .property_view {
       background: url(~assets/images/mobile/property.jpg);
       background-size: cover;

@@ -510,6 +510,7 @@
     }
   }
   .mobile_bdc{
+    padding-top: 0;
     .introduce {
       width: 100%;
       position: relative;
@@ -517,7 +518,7 @@
         padding: 0 15px;
         position: absolute;
         bottom: 0;
-        top: 4.5rem;
+        top: 5.38rem;
         .title {
           text-align: center;
           font-size: 18px;

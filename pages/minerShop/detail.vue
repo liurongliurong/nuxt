@@ -222,7 +222,6 @@
   @import '~assets/css/style.scss';
   .product{
     background: #f7f8fa;
-    padding-bottom: 57px;
     .top_nav{
       background-image: url('~assets/images/miner_shop/miner_bg.jpg');
       width: 100%;
@@ -246,6 +245,8 @@
       }
     }
     .mobile_box{
+      min-height: calc(100vh - 0.88rem);
+      padding-bottom: 57px;
       .popup{
         .buy_box{
           font-size: 16px;

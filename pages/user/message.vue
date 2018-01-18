@@ -201,7 +201,6 @@
       }
     }
     .mobile_box{
-      padding-top:10px;
       .message_box{
         width: 100%;
         overflow: hidden;
@@ -277,6 +276,9 @@
           display: block;
         }
       }
+    }
+    @media screen and (max-width: $mobile) {
+      padding: 1rem 15px 0;
     }
     @include nodata
   }

@@ -45,7 +45,7 @@
 .bank_card {
   width: 100%;
   font-size: 0.32rem;
-  padding: 0.4rem 0.3rem 0;
+  padding: 1.08rem 0.3rem 0;
   background: #f4f4f4;
 
   .card {

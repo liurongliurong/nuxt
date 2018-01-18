@@ -1,6 +1,5 @@
 <template>
   <div class="assets_address">
-    <div class="none"></div>
     <div class="address_list">
       <section v-for="item in formData" class="item">
         <div class="name">
@@ -53,14 +52,8 @@
 .assets_address {
   width: 100%;
   font-size: 0.3rem;
-  padding: 0;
+  padding: 1.08rem 0 0;
   background: #f4f4f4;
-
-  .none {
-    width: 100%;
-    height: 0.2rem;
-    background: #f5f5f9;
-  }
 
   .address_list {
     .item {
