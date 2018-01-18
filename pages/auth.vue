@@ -59,6 +59,12 @@
           height:100%
         }
       }
+      .box .form h2{
+        font-size: 24px;
+        text-align:center;
+        color:$blue;
+        margin: 35px 0;
+      }
       @media screen and (max-width: $mobile) {
         min-height:100vh;
       }

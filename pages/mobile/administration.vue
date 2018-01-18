@@ -1,26 +1,69 @@
 <template>
   <div class="administration">
     <div class="form_list">
-      <router-link v-for="item in formData" :to="item.link" class="form_item">
+      <a href="javascript:;" class="form_item" @click="passwordReset">
+        <span class="name">密码重置</span>
+        <em></em>
+      </a>
+      <router-link v-for="item,k in formData" :to="item.link" :key="k" class="form_item">
         <span class="name">{{item.name}}</span>
         <em></em>
       </router-link>
     </div>
+    <my-mask :form="login" title="密码重置" @submit="submit" @closeMask="closeMask" v-if="edit"></my-mask>
   </div>
 </template>
 
 <script>
+  import api from '@/util/function'
+  import util from '@/util'
+  import md5 from 'js-md5'
+  import { mapState } from 'vuex'
+  import MyMask from '@/components/common/Mask'
   export default {
+    components: {
+      MyMask
+    },
     data() {
       return {
         formData: [
           {name: '邮寄地址', link: '/mobile/mailAddress'},
           {name: '算力收益地址', link: '/mobile/assetsAddress'},
-          {name: '密码重置', link: '1BTC'},
           {name: '常见问题', link: '/mobile/help'},
           {name: '意见反馈', link: '/mobile/advice'}
-        ]
+        ],
+        login: [{name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}, {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password'}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}],
+        edit: false
       }
+    },
+    methods: {
+      passwordReset () {
+        this.edit = true
+      },
+      closeMask () {
+        this.edit = false
+      },
+      submit (e) {
+        var form = e.target
+        var data = api.checkForm(form, 1)
+        if (!data) return false
+        data.password = md5(data.password)
+        data.password1 = md5(data.password1)
+        util.post('changeLoginPassword', {sign: api.serialize(Object.assign(data, {token: this.token}))}).then((res) => {
+          api.checkAjax(self, res, () => {
+            api.tips('修改成功')
+            this.closeMask()
+          })
+        })
+      }
+    },
+    mounted () {
+      this.$store.commit('SET_TITLE', '账户设置')
+    },
+    computed: {
+      ...mapState({
+        token: state => state.info.token
+      })
     }
   }
 </script>

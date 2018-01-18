@@ -278,7 +278,6 @@
       @include data_table
     }
     .mobile_box{
-      padding-top: 1rem;
       .data_title{
         @include flex(space-between)
         padding:0 .5rem;

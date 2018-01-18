@@ -3,8 +3,8 @@
     <template v-for="f in form">
       <div :class="['input', {addon: f.addon}, {disabled: f.edit}]" v-if="f.type!=='radio'">
         <!-- title -->
-        <span>{{f.title}}</span>
-        <span>*</span>
+        <span class="form_title">{{f.title}}</span>
+        <span class="form_icon">*</span>
         <!-- type -->
         <template v-if="!f.edit">
           <template v-if="f.type!=='select'">
@@ -32,7 +32,7 @@
         <!-- addon -->
         <template v-if="f.addon">
           <canvas id="code" width="90" height="40" v-if="f.addon===1" @click="changeCode"></canvas>
-          <div class="count_btn btn" v-if="f.addon===2" @click="getCode(f.value2, f.value3, $event)">{{str}}</div>
+          <div class="count_btn" v-if="f.addon===2" @click="getCode(f.value2, f.value3, $event)">{{str}}</div>
         </template>
         <!-- tips -->
         <span class="tips" :title="f.pattern&&check[f.pattern].tips" :error="(f.pattern&&check[f.pattern].error)||f.error" :tips="f.placeholder" :success="f.pattern&&check[f.pattern].success" v-if="!f.edit"></span>
@@ -68,7 +68,7 @@
     data () {
       return {
         str: '获取验证码',
-        check: {tel: {code: '^1[34578][0-9]{9}$', tips: '请输入11位手机号'}, password: {code: '^[0-9a-zA-Z_]{6,16}$', tips: '密码应在6-16位之间的字母数字'}, imgCode: {code: '^[0-9a-zA-Z]{4}$', tips: '请输入4位字符', error: '图形验证码错误，请重新输入'}, telCode: {code: '^[0-9]{6}$', tips: '请输入6位数字', success: '发送成功'}, idCard: {code: '^([0-9]{15}$|^[0-9]{18}$|^[0-9]{17}([0-9]|X|x))$', tips: '身份证号应是18位'}, bankCard: {code: '^[0-9]{16,21}$', tips: '请输入16至21位的银行卡号'}, computeAddress: {code: '^[0-9a-zA-Z]{34,}$', tips: '请输入至少34位的字符'}, money: {code: '^[2-9][0-9]|[0-9]{3,}$', tips: '请输入至少20的整数'}, coin: {code: '^[1-9][0-9]*|[1-9][0-9]*[.][0-9]{1,8}|0[.][0-9]{2}[1-9][0-9]{0,5}|0[.][1-9]{1}[0-9]{0,7}|0[.]0[1-9]{1}[0-9]{0,6}$', tips: '请输入大于或者等于0.001的整数或8位小数'}, float: {code: '^[0-9]+(.[0-9]{1,2})?$', tips: '请输入整数或两位小数'}, int: {code: '^[0-9]+$', tips: '请输入整数'}, bigMoney: {code: '^[1-9][0-9]{2,}$', tips: '请输入至少100的整数'}},
+        check: {tel: {code: '^1[34578][0-9]{9}$', tips: '请输入11位手机号'}, password: {code: '^[0-9a-zA-Z_]{6,16}$', tips: '密码应在6-16位之间的字母数字'}, imgCode: {code: '^[0-9a-zA-Z]{4}$', tips: '请输入4位字符', error: '图形验证码错误'}, telCode: {code: '^[0-9]{6}$', tips: '请输入6位数字', success: '发送成功'}, idCard: {code: '^([0-9]{15}$|^[0-9]{18}$|^[0-9]{17}([0-9]|X|x))$', tips: '身份证号应是18位'}, bankCard: {code: '^[0-9]{16,21}$', tips: '请输入16至21位的银行卡号'}, computeAddress: {code: '^[0-9a-zA-Z]{34,}$', tips: '请输入至少34位的字符'}, money: {code: '^[2-9][0-9]|[0-9]{3,}$', tips: '请输入至少20的整数'}, coin: {code: '^[1-9][0-9]*|[1-9][0-9]*[.][0-9]{1,8}|0[.][0-9]{2}[1-9][0-9]{0,5}|0[.][1-9]{1}[0-9]{0,7}|0[.]0[1-9]{1}[0-9]{0,6}$', tips: '请输入大于或者等于0.001的整数或8位小数'}, float: {code: '^[0-9]+(.[0-9]{1,2})?$', tips: '请输入整数或两位小数'}, int: {code: '^[0-9]+$', tips: '请输入整数'}, bigMoney: {code: '^[1-9][0-9]{2,}$', tips: '请输入至少100的整数'}},
         data: {card_type: '中国大陆身份证'}
       }
     },
@@ -82,8 +82,13 @@
         if (e.target.className) {
           e.target.className = ''
         }
+        if (!ele.value) return false
         var ff = ele.parentNode.parentNode.parentNode
-        api.checkFiled(ele, ff, this.isMobile)
+        if (ele.name === 'password1') {
+          api.checkFiled(ele, this.isMobile, ff.password)
+        } else {
+          api.checkFiled(ele, this.isMobile)
+        }
       },
       changeCode () {
         var ele = document.querySelector('#code')
@@ -94,28 +99,12 @@
         var form = ele.parentNode.parentNode.parentNode
         var telEle = form.dep_tel || form.mobile
         var imgCode = form.imgCode
-        var isTel = api.checkCode(telEle)
-        if (isTel) {
-          telEle.focus()
-          return false
-        }
+        if (api.checkOne(telEle, this.isMobile)) return false
         if (telEle.getAttribute('data-error') === 'true') {
-          api.setTips(telEle, 'error')
-          if (this.isMobile) {
-            api.tips('该用户已存在')
-          }
+          api.setTips(telEle, 'error', this.isMobile, '该用户已存在')
           return false
         }
-        if (imgCode) {
-          if (imgCode.value && imgCode.value.toLowerCase() !== api.getStorge('suanli').imgCode.toLowerCase()) {
-            api.setTips(imgCode, 'error')
-            return false
-          }
-          if (!imgCode.value) {
-            api.setTips(imgCode, 'null')
-            return false
-          }
-        }
+        if (api.checkOne(imgCode, this.isMobile)) return false
         if (price && num) {
           var money = price * num
           if (+this.balance < money) {
@@ -157,3 +146,33 @@
     }
   }
 </script>
+
+<style type="text/css" lang="scss">
+  @import '~assets/css/style.scss';
+  .form_field .input{
+    canvas,.count_btn{
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width:90px;
+      height: 34px;
+      line-height: 34px;
+      cursor: pointer;
+    }
+    .count_btn{
+      text-align: center;
+      background: #327fff;
+      color: #fff;
+      font-size: 14px;
+    }
+    @media screen and (max-width: $mobile) {
+      canvas,.count_btn{
+        height:28px;
+        line-height: 28px;
+        top: 10px;
+        right: 8px;
+        font-size: 12px;;
+      }
+    }
+  }
+</style>

@@ -161,14 +161,13 @@
         var form = document.querySelector('.data_form')
         var ele = document.querySelector('.count_btn')
         var telEle = form.dep_tel
-        var isTel = api.checkCode(telEle)
+        var isTel = api.checkOne(telEle, this.isMobile)
         if (isTel) {
           if (isTel === 1) {
             this.tips = telEle.placeholder
           } else {
             this.tips = telEle.title
           }
-          telEle.focus()
           return false
         }
         if (ele.getAttribute('disabled') === 'true') return false

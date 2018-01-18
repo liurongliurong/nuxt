@@ -256,19 +256,21 @@
     line-height:2;
     &.disabled{
       background: #f7f8fa;
-      & > span:nth-child(2){
+      span.form_icon{
         color: #ddd
       }
     }
-    & > span{
-      @include position(9,0,5,0)
-      right:auto;
-      &:first-child{
+    span{
+      &.form_title,&.form_icon,&.tips{
+        @include position(9,0,5,0)
+        right:auto;
+      }
+      &.form_title{
         width:70px;
         left:20px;
         @include mobile_hide
       }
-      &:nth-child(2){
+      &.form_icon{
         top:10px;
         bottom:10px;
         left:90px;
@@ -278,6 +280,13 @@
         @include mobile_hide
       }
       &.tips{
+        padding-left:25px;
+        font-size: 12px;
+        color:$red;
+        top:13px;
+        left:110%;
+        width:300px;
+        display: none;
         &:before{
           @include position(2,0,auto,auto)
           @include block(20)
@@ -288,12 +297,6 @@
           border-radius:5px;
           content:'!'
         }
-        padding-left:25px;
-        font-size: 12px;
-        color:$red;
-        top:13px;
-        left:110%;
-        width:300px;
         &:after{
           content:attr(tips)
         }
@@ -312,36 +315,21 @@
       &:focus{
         border-color:$blue
       }
-      &,&[data-status='valid']{
-        & ~ span.tips{
-          display:none
-        }
-      }
       &[data-status='invalid'],&[data-status='null'],&[data-status='error'],&[data-status='success']{
         border-color:$red;
         & ~ span.tips{
           display:block
         }
       }
+      &[data-status='error'] ~ span.tips:after{
+        content:attr(error)
+      }
+      &[data-status='invalid'] ~ span.tips:after{
+        content:attr(title)
+      }
       &[data-status='success']{
         border-color:$blue_border;
-      }
-      &[data-status='error']{
         & ~ span.tips{
-          &:after{
-            content:attr(error)
-          }
-        }
-      }
-      &[data-status='invalid']{
-        & ~ span{
-          &:after{
-            content:attr(title)
-          }
-        }
-      }
-      &[data-status='success']{
-        & ~ span{
           color:green;
           &:before{
             background:green;
@@ -353,53 +341,19 @@
         }
       }
       @media screen and (max-width: $mobile) {
-        padding-left:10px;
+        padding:0.3rem;
         border-color:$border;
-        line-height: 25px;
-        height:43px;
+        height:48px;
         font-size: 0.16rem;
-        &[data-status='invalid'],&[data-status='null'],&[data-status='error'],&[data-status='success']{
-          & ~ span.tips{
-            display:none
-          }
-        }
-      }
-    }
-    .select{
-      @include flex(space-between)
-      select{
-        width:33%;
-        height:32px;
-        line-height: 32px;
-        border:none;
+        border-width: 0 0 1px 0;
       }
     }
     select{
       height:29px;
       line-height: 29px
     }
-    canvas,.btn{
-      @include position(5,auto,5,5)
-      width:90px;
-      cursor: pointer;
-      @media screen and (max-width: $mobile) {
-        height:34px;
-        line-height: 34px
-      }
-    }
-    .btn{
-      text-align: center;
-      @include button($blue)
-      font-size: 14px;
-      line-height: 38px;
-      @media screen and (max-width: $mobile) {
-        line-height: 34px
-      }
-    }
-    &.addon{
-      input{
-        padding-right:100px;
-      }
+    &.addon input{
+      padding-right:100px;
     }
     .tips_info{
       @include position(10,auto,0,10)
@@ -407,6 +361,9 @@
       span:last-child{
         font-size: 12px
       }
+    }
+    @media screen and (max-width: $mobile) {
+      margin-bottom:0;
     }
   }
 // checkbox
@@ -434,23 +391,17 @@
 // form
   @mixin form($type:h,$text:0){
     width:100%;
-    h2{
-      font-size: 24px;
-      text-align:center;
-      color:$blue;
-      margin: 35px 0;
-    }
     .input{
       @include input
       @if $type == v {
         margin-bottom:35px;
-        & > span:last-child{
+        span.tips{
           top:56px;
           left:10px
         }
       }
       @if $text == 1 {
-        & > span:nth-child(1),& > span:nth-child(2){
+        span:nth-child(1),span:nth-child(2){
           display: none
         }
         input{
@@ -464,9 +415,6 @@
           bottom: 0;
         }
       }
-      @media screen and (max-width: $mobile) {
-        margin-bottom:15px;
-      }
     }
     label input{
       @include checkbox(18,0)
@@ -478,7 +426,10 @@
       line-height:2.6;
       margin: 20px 0;
       @media screen and (max-width: $mobile) {
-        line-height: 2.2
+        line-height: 2.2;
+        width: calc(100% - 0.6rem);
+        margin: 20px 0.3rem;
+        font-size: 16px;
       }
     }
   }

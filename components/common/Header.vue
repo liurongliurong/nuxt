@@ -16,7 +16,7 @@
             <span>|</span>
             <router-link to="/auth/login">登录</router-link>
           </template>
-          <router-link class="header_mobile iconfont" to="/mobile/personCenter" v-else>&#xe63f;</router-link>
+          <router-link class="header_mobile iconfont" to="/mobile/personalCenter" v-else>&#xe63f;</router-link>
           <span class="nav_link iconfont icon-more" v-if="!showNav" @click="showNavlink"></span>
           <span class="nav_link iconfont icon-close" v-if="showNav" @click="showNavlink"></span>
         </div>
@@ -47,7 +47,7 @@
           {title: 'BDC托管', path: '/bdc'},
           {title: '产业资讯', path: '/mobile/property'},
         ],
-        isBlueHeader: ['bdc', 'mobile-assetDetail', 'mobile-property', 'mobile-personCenter']
+        isBlueHeader: ['bdc', 'mobile-assetDetail', 'mobile-property', 'mobile-personalCenter']
       }
     },
     methods: {

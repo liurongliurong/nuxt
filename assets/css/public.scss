@@ -155,12 +155,7 @@ input::-webkit-input-placeholder {
           display: none
         }
         @media screen and (max-width: $mobile) {
-          .mobile_close {
-            display: block;
-          }
-          .icon_close {
-            display: none
-          }
+          display: none
         }
       }
       .popup_body{
@@ -213,6 +208,7 @@ input::-webkit-input-placeholder {
       }
     }
     @media screen and (max-width: $mobile) {
+      background: transparent;
       .popup_con{
         &:not(.middle){
           width:100vw;
@@ -220,7 +216,7 @@ input::-webkit-input-placeholder {
           bottom:0;
           left:0;
           transform: translate(0, 0);
-          max-height:80vh;
+          height: calc(100vh - 1.1rem);
         }
         &.middle {
           width:80%;
@@ -242,7 +238,7 @@ input::-webkit-input-placeholder {
           }
         }
         .form{
-          padding:0.3rem;
+          padding:0;
           overflow: auto;
           max-height: 70vh;
           .checkbox input{

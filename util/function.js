@@ -131,7 +131,13 @@ api.validityForm = (form, isMobile) => {
   for (var i = 0; i <= form.length - 2; i++) {
     var ele = form[i]
     if (ele.value) {
-      if (api.checkFiled(ele, form, isMobile)) {
+      var result = false
+      if (ele.name === 'password1') {
+        result = api.checkFiled(ele, isMobile, form.password)
+      } else {
+        result = api.checkFiled(ele, isMobile)
+      }
+      if (result) {
         if (ele.getAttribute('isChange')) {
           data[ele.name] = encodeURIComponent(ele.value)
         } else {
@@ -143,8 +149,7 @@ api.validityForm = (form, isMobile) => {
         break
       }
     } else {
-      isMobile && api.tips(ele.placeholder)
-      api.setTips(ele, 'null')
+      api.setTips(ele, 'null', isMobile, ele.placeholder)
       icon = 2
       n = i
       break
@@ -169,40 +174,47 @@ api.clearForm = (form) => {
     ele.setAttribute('disabled', false)
   }
 }
-api.checkFiled = (ele, form, isMobile) => {
-  if (!(ele.checkValidity ? ele.checkValidity() : api.check(ele.pattern || ele.getAttribute('pattern'), ele.value))) {
-    api.setTips(ele, 'invalid')
-    isMobile && api.tips(ele.title)
+api.checkFiled = (ele, isMobile, password) => {
+  if (api.checkEle(ele)) {
+    api.setTips(ele, 'invalid', isMobile, ele.title)
     return false
-  } else if ((ele.name === 'imgCode' && ele.value && (ele.value.toLowerCase() !== api.getStorge('suanli').imgCode.toLowerCase())) || (ele.name === 'password1' && form.password.value && form.password1.value && ele.value !== form.password.value)) {
-    api.setTips(ele, 'error')
-    if (isMobile && (ele.name === 'password1')) {
-      api.tips('两次密码不一致')
-    } else if (isMobile && (ele.name === 'imgCode')) {
-      api.tips('图形验证码错误')
-    }
+  }
+  if (ele.name === 'imgCode' && (ele.value.toLowerCase() !== api.getStorge('suanli').imgCode.toLowerCase())) {
+    api.setTips(ele, 'error', isMobile, '图形验证码错误')
+    return false
+  } else if (ele.name === 'password1' && password.value && ele.value !== password.value) {
+    api.setTips(ele, 'error', isMobile, '两次密码不一致')
+    return false
+  }
+  return true
+}
+api.checkEle = (ele) => {
+  if (ele.checkValidity ? ele.checkValidity() : api.check(ele.pattern || ele.getAttribute('pattern'), ele.value)) {
     return false
   } else {
     return true
   }
 }
-api.checkCode = (ele) => {
+api.checkOne = (ele, isMobile) => {
   if (ele.value) {
-    if (!api.checkFiled(ele)) {
-      api.setTips(ele, 'invalid')
+    if (!api.checkFiled(ele, isMobile)) {
       return 2
     }
   } else {
-    api.setTips(ele, 'null')
+    api.setTips(ele, 'null', isMobile, ele.placeholder)
     return 1
   }
 }
-api.setTips = (ele, str) => {
-  ele.setAttribute('data-status', str)
-  ele.focus()
-  setTimeout(() => {
-    ele.setAttribute('data-status', '')
-  }, 2000)
+api.setTips = (ele, str, isMobile, text) => {
+  // ele.focus()
+  if (isMobile) {
+    api.tips(text)
+  } else {
+    ele.setAttribute('data-status', str)
+    setTimeout(() => {
+      ele.setAttribute('data-status', '')
+    }, 3000)
+  }
 }
 api.tips = (str, callback) => {
   var ele = document.querySelector('.toast') || document.getElementsByClassName('toast')[0]
