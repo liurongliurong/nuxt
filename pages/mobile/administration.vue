@@ -1,10 +1,10 @@
 <template>
   <div class="administration">
     <div class="form_list">
-      <section v-for="item in formData" class="form_item">
+      <router-link v-for="item in formData" :to="item.link" class="form_item">
         <span class="name">{{item.name}}</span>
         <em></em>
-      </section>
+      </router-link>
     </div>
   </div>
 </template>
@@ -14,11 +14,11 @@
     data() {
       return {
         formData: [
-          {name: '邮寄地址', link: '1BTC'},
-          {name: '算力收益地址', link: '1BTC'},
+          {name: '邮寄地址', link: '/mobile/mailAddress'},
+          {name: '算力收益地址', link: '/mobile/assetsAddress'},
           {name: '密码重置', link: '1BTC'},
-          {name: '常见问题', link: '1BTC'},
-          {name: '意见反馈', link: '1天'}
+          {name: '常见问题', link: '/mobile/help'},
+          {name: '意见反馈', link: '/mobile/advice'}
         ]
       }
     }
