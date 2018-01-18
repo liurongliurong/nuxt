@@ -1,6 +1,6 @@
 <template>
   <div class="assets_address">
-    <div class="address_list">
+    <div class="address_lists">
       <section v-for="item in formData" class="item">
         <div class="name">
           <aside class="left">
@@ -52,9 +52,9 @@
   padding: 1rem 0.3rem 0;
   background: #f4f4f4;
 
-  .address_list {
+  .address_lists {
     .item {
-      margin-top: 0.2rem;
+      margin-bottom: 0.2rem;
       background: #fff;
       padding: 0 0.3rem;
       border-bottom: solid 1px #eee;
@@ -77,6 +77,7 @@
           }
         }
         .right {
+          @include flex(flex-end, center);
           font-size: 0.28rem;
           color: #999;
           span {
@@ -117,7 +118,7 @@
 
   .button {
     width: 100%;
-    height: 0.8rem;
+    height: 1rem;
     @include flex(center, center);
     margin-top: 1rem;
     background: #327fff;

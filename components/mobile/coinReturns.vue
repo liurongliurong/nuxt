@@ -43,13 +43,44 @@
     methods: {
       getCoinReturns(item) {
         this.active = item.active
+      },
+      fetchData (sort) {
+        this.nowEdit = sort || 0
+        this.list = []
+        let data = {token: this.token, product_hash_type: this.nowEdit + 1, page: this.now, sort: ''}
+        util.post('userCoinList', {sign: api.serialize(data)}).then(
+          res => {
+            api.checkAjax(this, res, () => {
+              this.list = res.value_list
+              this.showImg = !res.value_list.length
+              if (this.now > 1) return false
+              this.len = Math.ceil(res.total_num / 15)
+            })
+        })
+      },
+      getData () {
+        if (this.token !== 0) {
+          util.post('userCoin', {sign: api.serialize({token: this.token, product_hash_type: '1'})}).then(
+            res => {
+              api.checkAjax(this, res, () => {
+                this.data = res
+              })
+            })
+        } else {
+          setTimeout(() => {
+            this.getData()
+          }, 5)
+        }
       }
     },
     mounted () {
+      this.getData()
+      this.fetchData()
     },
     computed: {
       ...mapState({
         token: state => state.info.token,
+        hashType: state => state.hashType
       })
     }
   }

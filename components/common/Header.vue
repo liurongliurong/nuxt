@@ -47,7 +47,8 @@
           {title: 'BDC托管', path: '/bdc'},
           {title: '产业资讯', path: '/mobile/property'},
         ],
-        isBlueHeader: ['bdc', 'mobile-assetDetail', 'mobile-property', 'mobile-personalCenter']
+        isBlueHeader: ['bdc', 'mobile-assetDetail', 'mobile-property', 'mobile-personalCenter'],
+        noHeader: ['mobileIndex', 'auth-login', 'auth-regist', 'auth-passwordRetrieval']
       }
     },
     methods: {
@@ -55,6 +56,9 @@
         this.showNav = !this.showNav
       },
       showTitle() {
+        if (this.noHeader.indexOf(this.$route.name) > -1) {
+          return false;
+        }
         if (this.isBlueHeader.indexOf(this.$route.name) > -1) {
           this.headerType = 'blue'
         } else {
@@ -99,7 +103,7 @@
     position: fixed;
     top:0;
     width: 100%;
-    z-index: 9999;
+    z-index: 1000002;
     background: #fff;
     &.blue.scroll {
       background: $blue;

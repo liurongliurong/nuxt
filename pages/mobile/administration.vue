@@ -27,8 +27,7 @@
     data() {
       return {
         formData: [
-          {name: '邮寄地址', link: '/mobile/mailAddress'},
-          {name: '算力收益地址', link: '/mobile/assetsAddress'},
+          {name: '邮寄地址', link: '/mobile/address'},
           {name: '常见问题', link: '/mobile/help'},
           {name: '意见反馈', link: '/mobile/advice'}
         ],

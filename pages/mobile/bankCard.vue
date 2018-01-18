@@ -14,6 +14,7 @@
 <script>
   import util from '@/util'
   import api from '@/util/function'
+  import { mapState } from 'vuex'
 
   export default {
     data() {
@@ -25,17 +26,23 @@
       }
     },
     mounted() {
-      this.$store.commit('SET_TITLE', '邮寄地址')
+      this.$store.commit('SET_TITLE', '银行卡管理')
       this.getBankCard()
     },
     methods: {
       getBankCard() {
-        util.post('show_bankcard', api.serialize({token: 0})).then(
+        util.post('show_bankcard', {sign: api.serialize({token: this.token, product_hash_type: '1'})}).then(
           res => {
             console.log(res)
           }
         )
       }
+    },
+    computed: {
+      ...mapState({
+        token: state => state.info.token,
+        hashType: state => state.hashType
+      })
     }
   }
 </script>

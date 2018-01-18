@@ -152,8 +152,8 @@
   .form_field .input{
     canvas,.count_btn{
       position: absolute;
-      top: 5px;
-      right: 5px;
+      top: 8px;
+      right: 8px;
       width:90px;
       height: 34px;
       line-height: 34px;
@@ -167,11 +167,12 @@
     }
     @media screen and (max-width: $mobile) {
       canvas,.count_btn{
-        height:28px;
+        width: 80px;
+        height: 28px;
         line-height: 28px;
         top: 10px;
-        right: 8px;
-        font-size: 12px;;
+        right: 10px;
+        font-size: 12px;
       }
     }
   }

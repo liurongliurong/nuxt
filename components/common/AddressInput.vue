@@ -2,8 +2,8 @@
   <div class="form_field">
     <template v-for="f in form">
       <div class="input" v-if="f.type!=='radio'">
-        <span>{{f.title}}</span>
-        <span>*</span>
+        <span class="form_title">{{f.title}}</span>
+        <span class="form_icon">*</span>
         <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check.code" :isChange="f.isChange" :title="f.pattern&&check.tips" v-if="f.type!=='select'" :value="val&&val[f.name]">
         <select-city :val="val" v-else></select-city>
         <span class="tips" :title="f.pattern&&check.tips" :tips="f.placeholder"></span>
