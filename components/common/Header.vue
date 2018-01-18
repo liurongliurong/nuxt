@@ -49,7 +49,7 @@
           {title: '产业资讯', path: '/mobile/property'},
         ],
         isFixedHeader: ['index', 'bdc', 'mobile-cloudProduct','mobile-assetDetail', 'mobile-property', 'mobile-personcenter'],
-        isHeader: ['mobile-order', 'mobile-administration', 'mobile-assetsAddress']
+        isHeader: ['mobile-order', 'mobile-administration', 'mobile-assetsAddress', 'mobile-mailAddress', 'mobile-bankCard']
       }
     },
     methods: {
