@@ -10,16 +10,6 @@
       </div>
       <em></em>
     </div>
-    <!-- <div class="price">
-      <div class="left">
-        <p>账户余额 (元)</p>
-        <h4>{{balance_account|decimal}}</h4>
-      </div>
-      <div class="right">
-        <button style="background:#26a2ff;"  @click="openMask(1)" class="button1">充 值</button>
-        <button @click="openMask(2)" class="button1">提 现</button>
-      </div>
-    </div> -->
     <div class="all_list">
       <router-link :to="n.link" class="route" v-for="n,k in nav" :key="k">
         <div class="left">
@@ -30,24 +20,13 @@
       </router-link>
     </div>
     <button @click="logout" class="back">退出</button>
-    <MyMask :form="edit===3?[]:Withdrawals" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
-      <p slot="fee">手续费：{{total_price * fee|decimal}}元<span class="fee">({{fee*100+'%'}})</span></p>
-      <opr-select slot="select_opr" :no="maskNo" @closeMask="closeMask"></opr-select>
-    </MyMask>
   </div>
 </template>
 
 <script>
-  import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
-  import FormField from '@/components/common/FormField'
-  import MyMask from '@/components/common/Mask'
-  import OprSelect from '@/components/common/OprSelect'
   export default {
-    components: {
-      FormField, MyMask, OprSelect
-    },
     data () {
       return {
         nav: [
@@ -58,127 +37,25 @@
           {name: '银行卡管理', link: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
           {name: '收益地址管理', link: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'},
           {name: '账户设置', link: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'}
-          //{name: '地址管理', link: '/mobile/address', icon: 'icon-dingwei'},
-          //{name: '常见问题', link: '/mobile/help', icon: 'icon-yiwen'},
-          //{name: '意见反馈', link: '/mobile/advice', icon: 'icon-xiai'}
-        ],
-        withdrawals: [
-          {name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0},
-          {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
-          {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
-        ],
-        balance_account: '',
-        edit: 0,
-        fee: 0,
-        total_price: 0,
-        feedetail: '',
-        product_hash_type: '',
-        title: '',
-        maskNo: 0
+        ]
       }
     },
     computed: {
       ...mapState({
-        token: state => state.info.token,
-        isMobile: state => state.isMobile,
-        mobile: state => state.info.mobile,
-        token: state => state.info.token,
-        true_name: state => state.info.true_name,
-        bank_card: state => state.info.bank_card
+        mobile: state => state.info.mobile
       })
     },
     filters: {
-      format: api.telReadable,
-      decimal: api.decimal
+      format: api.telReadable
     },
     methods: {
       logout () {
         this.$router.push({name: 'index'})
         this.$store.commit('LOGOUT')
-      },
-      openMask (k) {
-        this.total_price = 0
-        if (!(this.true_name && this.true_name.status === 1)) {
-          this.goAuth ('立即认证', 0)
-          return false
-        }
-        if (k === 1) {
-          this.$store.commit('SET_URL', this.$route.path)
-          this.$router.push({name: 'mobile-recharge'})
-          return false
-        }
-        if (k === 2) {
-          if (!(this.bank_card && this.bank_card.status === 1)) {
-            this.goAuth ('立即绑定', 1)
-            return false
-          }
-          if (+this.balance_account <= 0) {
-            api.tips('您的账户余额不足，不能提现')
-            return false
-          }
-          this.title = '提现'
-          var requestUrl = 'showWithdraw'
-          var data = {token: this.token}
-          var self = this
-          util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.feedetail = res
-              self.fee = res.withdraw_fee
-              self.withdrawals[0].value2 = parseInt(res.balance_account)
-            })
-          })
-        }
-      },
-      closeMask () {
-        this.edit = 0
-        document.body.style.overflow = 'auto'
-      },
-      submit () {
-        var form = document.querySelector('.form')
-        var data = api.checkForm(form, this.isMobile)
-        var url = 'withdraw'
-        var sendData = {token: this.token}
-        var tipsStr = '提现成功'
-        if (!data) return false
-        form.btn.setAttribute('disabled', true)
-        var self = this
-        util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.closeEdit()
-            api.tips(tipsStr)
-          }, form.btn)
-        })
-      },
-      onChange (obj) {
-        var amount = this.withdrawals[0].value2
-        if (parseFloat(obj.e.target.value) > parseFloat(amount)) {
-          obj.e.target.value = amount
-        }
-        this.total_price = obj.e.target.value
-      },
-      getData () {
-        if (this.token !== 0) {
-          var self = this
-          util.post('myAccount', {sign: api.serialize({token: this.token})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.balance_account = res.balance_account
-            })
-          })
-        } else {
-          setTimeout(() => {
-            this.getData()
-          }, 5)
-        }
-      },
-      goAuth (str, n) {
-        this.title = str
-        this.maskNo = n
-        this.edit = 3
       }
     },
     mounted () {
       this.$store.commit('SET_TITLE', '个人中心')
-      this.getData()
     }
   }
 </script>
@@ -248,10 +125,11 @@
           }
         }
         em{
-          @include block(8);
+          @include block(5);
           @include arrow(right, #c7c7c9);
-          width: 0.17rem;
-          height:0.17rem;
+          width: 0.1rem;
+          height:0.1rem;
+          border-width: 1px;
         }
         &:nth-child(1) .left .icon,&:nth-child(5) .left .icon{
           color:#327FFF

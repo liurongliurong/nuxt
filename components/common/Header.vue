@@ -16,7 +16,7 @@
             <span>|</span>
             <router-link to="/auth/login">登录</router-link>
           </template>
-          <router-link class="header_mobile iconfont" to="/mobile/personcenter" v-else>&#xe63f;</router-link>
+          <router-link class="header_mobile iconfont" to="/mobile/personCenter" v-else>&#xe63f;</router-link>
           <span class="nav_link iconfont icon-more" v-if="!showNav" @click="showNavlink"></span>
           <span class="nav_link iconfont icon-close" v-if="showNav" @click="showNavlink"></span>
         </div>
