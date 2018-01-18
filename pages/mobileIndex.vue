@@ -79,7 +79,7 @@
             <a @click="goToPage('/auth/login', 3)">登录</a>
           </div>
           <div class="login" v-else>
-            <a @click="goToPage('/mobile/personcenter', 3)">个人中心</a>
+            <a class="iconfont" @click="goToPage('/mobile/personcenter', 3)">&#xe63f;</a>
           </div>
         </header>
         <div class="introduce">
@@ -183,7 +183,7 @@ export default {
   max-height: 100vh;
   background: #243461;
   padding-top: 0;
-  
+
   .page-common {
     width: 100% !important;
     height: 100vh !important;

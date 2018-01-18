@@ -21,6 +21,9 @@
           {name: '意见反馈', link: '/mobile/advice'}
         ]
       }
+    },
+    mounted() {
+      this.$store.commit('SET_TITLE', '账户设置')
     }
   }
 </script>
