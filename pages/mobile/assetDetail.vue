@@ -55,10 +55,10 @@
   .asset_detail {
     width: 100%;
     font-size: 0.3rem;
-    padding-top: 0.88rem;
+    padding-top: 0;
     .form_title {
       @include flex(center, center, column);
-      padding: 0.3rem 0 0.45rem;
+      padding: 1rem 0 0.45rem;
       color: #fff;
       font-size: 0.3rem;
       background: #327fff;

@@ -874,8 +874,5 @@
         }
       }
     }
-    @media screen and (max-width: 768px) {
-      min-height: calc(100vh - 0.88rem);
-    }
   }
 </style>

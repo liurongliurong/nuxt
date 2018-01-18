@@ -32,8 +32,7 @@
   width: 100%;
   font-size: 0.3rem;
   background: #f4f4f4;
-  padding-top: 0.3rem;
-
+  padding-top: 1.1rem;
   .form_list {
     padding-left: 0.3rem;
     background: #fff;

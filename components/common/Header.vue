@@ -2,7 +2,7 @@
   <header class="header">
     <PcHeader class="pc_header" v-if="isMobile===0"></PcHeader>
     <div :class="['mobile_header', headerType, {scroll}]" v-if="isMobile===1&&showTitle()">
-      <div class="header_conten">
+      <div class="mobile_header_box">
         <div class="logo">
           <nuxt-link to="/">
             <img class="fixed_logo" :src="require('@/assets/images/mobile/logo3.png')">
@@ -10,19 +10,18 @@
           </nuxt-link>
         </div>
         <div class="title">{{title}}</div>
-        <div class="mobile_headerRight">
-          <!-- <span class="icon iconfont icon-geren" v-if="token === 0"></span> -->
+        <div class="header_right">
           <template v-if="token === 0">
             <router-link to="/auth/regist">注册</router-link>
             <span>|</span>
             <router-link to="/auth/login">登录</router-link>
           </template>
           <router-link class="header_mobile iconfont" to="/mobile/personcenter" v-else>&#xe63f;</router-link>
-          <span class="navlink icon iconfont icon-more" v-if="!showNav" @click="showNavlink"></span>
-          <span class="navlink icon iconfont icon-close" v-if="showNav" @click="showNavlink"></span>
+          <span class="nav_link iconfont icon-more" v-if="!showNav" @click="showNavlink"></span>
+          <span class="nav_link iconfont icon-close" v-if="showNav" @click="showNavlink"></span>
         </div>
       </div>
-      <div class="mobile_navlink" v-if="showNav" @click="showNavlink">
+      <div class="mobile_header_nav" v-if="showNav" @click="showNavlink">
         <div class="white_bg">
           <nuxt-link :to="i.path" v-for="i,k in navLink" :key="k">{{i.title}}</nuxt-link>
         </div>
@@ -48,8 +47,7 @@
           {title: 'BDC托管', path: '/bdc'},
           {title: '产业资讯', path: '/mobile/property'},
         ],
-        isFixedHeader: ['index', 'bdc', 'mobile-cloudProduct','mobile-assetDetail', 'mobile-property', 'mobile-personcenter'],
-        isHeader: ['mobile-order-status', 'mobile-administration', 'mobile-assetsAddress', 'minerShop-detail', 'minerShop-miner-type', 'minerShop-pay', 'minerShop-paySuccess']
+        isBlueHeader: ['bdc', 'mobile-assetDetail', 'mobile-property', 'mobile-personCenter']
       }
     },
     methods: {
@@ -57,15 +55,12 @@
         this.showNav = !this.showNav
       },
       showTitle() {
-        if (this.isFixedHeader.indexOf(this.$route.name) > -1) {
-          this.headerType = 'fixed'
-          return true
-        }
-        if (this.isHeader.indexOf(this.$route.name) > -1) {
+        if (this.isBlueHeader.indexOf(this.$route.name) > -1) {
+          this.headerType = 'blue'
+        } else {
           this.headerType = ''
-          return true
         }
-        return false
+        return true
       },
       scrollFunc (e) {
         if (!this.headerType) return false
@@ -101,15 +96,18 @@
   @import '~assets/css/style.scss';
   .mobile_header{
     height: 0.88rem;
-    &.scroll {
+    position: fixed;
+    top:0;
+    width: 100%;
+    z-index: 9999;
+    background: #fff;
+    &.blue.scroll {
       background: $blue;
     }
-    &.fixed {
-      position: fixed;
-      top:0;
-      width: 100%;
-      z-index: 9999;
-      .header_conten {
+    &.blue {
+      background: transparent;
+      .mobile_header_box {
+        border-bottom: 0;
         &,a {
           color: #fff;
         }
@@ -123,7 +121,7 @@
         }
       }
     }
-    .header_conten{
+    .mobile_header_box{
       width: 100%;
       height: 100%;
       display: flex;
@@ -153,18 +151,18 @@
         font-size: 0.32rem;
         letter-spacing: 0.05rem;
       }
-      .mobile_headerRight{
+      .header_right{
         position: relative;
         .header_mobile{
           font-size: 0.32rem;
           margin-right: 0.28rem;
         }
-        .navlink{
+        .nav_link{
           font-size: 0.37rem;
         }
       }
     }
-    .mobile_navlink{
+    .mobile_header_nav{
       position: fixed;
       top: 0.88rem;
       width: 100%;

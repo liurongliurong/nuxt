@@ -1,5 +1,5 @@
 <template>
-  <div class="personcenter">
+  <div class="person_center">
     <div class="person_header"> 
       <div class="left">
         <div class="img"><img src="../../assets/images/jie-blue.png"/></div>
@@ -185,10 +185,12 @@
 
 <style type="text/css" lang="scss">
   @import '../../assets/css/style.scss';
-  .personcenter{
+  .person_center{
     width: 100%;
     height: 100%;
     background: #f4f4f4;
+    padding-top: 0;
+    padding-bottom: 1rem;
     
     .person_header{
       width: 100%;

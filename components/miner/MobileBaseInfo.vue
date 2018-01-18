@@ -2,6 +2,7 @@
   <div class="mobile_base_info">
     <div class="img">
       <img :src="detail.product_img||detail.minerPicture" alt="">
+      <div class="bg"></div>
     </div>
     <div class="first_box">
       <div class="base_title">
@@ -54,9 +55,19 @@
   .mobile_base_info{
     background: $white;
     .img{
+      position: relative;
       text-align: center;
-      padding: 5% 20%;
+      padding: 10% 20%;
       margin-top: -1px;
+      .bg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: linear-gradient(to bottom, transparent, rgba(8,6,6,.2));
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=transparent, endColorstr=rgba(8,6,6,.2),GradientType=0 );
+      }
     }
     .first_box{
       padding: 15px;

@@ -80,9 +80,9 @@
       <div class="detail_btn">
         <button @click="getBaoquan">查看保全</button>
       </div>
-      <div class="detail_box">
+      <!-- <div class="detail_box">
         <div class="agreement_content" v-html="(orderType !== 3?data.machine_agreement:data.prProtocolSpeciaification)||'暂无'"></div>
-      </div>
+      </div> -->
     </div>
     <div v-if="show" class="agreement_text">
       <template v-if="orderType!==3">
@@ -207,7 +207,6 @@
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .order_detail{
-    min-height:calc(100vh - 45px);
     padding-bottom:61px;
     .pc_box{
       padding:15px;
@@ -245,14 +244,13 @@
     }
     .mobile_box{
       background: #f4f4f4;
-      min-height:calc(100vh - 106px);
+      min-height: calc(100vh - 0.88rem);
+      padding-bottom: 57px;
       .detail_box{
         background: #fff;
         color:$light_text;
         padding:0.3rem;
-        &:first-child{
-          border-top:1px solid $border;
-        }
+        margin-bottom:0.2rem;
         .data_item{
           @include flex(space-between)
           line-height: 2;
@@ -318,9 +316,6 @@
             }
           }
         }
-        &:not(:last-child){
-          margin-bottom:0.2rem;
-        }
       }
       .detail_btn{
         @include mobile_footer_btn
@@ -340,6 +335,9 @@
           @include button($blue)
         }
       }
+    }
+    @media screen and (max-width: 768px) {
+      padding-bottom: 0;
     }
   }
 </style>
