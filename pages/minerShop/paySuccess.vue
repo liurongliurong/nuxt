@@ -166,7 +166,7 @@
         background: #61de44;
         .icon_success {
           @include right(18, 12)
-              border-width: 0 0 2px 2px;
+          border-width: 0 0 2px 2px;
         }
       }
       h3 {
@@ -183,6 +183,10 @@
         @include button($blue, 3px)
         margin-top: 0.3rem;
       }
+    }
+    @media screen and (max-width: 768px) {
+      min-height: calc(100vh - 0.88rem);
+      background: #fff;
     }
   }
 </style>

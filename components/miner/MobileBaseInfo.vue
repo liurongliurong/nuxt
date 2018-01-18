@@ -56,6 +56,7 @@
     .img{
       text-align: center;
       padding: 5% 20%;
+      margin-top: -1px;
     }
     .first_box{
       padding: 15px;

@@ -49,7 +49,7 @@
           {title: '产业资讯', path: '/mobile/property'},
         ],
         isFixedHeader: ['index', 'bdc', 'mobile-cloudProduct','mobile-assetDetail', 'mobile-property', 'mobile-personcenter'],
-        isHeader: ['mobile-order', 'mobile-administration', 'mobile-assetsAddress']
+        isHeader: ['mobile-order-status', 'mobile-administration', 'mobile-assetsAddress', 'minerShop-detail', 'minerShop-miner-type', 'minerShop-pay', 'minerShop-paySuccess']
       }
     },
     methods: {
@@ -130,9 +130,12 @@
       justify-content: space-between;
       padding: 0 0.3rem;
       line-height: 0.88rem;
+      border-bottom: 1px solid $border;
       &,a {
         color: $text;
         font-size: 12px;
+      }
+      a {
         margin: 0 5px;
       }
       .logo {
