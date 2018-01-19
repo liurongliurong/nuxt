@@ -16,11 +16,9 @@
             <span>|</span>
             <router-link to="/auth/login">登录</router-link>
           </template>
-          <div v-else>
-            <span class="header_mobile iconfont" @click="showNavlink('person')">&#xe63f;</span>
-            <span class="nav_link iconfont icon-more" @click="showNavlink('product')"></span>
-            <!-- <span class="nav_link iconfont icon-close" v-if="showNav" @click="showNavlink('product')"></span> -->
-          </div>
+          <span class="header_mobile iconfont" v-else @click="showNavlink('person')">&#xe63f;</span>
+          <span class="nav_link iconfont icon-more" v-if="showNav !== 'product'" @click="showNavlink('product')"></span>
+          <span class="nav_link iconfont icon-close" v-if="showNav === 'product'" @click="showNavlink('product')"></span>
         </div>
       </div>
       <div class="mobile_header_nav" v-if="showNav !== ''" @click="showNavlink">
@@ -29,7 +27,7 @@
             <span>{{i.title}}</span>
             <em></em>
           </nuxt-link>
-          <div class="item" v-if="token !== 0">
+          <div class="item" v-if="token !== 0 && showNav === 'person'">
             <span>{{mobile}}</span>
             <span @click="logout()">退出</span>
           </div>
@@ -58,6 +56,7 @@
           {title: '产业资讯', path: '/mobile/property'},
         ],
         navPerson: [
+          {title: '我的资产', path: '/mobile/property', icon: 'icon-31shoucangxuanzhong'},
           {title: '我的订单', path: '/mobile/order/0', icon: 'icon-31shoucangxuanzhong'},
           {title: '消息中心', path: '/mobile/message', icon: 'icon-31wangwangxuanzhong'},
           {title: '账户流水', path: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
