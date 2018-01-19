@@ -1,6 +1,6 @@
 <template>
   <div class="person_center">
-    <div class="person_header"> 
+    <div class="person_header">
       <div class="left">
         <div class="img"><img src="../../assets/images/jie-blue.png"/></div>
         <div class="cen">
@@ -34,8 +34,8 @@
           {name: '消息中心', link: '/mobile/message', icon: 'icon-31wangwangxuanzhong'},
           {name: '账户流水', link: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
           {name: '个人认证', link: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
-          {name: '银行卡管理', link: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
-          {name: '收益地址管理', link: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'},
+          {name: '银行卡管理', link: '/mobile/bankCard', icon: 'icon-wodezichan'},
+          {name: '收益地址管理', link: '/mobile/assetsAddress', icon: 'icon-pinpaizhuanxiang'},
           {name: '账户设置', link: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'}
         ]
       }
@@ -68,7 +68,7 @@
     background: #f4f4f4;
     padding-top: 0;
     padding-bottom: 1rem;
-    
+
     .person_header{
       width: 100%;
       background:#327fff;
