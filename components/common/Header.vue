@@ -29,6 +29,10 @@
             <span>{{i.title}}</span>
             <em></em>
           </nuxt-link>
+          <div class="item" v-if="token !== 0">
+            <span>{{mobile}}</span>
+            <span @click="logout()">退出</span>
+          </div>
         </div>
       </div>
     </div>
@@ -79,7 +83,7 @@
         if (this.noHeader.indexOf(this.$route.name) > -1) {
           return false;
         }
-        
+
         this.headerType = this.isBlueHeader.indexOf(this.$route.name) > -1 ? 'blue' : ''
         return true
       },
@@ -90,6 +94,10 @@
 
         let scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
         this.scroll = scrollTop > 0
+      },
+      logout () {
+        this.$router.push({name: 'index'})
+        this.$store.commit('LOGOUT')
       }
     },
     computed: {
@@ -192,6 +200,7 @@
       .white_bg{
         width: 100%;
         height: auto;
+        background: #fff;
         .item{
           width: 100%;
           height: 0.88rem;

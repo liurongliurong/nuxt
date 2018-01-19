@@ -89,6 +89,10 @@
               <span>{{i.title}}</span>
               <em></em>
             </nuxt-link>
+            <div class="item" v-if="token !== 0">
+              <span>{{mobile}}</span>
+              <span @click="logout()">退出</span>
+            </div>
           </div>
         </div>
         <div class="introduce">
@@ -193,10 +197,15 @@ export default {
       this.showNav = this.showNav === type ? '' : type
       this.navList = type === 'person'? [...this.navPerson] : []
     },
+    logout () {
+      this.$router.push({name: 'index'})
+      this.$store.commit('LOGOUT')
+    }
   },
   computed: {
     ...mapState({
-      token: state => state.info.token
+      token: state => state.info.token,
+      mobile: state => state.info.mobile
     })
   }
 }
