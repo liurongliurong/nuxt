@@ -1,5 +1,5 @@
 <template>
-  <div class="coin_returns">
+  <div class="coin_returns" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
     <div class="form_title">
       <span v-for="item in formTitle" @click="getCoinReturns(item)" :class="{ item_active: active===item.active }">
         {{item.name}}
@@ -14,6 +14,7 @@
         <span class="content_right">+{{item.paid_amount}}</span>
       </section>
     </div>
+    <p v-if="loading" class="load_more">加载中······</p>
   </div>
 </template>
 
@@ -21,53 +22,57 @@
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
+  import Vue from 'vue'
+  import { InfiniteScroll } from 'mint-ui'
+  Vue.use(InfiniteScroll)
+
   export default {
     name: 'coinReturns',
     data () {
       return {
         active: 'btc',
+        coinType: 1,
+        page: 1,
+        length: 0,
         formTitle: [
-          {name: 'BTC收益明细', active: 'btc'}
+          {name: 'BTC收益明细', active: 'btc', type: 1}
         ],
-        formData: [
-        ]
+        formData: [],
+        loading: false
       }
     },
     methods: {
       getCoinReturns(item) {
         this.active = item.active
+        this.coinType = item.type
       },
-      fetchData (sort) {
-        let coinType = sort || 0
-        this.formData = []
-        let data = {token: this.token, product_hash_type: coinType, page: 1, sort: ''}
+      fetchData (sort = 1) {
+        this.coinType = sort
+        let data = {token: this.token, product_hash_type: this.coinType, page: this.page, sort: ''}
         util.post('userCoinList', {sign: api.serialize(data)}).then(
           res => {
             api.checkAjax(this, res, () => {
-              this.formData = res.value_list
-              // this.showImg = !res.value_list.length
-              // if (this.now > 1) return false
-              // this.len = Math.ceil(res.total_num / 15)
+              this.length = res.total_num
+              for (let i = 0, len = res.value_list.length; i < len; i ++) {
+                this.formData.push(res.value_list[i])
+              }
             })
-        })
+          })
+      },
+      loadMore () {
+        if (this.formData.length < this.length ) {
+          this.loading = true
+          this.page ++
+          this.fetchData(this.coinType)
+          setTimeout(() => {
+            this.loading = false
+          }, 1000)
+        } else {
+          this.loading = false
+        }
       }
-      // getData () {
-      //   if (this.token !== 0) {
-      //     util.post('userCoin', {sign: api.serialize({token: this.token, product_hash_type: '1'})}).then(
-      //       res => {
-      //         api.checkAjax(this, res, () => {
-      //           this.data = res
-      //         })
-      //       })
-      //   } else {
-      //     setTimeout(() => {
-      //       this.getData()
-      //     }, 5)
-      //   }
-      // }
     },
     mounted () {
-      // this.getData()
       if (this.token !== 0) {
         this.fetchData()
       } else {
@@ -132,6 +137,11 @@
           color: #ff721f;
         }
       }
+    }
+    .load_more{
+      height: 1.3rem;
+      text-align: center;
+      line-height: 1.3rem;
     }
   }
 </style>
