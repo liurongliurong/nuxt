@@ -53,9 +53,6 @@
         this.$router.push({name: 'index'})
         this.$store.commit('LOGOUT')
       }
-    },
-    mounted () {
-      this.$store.commit('SET_TITLE', '个人中心')
     }
   }
 </script>

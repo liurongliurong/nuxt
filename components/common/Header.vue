@@ -23,10 +23,10 @@
       </div>
       <div class="mobile_header_nav" v-if="showNav !== ''" @click="showNavlink">
         <div class="white_bg">
-          <nuxt-link :to="i.path" v-for="i,k in navList" :key="k" class="item">
+          <a href="javascript:;" @click="goPage(i.title,i.path)" v-for="i,k in navList" :key="k" class="item">
             <span>{{i.title}}</span>
             <em></em>
-          </nuxt-link>
+          </a>
           <div class="item" v-if="token !== 0 && showNav === 'person'">
             <span>{{mobile}}</span>
             <span @click="logout()">退出</span>
@@ -60,7 +60,7 @@
           {title: '我的订单', path: '/mobile/order/0', icon: 'icon-31shoucangxuanzhong'},
           {title: '消息中心', path: '/mobile/message', icon: 'icon-31wangwangxuanzhong'},
           {title: '账户流水', path: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
-          {title: '个人认证', path: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
+          {title: '个人认证', path: '/mobile/idVerfication', icon: 'icon-wodezichan'},
           {title: '银行卡管理', path: '/mobile/bankCard', icon: 'icon-wodezichan'},
           {title: '收益地址管理', path: '/mobile/assetsAddress', icon: 'icon-pinpaizhuanxiang'},
           {title: '账户设置', path: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'}
@@ -97,6 +97,10 @@
       logout () {
         this.$router.push({name: 'index'})
         this.$store.commit('LOGOUT')
+      },
+      goPage (title, link) {
+        this.$store.commit('SET_TITLE', title)
+        this.$router.push({path: link})
       }
     },
     computed: {

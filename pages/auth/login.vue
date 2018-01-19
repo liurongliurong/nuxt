@@ -36,7 +36,10 @@
     },
     data () {
       return {
-        form: [{name: 'mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号', pattern: 'tel'}, {name: 'password', type: 'password', title: '登录密码', placeholder: '请输入您的登录密码', pattern: 'password'}]
+        form: [
+          {name: 'mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号', pattern: 'tel'},
+          {name: 'password', type: 'password', title: '登录密码', placeholder: '请输入您的登录密码', pattern: 'password'}
+        ]
       }
     },
     methods: {
@@ -56,9 +59,10 @@
             if (self.callUrl) {
               self.$router.push({path: self.callUrl})
               self.$store.commit('SET_URL', '')
+            } else if (self.isMobile) {
+              self.$router.push({path: '/minerShop/miner/2'})
             } else {
               self.$router.push({path: '/'})
-              self.$store.commit('SET_URL', 'index')
             }
           }, form.btn)
         }).catch(res => {
@@ -146,7 +150,6 @@
     @media screen and (max-width: $mobile) {
       .form .go_regist{
         border-top:0;
-        padding-top:0;
         @include flex(space-between)
         &,a{
           font-size: 14px;

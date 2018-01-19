@@ -1,6 +1,6 @@
 <template>
-  <div :class="'popup'">
-    <div :class="['popup_con '+position, {buy_box:title==='选择购买数量'}]">
+  <div :class="'popup '+position">
+    <div :class="['popup_con', {buy_box:title==='选择购买数量'}]">
       <div class="popup_title" v-if="position!=='middle'">
         <span>{{title}}</span>
         <span class="icon_close" @click="closeMask"></span>
@@ -13,6 +13,7 @@
           <slot name="fee"></slot>
         </template>
         <button name="btn">确认提交</button>
+        <div class="btn" @click="closeMask">取消</div>
       </form>
       <template v-else-if="contract">
         <slot name="selfEdit" v-if="contract==='selfEdit'"></slot>

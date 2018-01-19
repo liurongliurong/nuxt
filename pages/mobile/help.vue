@@ -57,7 +57,7 @@
         })
       },
       back () {
-        window.location.reload()
+        this.show = true
       }
     },
     mounted () {
@@ -99,9 +99,6 @@
       text-indent:0rem !important;
       img{
         width: 100%;
-        height: auto;
-        position: relative;
-        left: -1.2rem;
       }
       span{
         text-indent:0rem !important;

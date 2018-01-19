@@ -365,6 +365,9 @@
     }
     @media screen and (max-width: $mobile) {
       margin-bottom:0;
+      &.disabled{
+        background: #fff;
+      }
     }
   }
 // checkbox
@@ -423,24 +426,38 @@
       input {
         @include checkbox(18,0)
       }
+      span {
+        margin-left: 5px;
+      }
     }
     button{
       width:100%;
       font-size: 18px;
       @include button($blue)
       line-height:2.6;
-      margin: 20px 0;
+      margin-top: 20px;
+    }
+    .btn {
+      display: none;
     }
     @media screen and (max-width: $mobile) {
       label {
         padding: 0 0.3rem;
       }
-      button {
-        line-height: 2.2;
+      button,.btn {
+        line-height: 32px;
         width: calc(100% - 0.6rem);
-        margin: 20px 0.3rem;
+        margin: 15px 0.3rem 0;
         font-size: 16px;
-      } 
+      }
+      .btn {
+        display: block;
+        text-align: center;
+        color: $light_black;
+        border: 1px solid $border;
+        font-size: 14px;
+        border-radius: 5px;
+      }
     }
   }
 // detail_table
