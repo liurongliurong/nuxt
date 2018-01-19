@@ -1,7 +1,7 @@
 module.exports = {
   auth: [
     {name: 'truename', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true},
-    {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true},
+    {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true, value: '中国大陆身份证'},
     {name: 'idcard', type: 'text', title: '证件号码', placeholder: '请输入您的证件号码', pattern: 'idCard'},
     {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
     {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}

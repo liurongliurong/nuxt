@@ -36,6 +36,7 @@
   import { mapState } from 'vuex'
   import util from '@/util/index'
   import api from '@/util/function'
+  import { auth } from '@/util/form'
   import md5 from 'js-md5'
   import MyMask from '@/components/common/Mask'
   import FormField from '@/components/common/FormField'
@@ -47,10 +48,15 @@
     },
     data () {
       return {
-        form: [{name: 'mobile', type: 'text', title: '手机号码', error: '该用户已存在', placeholder: '请输入手机号', pattern: 'tel', changeEvent: true}, {name: 'imgCode', type: 'text', title: '图形验证', placeholder: '请输入图形验证码', addon: 1, pattern: 'imgCode'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}, {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password', focusEvent: true}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}],
-        auth: [{name: 'truename', type: 'text', title: '真实姓名', placeholder: '请输入姓名', isChange: true}, {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true}, {name: 'idcard', type: 'text', title: '证件号码', placeholder: '请输入您的证件号码', pattern: 'idCard'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
+        form: [
+          {name: 'mobile', type: 'text', title: '手机号码', error: '该用户已存在', placeholder: '请输入手机号', pattern: 'tel', changeEvent: true},
+          {name: 'imgCode', type: 'text', title: '图形验证', placeholder: '请输入图形验证码', addon: 1, pattern: 'imgCode'},
+          {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6},
+          {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password', focusEvent: true},
+          {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}
+        ],
+        auth: auth,
         show: false,
-        card_type: '中国大陆身份证',
         registed: false,
         mobileStatus: true
       }
@@ -199,7 +205,7 @@
   .rigist_block{
     width:420px;
     margin:0 auto;
-    padding-top:35px;
+    padding:35px 0;
     form.regist{
       @include form;
       h2{
@@ -284,7 +290,6 @@
     }
     .regist_popup .popup_con{
       width:600px;
-      margin-left:-300px;
       .popup_title{
         background: #3A69D3 url(~assets/images/popup_bg.png) bottom right no-repeat;
         color:#fff;

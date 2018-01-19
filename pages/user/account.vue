@@ -1,28 +1,33 @@
 <template>
   <section class="account">
-    <div class="pc_box" v-if="isMobile===0">
+    <div class="pc_box">
       <h2>账户管理</h2>
-      <Setting :nav="nav" type="account" @setEdit="setEdit"></Setting>
-    </div>
-    <div class="mobile_box" v-if="isMobile===1">
-      <div class="list">
-        <div class="item" v-for="k in 4" @click="setInfo(k-1,nav[k-1].name,menu[k-1].status)">
-          <span>{{nav[k-1]&&nav[k-1].title}}</span>
-          <i v-if="k===1">{{mobile|format}}</i>
-          <i v-else-if="nav[k-1].name==='login'">修改<em></em></i>
-          <i v-else-if="nav[k-1].name==='auth'">{{!menu[k-1].status?'去认证':true_name.truename+'：'+true_name.idcard|format}}</i>
-          <i v-else-if="nav[k-1].name==='card'&&bank_card&&bank_card.open_bank">{{bank_card&&bank_card.card_no|format}}</i>
-          <i v-else>设置<em></em></i>
-        </div>
-        <div class="compute_address item">
-          <div class="compute_address_title" @click="setInfo(4,nav[4].name,menu[4].setting)">
-            <span>{{nav[4]&&nav[4].title}}</span>
-            <i>设置<em></em></i>
-          </div>
-          <div class="compute_address_box" v-for="a in address" @click="setInfo(4,(nav[4]&&nav[4].name),menu[4].setting,a.product_hash_type)">
-            <div class="val">{{a.product_hash_type+'地址: '+a.address|format}}</div>
-            <div class="opr">修改</div>
-          </div>
+      <div class="setting">
+        <div :class="['item', {fail: !menu[k].status}, {success: menu[k].status}, {address_item: n.name==='address'}]" v-for="n,k in nav">
+          <template v-if="n.name!=='address'">
+            <div class="icon"></div>
+            <div class="con_title">{{n.title}}</div>
+            <div class="desc">{{n.desc}}</div>
+            <div class="val">
+              <template v-if="menu[k].status&&n.name==='tel'">{{n.text}}：<span>{{mobile|format}}</span></template>
+              <template v-if="menu[k].status&&n.name==='auth'">{{true_name.truename}}：<span>{{true_name.idcard|format}}</span></template>
+              <template v-if="menu[k].status&&n.name==='card'&&bank_card.open_bank">{{bank_card.open_bank}}：<span>{{bank_card.card_no|cardformat}}</span></template>
+            </div>
+            <div class="opr" @click="setEdit(n.name,n.title,menu[k].setting)">{{menu[k].opr}}</div>
+          </template>
+          <template v-else>
+            <div class="item">
+              <div class="icon"></div>
+              <div class="con_title">{{n.title}}</div>
+              <div class="desc">{{n.desc}}</div>
+              <div class="val"></div>
+              <div class="opr" @click="setEdit(n.name,n.title,menu[k].setting)">{{menu[k].opr}}</div>
+            </div>
+            <div class="item" v-for="a in address">
+              <div class="val">{{a.product_hash_type+'地址: '+a.address}}</div>
+              <div class="opr" @click="setEdit(n.name,n.title,menu[k].setting,a.product_hash_type)">修改</div>
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -38,10 +43,9 @@
   import { mapState, mapGetters } from 'vuex'
   import md5 from 'js-md5'
   import MyMask from '@/components/common/Mask'
-  import Setting from '@/components/common/Setting'
   export default {
     components: {
-      MyMask, Setting
+      MyMask
     },
     data () {
       return {
@@ -148,32 +152,31 @@
           }
         }
       },
-      setInfo (i, k, s, n) {
-        this.title = this.nav[i].title
-        if (k === 'tel' || (k === 'auth' && s)) return false
-        this.edit = k
-        if (k === 'address') {
+      setEdit (str, title, setting, n) {
+        if (str === 'card' || str === 'address' || str === 'trade') {
+          if (!(this.true_name && this.true_name.status === 1)) {
+            api.tips('请先实名认证')
+            return false
+          }
+        }
+        if (!setting) return false
+        if (str === 'address') {
           this.initHashSelect(n)
         }
-      },
-      setEdit (obj) {
-        this.edit = obj.str
-        this.title = obj.title
-        if (obj.str === 'address') {
-          this.initHashSelect(obj.n)
-        }
+        this.edit = str
+        this.title = title
         window.scroll(0, 0)
         document.body.style.overflow = 'hidden'
       },
       initHashSelect (k) {
         if (k) {
-          this.form[this.edit][0].type = 'text'
-          this.form[this.edit][0].edit = 'address'
-          this.form[this.edit][0].value = k
+          this.form.address[0].type = 'text'
+          this.form.address[0].edit = 'address'
+          this.form.address[0].value = k
         } else {
-          this.form[this.edit][0].type = 'select'
-          this.form[this.edit][0].edit = 0
-          this.form[this.edit][0].value = ''
+          this.form.address[0].type = 'select'
+          this.form.address[0].edit = 0
+          this.form.address[0].value = ''
         }
       }
     },
@@ -191,7 +194,8 @@
       ])
     },
     filters: {
-      format: api.telReadable
+      format: api.telReadable,
+      cardformat: api.cardReadable
     }
   }
 </script>
@@ -202,6 +206,83 @@
     .pc_box {
       h2 {
         padding: 0 28px !important;
+      }
+      .setting{
+        padding:25px 30px;
+        .item{
+          &:not(.address_item){
+            @include flex(space-between)
+            padding:15px;
+            border:1px solid #e5e5e5;
+          }
+          &.success{
+            .icon{
+              position: relative;
+              background: $green;
+              &:before{
+                content:'';
+                @include right
+              }
+            }
+            .con_title{
+              color: $green;
+            }
+          }
+          &.fail{
+            .icon{
+              text-align: center;
+              background: $fail;
+              color: $white;
+              &:before{
+                content:'!'
+              }
+            }
+            .con_title{
+              color: $fail;
+            }
+          }
+          &:not(:last-child){
+            margin-bottom:25px;
+          }
+          &.address_item{
+            .item:not(:last-child){
+              margin-bottom: 0;
+              border-bottom:0
+            }
+            .item:not(:first-child){
+              .val{
+                text-align: left;
+                padding-left:19%;
+                width:80%
+              }
+            }
+          }
+          .icon{
+            @include block(18,50%)
+          }
+          .con_title{
+            width: 13%;
+            font-size: 16px;
+            font-weight: bold;
+          }
+          .desc{
+            width:38%;
+          }
+          .val{
+            width: 24%;
+            color: $light_text;
+            text-align: center;
+            span{
+              color: $text;
+            }
+          }
+          .opr{
+            width: 17%;
+            text-align: right;
+            color: $blue;
+            cursor: pointer;
+          }
+        }
       }
     }
     .mobile_box {

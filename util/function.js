@@ -52,7 +52,7 @@ api.telReadable = (tel) => {
 }
 api.cardReadable = (tel) => {
   if (tel) {
-    return tel.replace(/(\d{4})\d{8,13}(\d{4})/, '$1****$2')
+    return tel.replace(/(\d{12,})(\d{4})/, '**** **** **** $2')
   }
 }
 api.currency = (num, n, i) => {
