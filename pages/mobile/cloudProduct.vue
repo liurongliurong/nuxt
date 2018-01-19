@@ -4,13 +4,14 @@
       <span v-for="item in formTitle">{{item}}</span>
     </div>
     <div class="form_none"></div>
-    <div class="form_content">
+    <div class="form_content"  v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
       <section v-for="item in formData" class="form_item">
-        <span class="name">{{item.name}}</span>
-        <span class="count">{{item.count}}</span>
-        <span class="count_suanli">{{item.suanLi}}</span>
+        <span class="name">{{item.product_name}}</span>
+        <span class="count">{{item.buy_amount}}台</span>
+        <span class="count_suanli">{{item.total_hash}}T</span>
       </section>
     </div>
+    <p v-if="loading" class="load_more">加载中······</p>
   </div>
 </template>
 
@@ -18,21 +19,48 @@
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
+  import Vue from 'vue'
+  import { InfiniteScroll } from 'mint-ui'
+  Vue.use(InfiniteScroll)
+
   export default {
     name: 'cloudProduct',
     data () {
       return {
         formTitle: ['产品名称', '数量', '算力'],
-        formData: [
-          {name: '蚂蚁S9', count: '1台', suanLi: '1T'},
-          {name: 'A740', count: '1台', suanLi: '1T'},
-          {name: '以比特E9+', count: '1台', suanLi: '1T'}
-        ]
+        page: 1,
+        totalNumber: 0,
+        formData: [],
+        length: 0,
+        loading: false
       }
     },
     methods: {
+      getData() {
+        util.post('fundOrder', {sign: api.serialize({token: this.token, type: 0, status: 1, page: this.page})}).then(
+          res => {
+            this.length = res.total_num
+            for (let i = 0, len = res.list.length; i < len; i ++) {
+              this.formData.push(res.list[i])
+            }
+            this.totalNumber = res.total_num
+        })
+      },
+      loadMore() {
+        if (this.formData.length < this.length ) {
+          this.loading = true
+          this.page ++
+          this.getData()
+          setTimeout(() => {
+            this.loading = false
+          }, 1000)
+        } else {
+          this.loading = false
+        }
+      }
     },
     mounted () {
+      this.getData()
     },
     computed: {
       ...mapState({
@@ -85,6 +113,11 @@
           width: 15%;
         }
       }
+    }
+    .load_more{
+      height: 1.3rem;
+      text-align: center;
+      line-height: 1.3rem;
     }
   }
 </style>
