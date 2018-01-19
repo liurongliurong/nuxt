@@ -13,6 +13,7 @@
           <slot name="fee"></slot>
         </template>
         <button name="btn">确认提交</button>
+        <div class="btn" @click="closeMask">取消</div>
       </form>
       <template v-else-if="contract">
         <slot name="selfEdit" v-if="contract==='selfEdit'"></slot>
