@@ -20,7 +20,7 @@
           <p class="content slogen">算力是未来可计量的生产力</p>
         </div>
         <div class="footer">
-          <a class="button" @click="jump(3)">跳过</a>
+          <a class="button" @click="jump(2)">跳过</a>
           <p class="introduce">Clould mining<i>|</i>Miner<i>|</i>Escrow</p>
         </div>
       </div>
@@ -66,11 +66,11 @@
           <p class="title">算力网&nbsp;suanLi.com&nbsp;&nbsp;&nbsp;每秒都为你产生利润</p>
         </div>
         <div class="footer">
-          <a class="button" @click="jump(3)">体验数字货币带来的乐趣</a>
+          <a class="button" @click="goToPage('/minerShop/miner/2',2)">体验数字货币带来的乐趣</a>
           <p class="introduce">Clould mining<i>|</i>Miner<i>|</i>Escrow</p>
         </div>
       </div>
-      <div class="page-4 page-common">
+      <!-- <div class="page-4 page-common">
         <header>
           <img class="logo" src="../assets/images/mobile/index/logo.png" />
           <div class="login" v-if="token === 0">
@@ -78,9 +78,9 @@
             <span>|</span>
             <a @click="goToPage('/auth/login', 3)">登录</a>
           </div>
-          <div class="login" v-else>
+          <div class="login" v-else> -->
             <!-- <a class="iconfont" @click="goToPage('/mobile/personalCenter', 3)">&#xe63f;</a> -->
-            <span class="iconfont" @click="showNavlink('person')">&#xe63f;</span>
+          <!--  <span class="iconfont" @click="showNavlink('person')">&#xe63f;</span>
           </div>
         </header>
         <div class="mobile_header_nav" v-if="showNav !== ''" @click="showNavlink">
@@ -109,7 +109,7 @@
             <i class="arrow"></i>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
