@@ -95,8 +95,12 @@
         this.scroll = scrollTop > 0
       },
       logout () {
-        this.$router.push({name: 'index'})
         this.$store.commit('LOGOUT')
+        if (this.isMobile) {
+          this.$router.push({path: '/minerShop/miner/2'})
+        } else {
+          this.$router.push({path: '/'})
+        }
       },
       goPage (title, link) {
         this.$store.commit('SET_TITLE', title)
