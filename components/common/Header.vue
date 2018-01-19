@@ -16,14 +16,23 @@
             <span>|</span>
             <router-link to="/auth/login">登录</router-link>
           </template>
-          <router-link class="header_mobile iconfont" to="/mobile/personalCenter" v-else>&#xe63f;</router-link>
-          <span class="nav_link iconfont icon-more" v-if="!showNav" @click="showNavlink"></span>
-          <span class="nav_link iconfont icon-close" v-if="showNav" @click="showNavlink"></span>
+          <div v-else>
+            <span class="header_mobile iconfont" @click="showNavlink('person')">&#xe63f;</span>
+            <span class="nav_link iconfont icon-more" @click="showNavlink('product')"></span>
+            <!-- <span class="nav_link iconfont icon-close" v-if="showNav" @click="showNavlink('product')"></span> -->
+          </div>
         </div>
       </div>
-      <div class="mobile_header_nav" v-if="showNav" @click="showNavlink">
+      <div class="mobile_header_nav" v-if="showNav !== ''" @click="showNavlink">
         <div class="white_bg">
-          <nuxt-link :to="i.path" v-for="i,k in navLink" :key="k">{{i.title}}</nuxt-link>
+          <nuxt-link :to="i.path" v-for="i,k in navList" :key="k" class="item">
+            <span>{{i.title}}</span>
+            <em></em>
+          </nuxt-link>
+          <div class="item" v-if="token !== 0">
+            <span>{{mobile}}</span>
+            <span @click="logout()">退出</span>
+          </div>
         </div>
       </div>
     </div>
@@ -38,42 +47,57 @@
     name: 'header',
     data () {
       return {
-        showNav: false,
+        showNav: '',
         scroll: false,
         headerType: '',
+        navList: [],
         navLink: [
           {title: '云算力', path: '/minerShop/miner/2'},
           {title: '品牌矿机', path: '/minerShop/miner/1'},
           {title: 'BDC托管', path: '/bdc'},
           {title: '产业资讯', path: '/mobile/property'},
         ],
+        navPerson: [
+          {title: '我的订单', path: '/mobile/order/0', icon: 'icon-31shoucangxuanzhong'},
+          {title: '消息中心', path: '/mobile/message', icon: 'icon-31wangwangxuanzhong'},
+          {title: '账户流水', path: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
+          {title: '个人认证', path: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
+          {title: '银行卡管理', path: '/mobile/bankCard', icon: 'icon-wodezichan'},
+          {title: '收益地址管理', path: '/mobile/assetsAddress', icon: 'icon-pinpaizhuanxiang'},
+          {title: '账户设置', path: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'}
+        ],
         isBlueHeader: ['bdc', 'mobile-assetDetail', 'mobile-property', 'mobile-personalCenter'],
         noHeader: ['mobileIndex', 'auth-login', 'auth-regist', 'auth-passwordRetrieval']
       }
     },
     methods: {
-      showNavlink() {
-        this.showNav = !this.showNav
+      showNavlink(type) {
+        if (typeof type !== 'string') {
+          this.showNav = ''
+          return
+        }
+        this.showNav = this.showNav === type ? '' : type
+        this.navList = type === 'person'? [...this.navPerson] : [...this.navLink]
       },
       showTitle() {
         if (this.noHeader.indexOf(this.$route.name) > -1) {
           return false;
         }
-        if (this.isBlueHeader.indexOf(this.$route.name) > -1) {
-          this.headerType = 'blue'
-        } else {
-          this.headerType = ''
-        }
+
+        this.headerType = this.isBlueHeader.indexOf(this.$route.name) > -1 ? 'blue' : ''
         return true
       },
       scrollFunc (e) {
-        if (!this.headerType) return false
-        var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
-        if (scrollTop > 0) {
-          this.scroll = true
-        } else {
-          this.scroll = false
+        if (!this.headerType) {
+          return false
         }
+
+        let scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
+        this.scroll = scrollTop > 0
+      },
+      logout () {
+        this.$router.push({name: 'index'})
+        this.$store.commit('LOGOUT')
       }
     },
     computed: {
@@ -176,16 +200,26 @@
       .white_bg{
         width: 100%;
         height: auto;
-        a{
+        background: #fff;
+        .item{
           width: 100%;
           height: 0.88rem;
           background: #fff;
-          display: block;
+          @include flex (space-between, center);
+          padding: 0 0.3rem;
           border-bottom: 1px solid #efefef;
           text-align: center;
           line-height: 0.88rem;
           font-size: 0.32rem;
           letter-spacing: 0.05rem;
+
+          em{
+            @include block(5);
+            @include arrow(right, #c7c7c9);
+            width: 0.1rem;
+            height:0.1rem;
+            border-width: 1px;
+          }
         }
       }
     }

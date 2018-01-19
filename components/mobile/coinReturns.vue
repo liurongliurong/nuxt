@@ -8,10 +8,10 @@
     <div class="form_content">
       <section v-for="item in formData" class="form_item">
         <aside class="content_left">
-          <span class="name">{{item.name}}</span>
-          <span class="time">{{item.time}}</span>
+          <span class="name">{{item.product_name}}</span>
+          <span class="time">{{item.paid_time}}</span>
         </aside>
-        <span class="content_right">+{{item.count}}</span>
+        <span class="content_right">+{{item.paid_amount}}</span>
       </section>
     </div>
   </div>
@@ -30,13 +30,6 @@
           {name: 'BTC收益明细', active: 'btc'}
         ],
         formData: [
-          {name: '元旦乐1号', count: '0.00012BTC', time: '2017/08/08 10:20'},
-          {name: '元旦乐1号', count: '0.00012BTC', time: '2017/08/08 10:20'},
-          {name: '元旦乐1号', count: '0.00012BTC', time: '2017/08/08 10:20'},
-          {name: '元旦乐1号', count: '0.00012BTC', time: '2017/08/08 10:20'},
-          {name: '元旦乐1号', count: '0.00012BTC', time: '2017/08/08 10:20'},
-          {name: '元旦乐1号', count: '0.00012BTC', time: '2017/08/08 10:20'},
-          {name: '元旦乐1号', count: '0.00012BTC', time: '2017/08/08 10:20'}
         ]
       }
     },
@@ -45,37 +38,43 @@
         this.active = item.active
       },
       fetchData (sort) {
-        this.nowEdit = sort || 0
-        this.list = []
-        let data = {token: this.token, product_hash_type: this.nowEdit + 1, page: this.now, sort: ''}
+        let coinType = sort || 0
+        this.formData = []
+        let data = {token: this.token, product_hash_type: coinType, page: 1, sort: ''}
         util.post('userCoinList', {sign: api.serialize(data)}).then(
           res => {
             api.checkAjax(this, res, () => {
-              this.list = res.value_list
-              this.showImg = !res.value_list.length
-              if (this.now > 1) return false
-              this.len = Math.ceil(res.total_num / 15)
+              this.formData = res.value_list
+              // this.showImg = !res.value_list.length
+              // if (this.now > 1) return false
+              // this.len = Math.ceil(res.total_num / 15)
             })
         })
-      },
-      getData () {
-        if (this.token !== 0) {
-          util.post('userCoin', {sign: api.serialize({token: this.token, product_hash_type: '1'})}).then(
-            res => {
-              api.checkAjax(this, res, () => {
-                this.data = res
-              })
-            })
-        } else {
-          setTimeout(() => {
-            this.getData()
-          }, 5)
-        }
       }
+      // getData () {
+      //   if (this.token !== 0) {
+      //     util.post('userCoin', {sign: api.serialize({token: this.token, product_hash_type: '1'})}).then(
+      //       res => {
+      //         api.checkAjax(this, res, () => {
+      //           this.data = res
+      //         })
+      //       })
+      //   } else {
+      //     setTimeout(() => {
+      //       this.getData()
+      //     }, 5)
+      //   }
+      // }
     },
     mounted () {
-      this.getData()
-      this.fetchData()
+      // this.getData()
+      if (this.token !== 0) {
+        this.fetchData()
+      } else {
+        setTimeout(() => {
+          this.fetchData()
+        }, 5)
+      }
     },
     computed: {
       ...mapState({
