@@ -17,6 +17,7 @@
 <script>
   import api from '@/util/function'
   import util from '@/util'
+  import { login } from '@/util/form'
   import md5 from 'js-md5'
   import { mapState } from 'vuex'
   import MyMask from '@/components/common/Mask'
@@ -31,7 +32,7 @@
           {name: '常见问题', link: '/mobile/help'},
           {name: '意见反馈', link: '/mobile/advice'}
         ],
-        login: [{name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}, {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password'}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}],
+        login: login,
         edit: false
       }
     },

@@ -208,19 +208,7 @@ input::-webkit-input-placeholder {
       }
     }
     @media screen and (max-width: $mobile) {
-      background: transparent;
       .popup_con{
-        &:not(.middle){
-          width:100vw;
-          top: auto;
-          bottom:0;
-          left:0;
-          transform: translate(0, 0);
-          height: calc(100vh - 1.1rem);
-        }
-        &.middle {
-          width:80%;
-        }
         .popup_title{
           font-size: 0.36rem;
           background: #fff;
@@ -245,6 +233,20 @@ input::-webkit-input-placeholder {
             margin-right: 10px;
           }
         }
+      }
+      &:not(.middle) {
+        background: transparent;
+        .popup_con {
+          width:100vw;
+          top: auto;
+          bottom:0;
+          left:0;
+          transform: translate(0, 0);
+          height: calc(100vh - 1.1rem);
+        }
+      }
+      &.middle .popup_con {
+        width:80%;
       }
       &.bank_card_popup .popup_con .form .input{
         input,.sel,.select{

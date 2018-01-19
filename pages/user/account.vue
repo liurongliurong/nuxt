@@ -33,15 +33,15 @@
 <script>
   import api from '@/util/function'
   import util from '@/util'
-  import card from '@/util/card'
+  import cardList from '@/util/card'
+  import { auth, address, login, card } from '@/util/form'
   import { mapState, mapGetters } from 'vuex'
   import md5 from 'js-md5'
   import MyMask from '@/components/common/Mask'
   import Setting from '@/components/common/Setting'
-  import FormField from '@/components/common/FormField'
   export default {
     components: {
-      MyMask, Setting, FormField
+      MyMask, Setting
     },
     data () {
       return {
@@ -52,15 +52,9 @@
           {title: '绑定银行卡', desc: '绑定银行卡之后才能进行充值、购买和提现等操作。', text: '', name: 'card'},
           {title: '算力收益地址', desc: '请选择算力类型并设置算力地址。', text: '', name: 'address'}
         ],
-        form: {
-          auth: [{name: 'truename', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true}, {name: 'idcard', type: 'text', title: '证件号码', placeholder: '请输入您的证件号码', pattern: 'idCard'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
-          card: [{name: 'card_no', type: 'text', title: '银行卡号', placeholder: '请输入银行卡号', pattern: 'bankCard', changeEvent: true}, {name: 'open_bank', type: 'text', title: '开户银行', placeholder: '请输入开户银行', isChange: true}, {name: 'bank_branch', type: 'text', title: '开户支行', placeholder: '请输入开户支行名称', isChange: true}, {name: 'bank', type: 'select', title: '开户行地址', isChange: true}, {name: 'mobile', type: 'text', title: '银行预留手机号', placeholder: '请输入银行预留手机号', pattern: 'tel'}, {name: 'code', type: 'text', title: '手机验证码', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
-          address: [{name: 'product_hash_type', type: 'select', title: '算力类型', option: []}, {name: 'address', type: 'text', title: '算力地址', placeholder: '请输入对应算力地址', pattern: 'computeAddress'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode'}],
-          login: [{name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}, {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password'}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}]
-        },
+        form: { auth, address, login, card },
         edit: '',
         title: '',
-        product_hash_type: '',
         card_type: '中国大陆身份证'
       }
     },
@@ -147,9 +141,9 @@
         var val1 = val.substr(0, 6)
         var val2 = val.substr(0, 5)
         if (val.length >= 6) {
-          for (var i = 0; i < card.length; i++) {
-            if (val1 === card[i].id || val2 === card[i].id) {
-              document.getElementsByName('open_bank')[0].value = card[i].name
+          for (var i = 0; i < cardList.length; i++) {
+            if (val1 === cardList[i].id || val2 === cardList[i].id) {
+              document.getElementsByName('open_bank')[0].value = cardList[i].name
             }
           }
         }
@@ -159,34 +153,28 @@
         if (k === 'tel' || (k === 'auth' && s)) return false
         this.edit = k
         if (k === 'address') {
-          if (n) {
-            this.product_hash_type = n
-            this.form[this.edit][0].type = 'text'
-            this.form[this.edit][0].edit = 'address'
-          } else {
-            this.product_hash_type = ''
-            this.form[this.edit][0].type = 'select'
-            this.form[this.edit][0].edit = 0
-          }
+          this.initHashSelect(n)
         }
       },
       setEdit (obj) {
         this.edit = obj.str
         this.title = obj.title
         if (obj.str === 'address') {
-          if (obj.n) {
-            this.product_hash_type = obj.n
-            this.form[this.edit][0].type = 'text'
-            this.form[this.edit][0].edit = 'address'
-            this.form[this.edit][0].value = obj.n
-          } else {
-            this.product_hash_type = ''
-            this.form[this.edit][0].type = 'select'
-            this.form[this.edit][0].edit = 0
-          }
+          this.initHashSelect(obj.n)
         }
         window.scroll(0, 0)
         document.body.style.overflow = 'hidden'
+      },
+      initHashSelect (k) {
+        if (k) {
+          this.form[this.edit][0].type = 'text'
+          this.form[this.edit][0].edit = 'address'
+          this.form[this.edit][0].value = k
+        } else {
+          this.form[this.edit][0].type = 'select'
+          this.form[this.edit][0].edit = 0
+          this.form[this.edit][0].value = ''
+        }
       }
     },
     computed: {

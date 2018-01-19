@@ -99,12 +99,12 @@
         var form = ele.parentNode.parentNode.parentNode
         var telEle = form.dep_tel || form.mobile
         var imgCode = form.imgCode
-        if (api.checkOne(telEle, this.isMobile)) return false
+        if (telEle && api.checkOne(telEle, this.isMobile)) return false
         if (telEle.getAttribute('data-error') === 'true') {
           api.setTips(telEle, 'error', this.isMobile, '该用户已存在')
           return false
         }
-        if (api.checkOne(imgCode, this.isMobile)) return false
+        if (imgCode && api.checkOne(imgCode, this.isMobile)) return false
         if (price && num) {
           var money = price * num
           if (+this.balance < money) {

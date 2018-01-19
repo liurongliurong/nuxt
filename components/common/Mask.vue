@@ -1,6 +1,6 @@
 <template>
-  <div :class="'popup'">
-    <div :class="['popup_con '+position, {buy_box:title==='选择购买数量'}]">
+  <div :class="'popup '+position">
+    <div :class="['popup_con', {buy_box:title==='选择购买数量'}]">
       <div class="popup_title" v-if="position!=='middle'">
         <span>{{title}}</span>
         <span class="icon_close" @click="closeMask"></span>
