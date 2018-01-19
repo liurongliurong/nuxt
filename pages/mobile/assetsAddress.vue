@@ -36,9 +36,6 @@
         edit: false
       }
     },
-    mounted() {
-      this.$store.commit('SET_TITLE', '算力收益地址')
-    },
     methods: {
       submit (e) {
         var form = e.target

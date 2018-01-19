@@ -59,9 +59,10 @@
             if (self.callUrl) {
               self.$router.push({path: self.callUrl})
               self.$store.commit('SET_URL', '')
+            } else if (self.isMobile) {
+              self.$router.push({path: '/minerShop/miner/2'})
             } else {
               self.$router.push({path: '/'})
-              self.$store.commit('SET_URL', 'index')
             }
           }, form.btn)
         }).catch(res => {

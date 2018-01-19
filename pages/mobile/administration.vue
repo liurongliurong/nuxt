@@ -57,9 +57,6 @@
         })
       }
     },
-    mounted () {
-      this.$store.commit('SET_TITLE', '账户设置')
-    },
     computed: {
       ...mapState({
         token: state => state.info.token

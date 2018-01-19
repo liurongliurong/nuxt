@@ -27,9 +27,6 @@
         edit: false
       }
     },
-    mounted() {
-      this.$store.commit('SET_TITLE', '实名认证')
-    },
     methods: {
       submit (e) {
         var form = e.target

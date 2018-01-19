@@ -28,9 +28,6 @@
         edit: false
       }
     },
-    mounted() {
-      this.$store.commit('SET_TITLE', '银行卡管理')
-    },
     methods: {
       submit (e) {
         var form = e.target
