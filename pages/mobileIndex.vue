@@ -79,9 +79,18 @@
             <a @click="goToPage('/auth/login', 3)">登录</a>
           </div>
           <div class="login" v-else>
-            <a class="iconfont" @click="goToPage('/mobile/personalCenter', 3)">&#xe63f;</a>
+            <!-- <a class="iconfont" @click="goToPage('/mobile/personalCenter', 3)">&#xe63f;</a> -->
+            <span class="iconfont" @click="showNavlink('person')">&#xe63f;</span>
           </div>
         </header>
+        <div class="mobile_header_nav" v-if="showNav !== ''" @click="showNavlink">
+          <div class="white_bg">
+            <nuxt-link :to="i.path" v-for="i,k in navPerson" :key="k" class="item">
+              <span>{{i.title}}</span>
+              <em></em>
+            </nuxt-link>
+          </div>
+        </div>
         <div class="introduce">
           <p class="title">我们为您提供丰富可靠的算力服务。</p>
           <p class="content">整合全球算力产业链资源</p>
@@ -119,6 +128,7 @@ export default {
         afterChange: (prev, next) => {
         }
       },
+      showNav: '',
       page2Text: [
         {title: '云算力', content: '我们一站式帮你购买品牌矿机，对接合规BDC托管服务，配置专人全天维护，快速部署，算力稳定收益透明，让你真正实现无忧挖矿。'},
         {title: '矿机销售', content: '聚合全球顶级厂商新货、二手矿机及配件资源，精心筛选质量保证，线上交易全流程存证，安全有保障。'},
@@ -129,6 +139,15 @@ export default {
         {title: '云算力', sub: 'CLOUD MINING', link: '/minerShop/miner/2'},
         {title: '品牌矿机', sub: 'MINER', link: '/minerShop/miner/1'},
         {title: 'BDC托管', sub: 'BDC ESCROW', link: '/bdc'}
+      ],
+      navPerson: [
+        {title: '我的订单', path: '/mobile/order/0', icon: 'icon-31shoucangxuanzhong'},
+        {title: '消息中心', path: '/mobile/message', icon: 'icon-31wangwangxuanzhong'},
+        {title: '账户流水', path: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
+        {title: '个人认证', path: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
+        {title: '银行卡管理', path: '/mobile/bankCard', icon: 'icon-wodezichan'},
+        {title: '收益地址管理', path: '/mobile/assetsAddress', icon: 'icon-pinpaizhuanxiang'},
+        {title: '账户设置', path: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'}
       ]
     }
   },
@@ -165,7 +184,15 @@ export default {
     goToPage (url, page) {
       sessionStorage.setItem('mobileIndex', page);
       this.$router.push({path: url})
-    }
+    },
+    showNavlink(type) {
+      if (typeof type !== 'string') {
+        this.showNav = ''
+        return
+      }
+      this.showNav = this.showNav === type ? '' : type
+      this.navList = type === 'person'? [...this.navPerson] : []
+    },
   },
   computed: {
     ...mapState({
@@ -177,6 +204,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='scss' scoped>
+@import '~assets/css/style.scss';
 
 .home {
   width: 100%;
@@ -472,6 +500,38 @@ export default {
         &:nth-child(3) {
           background: url('~/assets/images/mobile/index/bdc.png') no-repeat;
           background-size: cover;
+        }
+      }
+    }
+  }
+  .mobile_header_nav{
+    position: absolute;
+    top: 1.08rem;
+    width: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    height: 100%;
+    .white_bg{
+      width: 100%;
+      height: auto;
+      .item{
+        width: 100%;
+        height: 0.88rem;
+        background: #fff;
+        @include flex (space-between, center);
+        padding: 0 0.3rem;
+        border-bottom: 1px solid #efefef;
+        text-align: center;
+        line-height: 0.88rem;
+        font-size: 0.32rem;
+        letter-spacing: 0.05rem;
+
+        em{
+          @include block(5);
+          @include arrow(right, #c7c7c9);
+          width: 0.1rem;
+          height:0.1rem;
+          border-width: 1px;
         }
       }
     }
