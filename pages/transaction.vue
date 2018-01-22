@@ -65,7 +65,7 @@
         len: 0,
         now: 1,
         total: '',
-        computationallist: [{title: '算力资讯', path: '/computeNews/list'}, {title: '设备之家', path: '/equipments/list'}, {title: '交易信息', path: '/transaction'}, {title: '挖矿币种', path: '/currency'}],
+        computationallist: [{title: '算力资讯', path: '/computeNews/list'}, {title: '设备之家', path: '/equipments/list'}, {title: '交易信息', path: '/transaction'}, {title: '收益币种', path: '/currency'}],
         lists: '',
         times: [],
         show: -1

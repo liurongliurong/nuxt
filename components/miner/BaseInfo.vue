@@ -310,11 +310,7 @@
             font-size: 12px;
           }
           &.error:before{
-<<<<<<< HEAD
-            content:'请输入数量';
-=======
             content:'请输入算力服务器台数';
->>>>>>> d9cd12cdffdba5875d24f8bd6a9a2cf6c2e1b021
           }
           &.over:before{
             content:'您输入的数量已超出库存';
