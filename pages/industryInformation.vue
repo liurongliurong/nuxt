@@ -22,18 +22,18 @@
           </div>
         </div>
         <div class="cominfo_headerright">
-          <!-- <div class="bigtop">
+           <div class="bigtop">
             <div class="bigimg">
               <img :src="n.image" v-for="n, k in bigimglist" class="teimg"/>
             </div>
-          </div> -->
-          <!-- <div class="bigbottom">
+          </div> 
+           <div class="bigbottom">
             <div class="numbig" v-for="n, m in miners" :key="m">
               <img :src="n.big"/>
               <h4>{{n.title}}</h4>
               <router-link :to="n.path">{{n.route}}</router-link>
             </div>
-          </div> -->
+          </div> 
         </div>
       </div>
     </div>
@@ -116,7 +116,7 @@
     <mining-currency></mining-currency>
     <div class="cominfor_auto">
       <h4>
-        <p class="title">机房相册</p>
+        <p class="title">BDC中心相册</p>
         <p class="text">让您进一步了解我们的BDC机房</p>
         <!-- <router-link to="#">了解更多 ></router-link> -->
       </h4>
@@ -188,8 +188,8 @@
         active: 0,
         qwsl: '',
         miners: [
-          {big: require('@/assets/images/information5.jpg'), title: '资深矿工-设备之家', route: '前往了解 >', path: '/equipments/list'},
-          {big: require('@/assets/images/information2.jpg'), title: '新手矿工-数字货币', route: '前往了解 >', path: '/currency'},
+          {big: require('@/assets/images/information5.jpg'), title: '算力服务器-设备之家', route: '前往了解 >', path: '/equipments/list'},
+          {big: require('@/assets/images/information2.jpg'), title: '算力服务器-数字货币', route: '前往了解 >', path: '/currency'},
           {big: require('@/assets/images/information3.jpg'), title: '平台交易最新资讯', route: '前往了解 >', path: '/transaction'}
         ]
       }
