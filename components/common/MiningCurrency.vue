@@ -31,7 +31,7 @@
     data () {
       return {
         td: [],
-        tr: [{title: '币种'}, {title: '价格(元)'}, {title: '流通市值（亿/美元）'}, {title: '全网算力'}, {title: '单位挖矿产出'}]
+        tr: [{title: '币种'}, {title: '价格(元)'}, {title: '流通市值（亿/美元）'}, {title: '全网算力'}, {title: '单位收益产出'}]
       }
     },
     mounted () {

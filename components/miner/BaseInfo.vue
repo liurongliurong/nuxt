@@ -3,7 +3,7 @@
     <div class="miner" v-if="params2==='1'">
       <div class="miner_type">
         <div class="iconfont">&#xe603;</div>
-        <span>矿机</span>
+        <span>算力服务器</span>
       </div>
       <div class="miner_left">
         <img :src="detail.minerPicture" alt="">
@@ -15,7 +15,7 @@
         </h4>
         <p class="time">{{detail.DeliveryTime}}</p>
         <p class="suan_price">
-          <span class="left_miner">矿 机 价</span>
+          <span class="left_miner">算力服务器价</span>
           <span class="right_miner">¥ <em>{{detail.one_amount_value}}</em></span>
         </p>
         <p class="address">
@@ -310,7 +310,7 @@
             font-size: 12px;
           }
           &.error:before{
-            content:'请输入矿机台数';
+            content:'请输入算力服务器台数';
           }
           &.over:before{
             content:'您输入的数量已超出库存';
@@ -489,7 +489,7 @@
               font-size: 12px;
             }
             &.error:before{
-              content:'请输入矿机台数';
+              content:'请输入算力服务器台数';
             }
             &.over:before{
               content:'您输入的数量已超出库存';

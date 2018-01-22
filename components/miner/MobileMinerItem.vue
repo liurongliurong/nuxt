@@ -43,7 +43,7 @@
         showno: false,
         total: -1,
         currentPage: 1,
-        items: {'one_amount_value': {title: '矿机单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'buyed_amount': {title: '剩余数量', unit: '台'}}
+        items: {'one_amount_value': {title: '算力服务器单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'buyed_amount': {title: '剩余数量', unit: '台'}}
       }
     },
     methods: {

@@ -69,7 +69,7 @@
       return {
         nowEdit: 0,
         computeData: {today_hash: 0, balance_account: 0, total_hash: 0},
-        compute: [{title: '现货资产'}, {title: '币价'}, {title: '单位挖矿产出'}],
+        compute: [{title: '现货资产'}, {title: '币价'}, {title: '单位收益产出'}],
         computeProperty: {total_miner: ['已购入云算力', '台'], total_hash: ['算力总和', 'T'], selled_miner: ['已出售云算力', '台'], selling_miner: ['出售中云算力', '台']},
         dataProperty: {total_miner: 0, total_hash: 0, selled_miner: 0, selling_miner: 0},
         GetIncome: [{name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType', value: ''}, {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', value2: 0, tipsUnit: ''}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
