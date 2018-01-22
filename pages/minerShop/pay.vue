@@ -211,7 +211,8 @@
         params1: '',
         params2: '',
         detail: {},
-        number: 0
+        number: 0,
+        balance: 0
       }
     },
     methods: {
@@ -258,7 +259,7 @@
           if (this.payNo === 2) {
             data = Object.assign({url: callbackUrl, mode: '2'}, data)
           }
-          data = Object.assign({post_id: this.addressObject.id, user_id: this.user_id, miner_id: this.params1, number: this.number}, data)
+          data = Object.assign({post_id: this.addressObject.id, miner_id: this.params1, number: this.number}, data)
         } else {
           callbackUrl += 'order/0'
           if (this.detail.isLoan) {
@@ -272,7 +273,7 @@
             if (this.payNo === 2) {
               data = Object.assign({url: callbackUrl, mode: '1'}, data)
             }
-            data = Object.assign({product_id: this.params1, num: this.number, user_id: this.user_id}, data)
+            data = Object.assign({product_id: this.params1, num: this.number}, data)
           }
         }
         var self = this
@@ -375,7 +376,7 @@
       },
       getAddress () {
         var self = this
-        util.post('showAddress', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
+        util.post('showAddress', {sign: api.serialize({token: this.token})}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.addressData = res
             self.addressShowData = self.addressData.slice(0, 3)
@@ -438,6 +439,7 @@
           var self = this
           util.post(url, {sign: api.serialize(data)}).then(function (res) {
             api.checkAjax(self, res, () => {
+              self.balance = +res.balance
               if (res.output) {
                 self.detail.output = res.output
                 self.detail.total_electric_fee = res.total_electric_fee
@@ -483,12 +485,10 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
         isMobile: state => state.isMobile,
         trade_password: state => state.info.trade_password,
-        addressObj: state => state.addressData,
-        balance: state => state.info.balance
+        addressObj: state => state.addressData
       })
     }
   }

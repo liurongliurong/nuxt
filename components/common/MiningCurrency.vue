@@ -1,7 +1,7 @@
 <template>
   <div class="cominfor_type">
     <h4>
-    <p class="title">挖矿币种</p>
+    <p class="title">主流币种</p>
     <p class="text">虚拟数字货币百科</p>
     <router-link to="/currency" v-if="$route.name === 'industryInformation'">了解更多 ></router-link>
     </h4>
@@ -13,7 +13,7 @@
         </thead>
         <tbody>
             <tr v-for="d, m in td">
-            <td><span>{{d.name}}</span> - {{d.chinese_name}}</td>
+            <td class="currency_name"><span>{{d.name}}</span><!--  - {{d.chinese_name}} --></td>
             <td>¥ {{d.price}}</td>
             <td>$ {{(d.market_cap_usd / 100000000).toFixed(2)}}</td>
             <td>{{d.qwsl}} <span>{{d.unit}}</span></td>
@@ -123,6 +123,9 @@
                         span{
                             color: #fe5039;
                             font-weight: 800;
+                        }
+                        &.currency_name {
+                          padding-left: 30px;
                         }
                     }
                     :nth-child(3){

@@ -81,7 +81,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         isMobile: state => state.isMobile
       })
     }
@@ -95,6 +94,9 @@
     padding-top: 20px;
     .miner_list_box{
       @include main
+      h2{
+        @include data_title
+      }
       .loadmore{
         width: 100%;
         height: 0.89rem;

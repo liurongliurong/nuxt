@@ -25,7 +25,7 @@
       getData () {
         if (this.token !== 0 && this.messageId) {
           var self = this
-          util.post('Messagecontent', {sign: api.serialize({token: this.token, user_id: this.user_id, message_id: this.messageId})}).then(function (res) {
+          util.post('Messagecontent', {sign: api.serialize({token: this.token, message_id: this.messageId})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res
             })
@@ -52,8 +52,7 @@
     },
     computed: {
       ...mapState({
-        token: state => state.info.token,
-        user_id: state => state.info.user_id
+        token: state => state.info.token
       })
     }
   }

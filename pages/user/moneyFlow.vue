@@ -132,7 +132,7 @@
           this.$router.push({name: 'user-recharge'})
           return false
         }
-        var data = {token: this.token, user_id: this.user_id}
+        var data = {token: this.token}
         var self = this
         util.post('showWithdraw', {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
@@ -152,7 +152,7 @@
       },
       fetchData (more) {
         var self = this
-        var data = {token: this.token, user_id: this.user_id, page: this.now, sort: ''}
+        var data = {token: this.token, page: this.now, sort: ''}
         util.post('userCapitalList', {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
             if (more) {
@@ -170,7 +170,7 @@
       submit (e) {
         var form = e.target
         var data = api.checkForm(form, this.isMobile)
-        var sendData = {token: this.token, user_id: this.user_id}
+        var sendData = {token: this.token}
         if (!data) return false
         form.btn.setAttribute('disabled', true)
         var self = this
@@ -191,7 +191,7 @@
       getData () {
         if (this.token !== 0) {
           var self = this
-          util.post('userCapital', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
+          util.post('userCapital', {sign: api.serialize({token: this.token})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.data = res
             })
@@ -228,7 +228,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         true_name: state => state.info.true_name,
         mobile: state => state.info.mobile,
         bank_card: state => state.info.bank_card,

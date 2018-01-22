@@ -27,7 +27,7 @@ export default {
         return false
       } else {
         document.getElementById('block').style = 'display:none'
-        util.post('collectAdvice', {sign: api.serialize({token: this.token, user_id: this.user_id, content: encodeURIComponent(contenthtml)})}).then(function (res) {
+        util.post('collectAdvice', {sign: api.serialize({token: this.token, content: encodeURIComponent(contenthtml)})}).then(function (res) {
           api.checkAjax(self, res, () => {
             api.tips('提交成功 ！')
             setTimeout(() => {
@@ -40,8 +40,7 @@ export default {
   },
   computed: {
     ...mapState({
-      token: state => state.info.token,
-      user_id: state => state.info.user_id
+      token: state => state.info.token
     })
   }
 }

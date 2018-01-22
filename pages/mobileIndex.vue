@@ -133,12 +133,30 @@ export default {
     }
   },
   mounted () {
+    this.compatibleIOS()
     let page = sessionStorage.getItem('mobileIndex')
     if (page) {
       this.jump(page)
     }
   },
   methods: {
+    compatibleIOS () {
+      let sUserAgent = navigator.userAgent.toLowerCase()
+      let bIsSafari = sUserAgent.match(/safari/i)
+      let bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i)
+      let bIsUc = sUserAgent.match(/ucweb/i)
+      let bIsUcBrowser = sUserAgent.match(/ucbrowser/i)
+      var bIsAndroid = sUserAgent.match(/android/i)
+
+      // alert(sUserAgent)
+      if (bIsSafari) {
+        this.opts = Object.assign({}, this.opts, {touchMovePrevent: false})
+      } else {
+        // if (bIsUc7 || bIsUc || bIsUcBrowser) {
+        // alert('is uc')
+        this.opts = Object.assign({}, this.opts, {touchMovePrevent: true})
+      }
+    },
     jump (number) {
       if (number > 0) {
         this.opts = Object.assign({}, this.opts, {start: number})
@@ -162,7 +180,7 @@ export default {
 
 .home {
   width: 100%;
-  height: 100vh;
+  max-height: 100vh;
   background: #243461;
 
   .page-common {

@@ -68,10 +68,11 @@
       submit (e) {
         var form = e.target
         var data = api.checkForm(form, this.isMobile)
+        if (!data) return false
         var url = ''
         var callbackUrl = ''
         var val = ''
-        var sendData = {token: this.token, user_id: this.user_id}
+        var sendData = {token: this.token}
         var tipsStr = ''
         var tipsStr2 = ''
         switch (this.edit) {
@@ -100,9 +101,10 @@
           case 'login':
             url = 'changeLoginPassword'
             tipsStr = '修改成功'
+            data.password = md5(data.password)
+            data.password1 = md5(data.password1)
             break
         }
-        if (!data) return false
         var self = this
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
@@ -190,7 +192,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
         true_name: state => state.info.true_name,
         bank_card: state => state.info.bank_card,

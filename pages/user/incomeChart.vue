@@ -112,7 +112,7 @@
       getData () {
         if (this.token !== 0) {
           var self = this
-          util.post('showIncome', {sign: api.serialize({token: this.token, user_id: this.user_id, product_hash_type: 1})}).then(function (res) {
+          util.post('showIncome', {sign: api.serialize({token: this.token, product_hash_type: 1})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.date = res.time
               self.val = res.income
@@ -131,8 +131,7 @@
     },
     computed: {
       ...mapState({
-        token: state => state.info.token,
-        user_id: state => state.info.user_id
+        token: state => state.info.token
       })
     }
   }

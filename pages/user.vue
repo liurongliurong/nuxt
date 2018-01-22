@@ -42,7 +42,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
         unread_num: state => state.info.unread_num,
         true_name: state => state.info.true_name,

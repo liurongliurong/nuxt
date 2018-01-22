@@ -43,10 +43,10 @@
         <span>算力收益图表</span>
       </li>
     </ul>
-    <MyMask :form="edit===3?[]:GetIncome" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
+    <MyMask :form="form" :title="title" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
       <p slot="fee">手续费：0.0002btc</p>
       <opr-select slot="select_opr" :no="maskNo" @closeMask="closeMask"></opr-select>
-      <div class="popup_chart" name="chart">
+      <div class="popup_chart" slot="chart">
         <IncomeChart></IncomeChart>
       </div>
     </MyMask>
@@ -82,7 +82,8 @@
         qwsl: '',
         output: '',
         title: '',
-        maskNo: 0
+        maskNo: 0,
+        form: []
       }
     },
     methods: {
@@ -117,7 +118,7 @@
         var nowHash = this.hashType[this.nowEdit]
         this.GetIncome[0].value =  nowHash.name
         this.GetIncome[1].tipsUnit = nowHash.name.toLowerCase()
-        var sendData = {token: this.token, user_id: this.user_id, product_hash_type: nowHash.id || '1'}
+        var sendData = {token: this.token, product_hash_type: nowHash.id || '1'}
         util.post('myHashAccount', {sign: api.serialize(sendData)}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.computeData = res
@@ -130,6 +131,7 @@
         })
       },
       openMask (k) {
+        this.form = []
         if (k === 1) {
           this.total_price = 0
           if (!(this.true_name && this.true_name.status === 1)) {
@@ -144,8 +146,9 @@
             api.tips('您的账户余额不足，不能提取收益')
             return false
           }
+          this.form = this.GetIncome
           var requestUrl = 'showWithdrawCoin'
-          var data = {token: this.token, user_id: this.user_id, product_hash_type: this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id}
+          var data = {token: this.token, product_hash_type: this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id}
           this.product_hash_type = this.hashType[this.nowEdit].name.toUpperCase()
           var self = this
           util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
@@ -165,7 +168,7 @@
       submit () {
         var form = document.querySelector('.form')
         var data = api.checkForm(form, this.isMobile)
-        var sendData = {token: this.token, user_id: this.user_id}
+        var sendData = {token: this.token}
         if (!data) return false
         form.btn.setAttribute('disabled', true)
         var self = this
@@ -199,7 +202,6 @@
       ...mapState({
         token: state => state.info.token,
         isMobile: state => state.isMobile,
-        user_id: state => state.info.user_id,
         mobile: state => state.info.mobile,
         hashType: state => state.hashType,
         true_name: state => state.info.true_name,

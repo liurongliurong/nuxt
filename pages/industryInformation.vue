@@ -116,8 +116,8 @@
     <mining-currency></mining-currency>
     <div class="cominfor_auto">
       <h4>
-        <p class="title">矿场相册</p>
-        <p class="text">让您进一步了解我们的矿场</p>
+        <p class="title">机房相册</p>
+        <p class="text">让您进一步了解我们的BDC机房</p>
         <!-- <router-link to="#">了解更多 ></router-link> -->
       </h4>
       <div class="cominfor_autool">
@@ -144,9 +144,9 @@
       return {
         scroll: [],
         autool: [
-          {title: '内蒙矿场', text: '国家电网合规用电', button: '即将开放'},
-          {title: '山西矿场', text: '国家电网合规用电', button: '即将开放'},
-          {title: '辽宁矿场', text: '国家电网合规用电', button: '即将开放'}
+          {title: '内蒙机房', text: '国家电网合规用电', button: '即将开放'},
+          {title: '山西机房', text: '国家电网合规用电', button: '即将开放'},
+          {title: '辽宁机房', text: '国家电网合规用电', button: '即将开放'}
         ],
         sheol1: [],
         sheol2: [],
@@ -181,7 +181,7 @@
           {title: '算力资讯', path: '/computeNews/list'},
           {title: '设备之家', path: '/equipments/list'},
           {title: '交易信息', path: '/transaction'},
-          {title: '挖矿币种', path: '/currency'}
+          {title: '币种介绍', path: '/currency'}
         ],
         infoleft: [],
         inforight: [],

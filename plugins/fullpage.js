@@ -10,7 +10,7 @@ var opt = {
   dir: 'v',
   der: 0.1,
   movingFlag: false,
-  preventWechat: false,
+  touchMovePrevent: false,
   beforeChange: function(data) {},
   afterChange: function(data) {}
 }
@@ -152,9 +152,11 @@ fullpage.initEvent = function (el) {
       }
     }
   })
-  el.addEventListener('touchmove', function(e) {
-    e.preventDefault()
-  })
+  if (that.o.touchMovePrevent) {
+    el.addEventListener('touchmove', function(e) {
+      e.preventDefault()
+    })
+  }
 }
 
 fullpage.moveTo = function (curIndex, anim) {
@@ -217,9 +219,11 @@ fullpage.initEvent = function (el) {
       }
     }
   })
-  el.addEventListener('touchmove', function(e) {
-    e.preventDefault()
-  })
+  if (that.o.touchMovePrevent) {
+    el.addEventListener('touchmove', function(e) {
+      e.preventDefault()
+    })
+  }
 }
 
 fullpage.moveTo = function (curIndex, anim) {

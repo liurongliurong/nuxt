@@ -38,15 +38,14 @@
         <button @click="agree">我同意，签合同</button>
       </div>
     </div>
-    <div class="mask" v-if="edit">
-      <div class="form_box">
-        <div class="close" @click="closeMask()">
-          <span class="icon"></span>
-          <span>关闭</span>
+    <div class="popup" v-if="edit">
+      <div class="popup_con">
+        <div class="popup_title">
+          <span>验证S码</span>
+          <span class="icon_close" @click="closeMask"></span>
         </div>
-        <h2>验证S码</h2>
-        <form class="form_content" @submit.prevent="submit" novalidate>
-          <p>请输入S码绑定算力产业基金</p>
+        <form class="form form_content" @submit.prevent="submit" novalidate>
+          <!-- <p>请输入S码绑定算力产业基金</p> -->
           <div class="input">
             <span>S码</span>
             <span>*</span>
@@ -92,7 +91,7 @@
         var data = api.checkForm(form, this.isMobile)
         var self = this
         if (!data) return false
-        util.post('ScodeVerify', {sign: api.serialize({token: this.token, user_id: this.user_id, s_code: form.scode.value})}).then(function (res) {
+        util.post('ScodeVerify', {sign: api.serialize({token: this.token, s_code: form.scode.value})}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.edit = false
             document.body.style.overflow = 'auto'
@@ -132,7 +131,7 @@
           return false
         }
         var self = this
-        var sCodeData = {token: this.token, user_id: this.user_id, s_code: ele.value}
+        var sCodeData = {token: this.token, s_code: ele.value}
         util.post('ScodeVerify', {sign: api.serialize(sCodeData)}).then(function (res) {
           api.checkAjax(self, res, () => {
             if (self.risk && self.risk.user_risk_score < 0) {
@@ -147,7 +146,7 @@
       },
       agree () {
         var self = this
-        util.post('sign_contract', {sign: api.serialize(Object.assign({token: this.token, user_id: this.user_id}, self.contract))}).then(function (res) {
+        util.post('sign_contract', {sign: api.serialize(Object.assign({token: this.token}, self.contract))}).then(function (res) {
           api.checkAjax(self, res, () => {
             api.tips(res)
             self.show = 2
@@ -178,7 +177,7 @@
                 return false
               }
               if (res.s_code && res.risk && res.risk.user_risk_score > 0 && !res.list[res.s_code].is_contract) {
-                var sCodeData = {token: self.token, user_id: self.user_id, s_code: res.s_code}
+                var sCodeData = {token: self.token, s_code: res.s_code}
                 util.post('show_contract', {sign: api.serialize(sCodeData)}).then(function (r) {
                   api.checkAjax(self, r, () => {
                     self.show = 3
@@ -209,7 +208,6 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        user_id: state => state.info.user_id,
         true_name: state => state.info.true_name,
         risk: state => state.info.risk,
         scode: state => state.info.scode,
@@ -240,23 +238,6 @@
     }
     .detail_table{
       @include detail
-    }
-    .mask{
-      @include mask
-      .form_box{
-        h2{
-          padding: 10px 25px;
-          border-bottom: 1px solid #e8e8e8;
-          margin-bottom:0
-        }
-        .form_content{
-          padding:20px 100px;
-          @include form(v)
-          p{
-            margin-bottom:15px
-          }
-        }
-      }
     }
     .no_scode{
       width:100%;

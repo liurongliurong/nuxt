@@ -67,7 +67,6 @@
         token: state => state.info.token,
         isMobile: state => state.isMobile,
         mobile: state => state.info.mobile,
-        user_id: state => state.info.user_id,
         token: state => state.info.token,
         true_name: state => state.info.true_name,
         bank_card: state => state.info.bank_card
@@ -104,7 +103,7 @@
           }
           this.title = '提现'
           var requestUrl = 'showWithdraw'
-          var data = {token: this.token, user_id: this.user_id}
+          var data = {token: this.token}
           var self = this
           util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
             api.checkAjax(self, res, () => {
@@ -123,7 +122,7 @@
         var form = document.querySelector('.form')
         var data = api.checkForm(form, this.isMobile)
         var url = 'withdraw'
-        var sendData = {token: this.token, user_id: this.user_id}
+        var sendData = {token: this.token}
         var tipsStr = '提现成功'
         if (!data) return false
         form.btn.setAttribute('disabled', true)
@@ -145,7 +144,7 @@
       getData () {
         if (this.token !== 0) {
           var self = this
-          util.post('myAccount', {sign: api.serialize({token: this.token, user_id: this.user_id})}).then(function (res) {
+          util.post('myAccount', {sign: api.serialize({token: this.token})}).then(function (res) {
             api.checkAjax(self, res, () => {
               self.balance_account = res.balance_account
             })

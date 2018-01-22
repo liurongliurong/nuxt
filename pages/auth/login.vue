@@ -1,9 +1,9 @@
 <template>
   <div class="login">
     <div class="info">
-      <h1>开启您的挖矿之旅!</h1>
-      <h3>非常简单-您的挖矿设备已经设置并运行了</h3>
-      <h3>登录账号-您即可开始使用我们的运算力挖矿服务开始挖矿</h3>
+      <h1>开启您的收益之旅!</h1>
+      <h3>非常简单-您的算力设备已经设置并运行了</h3>
+      <h3>登录账号-您即可开始使用我们的云算力服务</h3>
     </div>
     <form class="form" action="" @submit.prevent="login" novalidate>
       <h3>
