@@ -15,11 +15,7 @@
         </h4>
         <p class="time">{{detail.DeliveryTime}}</p>
         <p class="suan_price">
-<<<<<<< HEAD
-          <span class="left_miner">单 价</span>
-=======
           <span class="left_miner">算力服务器价</span>
->>>>>>> d9cd12cdffdba5875d24f8bd6a9a2cf6c2e1b021
           <span class="right_miner">¥ <em>{{detail.one_amount_value}}</em></span>
         </p>
         <p class="address">
