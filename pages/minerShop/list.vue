@@ -19,12 +19,12 @@
       </div>
       <div class="miner_pic pic3">
         <router-link to="/minerShop/miner/1">
-          <!-- <img :src="require('@/assets/images/miner_shop/miner.jpg')" alt=""> -->
+          <img :src="require('@/assets/images/miner_shop/miner.jpg')" alt="">
         </router-link>
       </div>
       <div class="miner_pic pic4">
         <router-link to="/minerShop/miner/2">
-          <!-- <img :src="require('@/assets/images/miner_shop/cloud_miner.jpg')" alt=""> -->
+          <img :src="require('@/assets/images/miner_shop/cloud_miner.jpg')" alt="">
         </router-link>
       </div>
     </div>
