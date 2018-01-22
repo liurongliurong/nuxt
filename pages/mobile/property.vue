@@ -2,12 +2,12 @@
   <section class="mobile_propery">
     <div class="property_view">
       <div class="property_data">
-        <div class="data_title">总资产（元）</div>
-        <div class="data_value">{{property.total_money}}</div>
+        <div class="data_title">总资产 (元)</div>
+        <div class="data_value">{{property.total_money|currency}}</div>
         <div class="balance">
           <div class="val">
             <span class="val_title">可用余额：</span>
-            <span class="val_num">{{property.balance_account}}</span>
+            <span class="val_num">{{property.balance_account|currency}}</span>
           </div>
           <div class="opr">
             <span @click="openMask(2)">提现</span>
@@ -17,16 +17,16 @@
         <div class="frozen_balance">
           <div class="val">
             <span class="val_title">冻结余额：</span>
-            <span class="val_num">{{property.freeze_account}}</span>
+            <span class="val_num">{{property.freeze_account|currency}}</span>
           </div>
         </div>
-        <div class="coin_data">
+        <div class="coin_data" v-for="c,k in property.coin_list">
           <div class="val">
-            <span class="val_title">{{property.coin_list[0]&&property.coin_list[0].balance_account.toFixed(8)}}BTC：</span>
-            <span class="val_num">≈{{property.coin_list[0]&&property.coin_list[0].coin_price.toFixed(2)}}元</span>
+            <span class="val_title">{{c.balance_account.toFixed(8)}}BTC：</span>
+            <span class="val_num">≈{{c.coin_price|currency}}元</span>
           </div>
           <div class="opr">
-            <span @click="openMask(1)">提币</span>
+            <span @click="openMask(1, k, c.balance_account)">提币</span>
           </div>
         </div>
       </div>
@@ -40,8 +40,8 @@
       <income-chart></income-chart>
     </div>
     <my-mask :form="form" :title="title" :position="maskPosition" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
-      <p slot="fee" v-if="edit===1">手续费：0.0002btc</p>
-      <p slot="fee" v-if="edit===2">手续费：{{totalPrice*fee+'元('+(fee*100)+'%)'}}</p>
+      <p slot="fee" v-if="edit===1">手续费：{{fee + (hashType[nowEdit] && hashType[nowEdit].name).toLowerCase()}}</p>
+      <p slot="fee" v-if="edit===2">手续费：{{totalPrice * fee + '元(' + (fee * 100) + '%)'}}</p>
       <opr-select slot="select_opr" :no="maskNo" @closeMask="closeMask"></opr-select>
     </my-mask>
     <coin-returns></coin-returns>
@@ -52,6 +52,7 @@
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
+  import { getIncome, withdrawals } from '@/util/form'
   import FormField from '@/components/common/FormField'
   import IncomeChart from '@/pages/user/incomeChart'
   import MyMask from '@/components/common/Mask'
@@ -64,17 +65,8 @@
     data () {
       return {
         nowEdit: 0,
-        getIncome: [
-          {name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType', value: ''},
-          {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', value2: 0, tipsUnit: ''},
-          {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
-          {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
-        ],
-        withdrawals: [
-          {name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0},
-          {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
-          {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
-        ],
+        getIncome: getIncome,
+        withdrawals: withdrawals,
         form: [],
         maskPosition: '',
         edit: 0,
@@ -107,7 +99,7 @@
           }, 5)
         }
       },
-      openMask (k) {
+      openMask (k, n ,balance) {
         this.form = []
         this.totalPrice = 0
         var requestUrl = ''
@@ -124,12 +116,14 @@
             this.maskPosition = 'middle'
             return false
           }
-          if (+this.property.coin_btc <= 0 && this.edit !== 2) {
+          if (+balance <= 0 && this.edit !== 2) {
             api.tips('您的账户余额不足，不能提取收益')
             return false
           }
+          this.getIncome[0].value = this.hashType[n] && this.hashType[n].name
           requestUrl = 'showWithdrawCoin'
-          data = {token: this.token, product_hash_type: this.hashType[this.nowEdit] && this.hashType[this.nowEdit].id}
+          data = {token: this.token, product_hash_type: this.hashType[n] && this.hashType[n].id}
+          this.nowEdit = n
         } else if (k === 2) {
           if (!(this.bank_card && this.bank_card.status === 1)) {
             this.goAuth ('立即绑定', 1)
@@ -160,6 +154,8 @@
               this.form = this.withdrawals
             }
             this.edit = k
+            window.scroll(0, 0)
+            document.body.style.overflow = 'hidden'
           })
         })
       },
@@ -191,6 +187,7 @@
       },
       closeMask () {
         this.edit = 0
+        document.body.style.overflow = 'auto'
       },
       goAuth (str, n) {
         this.title = str
@@ -212,7 +209,8 @@
       })
     },
     filters: {
-      format: api.decimal
+      format: api.decimal,
+      currency: api.currency
     }
   }
 </script>
@@ -244,6 +242,8 @@
             }
           }
           .opr {
+            width: 2.2rem;
+            text-align: left;
             span {
               padding: 0.05rem 0.2rem;
               font-size: 0.28rem;
@@ -288,6 +288,9 @@
       .income_chart .myChart {
         height: 300px;
       }
+    }
+    .popup .popup_con {
+      height: calc(100vh -0.88rem);
     }
   }
 </style>

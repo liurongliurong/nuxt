@@ -56,14 +56,13 @@ api.cardReadable = (tel) => {
   }
 }
 api.currency = (num, n, i) => {
-  if (i) {
-    var sign = (num + '').includes('-')
-    num = sign ? num.slice(1) : num
+  var sign = num.toString().indexOf('-') > -1
+  if (i || sign) {
+    num = sign ? num.toString().slice(1) : num
   }
-  var result = ''
   num = api.decimal(num, n)
-  result = api.readable(num.slice(0, num.length - 3)) + num.slice(-3)
-  if (i) {
+  var result = api.readable(num.slice(0, num.length - 3)) + num.slice(-3)
+  if (i || sign) {
     result = sign ? '-' + result : '+' + result
   }
   return result

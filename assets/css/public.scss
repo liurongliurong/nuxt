@@ -232,6 +232,9 @@ input::-webkit-input-placeholder {
           .checkbox input{
             margin-right: 10px;
           }
+          p {
+            padding: 0.2rem 0.3rem 0;
+          }
         }
       }
       &:not(.middle) {
