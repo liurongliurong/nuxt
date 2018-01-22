@@ -8,7 +8,7 @@
         <img :src="require('@/assets/images/miner_shop/bdc.jpg')" alt="">
         <div class="small">
           <router-link to="/bdc">前往申请机位</router-link>
-          <!-- <router-link to="/minerShop/mining">两分钟带你了解如何挖矿</router-link> -->
+          <!-- <router-link to="/minerShop/mining">两分钟带你了解如何收益</router-link> -->
         </div>
       </div>
       <div class="miner_pic pic2">
