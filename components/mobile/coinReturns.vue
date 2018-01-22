@@ -1,11 +1,13 @@
 <template>
-  <div class="coin_returns" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+  <div class="coin_returns">
     <div class="form_title">
-      <span v-for="item in formTitle" @click="getCoinReturns(item)" :class="{ item_active: active===item.active }">
+      <span v-for="item in formTitle" @click="getCoinReturns(item)"
+      :class="{ item_active: active===item.active }">
         {{item.name}}
       </span>
     </div>
-    <div class="form_content">
+    <div class="form_content" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading"
+    infinite-scroll-distance="10">
       <section v-for="item in formData" class="form_item">
         <aside class="content_left">
           <span class="name">{{item.product_name}}</span>
@@ -60,6 +62,7 @@
           })
       },
       loadMore () {
+        console.log('loadMore')
         if (this.formData.length < this.length ) {
           this.loading = true
           this.page ++
