@@ -2,7 +2,7 @@
   <pageFrame isComponent="true">
     <template v-if="isMobile === 0">
       <div class="museum_right">
-        <h1 style="position:relative;">矿机测评<span class="icon iconfont icon-jiantou" style="transform:rotate(90deg);position:absolute;top:3px;"></span></h1>
+        <h1 style="position:relative;">算力服务器测评<span class="icon iconfont icon-jiantou" style="transform:rotate(90deg);position:absolute;top:3px;"></span></h1>
         <div class="museum_lists" v-for="n, k in list" :key="k">
           <div @click="goDetail(n.id)">
             <span class="label">BitCoin</span>
@@ -80,10 +80,10 @@
     },
     head () {
       return {
-        title: '比特币矿机-型号-矿机测评-算力网',
+        title: '比特币算力服务器-型号-算力服务器测评-算力网',
         meta: [
-          { hid: 'keywords', name: 'keywords', content: '性能测试,能力测评,矿机配置,矿机教程,矿机组装史' },
-          { hid: 'description', name: 'description', content: '算力网（www.suanli.com）针对各类型矿机进行能力测评，为您选择矿机，矿机配置，矿机组装等提供参考资料。等' }
+          { hid: 'keywords', name: 'keywords', content: '性能测试,能力测评,算力服务器配置,算力服务器教程,算力服务器组装史' },
+          { hid: 'description', name: 'description', content: '算力网（www.suanli.com）针对各类型算力服务器进行能力测评，为您选择算力服务器，算力服务器配置，算力服务器组装等提供参考资料。等' }
         ]
       }
     },

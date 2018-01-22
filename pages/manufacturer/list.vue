@@ -2,7 +2,7 @@
   <pageFrame isComponent="true">
     <template v-if="isMobile === 0">
       <div class="museum_right1" style="padding-bottom: 60px !important;min-height:900px;">
-        <h1 style="position:relative;">矿机制造商<span class="icon iconfont icon-jiantou" style="transform:rotate(90deg);position:absolute;top:3px;"></span></h1>
+        <h1 style="position:relative;">算力服务器制造商<span class="icon iconfont icon-jiantou" style="transform:rotate(90deg);position:absolute;top:3px;"></span></h1>
         <div class="museum_lists1" v-for="n, k in museum" :key="k">
           <div class="museuming1"><img :src="n.image"/></div>
           <div class="museum_content1">
@@ -16,7 +16,7 @@
     </template>
     <template v-else-if="isMobile === 1">
       <div class="mobilequicknews">
-        <h1 v-if="!showcontent">主流矿机制造商</h1>
+        <h1 v-if="!showcontent">主流算力服务器制造商</h1>
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="quicknews_lists" v-if="!showcontent">
           <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)">
             <img :src="item.image"/>
@@ -64,10 +64,10 @@
     },
     head () {
       return {
-        title: '比特币矿机公司-矿机品牌-算力网网',
+        title: '比特币算力服务器公司-算力服务器品牌-算力网网',
         meta: [
-          { hid: 'keywords', name: 'keywords', content: '矿机公司,比特大陆,翼比特,嘉楠耘智' },
-          { hid: 'description', name: 'description', content: '算力网（www.suanli.com）合作主流矿机生产商，与市面上主流矿机如蚂蚁矿机，阿瓦隆矿机，翼比特矿机等生产商建立友好合作关系。' }
+          { hid: 'keywords', name: 'keywords', content: '算力服务器公司,比特大陆,翼比特,嘉楠耘智' },
+          { hid: 'description', name: 'description', content: '算力网（www.suanli.com）合作主流算力服务器生产商，与市面上主流算力服务器如蚂蚁算力服务器，阿瓦隆算力服务器，翼比特算力服务器等生产商建立友好合作关系。' }
         ]
       }
     },
