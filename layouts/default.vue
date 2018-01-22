@@ -24,7 +24,7 @@
         title: '算力网-比特币收益算力托管服务一站式平台',
         meta: [
           { hid: 'keywords', name: 'keywords', content: '算力网,比特币,算力收益,算力服务器托管,比特币收益' },
-          { hid: 'description', name: 'description', content: '算力网（www.suanli.com）是比特币收益一站式服务平台，拥有专业的收益及运营团队，目前拥有算力服务器托管，矿场投资，算力出售，算力转让等业务，切实为比特币收益爱好者提供一站式贴心服务。' }
+          { hid: 'description', name: 'description', content: '算力网（www.suanli.com）是比特币收益一站式服务平台，拥有专业的收益及运营团队，目前拥有算力服务器托管，BDC中心投资，算力出售，算力转让等业务，切实为比特币收益爱好者提供一站式贴心服务。' }
         ],
         script:[
           {
