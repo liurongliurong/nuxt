@@ -8,7 +8,7 @@
     <div class="currency_content">
       <div class="cominfor_type">
         <h4>
-            <p class="title">挖矿币种</p>
+            <p class="title">收益币种</p>
             <p class="text">虚拟数字货币百科</p>
         </h4>
         <table border="0"  class="covertable" style="margin:0;">
