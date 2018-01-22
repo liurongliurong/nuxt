@@ -8,7 +8,14 @@
     </h3>
     <div class="info_box">
       <template v-for="n,i in dataNav">
-        <div class="info" v-if="i==='leftNum'">
+        <div class="info" v-if="i==='amount'">
+          <div class="text">
+            <span class="num">{{+d.amount}}</span>
+            <span>{{n.unit}}</span>
+          </div>
+          <p>{{n.title}}</p>
+        </div>
+        <div class="info" v-else-if="i==='leftNum'">
           <div class="text">
             <span class="num">{{(d.amount-(d.buyed_amount||d.sell_amount))<0?0:(d.amount-(d.buyed_amount||d.sell_amount))}}</span>
             <span>{{n.unit}}</span>

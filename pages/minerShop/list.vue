@@ -31,7 +31,7 @@
     <MinerList :minerData="minerData">
       <h2>
         <div>
-          <span style="font-size:24px;">算力服务器推荐</span>
+          <span>算力服务器推荐</span>
           <span>保全网提供全流程区块链存证、保全服务</span>
         </div>
         <router-link to="/minerShop/miner/1">更多算力服务器 ></router-link>

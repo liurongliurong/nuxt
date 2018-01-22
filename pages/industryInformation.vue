@@ -22,18 +22,18 @@
           </div>
         </div>
         <div class="cominfo_headerright">
-          <div class="bigtop">
+           <div class="bigtop">
             <div class="bigimg">
               <img :src="n.image" v-for="n, k in bigimglist" class="teimg"/>
             </div>
-          </div>
-          <div class="bigbottom">
+          </div> 
+           <div class="bigbottom">
             <div class="numbig" v-for="n, m in miners" :key="m">
               <img :src="n.big"/>
               <h4>{{n.title}}</h4>
               <router-link :to="n.path">{{n.route}}</router-link>
             </div>
-          </div>
+          </div> 
         </div>
       </div>
     </div>
@@ -88,7 +88,7 @@
           <router-link to="/manufacturer/list">全部厂商介绍 ></router-link>
         </div>
         <div class="shebottomcen">
-          <h6>【矿机测评】</h6>
+          <h6>【算力服务器测评】</h6>
           <div class="she_ol">
             <div class="imgshe" v-for="n, k in sheol2" @click="goDetail(n.id, 2)">
               <h2>BitCoin</h2>
@@ -102,21 +102,21 @@
           <router-link to="/equipmentEvaluate/list">全部测评 ></router-link>
         </div>
         <div class="shebottomright">
-          <h6>【矿机博物馆】</h6>
+          <h6>【算力服务器博物馆】</h6>
           <div class="all_ol">
             <div @click="goDetail(n.id, 1)" class="she_ol" v-for="n, k in sheol3" :key="k">
               <img :src="n.image"/>
               <p class="title">{{n.title}}</p>
             </div>
           </div>
-          <router-link to="/equipments/list">全部矿机介绍 ></router-link>
+          <router-link to="/equipments/list">全部算力服务器介绍 ></router-link>
         </div>
       </div>
     </div>
     <mining-currency></mining-currency>
     <div class="cominfor_auto">
       <h4>
-        <p class="title">机房相册</p>
+        <p class="title">BDC中心相册</p>
         <p class="text">让您进一步了解我们的BDC机房</p>
         <!-- <router-link to="#">了解更多 ></router-link> -->
       </h4>
@@ -155,10 +155,10 @@
           title: '设备之家',
           link: '/equipments/list',
           route: [{
-            name: '矿机测评 >',
+            name: '算力服务器测评 >',
             path: '/equipmentEvaluate/list'
           }, {
-            name: '矿机博物馆 >',
+            name: '算力服务器博物馆 >',
             path: '/equipments/list'
           }]
         }, {
@@ -188,8 +188,8 @@
         active: 0,
         qwsl: '',
         miners: [
-          {big: require('@/assets/images/information5.jpg'), title: '资深矿工-设备之家', route: '前往了解 >', path: '/equipments/list'},
-          {big: require('@/assets/images/information2.jpg'), title: '新手矿工-数字货币', route: '前往了解 >', path: '/currency'},
+          {big: require('@/assets/images/information5.jpg'), title: '算力服务器-设备之家', route: '前往了解 >', path: '/equipments/list'},
+          {big: require('@/assets/images/information2.jpg'), title: '算力服务器-数字货币', route: '前往了解 >', path: '/currency'},
           {big: require('@/assets/images/information3.jpg'), title: '平台交易最新资讯', route: '前往了解 >', path: '/transaction'}
         ]
       }
@@ -199,7 +199,7 @@
         title: '比特币新闻-最新行业动态-算力网',
         meta: [
           { hid: 'keywords', name: 'keywords', content: '比特币新闻,算力新闻,比特币行情' },
-          { hid: 'description', name: 'description', content: '算力网产业资讯版块，聚集了最新的比特币新闻，实时为您提供行业动态，资讯快报，二手矿机交易信息，矿机测评等行业发展各类资讯。' }
+          { hid: 'description', name: 'description', content: '算力网产业资讯版块，聚集了最新的比特币新闻，实时为您提供行业动态，资讯快报，二手算力服务器交易信息，算力服务器测评等行业发展各类资讯。' }
         ]
       }
     },
@@ -419,7 +419,7 @@
                       margin-left: 14px;
                       a{
                           color: white;
-                          margin-right: 22px;
+                          display: block;
                           &:hover{
                               color: #327fff;
                           }

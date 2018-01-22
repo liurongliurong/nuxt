@@ -35,7 +35,7 @@
           </template>
         </div>
       </div>
-      <Pager :len="len" style="padding-top:0;"></Pager>
+      <Pager :len="len" style="padding-top:0;" v-if="!isMobile" :now="now" @setPage="setPage"></Pager>
     </template>
   </section>
 </template>
@@ -44,6 +44,7 @@
   import util from '@/util'
   import api from '@/util/function'
   import Pager from '@/components/common/Pager'
+  import { mapState } from 'vuex'
   export default {
     components: {
       Pager
@@ -79,6 +80,12 @@
           })
         })
       },
+      setPage (n) {
+        this.now = n
+        if (!this.isMobile) {
+          this.getList()
+        }
+      },
       goDetail (id) {
         localStorage.setItem('icon_id', JSON.stringify([id]))
         if (this.$route.path.includes('computeNews')) {
@@ -95,6 +102,11 @@
       $route () {
         this.getList()
       }
+    },
+    computed: {
+      ...mapState({
+        isMobile: state => state.isMobile
+      })
     }
   }
 </script>
