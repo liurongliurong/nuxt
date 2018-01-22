@@ -50,7 +50,7 @@
       </div>
       <div class="detail_box" v-if="orderType !== 3">
         <div class="data_item miner_name">
-          <div>矿机名称</div>
+          <div>算力服务器名称</div>
           <div class="profit">{{data.miner_name}}</div>
         </div>
         <div class="data_item" v-for="i,k in info[orderType]">
@@ -104,11 +104,11 @@
   export default {
     data () {
       return {
-        processText: {3: ['订单完成', '矿机发货'], 0: ['订单完成', '矿场发货', '矿机运行', '收益计算']},
+        processText: {3: ['订单完成', '算力服务器发货'], 0: ['订单完成', 'BDC中心发货', '算力服务器运行', '收益计算']},
         processStatus: 1,
         info: {0: {realized_income_value: '累计已获得收益', today_income: '今日收益', total_realized_power_fee_value: '今日支付运维费'}, 1: {realized_income_value: '累计已获得收益', today_income_value: '今日收益', today_power_fee_value: '今日支付运维费'}},
         data: {},
-        type: {0: {hash_type: ['算力类型', ''], buy_amount: ['购买数量', '台'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], income_type: ['收益方式', ''], total_hash: ['总算力', 'T'], product_name: ['矿机型号', ''], bdc_name: ['所在BDC', '']}, 1: {type_name: ['代币类型', ''], buy_amount: ['购买数量', 'T'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], manner: ['发币方式', '']}, 3: {name: ['矿机型号', ''], buy_amount: ['购买数量', '台'], created_time: ['购买日期', ''], pay_value: ['购买金额', '元'], hash_type: ['算力类型', '']}},
+        type: {0: {hash_type: ['算力类型', ''], buy_amount: ['购买数量', '台'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], income_type: ['收益方式', ''], total_hash: ['总算力', 'T'], product_name: ['算力服务器型号', ''], bdc_name: ['所在BDC', '']}, 1: {type_name: ['代币类型', ''], buy_amount: ['购买数量', 'T'], create_time: ['购买日期', ''], pay_value: ['购买金额', '元'], manner: ['发币方式', '']}, 3: {name: ['算力服务器型号', ''], buy_amount: ['购买数量', '台'], created_time: ['购买日期', ''], pay_value: ['购买金额', '元'], hash_type: ['算力类型', '']}},
         requestUrl: {0: 'showOrderDetail', 3: 'showMinerDetail'},
         show: false,
         contract: '',

@@ -120,14 +120,14 @@ export default {
         }
       },
       page2Text: [
-        {title: '云算力', content: '我们一站式帮你购买品牌矿机，对接合规BDC托管服务，配置专人全天维护，快速部署，算力稳定收益透明，让你真正实现无忧挖矿。'},
-        {title: '矿机销售', content: '聚合全球顶级厂商新货、二手矿机及配件资源，精心筛选质量保证，线上交易全流程存证，安全有保障。'},
-        {title: 'BDC托管', content: '提供标准化的BDC机房，专业的矿机托管服务，专业运维工程师7*24小时维护，电力合规价格低廉。'}
+        {title: '云算力', content: '我们一站式帮你购买品牌算力服务器，对接合规BDC托管服务，配置专人全天维护，快速部署，算力稳定收益透明，让你真正实现无忧挖矿。'},
+        {title: '算力服务器销售', content: '聚合全球顶级厂商新货、二手算力服务器及配件资源，精心筛选质量保证，线上交易全流程存证，安全有保障。'},
+        {title: 'BDC托管', content: '提供标准化的BDC机房，专业的算力服务器托管服务，专业运维工程师7*24小时维护，电力合规价格低廉。'}
       ],
       page3Text: ['用电合规电力稳定', '专业团队安全可靠', '信息透明收益透明', '全程存证合法有效'],
       page4Text: [
         {title: '云算力', sub: 'CLOUD MINING', link: '/minerShop/miner/2'},
-        {title: '品牌矿机', sub: 'MINER', link: '/minerShop/miner/1'},
+        {title: '品牌算力服务器', sub: 'MINER', link: '/minerShop/miner/1'},
         {title: 'BDC托管', sub: 'BDC ESCROW', link: '/bdc'}
       ]
     }
