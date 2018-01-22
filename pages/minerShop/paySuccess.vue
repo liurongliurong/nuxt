@@ -33,7 +33,7 @@
       return {
         data: [],
         addressData: {},
-        typeList: [{url: 'showTopMiner', title: '矿机', text: '我们将尽快安排为您发货 ！', backUrl: '/user/order/3'}, {url: 'product_top_list', title: '云算力', text: '', backUrl: '/user/order/0'}],
+        typeList: [{url: 'showTopMiner', title: '算力服务器', text: '我们将尽快安排为您发货 ！', backUrl: '/user/order/3'}, {url: 'product_top_list', title: '云算力', text: '', backUrl: '/user/order/0'}],
         type: '1'
       }
     },

@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="order_msg miner_info" v-if="params2!=='1'">
-          <h3 class="title">挖矿收益信息</h3>
+          <h3 class="title">收益信息</h3>
           <div class="miner_info_detail">
             <div class="item" v-for="n in cloudMinerNav">
               <span class="info_left">{{params[n].title}}</span>
@@ -101,7 +101,7 @@
             <FormField :form="form" class="form" v-if="payNo===1"></FormField>
              <label for="accept">
               <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setValue('accept',true)">
-              <span @click="openMask(1)">阅读并接受<a href="javascript:;">《矿机销售协议》</a><template v-if="params2!=='1'">和<a href="javascript:;">《矿机托管协议》</a></template></span><br>
+              <span @click="openMask(1)">阅读并接受<a href="javascript:;">《算力服务器销售协议》</a><template v-if="params2!=='1'">和<a href="javascript:;">《算力服务器托管协议》</a></template></span><br>
               <span class="select_accept">{{tips}}</span>
             </label> 
             <button name="btn">确认支付</button>
@@ -159,7 +159,7 @@
         <div class="mobile_btn">
           <label for="accept">
             <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setValue('accept',true)">
-            <span @click="openMask(1)">阅读并接受<a href="javascript:;">《矿机销售协议》</a><template v-if="params2!=='1'">、<a href="javascript:;">《矿机托管协议》</a></template></span>
+            <span @click="openMask(1)">阅读并接受<a href="javascript:;">《算力服务器销售协议》</a><template v-if="params2!=='1'">、<a href="javascript:;">《算力服务器托管协议》</a></template></span>
             <span class="select_accept">{{tips}}</span>
           </label> 
           <button name="btn">确认支付</button>
@@ -185,7 +185,7 @@
     },
     data () {
       return {
-        params: {name: {title: '矿机名称', unit: ''}, one_amount_value: {title: '矿机单价', unit: '元'}, number: {title: '购买数量', unit: '台'}, hash: {title: '每台算力', unit: 'T'}, hashType: {title: '算力类型', unit: ''}, incomeType: {title: '结算方式', unit: ''}, output: {title: '预期收益', unit: 'btc/T/天'}, total_electric_fee: {title: '预计支出费用', unit: 'btc/台/天'}, batch_area: {title: '批次所在区域', unit: ''}},
+        params: {name: {title: '算力服务器名称', unit: ''}, one_amount_value: {title: '算力服务器单价', unit: '元'}, number: {title: '购买数量', unit: '台'}, hash: {title: '每台算力', unit: 'T'}, hashType: {title: '算力类型', unit: ''}, incomeType: {title: '结算方式', unit: ''}, output: {title: '预期收益', unit: 'btc/T/天'}, total_electric_fee: {title: '预计支出费用', unit: 'btc/台/天'}, batch_area: {title: '批次所在区域', unit: ''}},
         proData1: ['name', 'one_amount_value', 'number'],
         proData2: ['name', 'one_amount_value', 'number', 'hash'],
         proText: ['hashType', 'hash', 'incomeType'],

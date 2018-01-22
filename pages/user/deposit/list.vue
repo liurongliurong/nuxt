@@ -41,7 +41,7 @@
   export default {
     data () {
       return {
-        th: [{title: '托管人姓名', unit: ''}, {title: '矿机型号', unit: ''}, {title: '托管数量', unit: '台'}, {title: '算力', unit: 'T/台'}, {title: '功耗', unit: 'W/台'}, {title: 'BDC', unit: ''}, {title: '操作', unit: ''}],
+        th: [{title: '托管人姓名', unit: ''}, {title: '算力服务器型号', unit: ''}, {title: '托管数量', unit: '台'}, {title: '算力', unit: 'T/台'}, {title: '功耗', unit: 'W/台'}, {title: 'BDC', unit: ''}, {title: '操作', unit: ''}],
         item: [],
         showImg: false
       }

@@ -99,7 +99,7 @@
       </div>
     </template>
     <div class="fund_btn">
-      <router-link to="/user/bitCalculator">挖矿计算器</router-link>
+      <router-link to="/user/bitCalculator">收益计算器</router-link>
       <router-link to="/user/order/0">出售云算力</router-link>
       <router-link to="/user/order/0">查看订单</router-link>
     </div>
@@ -130,7 +130,7 @@
         moneyNav: {freeze_account: '冻结资金', balance_account: '账户余额'},
         moneyData: {freeze_account: 0, balance_account: 0},
         computeNav: {today_hash: '今日收益', balance_account: '账户余额', total_hash: '累积已获得收益'},
-        computeNav1: {today_hash: '现货资产', balance_account: '币价', total_hash: '单位挖矿产出'},
+        computeNav1: {today_hash: '现货资产', balance_account: '币价', total_hash: '单位收益'},
         computeData: {today_hash: 0, balance_account: 0, total_hash: 0},
         computeProperty: {total_miner: ['已购入云算力', '台'], total_hash: ['算力总和', 'T'], selled_miner: ['已出售云算力', '台'], selling_miner: ['出售中云算力', '台']},
         // , selled_hash: ['已出租云算力', '台'], selling_hash: ['出租中云算力', '台']
