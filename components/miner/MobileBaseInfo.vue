@@ -9,7 +9,7 @@
         <span class="name_box">{{detail.name}}</span>
       </h4>
       <div class="mobile_price">
-        <div :class="['type_name', {'name_type': params2 !== '1'}]">{{params2==='1'?'矿机':'云算力'}}</div>
+        <div :class="['type_name', {'name_type': params2 !== '1'}]">{{params2==='1'?'算力服务器':'云算力'}}</div>
         <div>算力价：<span class="price">￥{{detail.one_amount_value}}</span></div>
       </div>
       <div class="buy_tips" v-if="params2==='1'">{{detail.DeliveryTime}}</div>
