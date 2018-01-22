@@ -8,7 +8,7 @@
         <img :src="require('@/assets/images/miner_shop/bdc.jpg')" alt="">
         <div class="small">
           <router-link to="/bdc">前往申请机位</router-link>
-          <router-link to="/minerShop/mining">两分钟带你了解如何挖矿</router-link>
+          <!-- <router-link to="/minerShop/mining">两分钟带你了解如何挖矿</router-link> -->
         </div>
       </div>
       <div class="miner_pic pic2">
@@ -19,33 +19,29 @@
       </div>
       <div class="miner_pic pic3">
         <router-link to="/minerShop/miner/1">
-          <img :src="require('@/assets/images/miner_shop/miner.jpg')" alt="">
+          <!-- <img :src="require('@/assets/images/miner_shop/miner.jpg')" alt=""> -->
         </router-link>
       </div>
       <div class="miner_pic pic4">
         <router-link to="/minerShop/miner/2">
-          <img :src="require('@/assets/images/miner_shop/cloud_miner.jpg')" alt="">
+          <!-- <img :src="require('@/assets/images/miner_shop/cloud_miner.jpg')" alt=""> -->
         </router-link>
       </div>
     </div>
     <MinerList :minerData="minerData">
-      <div class="product_list">
-        <div class="box">
-          <h2>
-            <div>
-              <span>矿机推荐</span>
-              <span>保全网提供全流程区块链存证、保全服务</span>
-            </div>
-            <router-link to="/minerShop/miner/1">更多矿机 ></router-link>
-          </h2>
+      <h2>
+        <div>
+          <span>算力服务器推荐</span>
+          <span>保全网提供全流程区块链存证、保全服务</span>
         </div>
-      </div>
+        <router-link to="/minerShop/miner/1">更多算力服务器 ></router-link>
+      </h2>
     </MinerList>
     <CloudMinerList :cloudMinerData="cloudMinerData">
       <h2>
         <div>
           <span>云算力推荐</span>
-          <span>国家电网 算力保证 无忧挖矿</span>
+          <span>国家电网 算力保证</span>
         </div>
         <router-link to="/minerShop/miner/2">更多云算力 ></router-link>
       </h2>
@@ -53,7 +49,7 @@
     <div class="miner_loan">
       <div class="loan_center">
         <h1>算力分期</h1>
-        <p><span>快</span>先挖矿，随心分期，行业创新典范</p>
+        <p><span>快</span>随心分期，行业创新典范</p>
         <p><span>惠</span>最长享有180天的分期付款</p>
       </div>
     </div>
@@ -83,8 +79,8 @@
       return {
         title: '比特币云算力-价格最低云算力产品大全－算力网',
         meta: [
-          { hid: 'keywords', name: 'keywords', content: '比特币矿机,二手矿机,矿机期货' },
-          { hid: 'description', name: 'description', content: '算力网云算力商城，汇集目前主流比特币云算力产品，包括阿瓦隆7云算力，S9云算力以及E9矿机云算力产品，为比特币挖矿爱好者提供比特币云算力购买服务' }
+          { hid: 'keywords', name: 'keywords', content: '比特币算力服务器,二手算力服务器,算力服务器期货' },
+          { hid: 'description', name: 'description', content: '算力网云算力商城，汇集目前主流比特币云算力产品，包括阿瓦隆7云算力，S9云算力以及E9算力产品，为比特币爱好者提供比特币云算力购买服务' }
         ]
       }
     },

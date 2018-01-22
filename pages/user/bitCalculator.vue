@@ -1,6 +1,6 @@
 <template>
   <div class="calculator">
-    <h2>挖矿计算器</h2>
+    <h2>收益计算器</h2>
      <form @submit.prevent="submit">
       <div class="fromone">
         <label>币种</label>

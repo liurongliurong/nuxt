@@ -3,9 +3,9 @@
     <template v-if="isMobile===0">
       <div class="top_nav">
         <div class="top_nav_box">
-          <router-link to="/minerShop/list">矿机商城</router-link>
+          <router-link to="/minerShop/list">算力服务器商城</router-link>
           <span>></span>
-          <router-link to="/minerShop/miner/1" v-if="params2==='1'">矿机</router-link>
+          <router-link to="/minerShop/miner/1" v-if="params2==='1'">算力服务器</router-link>
           <router-link to="/minerShop/miner/2" v-else>云算力</router-link>
           <span>></span>
           <em>{{detail.name}}</em>
@@ -80,9 +80,9 @@
     data () {
       return {
         detail: {incomeType: '每日结算，次日发放', fee: '', product_name: '', name: '', status: 0},
-        cloudInfo: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: '矿场相册'}],
+        cloudInfo: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: 'BDC中心相册'}],
         minerInfo: [{name: 'MInerBrief', title: '产品介绍'}, {name: 'MinerAdvantage', title: '产品参数'}, {name: 'prProtocolSpeciaification', title: '补充说明'}],
-        params: {chips_num: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '矿机尺寸', minerOuterSize: '外箱尺寸', cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
+        params: {chips_num: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '算力服务器尺寸', minerOuterSize: '外箱尺寸', cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
         statusObj: {1: {title: '热销中', color: 'red'}, 2: {title: '已售罄', color: 'gray'}, 3: {title: '产品撤销', color: 'gray'}, 4: {title: '预热中', color: 'red'}},
         str: {4: '预热中', 5: '可售', 7: '已售馨', 10: '活动'},
         number: 1,
@@ -143,7 +143,7 @@
               this.buyStatus = 0
             }, 2000)
           } else {
-            api.tips('请输入或添加至少1台矿机')
+            api.tips('请输入或添加至少1台算力服务器')
           }
           return false
         }

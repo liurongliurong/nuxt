@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="float_right form_box">
-        <div class="form_header">提交托管矿机申请</div>
+        <div class="form_header">提交托管算力服务器申请</div>
         <form class="data_form" @submit.prevent="submit" novalidate v-if="!success">
           <div class="form_line" v-for="f in form">
             <span class="label">{{f.title}}</span><input :class="{yan: f.addon}" type="text" :name="f.name" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern" :title="f.tips" :maxlength="f.maxlength" v-if="f.type==='text'">
@@ -77,7 +77,7 @@
         </div>
       </div>
       <button class="apply">
-        <router-link to="/mobile/bdcForm">点击申请矿机托管</router-link>
+        <router-link to="/mobile/bdcForm">点击申请算力服务器托管</router-link>
       </button>
       <span class="tips">算力网全国BDC即将陆续开放...</span>
     </div>
@@ -118,10 +118,10 @@
     },
     head () {
       return {
-        title: '比特币矿机托管-国电输出,持久稳定,电力便宜-算力网',
+        title: '比特币算力服务器托管-国电输出,持久稳定,电力便宜-算力网',
         meta: [
-          { hid: 'keywords', name: 'keywords', content: '矿机托管,比特币矿机托管' },
-          { hid: 'description', name: 'description', content: '算力网矿机托管服务，承接各种比特币矿机托管业务，20万千瓦国家电网，持久稳定，专业挖矿技术24小时维护，保障用户挖矿收益' }
+          { hid: 'keywords', name: 'keywords', content: '算力服务器托管,比特币算力服务器托管' },
+          { hid: 'description', name: 'description', content: '算力网算力服务器托管服务，承接各种比特币算力服务器托管业务，20万千瓦国家电网，持久稳定，专业技术24小时维护，保障用户收益' }
         ]
       }
     },

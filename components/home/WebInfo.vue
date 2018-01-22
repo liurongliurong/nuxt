@@ -23,7 +23,7 @@
     data () {
       return {
         serverlist: [{
-          title: '矿机商城',
+          title: '算力服务器商城',
           name: 'Miner mall',
           path: '/minerShop/list',
           content: '算力作为区块链分布式网络实现价值传递与信任连接的基础资源，算力网依托自身行业优势，已整合了全球算力产业链资源。着重为客户提供全球顶级厂商的矿机资源，并结合分布在全球的BDC资源推出云算力服务。'

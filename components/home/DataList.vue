@@ -34,7 +34,7 @@
       <div class="miner_list_box">
         <MinerItem v-for="n,k in minerData" :n="n" :key="k"></MinerItem>
       </div>
-      <router-link class="get_more" to="/minerShop/miner/1">查看更多矿机 ></router-link>
+      <router-link class="get_more" to="/minerShop/miner/1">查看更多算力服务器 ></router-link>
     </div>
   </div>
 </template>

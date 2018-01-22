@@ -207,8 +207,8 @@
     },
     data () {
       return {
-        activityOne: {hash: {title: '算   力', value: '9TH/S (-5%~+10%)'}, wallPower: {title: '墙上功耗比', value: '145W/T（AC/DC 93%的效率）'}, voltage: {title: '额定电压', value: '11.8V～13.0V'}, minerOuterSize: {title: '外箱尺寸', value: '9个6PIN接口'}, chips_num: {title: '芯片数量', value: 'DW1227 132颗（14nm LPP工艺）'}, minerSize: {title: '矿机尺寸', value: '290mm*126mm*155mm'}, weight: {title: '重量', value: '4.7KG'}, network: {title: '网络连接', value: '以太网'}, temperature: {title: '工作温度', value: '-10℃～40℃'}, humidity: {title: '工作湿度', value: '5%RH～95%RH 非凝露'}},
-        activityUl: [{left: '规模化部署，专业的散热设备，远离运行噪音，使用低价合规电。', unit: '运行', right: '在家运行占空间，又会产生大量的噪音和热量，家用电的成本也是不小的开支。'}, {left: '基础设施全方位提供服务。', unit: '配套', right: '需要自己购买专用电源、控制组件和矿机支架等。'}, {left: 'IT专业人员进行配置、维护。', unit: '软件', right: '组装矿机后需要专业的软件支持，对于新人需要付出一定的学习成本。'}, {left: '出现问题平台负责解决，并安排专业人员进行维修。', unit: '维修', right: '一旦矿机出现问题，需要自行解决维修问题，挖矿停止，将会造成一定的损失。'}],
+        activityOne: {hash: {title: '算   力', value: '9TH/S (-5%~+10%)'}, wallPower: {title: '墙上功耗比', value: '145W/T（AC/DC 93%的效率）'}, voltage: {title: '额定电压', value: '11.8V～13.0V'}, minerOuterSize: {title: '外箱尺寸', value: '9个6PIN接口'}, chips_num: {title: '芯片数量', value: 'DW1227 132颗（14nm LPP工艺）'}, minerSize: {title: '算力服务器尺寸', value: '290mm*126mm*155mm'}, weight: {title: '重量', value: '4.7KG'}, network: {title: '网络连接', value: '以太网'}, temperature: {title: '工作温度', value: '-10℃～40℃'}, humidity: {title: '工作湿度', value: '5%RH～95%RH 非凝露'}},
+        activityUl: [{left: '规模化部署，专业的散热设备，远离运行噪音，使用低价合规电。', unit: '运行', right: '在家运行占空间，又会产生大量的噪音和热量，家用电的成本也是不小的开支。'}, {left: '基础设施全方位提供服务。', unit: '配套', right: '需要自己购买专用电源、控制组件和算力服务器支架等。'}, {left: 'IT专业人员进行配置、维护。', unit: '软件', right: '组装算力服务器后需要专业的软件支持，对于新人需要付出一定的学习成本。'}, {left: '出现问题平台负责解决，并安排专业人员进行维修。', unit: '维修', right: '一旦算力服务器出现问题，需要自行解决维修问题，收益停止，将会造成一定的损失。'}],
         text: {one_amount_value: {unit: '元/台', title: '算力服务器价格'}, hash: {unit: 'T/台', title: '服务器算力'}, left_amount: {unit: '台', title: '剩余数量'}},
         data: {name: '', area: '', one_amount_value: 0, hash: 0, amount: 0, sell_amount: 0},
         form: {
@@ -217,7 +217,7 @@
           payType: [{name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6, value2: 0, value3: 0}]
         },
         mobileData: [{title: '算力服务器价格', unit: '元/台'}, {title: '服务器算力', unit: 'T'}, {title: '剩余总量', unit: '台'}],
-        activityType: {1: {dataRequest: 'showMiner', dataCommit: 'saveMiner', agreement: '《矿机销售协议》'}, 2: {dataRequest: 'showProduct', dataCommit: 'productMall', agreement: '《云算力购买协议》和《矿机托管协议》'}},
+        activityType: {1: {dataRequest: 'showMiner', dataCommit: 'saveMiner', agreement: '《算力服务器销售协议》'}, 2: {dataRequest: 'showProduct', dataCommit: 'productMall', agreement: '《云算力购买协议》和《算力服务器托管协议》'}},
         totalHash: '0.00',
         totalPrice: '0.00',
         number: 0,
