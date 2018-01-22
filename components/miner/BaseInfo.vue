@@ -15,7 +15,11 @@
         </h4>
         <p class="time">{{detail.DeliveryTime}}</p>
         <p class="suan_price">
+<<<<<<< HEAD
           <span class="left_miner">单 价</span>
+=======
+          <span class="left_miner">算力服务器价</span>
+>>>>>>> d9cd12cdffdba5875d24f8bd6a9a2cf6c2e1b021
           <span class="right_miner">¥ <em>{{detail.one_amount_value}}</em></span>
         </p>
         <p class="address">
@@ -310,7 +314,11 @@
             font-size: 12px;
           }
           &.error:before{
+<<<<<<< HEAD
             content:'请输入数量';
+=======
+            content:'请输入算力服务器台数';
+>>>>>>> d9cd12cdffdba5875d24f8bd6a9a2cf6c2e1b021
           }
           &.over:before{
             content:'您输入的数量已超出库存';
@@ -489,7 +497,11 @@
               font-size: 12px;
             }
             &.error:before{
+<<<<<<< HEAD
               content:'请输入数量';
+=======
+              content:'请输入算力服务器台数';
+>>>>>>> d9cd12cdffdba5875d24f8bd6a9a2cf6c2e1b021
             }
             &.over:before{
               content:'您输入的数量已超出库存';
