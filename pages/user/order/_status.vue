@@ -98,18 +98,20 @@
             <em>{{nowEdit==3?d.created_time:d.create_time}}</em>
           </p>
           <div class="order_product_value" v-if="status==2||status==3">
-            <div class="value_one">
-              <h4>{{d.total_price}}<em> 元</em></h4>
-              <p>出售金额</p>
+            <div class="order_value">
+              <div class="order_text_img">
+                <div class="order_text">
+                  <div class="order_name">{{d.product_name}}</div>
+                  <div>{{d.total_hash}}T算力</div>
+                </div>
+              </div>
+              <div class="order_value_price">
+                <div class="price"><em>￥</em>{{d.total_price}}</div>
+                <div>&times;{{d.selling_amount}}</div>
+              </div>
             </div>
-            <div class="value_one">
-              <h4 v-if="nowEdit!=3&&(nowEdit==0||status==1||status==4)">{{d.total_hash|format}}<em> T</em></h4>
-              <h4 v-if="nowEdit==3">{{+d.buy_amount * (d.miner&&(+d.miner.hash))}}<em> T</em></h4>
-              <p>总算力</p>
-            </div>
-            <div class="value_one">
-              <h4 class="buy_number">{{d.selling_amount}}<em> 台</em></h4>
-              <p>出售数量</p>
+            <div class="order_btn" v-if="nowEdit===0&&status==2">
+              <span @click="quit('sold', d.id)">撤销出售</span>
             </div>
           </div>
           <div class="order_product_value" v-else>
@@ -134,27 +136,8 @@
             </div>
             <div class="order_btn">
               <span @click="openMask('sold', '出售云算力', d.id)" v-if="nowEdit===0&&status==1&&!d.is_loan&&d.remain_miner&&d.status===8">出售云算力</span>
-              <span @click="quit('sold', d.id)" v-if="nowEdit===0&&status==2">撤销出售</span>
             </div>
-            <!-- <div class="value_one">
-              <h4 class="buy_number">{{nowEdit!=3?d.total_price:d.pay_value}}<em> 元</em></h4>
-              <p>购买金额</p>
-            </div>
-            <div class="value_one">
-              <h4 v-if="nowEdit!=3&&(nowEdit==0||status==1||status==4)">{{d.total_hash|format}}<em> T</em></h4>
-              <h4 v-if="nowEdit==3">{{+d.buy_amount * (d.miner&&(+d.miner.hash))}}<em> T</em></h4>
-              <p>总算力</p>
-            </div>
-            <div class="value_one">
-              <h4>{{d.buy_amount}}<em> 台</em></h4>
-              <p>购买数量</p>
-            </div> -->
           </div>
-          <!-- <div class="order_button">
-            <button class="left" @click="openMask('sold', '出售云算力', d.id)" v-if="nowEdit===0&&status==1&&!d.is_loan&&d.remain_miner&&d.status===8">出售云算力</button>
-            <button @click="quit('sold', d.id)" v-if="nowEdit===0&&status==2">撤销出售</button>
-            <button class="left" @click="goDetail(nowEdit,d.id)" v-if="nowEdit===3||(nowEdit!==2&&status!=2&&status!=3)">查看详情</button>
-          </div> -->
         </div>
       </div>
       <div class="nodata" v-if="!data.length">
@@ -557,44 +540,7 @@
                 display: none;
               }
             }
-            // .value_one{
-            //   text-align: center;
-            //   h4{
-            //     font-size:0.32rem;
-            //     em{
-            //       font-style: normal;
-            //       font-size: 0.28rem;
-            //     }
-            //     &.buy_number{
-            //       color:#ff721f;
-            //     }
-            //   }
-            //   p{
-            //     color: #999;
-            //   }
-            //   &:nth-child(3){
-            //     text-align: center;
-            //   }
-            //   &:nth-child(1){
-            //     text-align: left;
-            //   }
-            //   &:nth-child(5){
-            //     text-align: right;
-            //   }
-            // }
           }
-          // .order_button{
-          //   text-align:right;
-          //   padding-bottom:0.2rem;
-          //   button{
-          //     background: #327fff;
-          //     color: #fff;
-          //     padding: 0.1rem 0.3rem;
-          //     & + button{
-          //       margin-left:10px;
-          //     }
-          //   }
-          // }
         } 
         .pager{
           padding-top: 20px;

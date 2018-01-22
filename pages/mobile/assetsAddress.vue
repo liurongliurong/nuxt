@@ -142,8 +142,8 @@
                 background: url('../../assets/images/mobile/delete.png') no-repeat;
                 background-size: 0.28rem;
               }
-              &:first-child {
-                margin-right: 0.45rem;
+              & + span {
+                margin-left: 0.45rem;
               }
             }
           }
