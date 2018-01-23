@@ -44,7 +44,7 @@
         this.type = this.$route.params.type
         var obj = {token: this.token, page: this.now, product_type: '1'}
         var url = ''
-        if (sort !== '' && sort.length) {
+        if (sort !== '' && sort && sort.length) {
           obj = Object.assign({sort: this.sort[sort[0]].option[sort[1]]}, obj)
         }
         if (this.status) {
