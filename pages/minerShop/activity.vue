@@ -25,23 +25,22 @@
           <p>购买数量（台）</p>
           <div class="input_box">
             <span @click="changeNum(+number-1)">-</span>
-            <input type="text" v-model="number" name="number" :haha="number" placeholder="请输入购买数量，1台起售" @blur="changeNum(number)">
+            <input type="text" v-model="number" name="number" placeholder="请输入购买数量，1台起售" @blur="changeNum(number)">
             <span @click="changeNum(+number+1)">+</span>
           </div>
           <p>总算力 ：<span>{{totalHash}}T</span></p>
           <p>需支付 ：<span>{{totalPrice}}元</span></p>
           <button @click="gobuy()">立即支付</button>
           <label for="accept">
-            <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAccept">
+            <input type="checkbox" checked id="accept">
             <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span><br>
-            <span class="select_accept">{{tips}}</span>
           </label>
         </div>
       </div>
       <div class="activity_info">
         <div class="activity_img">
           <h4>产品简介</h4>
-          <div class="activity_advantage" v-html="hashcontent.machine_advantage"></div>
+          <div class="activity_advantage" v-html="paramsData.machine_advantage"></div>
           <h4>官方参数</h4>
           <div class="activity_content">
             <div class="activity_left">
@@ -53,7 +52,7 @@
                 <span class="one_left">{{n.title}}</span>
                  <span class="one_right" v-if="k === 'hash'">{{data[k]}} T</span> 
                  <span class="one_right" v-else-if="k === 'chips_num'">{{data.product_info ? data.product_info[k] : ''}}</span>  
-                 <span class="one_right" v-else>{{hashcontent[k]}}</span>   
+                 <span class="one_right" v-else>{{paramsData[k]}}</span>   
               </div>
             </div>
           </div>
@@ -110,15 +109,14 @@
         </div>
         <button class="mobile_btn" @click="gobuy(1)">立即支付</button>
         <label for="accept">
-          <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setAccept">
+          <input type="checkbox" checked id="accept">
           <span @click="openContract(1)">阅读并接受<a href="javascript:;">{{activityType[activity].agreement}}</a></span>
-          <span class="select_accept">{{tips}}</span>
         </label>
       </div>
       <div class="mobile_activity_info">
         <div class="item">
           <h5>产品简介</h5>
-          <div v-html="hashcontent.machine_advantage"></div>
+          <div v-html="paramsData.machine_advantage"></div>
         </div>
         <div class="item">
           <h5>官方参数</h5>
@@ -127,7 +125,7 @@
               <span class="one_left">{{n.title}}</span>
               <span class="one_right" v-if="k === 'hash'">{{data[k]}} T</span> 
               <span class="one_right" v-else-if="k === 'chips_num'">{{data.product_info ? data.product_info[k] : ''}}</span>  
-              <span class="one_right" v-else>{{hashcontent[k]}}</span>
+              <span class="one_right" v-else>{{paramsData[k]}}</span>
             </div>
           </div>
         </div>
@@ -152,7 +150,7 @@
         <div class="select_pay_type" v-if="isMobile===0">
           <div :class="['pay_text',{active:payNo===2}]">
             <label class="pay_value">
-              <input type="radio" name="payType" @click="setValue('payNo',2)" checked>
+              <input type="radio" name="payType" @click="setPayNo(2)" checked>
               <span class="zhifubao">支付宝</span>
             </label>
             <div class="pay_info">
@@ -163,7 +161,7 @@
           </div>
           <div :class="['pay_text',{active:payNo===1}]">
             <label class="pay_value">
-              <input type="radio" name="payType" @click="setValue('payNo',1)">
+              <input type="radio" name="payType" @click="setPayNo(1)">
               <span class="yue">账户余额{{balance}}元</span>
             </label>
             <div class="pay_info">
@@ -173,10 +171,10 @@
           </div>
         </div>
         <div class="mobile_pay_type" v-else-if="isMobile===1">
-          <div :class="['pay_item', {active:payNo===2}]" @click="setValue('payNo',2)">
+          <div :class="['pay_item', {active:payNo===2}]" @click="setPayNo(2)">
             <span class="zhifubao">支付宝支付</span>
           </div>
-          <div :class="['pay_item', {active:payNo===1}]" @click="setValue('payNo',1)">
+          <div :class="['pay_item', {active:payNo===1}]" @click="setPayNo(1)">
             <span class="yue">可用余额</span>
             <span class="val">{{balance}}元</span>
             <router-link to="/mobile/recharge">充值</router-link>
@@ -206,7 +204,7 @@
     data () {
       return {
         params: {
-          hash: {title: '算   力', value: '9TH/S (-5%~+10%)'},
+          hash: {title: '算力', value: '9TH/S (-5%~+10%)'},
           wallPower: {title: '墙上功耗比', value: '145W/T（AC/DC 93%的效率）'},
           voltage: {title: '额定电压', value: '11.8V～13.0V'},
           minerOuterSize: {title: '外箱尺寸', value: '9个6PIN接口'},
@@ -217,32 +215,39 @@
           temperature: {title: '工作温度', value: '-10℃～40℃'},
           humidity: {title: '工作湿度', value: '5%RH～95%RH 非凝露'}
         },
-        advantage: [{left: '规模化部署，专业的散热设备，远离运行噪音，使用低价合规电。', unit: '运行', right: '在家运行占空间，又会产生大量的噪音和热量，家用电的成本也是不小的开支。'}, {left: '基础设施全方位提供服务。', unit: '配套', right: '需要自己购买专用电源、控制组件和矿机支架等。'}, {left: 'IT专业人员进行配置、维护。', unit: '软件', right: '组装矿机后需要专业的软件支持，对于新人需要付出一定的学习成本。'}, {left: '出现问题平台负责解决，并安排专业人员进行维修。', unit: '维修', right: '一旦矿机出现问题，需要自行解决维修问题，挖矿停止，将会造成一定的损失。'}],
-        text: {one_amount_value: {unit: '元/台', title: '算力服务器价格'}, hash: {unit: 'T/台', title: '服务器算力'}, left_amount: {unit: '台', title: '剩余数量'}},
+        advantage: [
+          {left: '规模化部署，专业的散热设备，远离运行噪音，使用低价合规电。', unit: '运行', right: '在家运行占空间，又会产生大量的噪音和热量，家用电的成本也是不小的开支。'},
+          {left: '基础设施全方位提供服务。', unit: '配套', right: '需要自己购买专用电源、控制组件和矿机支架等。'},
+          {left: 'IT专业人员进行配置、维护。', unit: '软件', right: '组装矿机后需要专业的软件支持，对于新人需要付出一定的学习成本。'},
+          {left: '出现问题平台负责解决，并安排专业人员进行维修。', unit: '维修', right: '一旦矿机出现问题，需要自行解决维修问题，挖矿停止，将会造成一定的损失。'}
+        ],
+        text: {
+          one_amount_value: {unit: '元/台', title: '算力服务器价格'},
+          hash: {unit: 'T/台', title: '服务器算力'},
+          left_amount: {unit: '台', title: '剩余数量'}
+        },
         data: {name: '', area: '', one_amount_value: 0, hash: 0, amount: 0, sell_amount: 0},
         form: {
           auth, 
           address: post_address.slice(0, 4),
           payType: [{name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6, value2: 0, value3: 0}]
         },
-        mobileData: [{title: '算力服务器价格', unit: '元/台'}, {title: '服务器算力', unit: 'T'}, {title: '剩余总量', unit: '台'}],
-        activityType: {1: {dataRequest: 'showMiner', dataCommit: 'saveMiner', agreement: '《矿机销售协议》'}, 2: {dataRequest: 'showProduct', dataCommit: 'productMall', agreement: '《云算力购买协议》和《矿机托管协议》'}},
+        activityType: {
+          1: {dataRequest: 'showMiner', dataCommit: 'saveMiner', agreement: '《矿机销售协议》'},
+          2: {dataRequest: 'showProduct', dataCommit: 'productMall', agreement: '《云算力购买协议》和《矿机托管协议》'}
+        },
         totalHash: '0.00',
         totalPrice: '0.00',
         number: 1,
-        tips: '',
-        accept: true,
         edit: 0,
         title: '',
         contract: '',
         content: '',
-        nowForm: 'auth',
         nowFormData: [],
         addressData: '',
         activity: 2,
-        hashcontent: '',
+        paramsData: '',
         payNo: 2,
-        one_amount_value: 0,
         position: 'all'
       }
     },
@@ -268,20 +273,16 @@
         if (n === 1) {
           this.contract = this.content
           this.title = '协议详情'
-          this.accept = true
         } else if (n === 2) {
-          this.nowForm = 'auth'
-          this.nowFormData = this.form[this.nowForm]
+          this.nowFormData = this.form.auth
           this.title = '实名认证'
         } else if (n === 3) {
-          this.nowForm = 'address'
-          this.nowFormData = this.form[this.nowForm]
+          this.nowFormData = this.form.address
           this.title = '收货地址'
         } else if (n === 4 || n === 5) {
-          this.nowForm = 'payType'
-          this.nowFormData = this.form[this.nowForm]
+          this.nowFormData = this.form.payType
           this.title = '选择支付方式'
-          this.form.payType[0].value2 = this.one_amount_value
+          this.form.payType[0].value2 = this.data.one_amount_value
           this.form.payType[0].value3 = this.number
         }
       },
@@ -300,20 +301,20 @@
           this.$store.commit('LOGOUT')
           return false
         }
-        // if (!this.true_name) {
+        if (!this.true_name) {
           this.openContract(2)
           return false
-        // }
+        }
         // if (!this.addressData) {
         //   this.openContract(3)
         //   return false
         // }
         if (!this.number) {
-          this.check(ele, '请填写数量')
+          api.tips('请填写数量')
           return false
         }
-        if (!(ele.checked || this.accept)) {
-          this.check(ele, '请同意服务条款')
+        if (!ele.checked) {
+          api.tips('请同意服务条款')
           return false
         }
         this.openContract(4)
@@ -359,38 +360,27 @@
       },
       closeMask () {
         document.body.style.overflow = 'auto'
-        this.edit = ''
+        this.edit = 0
       },
-      setValue (name, k) {
-        this[name] = k
+      setPayNo (k) {
+        this.payNo = k
       },
       goRecharge (url) {
         this.$store.commit('SET_URL', this.$route.path)
         this.$router.push({path: url})
-      },
-      check (ele, str) {
-        if (this.isMobile) {
-          api.tips(str)
-        } else {
-          this.tips = str
-          ele.setAttribute('data-status', 'invalid')
-          setTimeout(() => {
-            ele.setAttribute('data-status', '')
-          }, 2000)
-        }
       },
       submit (e) {
         var form = e.target
         var data = api.checkForm(form, this.isMobile)
         if (!data) return false
         var sendData = {token: this.token}
-        if (this.nowForm === 'address') {
+        if (this.edit === 3) {
           this.addressData = data
           api.tips('收货地址已提交，点击“立即支付”完成购买')
           this.closeMask(this.isMobile)
-        } else if (this.nowForm === 'payType') {
+        } else if (this.edit === 4 || this.edit === 5) {
           this.goPay(data)
-        } else if (this.nowForm === 'auth') {
+        } else if (this.edit === 2) {
           var val = 'true_name'
           var tipsStr = '实名认证已提交，请您耐心等待几秒即可看到认证结果'
           var tipsStr2 = '恭喜您实名认证成功'
@@ -424,9 +414,6 @@
           })
         })
       },
-      setAccept (e) {
-        this.accept = e.target.checked
-      },
       pageInit () {
         var self = this
         // var url = 'showMiner'
@@ -434,9 +421,8 @@
         util.post(url, {sign: 'token=0'}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.data = res
-            self.hashcontent = res.product_info.has_product_miner_base
+            self.paramsData = res.product_info.has_product_miner_base
             self.content = res.content + '<hr>' + res.content1
-            self.one_amount_value = res.one_amount_value
             self.totalHash = (self.number * self.data.hash).toFixed(2)
             self.totalPrice = self.number * self.data.one_amount_value
             // self.content = res.content
@@ -844,11 +830,6 @@
           }
         }
         color:#fff;
-        .select_accept{
-          display: block;
-          width:280px;
-          text-align: center;
-        }
         input{
           @include checkbox(18,2px)
           background: #fff;

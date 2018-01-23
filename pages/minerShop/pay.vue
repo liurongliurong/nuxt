@@ -29,7 +29,7 @@
           <h3 class="title">支付订单信息</h3>
           <div :class="['pay_text',{active:payNo===2}]">
             <label class="pay_value">
-              <input type="radio" name="payType" @click="setValue('payNo',2)" checked>
+              <input type="radio" name="payType" @click="setPayNo(2)" checked>
               <span class="zhifubao">支付宝</span>
             </label>
             <div class="pay_info">
@@ -40,7 +40,7 @@
           </div>
           <div :class="['pay_text',{active:payNo===1}]">
             <label class="pay_value">
-              <input type="radio" name="payType" @click="setValue('payNo',1)">
+              <input type="radio" name="payType" @click="setPayNo(1)">
               <span class="yue">账户余额{{balance}}元</span>
             </label>
             <div class="pay_info">
@@ -52,7 +52,7 @@
             <input type="hidden" name="mobile" :value="mobile">
             <FormField :form="form" class="form" v-if="payNo===1"></FormField>
              <label for="accept">
-              <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setValue('accept',true)">
+              <input type="checkbox" checked id="accept" name="accept">
               <span @click="openMask(1)">阅读并接受<a href="javascript:;">《矿机销售协议》</a><template v-if="params2!=='1'">和<a href="javascript:;">《矿机托管协议》</a></template></span>
             </label> 
             <button name="btn">确认支付</button>
@@ -119,7 +119,7 @@
         <input type="hidden" name="mobile" :value="mobile">
         <FormField :form="form" v-if="payNo===1"></FormField>
         <label for="accept">
-          <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setValue('accept',true)">
+          <input type="checkbox" checked id="accept" name="accept">
           <span @click="openMask(1)">阅读并接受<a href="javascript:;">《矿机销售协议》</a><template v-if="params2!=='1'">、<a href="javascript:;">《矿机托管协议》</a></template></span>
         </label>
         <div class="mobile_btn">
@@ -172,7 +172,6 @@
         form: [{name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6, value2: 0, value3: 0}],
         address: post_address,
         totalPrice: 0,
-        accept: true,
         edit: false,
         contract: '',
         addressData: [],
@@ -306,7 +305,6 @@
         if (n === 1) {
           this.contract = this.content1 ? this.content + '<br>' + this.content1 : this.content
           this.title = '协议详情'
-          this.accept = true
         } else if (n === 2) {
           this.addressForm = this.address
           this.title = '收货地址'
@@ -317,9 +315,6 @@
       closeMask () {
         document.body.style.overflow = 'auto'
         this.edit = false
-      },
-      setValue (name, k) {
-        this[name] = k
       },
       setRate (n) {
         this.rate = n

@@ -3,11 +3,11 @@
     <div class="property_view">
       <div class="property_data">
         <div class="data_title">总资产 (元)</div>
-        <div class="data_value">{{property.total_money|currency}}</div>
+        <div class="data_value">{{+property.total_money|currency}}</div>
         <div class="balance">
           <div class="val">
             <span class="val_title">可用余额：</span>
-            <span class="val_num">{{property.balance_account|currency}}</span>
+            <span class="val_num">{{+property.balance_account|currency}}</span>
           </div>
           <div class="opr">
             <span @click="openMask(2)">提现</span>
@@ -17,13 +17,13 @@
         <div class="frozen_balance">
           <div class="val">
             <span class="val_title">冻结余额：</span>
-            <span class="val_num">{{property.freeze_account|currency}}</span>
+            <span class="val_num">{{+property.freeze_account|currency}}</span>
           </div>
         </div>
         <div class="coin_data" v-for="c,k in property.coin_list">
           <div class="val">
-            <span class="val_title">{{c.balance_account.toFixed(8)}}BTC：</span>
-            <span class="val_num">≈{{c.coin_price|currency}}元</span>
+            <span class="val_title">{{(+c.balance_account).toFixed(8)}}BTC：</span>
+            <span class="val_num">≈{{+c.coin_price|currency}}元</span>
           </div>
           <div class="opr">
             <span @click="openMask(1, k, c.balance_account)">提币</span>
