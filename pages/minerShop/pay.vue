@@ -444,7 +444,7 @@
                 self.detail.output = res.output
                 self.detail.total_electric_fee = res.total_electric_fee
               }
-              if (self.params2 === '2') {
+              if (self.detail.isLoan) {
                 self.content = res.part_content
               } else {
                 self.content = res.content
