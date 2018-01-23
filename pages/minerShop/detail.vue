@@ -144,7 +144,7 @@
       },
       changeNum (n) {
         if (this.detail.leftNum === 0) return false
-        var minNum = this.detail.single_limit_amount || 1
+        var minNum = +this.detail.single_limit_amount || 1
         var isOver = n > this.detail.leftNum
         if (isOver) {
           this.buyStatus = 2
@@ -172,7 +172,7 @@
               self.detail.leftNum = res.amount - res.buyed_amount
               self.detail = Object.assign(self.detail, res)
               self.detail.sellProgress = ((+self.detail.buyed_amount)/self.detail.amount*100).toFixed(0)+'%'
-              self.number = parseInt(self.detail.single_limit_amount)
+              self.number = parseInt(self.detail.single_limit_amount) || 1
               if (self.params2 !== '1') {
                 self.detail = Object.assign(self.detail, res.has_product_miner_base)
                 self.detail.name = res.product_name

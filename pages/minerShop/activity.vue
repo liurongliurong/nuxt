@@ -300,10 +300,10 @@
           this.$store.commit('LOGOUT')
           return false
         }
-        if (!this.true_name) {
+        // if (!this.true_name) {
           this.openContract(2)
           return false
-        }
+        // }
         // if (!this.addressData) {
         //   this.openContract(3)
         //   return false
@@ -467,10 +467,10 @@
 <style lang="scss">
   @import '~assets/css/style.scss';
   .activity_box{
-    color:$white;
     .activity_pc{
       min-height:700px;
       background: #170E2D;
+      color:$white;
       .bg_box{
         @include bg(1920,730px,#22154A)
       }
@@ -688,6 +688,7 @@
       }
     }
     .activity_mobile{
+      color:$white;
       .mobile_bg_box{
         h1 {
           width: 100%;
