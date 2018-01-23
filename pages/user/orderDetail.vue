@@ -104,7 +104,7 @@
   export default {
     data () {
       return {
-        processText: {3: ['订单完成', '算力服务器发货'], 0: ['订单完成', 'BDC中心发货', '算力服务器运行', '收益计算']},
+        processText: {3: ['订单完成', '算力服务器发货'], 0: ['订单完成', '机器上架', '机器运行', '收益计算']},
         processStatus: 1,
         info: {0: {realized_income_value: '累计已获得收益', today_income: '今日收益', total_realized_power_fee_value: '今日支付运维费'}, 1: {realized_income_value: '累计已获得收益', today_income_value: '今日收益', today_power_fee_value: '今日支付运维费'}},
         data: {},

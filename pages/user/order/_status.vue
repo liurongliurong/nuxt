@@ -386,6 +386,9 @@
         .order_type_select{
           @include select_list
           margin-bottom:30px;
+          .title_content {
+            width:93px;
+          }
         }
         nav{
           a{
@@ -479,7 +482,6 @@
         border-bottom:1px solid #ddd;
         padding:0 0.3rem;
         .type_list{
-          width: 20%;
           text-align:center;
           .active{
             @include triangle(bottom)
