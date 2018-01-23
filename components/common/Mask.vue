@@ -1,5 +1,5 @@
 <template>
-  <div :class="'popup '+position">
+  <div :class="'popup '+position" @click="testMask(maskClose, $event)">
     <div :class="['popup_con', {buy_box:title==='选择购买数量'}]">
       <div class="popup_title" v-if="position!=='middle'">
         <span>{{title}}</span>
@@ -55,6 +55,9 @@
       position: {
         type: String,
         default: ''
+      },
+      maskClose: {
+        type: Boolean
       }
     },
     filters: {
@@ -65,6 +68,13 @@
         this.closeMask()
         var accept = document.querySelector('#accept')
         accept.checked = true
+      },
+      testMask (i, e) {
+        if (!i) return false
+        var ele = document.querySelector('.popup')
+        if (e.target === ele) {
+          this.closeMask()
+        }
       },
       closeMask () {
         this.$emit('closeMask')

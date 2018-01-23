@@ -365,8 +365,8 @@
         transform:scale(1.1);
       }
       .text{
-        margin-top:85px;
         @include main
+        margin-top:85px;
         text-align: center;
         h2{
           font-size: 30px;
