@@ -106,7 +106,6 @@
       .info_li{
         cursor:pointer;
         float: left;
-        width: 75px;
         color:#333333;
         margin-right: 50px;
         font-size: 18px;
