@@ -45,15 +45,16 @@
 <script>
   import util from '@/util'
   import api from '@/util/function'
-  import MyMask from '@/components/common/Mask'
   import { mapState } from 'vuex'
+  import { post_address } from '@/util/form'
+  import MyMask from '@/components/common/Mask'
   export default {
     components: {
       MyMask
     },
     data () {
       return {
-        address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}, {name: 'is_default', type: 'radio', title: '是否设为默认地址'}],
+        address: post_address,
         data: [],
         addressData: {},
         show: false

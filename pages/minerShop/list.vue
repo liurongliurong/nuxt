@@ -137,7 +137,7 @@
       @include bg(1920,466px,#070a0f)
       background:none;
       .bg{
-        background:url(../../assets/images/miner_shop/miner_list.jpg) no-repeat;
+        background:url(~assets/images/miner_shop/miner_list.jpg) no-repeat;
         height: 498px;
         width:100%;
         background-size: 100% 100% !important;
@@ -275,7 +275,7 @@
     }
     .miner_loan{
       @include mobile_hide
-      background:#363A4E url('../../assets/images/miner_shop/loan.jpg');
+      background:#363A4E url('~assets/images/miner_shop/loan.jpg');
       background-size:100% 100%;
       width:100%;
       height:350px;

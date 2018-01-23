@@ -44,5 +44,12 @@ module.exports = {
   ],
   zhifubao: [
     {name: 'amount', type: 'text', title: '充值金额', placeholder: '请输入充值金额', pattern: 'bigMoney', len: 6}
+  ],
+  post_address: [
+    {name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true},
+    {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'},
+    {name: 'address', type: 'select', title: '地址', isChange: true},
+    {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true},
+    {name: 'is_default', type: 'radio', title: '是否设为默认地址'}
   ]
 }

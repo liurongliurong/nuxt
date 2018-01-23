@@ -1,5 +1,5 @@
 <template>
-  <div class="order_msg address_msg">
+  <div class="pay_address">
     <h3 class="title">选择收货地址</h3>
     <div class="address_box">
       <div :class="['item',{active:a.id===addressObject.id}]" v-for="a,k in showAll?addressData:addressData.slice(0, 3)">
@@ -55,3 +55,26 @@
     }
   }
 </script>
+
+<style type="text/css" lang="scss">
+  @import '~assets/css/style.scss';
+  .pay_address{
+    .address_box{
+      @include address_data
+      .item{
+        background: #FAFAFA;
+        &.active,&:hover{
+          background: #EFF6FE;
+        }
+      }
+      .all_address_btn{
+        float: right;
+        margin-top:20px;
+        font-size: 12px;
+        color:$blue;
+        cursor: pointer;
+        padding-right:15px;
+      }
+    }
+  }
+</style>

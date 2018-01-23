@@ -4,19 +4,14 @@
     <h3>资金账户</h3>
     <div class="compute_box money_box">
       <div class="data">
-        <div class="item">
-          <p>总资金</p>
-          <span class="currency">{{priceall|currency}}</span>
-          <span class="">元</span>
-        </div>
-        <div class="line"></div>
         <template v-for="d,k in moneyNav">
           <div class="item">
-            <div class="frozeeData">
+            <div class="frozeeData" v-if="k==='freeze_account'">
               <span>{{d}}</span>
-              <span class="problem" v-if="k==='freeze_account'">?</span>
-              <div class="frozee_tips" v-if="k==='freeze_account'">暂时不能使用的资金</div>
+              <span class="problem">?</span>
+              <div class="frozee_tips">暂时不能使用的资金</div>
             </div>
+            <p v-else>{{d}}</p>
             <span class="currency">{{moneyData[k]|currency}}</span>
             <span class="">元</span>
           </div>
@@ -117,6 +112,7 @@
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
+  import { getIncome, withdrawals } from '@/util/form'
   import MyMask from '@/components/common/Mask'
   import OprSelect from '@/components/common/OprSelect'
   export default {
@@ -126,9 +122,8 @@
     data () {
       return {
         nowEdit: 0,
-        priceall: '',
-        moneyNav: {freeze_account: '冻结资金', balance_account: '账户余额'},
-        moneyData: {freeze_account: 0, balance_account: 0},
+        moneyNav: {account: '总资金', freeze_account: '冻结资金', balance_account: '账户余额'},
+        moneyData: {account: 0, freeze_account: 0, balance_account: 0},
         computeNav: {today_hash: '今日收益', balance_account: '账户余额', total_hash: '累积已获得收益'},
         computeNav1: {today_hash: '现货资产', balance_account: '币价', total_hash: '单位挖矿产出'},
         computeData: {today_hash: 0, balance_account: 0, total_hash: 0},
@@ -137,24 +132,10 @@
         computeFund: {total_miner: ['云算力', '台'], total_hash: ['云算力总和', 'T'], selled_miner: ['已出租云算力', 'T'], selling_miner: ['出租中云算力', 'T']},
         dataFund: {total_miner: 0, total_hash: 0, selled_miner: 0, selling_miner: 0},
         edit: '',
-        form: {
-          withdrawals: [
-            {name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0},
-            {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
-            {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
-          ],
-          getIncome: [
-            {name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType', value: ''},
-            {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', value2: 0, tipsUnit: ''},
-            {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
-            {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
-          ]
-        },
+        form: {getIncome, withdrawals},
         editText: '',
         fee: 0,
         total_price: 0,
-        qwsl: '',
-        output: '',
         maskNo: 0
       }
     },
@@ -283,8 +264,7 @@
           var self = this
           util.post('myAccount', {sign: api.serialize({token: this.token})}).then(function (res) {
             api.checkAjax(self, res, () => {
-              self.moneyData = res
-              self.priceall = +self.moneyData.freeze_account + (+self.moneyData.balance_account)
+              self.moneyData = {...res, account: +res.freeze_account + (+res.balance_account)}
             })
           })
           this.getList()
