@@ -164,7 +164,7 @@
         </div>
       </form>
     </div>
-    <my-mask :form="addressForm" :title="title" :contract="contract" v-if="edit" @submit="submit" @closeMask="closeMask">
+    <my-mask :form="addressForm" :title="title" position="bottom" :contract="contract" v-if="edit" @submit="submit" @closeMask="closeMask">
       <pay-type slot="pay_type" @setPayNo="setPayNo" :payNo="payNo" :balance="+balance"></pay-type>
     </my-mask>
   </section>

@@ -23,7 +23,7 @@
         <button disabled v-else-if="detail.status===4">立即购买</button>
         <button @click="checkPay" v-else>立即购买</button>
       </div>
-      <my-mask title="选择购买数量" @closeMask="closeMask" :maskClose="true" v-if="sheetVisible">
+      <my-mask title="选择购买数量" @closeMask="closeMask" :maskClose="true" position="bottom" v-if="sheetVisible">
         <template slot="buy_box">
           <div class="buy_text">
             <div>单价</div>
@@ -248,10 +248,8 @@
       min-height: calc(100vh - 0.88rem);
       padding-bottom: 57px;
       .popup{
-        background: rgba(0,0,0,.5);
         .buy_box{
           font-size: 16px;
-          height: auto;
           .buy_text{
             @include flex(space-between)
             border-bottom: 1px solid $border;

@@ -3,7 +3,7 @@
     <div class="bodyform">
       <form class="form" action="" @submit.prevent="submit" novalidate>
         <FormField :form="form"></FormField>
-        <button class="btn" name="btn">提交申请</button>
+        <button name="btn">提交申请</button>
       </form>
     </div>
   </section>
