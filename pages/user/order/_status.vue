@@ -386,6 +386,9 @@
         .order_type_select{
           @include select_list
           margin-bottom:30px;
+          .title_content {
+            width:93px;
+          }
         }
         nav{
           a{
