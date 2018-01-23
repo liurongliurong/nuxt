@@ -54,7 +54,7 @@
       },
       position: {
         type: String,
-        default: ''
+        default: 'all'
       },
       maskClose: {
         type: Boolean
