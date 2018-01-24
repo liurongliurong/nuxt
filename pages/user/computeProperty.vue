@@ -66,7 +66,7 @@
             <template v-if="k==='today_hash'">
               <span class="currency">{{(computeData.coin_price * computeData.balance_account)|format(1)}}</span>
               <span class="coin_price">币价:{{computeData.coin_price}}CNY</span>
-              <span class=""> {{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}</span>
+              <span class=""> CNY</span>              
             </template>
             <template v-else-if="k==='total_hash'">
               <span class="currency">{{computeData.output&&computeData.output.split(" ")[0]}}</span>
@@ -74,7 +74,7 @@
             </template>
             <template v-else>
               <span class="currency">{{computeData[k]}}</span>
-              <span class=""> CNY</span>
+              <span class=""> {{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}</span>
             </template>
           </div>
           <div class="line"></div>
