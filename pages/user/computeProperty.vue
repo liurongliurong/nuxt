@@ -4,19 +4,14 @@
     <h3>资金账户</h3>
     <div class="compute_box money_box">
       <div class="data">
-        <div class="item">
-          <p>总资金</p>
-          <span class="currency">{{priceall|currency}}</span>
-          <span class="">元</span>
-        </div>
-        <div class="line"></div>
         <template v-for="d,k in moneyNav">
           <div class="item">
-            <div class="frozeeData">
+            <div class="frozeeData" v-if="k==='freeze_account'">
               <span>{{d}}</span>
-              <span class="problem" v-if="k==='freeze_account'">?</span>
-              <div class="frozee_tips" v-if="k==='freeze_account'">暂时不能使用的资金</div>
+              <span class="problem">?</span>
+              <div class="frozee_tips">暂时不能使用的资金</div>
             </div>
+            <p v-else>{{d}}</p>
             <span class="currency">{{moneyData[k]|currency}}</span>
             <span class="">元</span>
           </div>
@@ -41,7 +36,12 @@
       <div class="data">
         <template v-for="d,k in computeNav">
           <div class="item">
-            <p>{{d}}</p>
+            <div class="frozeeData" v-if="k==='today_hash'">
+              <span>{{d}}</span>
+              <span class="problem">?</span>
+              <div class="frozee_tips">派发一天前收益，如:3号派发1号收益</div>
+            </div>
+            <p v-else>{{d}}</p>
             <span class="currency">{{computeData[k]|format(8)}}</span>
             <span class="">{{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}</span>
           </div>
@@ -57,21 +57,23 @@
       <div class="data">
         <template v-for="d,k in computeNav1">
           <div class="item">
-            <p>{{d}}</p>
-            <!-- <span class="currency">{{computeData[k]|format(8)}}</span>  -->
+            <div class="frozeeData" v-if="k==='freeze_coin_withdraw_account'">
+              <span>{{d}}</span>
+              <span class="problem">?</span>
+              <div class="frozee_tips">提币申请后，会暂时放入冻结数量中</div>
+            </div>
+            <p v-else>{{d}}</p>
             <template v-if="k==='today_hash'">
               <span class="currency">{{(computeData.coin_price * computeData.balance_account)|format(1)}}</span>
+              <span class="coin_price">币价:{{computeData.coin_price}}CNY</span>
+              <span class=""> {{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}</span>
             </template>
             <template v-else-if="k==='total_hash'">
               <span class="currency">{{computeData.output&&computeData.output.split(" ")[0]}}</span>
-            </template>
-            <template v-else>
-              <span class="currency">{{computeData.coin_price}}</span>
-            </template>
-            <template v-if="k==='total_hash'">
               <span class="">{{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}} /T/天</span>
             </template>
             <template v-else>
+              <span class="currency">{{computeData[k]}}</span>
               <span class=""> CNY</span>
             </template>
           </div>
@@ -117,6 +119,7 @@
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
+  import { getIncome, withdrawals } from '@/util/form'
   import MyMask from '@/components/common/Mask'
   import OprSelect from '@/components/common/OprSelect'
   export default {
@@ -126,35 +129,20 @@
     data () {
       return {
         nowEdit: 0,
-        priceall: '',
-        moneyNav: {freeze_account: '冻结资金', balance_account: '账户余额'},
-        moneyData: {freeze_account: 0, balance_account: 0},
+        moneyNav: {account: '总资金', freeze_account: '冻结资金', balance_account: '账户余额'},
+        moneyData: {account: 0, freeze_account: 0, balance_account: 0},
         computeNav: {today_hash: '今日收益', balance_account: '账户余额', total_hash: '累积已获得收益'},
-        computeNav1: {today_hash: '现货资产', balance_account: '币价', total_hash: '单位挖矿产出'},
+        computeNav1: {freeze_coin_withdraw_account: '冻结资产', today_hash: '现货资产', total_hash: '单位挖矿产出'},
         computeData: {today_hash: 0, balance_account: 0, total_hash: 0},
         computeProperty: {total_miner: ['已购入云算力', '台'], total_hash: ['算力总和', 'T'], selled_miner: ['已出售云算力', '台'], selling_miner: ['出售中云算力', '台']},
         dataProperty: {total_miner: 0, total_hash: 0, buy_transfer_hash: 0, selled_miner: 0, selling_miner: 0, selled_hash: 0, selling_hash: 0},
         computeFund: {total_miner: ['云算力', '台'], total_hash: ['云算力总和', 'T'], selled_miner: ['已出租云算力', 'T'], selling_miner: ['出租中云算力', 'T']},
         dataFund: {total_miner: 0, total_hash: 0, selled_miner: 0, selling_miner: 0},
         edit: '',
-        form: {
-          withdrawals: [
-            {name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0},
-            {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
-            {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
-          ],
-          getIncome: [
-            {name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType', value: ''},
-            {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', value2: 0, tipsUnit: ''},
-            {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
-            {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
-          ]
-        },
+        form: {getIncome, withdrawals},
         editText: '',
         fee: 0,
         total_price: 0,
-        qwsl: '',
-        output: '',
         maskNo: 0
       }
     },
@@ -283,8 +271,7 @@
           var self = this
           util.post('myAccount', {sign: api.serialize({token: this.token})}).then(function (res) {
             api.checkAjax(self, res, () => {
-              self.moneyData = res
-              self.priceall = +self.moneyData.freeze_account + (+self.moneyData.balance_account)
+              self.moneyData = {...res, account: +res.freeze_account + (+res.balance_account)}
             })
           })
           this.getList()
@@ -336,38 +323,46 @@
         width:79%;
         @include detail_data
         .item{
+          position: relative;
           width:34%;
           padding-right: 15px;
-        }
-        .frozeeData{
-          position: relative;
-          span{
-            color:$text;
-            &.problem{
-              display: inline-block;
-              width:18px;
-              text-align: center;
-              line-height: 16px;
-              cursor: pointer;
-              border:1px solid $text;
-              border-radius:50%;
-              font-size: 12px;
-              margin-left:5px;
-              &:hover + .frozee_tips{
-                display: block;
+          .coin_price {
+            position: absolute;
+            top: 3px;
+            left: 100px;
+            font-size: 12px;
+          }
+          .frozeeData{
+            position: relative;
+            span{
+              color:$text;
+              &.problem{
+                display: inline-block;
+                width:18px;
+                text-align: center;
+                line-height: 16px;
+                cursor: pointer;
+                border:1px solid $text;
+                border-radius:50%;
+                font-size: 12px;
+                margin-left:5px;
+                &:hover + .frozee_tips{
+                  display: block;
+                }
               }
             }
-          }
-          .frozee_tips{
-            font-size: 12px;
-            height:20px;
-            line-height: 20px;
-            color:$light_text;
-            width:130px;
-            @include position(0,88)
-            padding:0 10px;
-            background: $border;
-            display: none;
+            .frozee_tips{
+              font-size: 12px;
+              line-height: 20px;
+              color:$light_text;
+              width:120px;
+              position: absolute;
+              top: -12px;
+              left: 88px;
+              padding: 5px 10px;
+              background: $border;
+              display: none;
+            }
           }
         }
       }

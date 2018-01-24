@@ -6,7 +6,7 @@
         <span class="icon_close" @click="closeMask"></span>
         <span class="mobile_close" @click="closeMask"></span>
       </div>
-      <form class="form form_content" @submit.prevent="submit" novalidate v-if="form&&form.length">
+      <form class="form" @submit.prevent="submit" novalidate v-if="form&&form.length">
         <AddressInput :form="form" :val="val" v-if="val"></AddressInput>
         <template v-else>
           <FormField :form="form" @onChange="onChange"></FormField>
@@ -19,7 +19,7 @@
         <slot name="selfEdit" v-if="contract==='selfEdit'"></slot>
         <div class="popup_body" v-html="contract" v-else></div>
         <div class="popup_foot">
-          <label for="accept1" @click="closeMask">
+          <label for="accept1" @click="goOn">
             <span>同意并继续</span>
           </label>
         </div>
@@ -65,9 +65,9 @@
     },
     methods: {
       goOn () {
-        this.closeMask()
         var accept = document.querySelector('#accept')
         accept.checked = true
+        this.closeMask()
       },
       testMask (i, e) {
         if (!i) return false

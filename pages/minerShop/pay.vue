@@ -2,82 +2,45 @@
   <section class="pay">
     <div class="pc_box" v-if="isMobile===0">
       <div class="left_box">
-        <miner-address v-if="params2==='1'" :addressObject="addressObject" :addressData="addressData" @getAddress="getAddress" @selectAddress="selectAddress" @openMask="openMask"></miner-address>
-        <div class="order_msg order_info">
+        <div class="pay_info">
           <h3 class="title">确认订单信息</h3>
-          <div class="order_detail">
-            <div class="order_detail_info1">
-              <template v-for="d in params2==='1'?proData2:proData1">
-                <div class="item">
-                  <p class="value"><span>{{detail[d]}}{{params[d].unit}}</span></p>
-                  <p>{{params[d].title}}</p>
-                </div>
-                <div class="line"></div>
-              </template>
-            </div>
-            <div class="order_detail_info2" v-if="params2!=='1'">
-              <div class="item" v-for="t in proText">{{params[t].title}}：
-                <span class="value" v-if="t==='hash'">{{detail[t]}}T</span>
-                <span class="value" v-else>{{detail[t]}}</span>
+          <div class="pay_info_detail">
+            <template v-for="d in proData">
+              <div class="item">
+                <p class="value"><span>{{detail[d]}}{{params[d].unit}}</span></p>
+                <p>{{params[d].title}}</p>
               </div>
-            </div>
+              <div class="line"></div>
+            </template>
           </div>
         </div>
-        <div class="order_msg miner_info" v-if="params2!=='1'">
+        <miner-address :addressObject="addressObject" :addressData="addressData" @getAddress="getAddress" @selectAddress="selectAddress" @openMask="openMask" v-if="params2==='1'"></miner-address>
+        <div class="pay_profit" v-if="params2!=='1'">
           <h3 class="title">挖矿收益信息</h3>
-          <div class="miner_info_detail">
-            <div class="item" v-for="n in cloudMinerNav">
+          <div class="pay_profit_detail">
+            <div class="item" v-for="n in mobileCloudNav">
               <span class="info_left">{{params[n].title}}</span>
-              <span class="info_right">{{detail[n]||'暂无'}}<em>{{params[n].unit}}</em></span>
+              <span class="info_right">{{cloudMinerData[n]||'暂无'}}<em>{{params[n].unit}}</em></span>
             </div>
           </div>
         </div>
-        <div class="order_msg hire_purchase" v-show="detail.isLoan">
-          <h3 class="title">分期购买计划</h3>
-          <div class="order_detail">
-            <table border="0">
-              <thead>
-                <tr>
-                  <th v-for="n,k in thead">{{n.title}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr :class="{active: rate===3}">
-                  <td><input type="radio" class="teradio" name="qi" @click="setValue('rate',3)" checked/></td>
-                  <td>{{totalPrice}}</td>
-                  <td>3期</td>
-                  <td>2%</td>
-                  <td>{{(totalPrice/3 + (totalPrice*0.02)).toFixed(2)}}（含每期手续费）</td>
-                  <td>{{(totalPrice*0.02).toFixed(2)}}</td>
-                </tr>
-                <tr :class="{active: rate===6}">
-                  <td><input type="radio" name="qi" class="teradio" @click="setValue('rate',6)"/></td>
-                  <td>{{totalPrice}}</td>
-                  <td>6期</td>
-                  <td>3%</td>
-                  <td>{{(totalPrice/6 + (totalPrice*0.03)).toFixed(2)}}（含每期手续费）</td>
-                  <td>{{(totalPrice*0.03).toFixed(2)}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="order_msg order_pay">
+        <hire-purchase :totalPrice="totalPrice*loan" :rateList="rateList" :rate="rate" @setRate="setRate" v-if="detail.isLoan"></hire-purchase>
+        <div class="pay_form">
           <h3 class="title">支付订单信息</h3>
           <div :class="['pay_text',{active:payNo===2}]">
             <label class="pay_value">
-              <input type="radio" name="payType" @click="setValue('payNo',2)" checked>
+              <input type="radio" name="payType" @click="setPayNo(2)" checked>
               <span class="zhifubao">支付宝</span>
             </label>
             <div class="pay_info">
               <span>支付</span>
-              <span class="money">{{totalPrice|format}}</span>
+              <span class="money">{{totalPrice*(1-loan)|format}}</span>
               <span>元</span>
             </div>
           </div>
           <div :class="['pay_text',{active:payNo===1}]">
             <label class="pay_value">
-              <input type="radio" name="payType" @click="setValue('payNo',1)">
+              <input type="radio" name="payType" @click="setPayNo(1)">
               <span class="yue">账户余额{{balance}}元</span>
             </label>
             <div class="pay_info">
@@ -89,7 +52,7 @@
             <input type="hidden" name="mobile" :value="mobile">
             <FormField :form="form" class="form" v-if="payNo===1"></FormField>
              <label for="accept">
-              <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setValue('accept',true)">
+              <input type="checkbox" checked id="accept" name="accept">
               <span @click="openMask(1)">阅读并接受<a href="javascript:;">《矿机销售协议》</a><template v-if="params2!=='1'">和<a href="javascript:;">《矿机托管协议》</a></template></span>
             </label> 
             <button name="btn">确认支付</button>
@@ -104,11 +67,11 @@
         </div>
         <div class="item" v-if="detail.isLoan">
           <span>总金额</span>
-          <span class="price">￥{{totalPrice*2|format}}元</span>
+          <span class="price">￥{{totalPrice|format}}元</span>
         </div>
         <div class="item">
           <span>支付金额</span>
-          <span class="price">￥{{totalPrice|format}}元</span>
+          <span class="price">￥{{totalPrice*(1-loan)|format}}元</span>
         </div>
       </div>
     </div>
@@ -156,7 +119,7 @@
         <input type="hidden" name="mobile" :value="mobile">
         <FormField :form="form" v-if="payNo===1"></FormField>
         <label for="accept">
-          <input type="checkbox" :checked="accept" id="accept" name="accept" @click="setValue('accept',true)">
+          <input type="checkbox" checked id="accept" name="accept">
           <span @click="openMask(1)">阅读并接受<a href="javascript:;">《矿机销售协议》</a><template v-if="params2!=='1'">、<a href="javascript:;">《矿机托管协议》</a></template></span>
         </label>
         <div class="mobile_btn">
@@ -174,13 +137,15 @@
   import util from '@/util/index'
   import api from '@/util/function'
   import { mapState } from 'vuex'
+  import { post_address } from '@/util/form'
   import FormField from '@/components/common/FormField'
   import MyMask from '@/components/common/Mask'
   import PayType from '@/components/common/PayType'
   import MinerAddress from '@/components/miner/MinerAddress'
+  import HirePurchase from '@/components/miner/HirePurchase'
   export default {
     components: {
-      FormField, MyMask, PayType, MinerAddress
+      FormField, MyMask, PayType, MinerAddress, HirePurchase
     },
     data () {
       return {
@@ -200,21 +165,20 @@
           settle_time: {title: '结算周期', unit: ''},
           trust_fee: {title: '托管费', unit: '元/台/月'}
         },
-        proData1: ['name', 'one_amount_value', 'number'],
-        proData2: ['name', 'one_amount_value', 'number', 'hash'],
-        proText: ['hashType', 'hash', 'incomeType'],
-        cloudMinerNav: ['output', 'total_electric_fee', 'batch_area'],
-        mobileCloudNav: ['electric_fee', 'trust_fee', 'contract_time', 'settle_time', 'safeguard_time'],
+        proData: ['name', 'one_amount_value', 'number', 'hash'],
+        cloudMinerNav: ['output', 'total_electric_fee', 'batch_area', 'hashType', 'incomeType'],
+        mobileCloudNav: ['electric_fee', 'trust_fee', 'contract_time', 'settle_time', 'safeguard_time', 'batch_area'],
         thead: [{title: '选择'}, {title: '分期金额（元）'}, {title: '分期期数'}, {title: '手续费率'}, {title: '每期应还（元）'}, {title: '每期手续费（元）'}],
         form: [{name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6, value2: 0, value3: 0}],
-        address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}, {name: 'is_default', type: 'radio', title: '是否设为默认地址'}],
+        address: post_address,
         totalPrice: 0,
-        accept: true,
         edit: false,
         contract: '',
         addressData: [],
         addressObject: {},
         addressForm: [],
+        rateList: [],
+        loan: 0,
         payNo: 2,
         rate: 3,
         isFixTop: false,
@@ -301,9 +265,6 @@
           this.alipay(url, data)
         } else {
           api.tips(str, () => {
-            // if (this.isMobile) {
-            //   this.$router.push({path: url})
-            // } else {}
             api.setStorge('info', {payType: this.params2, addressData: this.addressObject})
             this.$router.push({path: '/minerShop/paySuccess'})
           })
@@ -346,7 +307,6 @@
         if (n === 1) {
           this.contract = this.content1 ? this.content + '<br>' + this.content1 : this.content
           this.title = '协议详情'
-          this.accept = true
         } else if (n === 2) {
           this.addressForm = this.address
           this.title = '收货地址'
@@ -358,8 +318,8 @@
         document.body.style.overflow = 'auto'
         this.edit = false
       },
-      setValue (name, k) {
-        this[name] = k
+      setRate (n) {
+        this.rate = +n
       },
       setPayNo (k) {
         this.payNo = k
@@ -399,9 +359,6 @@
           this.totalPrice = this.detail.one_amount_value * +this.number
           this.form[0].value2 = this.detail.one_amount_value
           this.form[0].value3 = +this.number
-          if (this.detail.isLoan) {
-            this.totalPrice /= 2
-          }
           if (this.addressObj.id) {
             this.addressObject = this.addressObj
           } else if (this.params2 === '1') {
@@ -423,8 +380,11 @@
                 this.detail.output = res.output
                 this.detail.total_electric_fee = res.total_electric_fee
               }
-              if (this.params2 === '2') {
+              if (this.detail.isLoan) {
                 this.content = res.part_content
+                this.rateList = res.period_num
+                this.rate = this.rateList[0] && +this.rateList[0].num
+                this.loan = +res.loan_limit
               } else {
                 this.content = res.content
               }
@@ -434,7 +394,7 @@
             })
           })
           util.post('bdc_info', {sign: api.serialize({token: this.token, bdc_id: this.detail.bdc_id})}).then((res) => {
-            this.cloudMinerData = res
+            this.cloudMinerData = {...res, batch_area: this.detail.batch_area}
           })
         } else {
           setTimeout(() => {
@@ -485,88 +445,42 @@
       @include flex(flex-start,flex-start)
       .left_box{
         width:calc(100% - 280px);
-        .order_msg{
-          background: #fff;
-          h3.title{
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-            padding: 10px 15px;
-            border-top: 2px solid $blue_border;
-            background: #FAFAFA;
-          }
+        h3.title{
+          font-size: 16px;
+          font-weight: bold;
+          color: #333;
+          padding: 10px 15px;
+          border-top: 2px solid $blue_border;
+          background: #FAFAFA;
         }
-        .address_msg{
-          .address_box{
-            @include address_data
-            .item{
-              background: #FAFAFA;
-              &.active,&:hover{
-                background: #EFF6FE;
-              }
-            }
-            .all_address_btn{
-              float: right;
-              margin-top:20px;
-              font-size: 12px;
-              color:$blue;
-              cursor: pointer;
-              padding-right:15px;
-            }
-          }
-        }
-        .order_info{
-          .order_detail{
-            margin-top: 20px;
+        .pay_info{
+          .pay_info_detail{
+            @include flex(space-between);
+            background: #fff9f3;
+            margin: 20px 0;
             color: #999;
-            .value{
-              color:#333;
-            }
-            .order_detail_info1{
-              @include flex(space-between);
-              background: #fff9f3;
-              padding: 25px;
-              text-align: center;
-              .item{
-                .value span{
+            padding: 25px;
+            text-align: center;
+            .item{
+              .value{
+                color:#333;
+                span {
                   font-size: 20px;
                 }
               }
-              .line:not(:last-child){
-                width:1px;
-                height:35px;
-                background: $border;
-              }
-              .line:last-child{
-                display: none;
-              }
             }
-            .order_detail_info2{
-              @include flex(space-between);
-              margin: 20px 0;
-              border: 1px solid #eee;
-              padding: 20px 25px;
-              .item{
-                select{
-                  width:178px;
-                  height:22px;
-                  border:1px solid #dcdcdc;
-                  border-radius:4px;
-                  background:#f7f8fa;
-                  padding-left:15px;
-                  font-size:12px;
-                  box-sizing:border-box;
-                  display:inline-block;
-                }
-                a{
-                  color: #327fff;
-                }
-              }
+            .line:not(:last-child){
+              width:1px;
+              height:35px;
+              background: $border;
+            }
+            .line:last-child{
+              display: none;
             }
           }
         }
-        .miner_info{
-          .miner_info_detail{
+        .pay_profit{
+          .pay_profit_detail{
             padding: 20px 60px;
             .item{
               span{
@@ -593,52 +507,7 @@
             }
           }
         }
-        .hire_purchase{
-          h3.title{
-            background:#01bfb5;
-            color:white;
-          }
-          .order_detail{
-            width: 100%;
-            table{
-              width: 900px;
-              thead {
-                height: 40px !important;
-                line-height: 40px;
-                border:1px solid #e5e5e5;
-                background:#f5f5f5;
-                width: 900px;
-                box-sizing: border-box;
-              }
-              tbody{
-                tr{
-                  line-height: 56px;
-                  border-bottom: 1px solid #e5e5e5;
-                  td{
-                    color: #121212;
-                    font-size: 14px;
-                    text-align: center;
-                    input{
-                      @include checkbox(18);
-                      border:1px solid #d2d2d2;
-                      width: 12px;
-                      border-radius: 0;
-                      height: 12px;
-                      background:white;
-                    }
-                  }
-                  &:hover{
-                    background:#edffff;
-                  }
-                  &.active{
-                    background:#edffff;
-                  }
-                }
-              }
-            }
-          }
-        }
-        .order_pay{
+        .pay_form{
           margin-top: 20px;
           background:$white;
           .pay_text{
@@ -653,6 +522,14 @@
               margin-bottom: 15px;
               input{
                 height:42px;
+              }
+              .count_btn {
+                top: 0;
+                right: 0;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                height: 42px;
+                line-height: 42px;
               }
             }
             label{
@@ -836,9 +713,6 @@
         .form_field{
           padding:0.3rem;
           background: #fff;
-          .input input{
-            height:34px;
-          }
         }
         .pay_item{
           padding:0 0.3rem;

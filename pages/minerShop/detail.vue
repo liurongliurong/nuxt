@@ -69,7 +69,7 @@
     },
     data () {
       return {
-        detail: {incomeType: '每日结算，次日发放', fee: '', product_name: '', name: '', status: 0},
+        detail: {incomeType: '每日结算，隔日发放', fee: '', product_name: '', name: '', status: 0},
         cloudInfo: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: '矿场相册'}],
         minerInfo: [{name: 'MInerBrief', title: '产品介绍'}, {name: 'MinerAdvantage', title: '产品参数'}, {name: 'prProtocolSpeciaification', title: '补充说明'}],
         params: {chips_num: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '矿机尺寸', minerOuterSize: '外箱尺寸', cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
@@ -144,7 +144,7 @@
       },
       changeNum (n) {
         if (this.detail.leftNum === 0) return false
-        var minNum = this.detail.single_limit_amount || 1
+        var minNum = +this.detail.single_limit_amount || 1
         var isOver = n > this.detail.leftNum
         if (isOver) {
           this.buyStatus = 2
@@ -172,7 +172,7 @@
               self.detail.leftNum = res.amount - res.buyed_amount
               self.detail = Object.assign(self.detail, res)
               self.detail.sellProgress = ((+self.detail.buyed_amount)/self.detail.amount*100).toFixed(0)+'%'
-              self.number = parseInt(self.detail.single_limit_amount)
+              self.number = parseInt(self.detail.single_limit_amount) || 1
               if (self.params2 !== '1') {
                 self.detail = Object.assign(self.detail, res.has_product_miner_base)
                 self.detail.name = res.product_name
