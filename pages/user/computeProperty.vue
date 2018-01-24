@@ -36,7 +36,12 @@
       <div class="data">
         <template v-for="d,k in computeNav">
           <div class="item">
-            <p>{{d}}</p>
+            <div class="frozeeData" v-if="k==='today_hash'">
+              <span>{{d}}</span>
+              <span class="problem">?</span>
+              <div class="frozee_tips">派发一天前收益，如:3号派发1号收益</div>
+            </div>
+            <p v-else>{{d}}</p>
             <span class="currency">{{computeData[k]|format(8)}}</span>
             <span class="">{{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}</span>
           </div>
@@ -52,22 +57,23 @@
       <div class="data">
         <template v-for="d,k in computeNav1">
           <div class="item">
-            <p>{{d}}</p>
-            <!-- <span class="currency">{{computeData[k]|format(8)}}</span>  -->
+            <div class="frozeeData" v-if="k==='freeze_coin_withdraw_account'">
+              <span>{{d}}</span>
+              <span class="problem">?</span>
+              <div class="frozee_tips">提币申请后，会暂时放入冻结数量中</div>
+            </div>
+            <p v-else>{{d}}</p>
             <template v-if="k==='today_hash'">
               <span class="currency">{{(computeData.coin_price * computeData.balance_account)|format(1)}}</span>
-              <span>币价</span>
+              <span class="coin_price">币价:{{computeData.coin_price}}CNY</span>
+              <span class=""> {{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}</span>
             </template>
             <template v-else-if="k==='total_hash'">
               <span class="currency">{{computeData.output&&computeData.output.split(" ")[0]}}</span>
-            </template>
-            <template v-else>
-              <span class="currency">{{computeData[k]}}</span>
-            </template>
-            <template v-if="k==='total_hash'">
               <span class="">{{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}} /T/天</span>
             </template>
             <template v-else>
+              <span class="currency">{{computeData[k]}}</span>
               <span class=""> CNY</span>
             </template>
           </div>
@@ -317,38 +323,46 @@
         width:79%;
         @include detail_data
         .item{
+          position: relative;
           width:34%;
           padding-right: 15px;
-        }
-        .frozeeData{
-          position: relative;
-          span{
-            color:$text;
-            &.problem{
-              display: inline-block;
-              width:18px;
-              text-align: center;
-              line-height: 16px;
-              cursor: pointer;
-              border:1px solid $text;
-              border-radius:50%;
-              font-size: 12px;
-              margin-left:5px;
-              &:hover + .frozee_tips{
-                display: block;
+          .coin_price {
+            position: absolute;
+            top: 3px;
+            left: 100px;
+            font-size: 12px;
+          }
+          .frozeeData{
+            position: relative;
+            span{
+              color:$text;
+              &.problem{
+                display: inline-block;
+                width:18px;
+                text-align: center;
+                line-height: 16px;
+                cursor: pointer;
+                border:1px solid $text;
+                border-radius:50%;
+                font-size: 12px;
+                margin-left:5px;
+                &:hover + .frozee_tips{
+                  display: block;
+                }
               }
             }
-          }
-          .frozee_tips{
-            font-size: 12px;
-            height:20px;
-            line-height: 20px;
-            color:$light_text;
-            width:130px;
-            @include position(0,88)
-            padding:0 10px;
-            background: $border;
-            display: none;
+            .frozee_tips{
+              font-size: 12px;
+              line-height: 20px;
+              color:$light_text;
+              width:120px;
+              position: absolute;
+              top: -12px;
+              left: 88px;
+              padding: 5px 10px;
+              background: $border;
+              display: none;
+            }
           }
         }
       }
