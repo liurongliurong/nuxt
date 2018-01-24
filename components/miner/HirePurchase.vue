@@ -12,7 +12,7 @@
           <tr :class="{active: rate==r.num}" v-for="r in rateList">
             <td><input type="radio" class="teradio" name="qi" @click="setValue(r.num)" :checked="rate==r.num"/></td>
             <td>{{totalPrice}}</td>
-            <td>{{r.num+rate}}期</td>
+            <td>{{r.num}}期</td>
             <td>{{r.fee*100}}%</td>
             <td>{{(totalPrice/r.num + (totalPrice*r.fee)).toFixed(2)}}（含每期手续费）</td>
             <td>{{(totalPrice*r.fee).toFixed(2)}}</td>
