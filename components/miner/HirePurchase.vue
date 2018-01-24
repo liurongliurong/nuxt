@@ -9,21 +9,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr :class="{active: rate===3}">
-            <td><input type="radio" class="teradio" name="qi" @click="setValue(3)" checked/></td>
+          <tr :class="{active: rate==r.num}" v-for="r in rateList">
+            <td><input type="radio" class="teradio" name="qi" @click="setValue(r.num)" :checked="rate==r.num"/></td>
             <td>{{totalPrice}}</td>
-            <td>3期</td>
-            <td>2%</td>
-            <td>{{(totalPrice/3 + (totalPrice*0.02)).toFixed(2)}}（含每期手续费）</td>
-            <td>{{(totalPrice*0.02).toFixed(2)}}</td>
-          </tr>
-          <tr :class="{active: rate===6}">
-            <td><input type="radio" name="qi" class="teradio" @click="setValue(6)"/></td>
-            <td>{{totalPrice}}</td>
-            <td>6期</td>
-            <td>3%</td>
-            <td>{{(totalPrice/6 + (totalPrice*0.03)).toFixed(2)}}（含每期手续费）</td>
-            <td>{{(totalPrice*0.03).toFixed(2)}}</td>
+            <td>{{r.num+rate}}期</td>
+            <td>{{r.fee*100}}%</td>
+            <td>{{(totalPrice/r.num + (totalPrice*r.fee)).toFixed(2)}}（含每期手续费）</td>
+            <td>{{(totalPrice*r.fee).toFixed(2)}}</td>
           </tr>
         </tbody>
       </table>
@@ -39,6 +31,9 @@
       },
       rate: {
         type: Number
+      },
+      rateList: {
+        type: Array
       }
     },
     data () {
@@ -48,7 +43,7 @@
     },
     methods: {
       setValue (k) {
-        this.emit('setRate', k)
+        this.$emit('setRate', k)
       }
     }
   }
@@ -82,12 +77,9 @@
               font-size: 14px;
               text-align: center;
               input{
-                @include checkbox(18);
+                @include checkbox(14)
                 border:1px solid #d2d2d2;
-                width: 12px;
-                border-radius: 0;
-                height: 12px;
-                background:white;
+                background:#fff;
               }
             }
             &:hover{

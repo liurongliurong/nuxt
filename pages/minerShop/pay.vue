@@ -18,13 +18,13 @@
         <div class="pay_profit" v-if="params2!=='1'">
           <h3 class="title">挖矿收益信息</h3>
           <div class="pay_profit_detail">
-            <div class="item" v-for="n in cloudMinerNav">
+            <div class="item" v-for="n in mobileCloudNav">
               <span class="info_left">{{params[n].title}}</span>
-              <span class="info_right">{{detail[n]||'暂无'}}<em>{{params[n].unit}}</em></span>
+              <span class="info_right">{{cloudMinerData[n]||'暂无'}}<em>{{params[n].unit}}</em></span>
             </div>
           </div>
         </div>
-        <hire-purchase :totalPrice="totalPrice" :rate="rate" @setRate="setRate" v-if="detail.isLoan"></hire-purchase>
+        <hire-purchase :totalPrice="totalPrice*loan" :rateList="rateList" :rate="rate" @setRate="setRate" v-if="detail.isLoan"></hire-purchase>
         <div class="pay_form">
           <h3 class="title">支付订单信息</h3>
           <div :class="['pay_text',{active:payNo===2}]">
@@ -34,7 +34,7 @@
             </label>
             <div class="pay_info">
               <span>支付</span>
-              <span class="money">{{totalPrice|format}}</span>
+              <span class="money">{{totalPrice*(1-loan)|format}}</span>
               <span>元</span>
             </div>
           </div>
@@ -67,11 +67,11 @@
         </div>
         <div class="item" v-if="detail.isLoan">
           <span>总金额</span>
-          <span class="price">￥{{totalPrice*2|format}}元</span>
+          <span class="price">￥{{totalPrice|format}}元</span>
         </div>
         <div class="item">
           <span>支付金额</span>
-          <span class="price">￥{{totalPrice|format}}元</span>
+          <span class="price">￥{{totalPrice*(1-loan)|format}}元</span>
         </div>
       </div>
     </div>
@@ -167,7 +167,7 @@
         },
         proData: ['name', 'one_amount_value', 'number', 'hash'],
         cloudMinerNav: ['output', 'total_electric_fee', 'batch_area', 'hashType', 'incomeType'],
-        mobileCloudNav: ['electric_fee', 'trust_fee', 'contract_time', 'settle_time', 'safeguard_time'],
+        mobileCloudNav: ['electric_fee', 'trust_fee', 'contract_time', 'settle_time', 'safeguard_time', 'batch_area'],
         thead: [{title: '选择'}, {title: '分期金额（元）'}, {title: '分期期数'}, {title: '手续费率'}, {title: '每期应还（元）'}, {title: '每期手续费（元）'}],
         form: [{name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6, value2: 0, value3: 0}],
         address: post_address,
@@ -177,6 +177,8 @@
         addressData: [],
         addressObject: {},
         addressForm: [],
+        rateList: [],
+        loan: 0,
         payNo: 2,
         rate: 3,
         isFixTop: false,
@@ -317,7 +319,7 @@
         this.edit = false
       },
       setRate (n) {
-        this.rate = n
+        this.rate = +n
       },
       setPayNo (k) {
         this.payNo = k
@@ -357,9 +359,6 @@
           this.totalPrice = this.detail.one_amount_value * +this.number
           this.form[0].value2 = this.detail.one_amount_value
           this.form[0].value3 = +this.number
-          if (this.detail.isLoan) {
-            this.totalPrice /= 2
-          }
           if (this.addressObj.id) {
             this.addressObject = this.addressObj
           } else if (this.params2 === '1') {
@@ -383,6 +382,9 @@
               }
               if (this.detail.isLoan) {
                 this.content = res.part_content
+                this.rateList = res.period_num
+                this.rate = this.rateList[0] && +this.rateList[0].num
+                this.loan = +res.loan_limit
               } else {
                 this.content = res.content
               }
@@ -392,7 +394,7 @@
             })
           })
           util.post('bdc_info', {sign: api.serialize({token: this.token, bdc_id: this.detail.bdc_id})}).then((res) => {
-            this.cloudMinerData = res
+            this.cloudMinerData = {...res, batch_area: this.detail.batch_area}
           })
         } else {
           setTimeout(() => {
@@ -520,6 +522,14 @@
               margin-bottom: 15px;
               input{
                 height:42px;
+              }
+              .count_btn {
+                top: 0;
+                right: 0;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                height: 42px;
+                line-height: 42px;
               }
             }
             label{

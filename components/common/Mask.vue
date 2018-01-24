@@ -6,7 +6,7 @@
         <span class="icon_close" @click="closeMask"></span>
         <span class="mobile_close" @click="closeMask"></span>
       </div>
-      <form class="form form_content" @submit.prevent="submit" novalidate v-if="form&&form.length">
+      <form class="form" @submit.prevent="submit" novalidate v-if="form&&form.length">
         <AddressInput :form="form" :val="val" v-if="val"></AddressInput>
         <template v-else>
           <FormField :form="form" @onChange="onChange"></FormField>

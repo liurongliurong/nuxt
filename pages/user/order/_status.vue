@@ -18,7 +18,7 @@
           </div>
         </div>
         <nav>
-          <a :class="{active: status===(+k+1)}" href="javascript:;" @click="fetchData(+k+1)" v-for="n,k in nav[nowEdit]">{{n}}</a>
+          <a :class="{active: status==k}" href="javascript:;" @click="fetchData(k)" v-for="n,k in nav[nowEdit]">{{n}}</a>
         </nav>
       </div>
       <div class="order_box">
@@ -26,46 +26,46 @@
           <thead>
             <tr>
              <th>算力服务器</th>
-              <th v-if="nowEdit===0||status==1||status==4">总算力</th>
-              <template v-if="nowEdit===0&&(status==2||status==3)">
+              <th>总算力</th>
+              <template v-if="status==2||status==3">
                 <th>出售数量</th>
                 <th>出售金额</th>
                 <th>出售时间</th>
               </template>
-              <template v-if="status==1||status==4">
+              <template v-else>
                 <th>购买数量</th>
                 <th>购买金额</th>
                 <th>购买时间</th>
               </template>
-              <template v-if="nowEdit===0&&status==1">
-                <th>剩余可出售</th>
-              </template>
-              <th v-if="status!=3&&!(nowEdit===2&&status==1)">操作</th>
+              <th v-if="nowEdit===0&&status==1">剩余可出售</th>
+              <th v-if="status!=3">操作</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="d,k in data">
-              <td v-if="nowEdit===3">{{d.miner&&d.miner.name}}</i></td>
-              <td v-else>{{d.product_name}}<i :class="'icon_currency '+d.hash_type_name"></i></td>
-              <td v-if="nowEdit!==3&&(nowEdit===0||status==1||status==4)">{{d.total_hash|format}}T</td>
-              <td v-if="nowEdit===3">{{((d.miner&&(+d.miner.hash))*+d.buy_amount)|format}}T</td>
-              <template v-if="nowEdit===0&&(status==2||status==3)">
+              <template v-if="nowEdit===3">
+                <td>{{d.miner&&d.miner.name}}</i></td>
+                <td>{{((d.miner&&(+d.miner.hash))*+d.buy_amount)|format}}T</td>
+              </template>
+              <template v-else>
+                <td>{{d.product_name}}<i :class="'icon_currency '+d.hash_type_name"></i></td>
+                <td>{{d.total_hash|format}}T</td>
+              </template>
+              <template v-if="status==2||status==3">
                 <td>{{d.selling_amount}}台</td>
                 <td>{{d.total_price}}元</td>
               </template>
-              <template v-if="status==1||status==4">
-                <td v-if="nowEdit!==1">{{d.buy_amount}}台</td>
-                <td v-if="nowEdit!==3">{{d.total_price}}元</td>
-                <td v-else>{{d.pay_value}}元</td>
+              <template v-else>
+                <td>{{d.buy_amount}}台</td>
+                <td v-if="nowEdit===3">{{d.pay_value}}元</td>
+                <td v-else>{{d.total_price}}元</td>
               </template>
               <td>{{d.create_time||d.created_time}}</td>
               <td v-if="nowEdit===0&&status==1">{{d.remain_miner}}台</td>
-              <td v-if="nowEdit===2&&status==1&&!(nowEdit===2&&status==1)">{{d.remain_hash|format}}T</td>
-              <td v-if="status!=3&&!(nowEdit===2&&status==1)">
-                <button class="sold" @click="openMask('sold', '出售云算力', d.id)" v-if="nowEdit===0&&status==1&&!d.is_loan&&d.remain_miner&&d.status===8">出售云算力</button>
-                <button @click="quit('sold', d.id)" v-if="nowEdit===0&&status==2">撤销出售</button>
-                <button @click="openMask('rent', '出租算力', d.id)" :disabled="!d.remain_hash" v-if="nowEdit===2&&status==0">出租算力</button>
-                <a href="javascript:;" @click="goDetail(nowEdit,d.id)" v-if="nowEdit===3||(nowEdit!==2&&status!=2&&status!=3)">查看详情</a>
+              <td v-if="status!=3">
+                <button class="sold" @click="openMask(d.id)" v-if="nowEdit===0&&status==1&&!d.is_loan&&d.remain_miner&&d.status===8">出售云算力</button>
+                <button @click="quit('sold', d.id)" v-if="status==2">撤销出售</button>
+                <a href="javascript:;" @click="goDetail(nowEdit,d.id)">查看详情</a>
               </td>
             </tr>
           </tbody>
@@ -78,74 +78,82 @@
       </div>
     </div>
     <div class="mobile_box" v-if="isMobile===1">
-      <div class="type_nav_box">
-        <div class="type_list" @click="showtype=!showtype">
-          <span>{{scode?title2[nowEdit]:title[nowEdit]}}</span>
-          <span class="active"></span>
-        </div>
-        <a :class="{active: status===(+k+1)}" href="javascript:;" @click="fetchData(+k+1)" v-for="n,k in nav[nowEdit]">{{n}}</a>
-        <div class="nav_list" v-show="showtype">
-          <router-link class="item" :to="'/mobile/order/'+k" v-for="n,k in scode?title2:title" :key="k">
-            <span>{{n}}</span>
-            <span class="yes">√</span>
-          </router-link>
-        </div>
-      </div>
-      <div class="order_data">
-        <div class="item" v-for="d,k in data">
-          <p class="order_product_name">
-            <span>{{nowEdit==3?'矿机':'云算力'}}</span>
-            <em>{{nowEdit==3?d.created_time:d.create_time}}</em>
-          </p>
-          <div class="order_product_value" v-if="status==2||status==3">
-            <div class="order_value">
-              <div class="order_text_img">
-                <div class="order_text">
-                  <div class="order_name">{{d.product_name}}</div>
-                  <div>{{d.total_hash}}T算力</div>
-                </div>
-              </div>
-              <div class="order_value_price">
-                <div class="price"><em>￥</em>{{d.total_price}}</div>
-                <div>&times;{{d.selling_amount}}</div>
-              </div>
-            </div>
-            <div class="order_btn" v-if="nowEdit===0&&status==2">
-              <span @click="quit('sold', d.id)">撤销出售</span>
-            </div>
+      <div class="mobile_order_box" v-if="!edit">
+        <div class="type_nav_box">
+          <div class="type_list" @click="typeList=!typeList">
+            <span>{{scode?title2[nowEdit]:title[nowEdit]}}</span>
+            <span class="active"></span>
           </div>
-          <div class="order_product_value" v-else>
-            <div class="order_value" @click="goDetail(nowEdit,d.id)">
-              <div class="order_text_img">
-                <div class="order_img">
-                  <img :src="d.picture||(d.miner&&d.miner.minerPicture)" alt="">
-                </div>
-                <div class="order_text">
-                  <div class="order_name">{{nowEdit==3?(d.miner&&d.miner.name):d.product_name}}</div>
-                  <div>{{d.hash||(d.miner&&(+d.miner.hash))}}T算力</div>
-                </div>
-              </div>
-              <div class="order_value_price">
-                <div class="price"><em>￥</em>{{d.one_amount_value||(d.miner&&(+d.miner.one_amount_value))}}</div>
-                <div>&times;{{parseInt(d.buy_amount)}}</div>
-              </div>
-            </div>
-            <div class="order_price">
-              <span>实付金额</span>
-              <span class="price"><em>￥</em>{{nowEdit!=3?d.total_price:d.pay_value}}</span>
-            </div>
-            <div class="order_btn">
-              <span @click="openMask('sold', '出售云算力', d.id)" v-if="nowEdit===0&&status==1&&!d.is_loan&&d.remain_miner&&d.status===8">出售云算力</span>
-            </div>
+          <a :class="{active: status==k}" href="javascript:;" @click="fetchData(k)" v-for="n,k in nav[nowEdit]">{{n}}</a>
+          <div class="nav_list" v-show="typeList">
+            <router-link class="item" :to="'/mobile/order/'+k" v-for="n,k in scode?title2:title" :key="k">
+              <span>{{n}}</span>
+              <span class="yes">√</span>
+            </router-link>
           </div>
         </div>
+        <div class="order_data">
+          <div class="item" v-for="d,k in data">
+            <p class="order_product_name">
+              <span>{{nowEdit==3?'矿机':'云算力'}}</span>
+              <em>{{nowEdit==3?d.created_time:d.create_time}}</em>
+            </p>
+            <div class="order_product_value" v-if="status==2||status==3">
+              <div class="order_value">
+                <div class="order_text_img">
+                  <div class="order_text">
+                    <div class="order_name">{{d.product_name}}</div>
+                    <div>{{d.total_hash}}T算力</div>
+                  </div>
+                </div>
+                <div class="order_value_price">
+                  <div class="price"><em>￥</em>{{d.total_price}}</div>
+                  <div>&times;{{d.selling_amount}}</div>
+                </div>
+              </div>
+              <div class="order_btn" v-if="status==2">
+                <span @click="quit('sold', d.id)">撤销出售</span>
+              </div>
+            </div>
+            <div class="order_product_value" v-else>
+              <div class="order_value" @click="goDetail(nowEdit,d.id)">
+                <div class="order_text_img">
+                  <div class="order_img">
+                    <img :src="d.picture||(d.miner&&d.miner.minerPicture)" alt="">
+                  </div>
+                  <div class="order_text">
+                    <div class="order_name">{{nowEdit==3?(d.miner&&d.miner.name):d.product_name}}</div>
+                    <div>{{d.hash||(d.miner&&(+d.miner.hash))}}T算力</div>
+                  </div>
+                </div>
+                <div class="order_value_price">
+                  <div class="price"><em>￥</em>{{d.one_amount_value||(d.miner&&(+d.miner.one_amount_value))}}</div>
+                  <div>&times;{{parseInt(d.buy_amount)}}</div>
+                </div>
+              </div>
+              <div class="order_price">
+                <span>实付金额</span>
+                <span class="price"><em>￥</em>{{nowEdit!=3?d.total_price:d.pay_value}}</span>
+              </div>
+              <div class="order_btn">
+                <span @click="openMask(d.id)" v-if="nowEdit===0&&status==1&&!d.is_loan&&d.remain_miner&&d.status===8">出售云算力</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nodata" v-if="!data.length">
+          <div class="nodata_img"></div>
+          <p>暂无列表信息</p>
+        </div>
       </div>
-      <div class="nodata" v-if="!data.length">
-        <div class="nodata_img"></div>
-        <p>暂无列表信息</p>
-      </div>
+      <form class="form" @submit.prevent="submit" novalidate v-else>
+        <form-field :form="sold" @onChange="onChange"></form-field>
+        <p class="fee">手续费：{{(totalPrice * fee).toFixed(2) + '元(' + (fee * 100) + '%)'}}</p>
+        <button name="btn">确认提交</button>
+        <div class="btn" @click="closeMask">取消</div>
+      </form>
     </div>
-    <MyMask :form="form[edit]" :title="editText" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange"></MyMask>
+    <MyMask :form="sold" title="出售云算力" v-if="!isMobile&&edit" @submit="submit" @closeMask="closeMask" @onChange="onChange"></MyMask>
   </section>
 </template>
 
@@ -153,6 +161,7 @@
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
+  import { sold } from '@/util/form'
   import MyMask from '@/components/common/Mask'
   import FormField from '@/components/common/FormField'
   import Pager from '@/components/common/Pager'
@@ -164,27 +173,25 @@
       return {
         title: {0: '云算力', 3: '矿机'},
         title2: {0: '云算力', 2: '基金', 3: '矿机'},
-        nav: {0: {'0': '已购买', '1': '出售中', '2': '已出售', '3': '已结束'}, 2: {'0': '持有', '3': '已结束'}, 3: {'0': '已购买'}},
-        data: [],
-        status: 1,
-        edit: '',
-        form: {
-          sold: [{name: 'amount', type: 'text', title: '出售数量', placeholder: '请输入出售数量', changeEvent: true, tipsInfo: '最大可出售数量', tipsUnit: '台', value: 0, value2: 0, pattern: 'int'}, {name: 'one_amount_value', type: 'text', title: '出售单价', placeholder: '请输入出售单价', changeEvent: true, tipsInfo: '购入价格', value2: 0, tipsUnit: '元', pattern: 'float'}, {name: 'total_price', type: 'text', title: '出售总价', edit: 'price', value: 0, tipsInfo: 'show', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
-          rent: [{name: 'amount', type: 'text', title: '出租数量', placeholder: '请输入出租数量', changeEvent: true, tipsInfo: '最大可出租数量', tipsUnit: 'T', value: 0, pattern: 'float'}, {name: 'transfer_time', type: 'select', title: '出租时长', option: [{id: 0, item: '30'}, {id: 1, item: '90'}, {id: 2, item: '180'}, {id: 3, item: '360'}], unit: '天'}, {name: 'transfer_price', type: 'text', title: '出租单价', placeholder: '请输入出租单价', changeEvent: true, tipsInfo: 'show', tipsUnit: '元', pattern: 'float'}, {name: 'total_price', type: 'text', title: '出租总价', edit: 'price', value: 0, tipsInfo: 'show', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
-          againRent: [{name: 'amount', type: 'text', title: '转租数量', placeholder: '请输入出租数量', edit: 'price', value: '', tipsInfo: 'show', tipsUnit: 'T', value: 0, pattern: 'float'}, {name: 'transfer_time', type: 'text', title: '转租时长', edit: 'price', value: '', tipsInfo: '已使用时长', value2: 0, tipsUnit: '天'}, {name: 'transfer_price', type: 'text', title: '转租单价', placeholder: '请输入出租单价', edit: 'price', value: 0, tipsInfo: 'show', tipsUnit: '元'}, {name: 'total_price', type: 'text', title: '转租总价', placeholder: '请输入转租总价', changeEvent: true, tipsInfo: 'show', tipsUnit: '元', pattern: 'float'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}]
+        nav: {
+          0: {1: '已购买', 2: '出售中', 3: '已出售', 4: '已结束'},
+          2: {1: '持有', 4: '已结束'},
+          3: {1: '已购买'}
         },
-        editText: '',
+        sold: sold,
+        data: [],
+        nowEdit: 0,
+        status: 1,
+        edit: false,
         amount: 0,
         inputPrice: 0,
         inputAmount: 0,
-        total_price: 0,
+        totalPrice: 0,
         order_id: '',
         len: 0,
         now: 1,
         fee: 0,
-        transfer_price: 0,
-        showtype: false,
-        nowEdit: 0
+        typeList: false
       }
     },
     asyncData ({ params }) {
@@ -200,7 +207,7 @@
         if (this.token !== 0) {
           var self = this
           this.data = []
-          this.showtype = false
+          this.typeList = false
           if (this.nowEdit === 3) {
             this.status = 1
           }
@@ -217,100 +224,47 @@
           }, 5)
         }
       },
-      openMask (str, title, id) {
-        if (this.token !== 0) {
-          this.total_price = 0
-          this.inputAmount = 0
-          this.inputPrice = 0
-          this.order_id = id
-          var data = {}
-          var requestUrl = ''
-          if (str === 'rent') {
-            requestUrl = 'showRentHash'
-            data = {order_id: id}
-          } else if (str === 'againRent') {
-            requestUrl = 'showSubletHash'
-            data = {transfer_record_id: id}
-          } else {
-            requestUrl = 'showSellMiner'
-            data = {order_id: id}
-          }
-          var self = this
-          util.post(requestUrl, {sign: api.serialize(Object.assign({token: this.token}, data))}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.editText = title
-              if (str === 'sold') {
-                self.form[str][0].value2 = res.show_miner
-                self.form[str][1].value2 = res.one_amount_value
-                self.fee = res.sell_miner_fee
-              } else if (str === 'againRent') {
-                self.form[str][0].value = res.show_hash
-                self.form[str][1].value = (res.rent_time - res.have_use_time < 0) && 0
-                self.fee = res.rent_fee
-                self.form[str][1].value2 = res.have_use_time
-              } else {
-                self.form[str][0].value = res.show_hash
-                self.fee = res.rent_fee
-              }
-              window.scroll(0, 0)
-              document.body.style.overflow = 'hidden'
-              self.edit = str
-            })
+      openMask (id) {
+        this.inputAmount = 0
+        this.inputPrice = 0
+        this.order_id = id
+        util.post('showSellMiner', {sign: api.serialize({token: this.token, order_id: id})}).then((res) => {
+          api.checkAjax(this, res, () => {
+            this.sold[0].value2 = res.show_miner
+            this.sold[1].value2 = res.one_amount_value
+            this.fee = res.sell_miner_fee
+            window.scroll(0, 0)
+            document.body.style.overflow = 'hidden'
+            this.edit = true
           })
-        } else {
-          setTimeout(() => {
-            this.getData()
-          }, 5)
-        }
+        })
       },
       quit (str, id) {
-        var requestUrl = ''
-        if (str === 'rent') {
-          requestUrl = 'backOutRentHash'
-        } else {
-          requestUrl = 'backOutSellMiner'
-        }
-        var self = this
-        util.post(requestUrl, {sign: api.serialize({token: this.token, order_id: id})}).then(function (res) {
-          api.checkAjax(self, res, () => {
+        var requestUrl = 'backOutSellMiner'
+        util.post(requestUrl, {sign: api.serialize({token: this.token, order_id: id})}).then((res) => {
+          api.checkAjax(this, res, () => {
             api.tips('操作成功', () => {
-              self.fetchData()
+              this.fetchData()
             })
           })
         })
       },
       closeMask () {
-        this.edit = ''
+        this.edit = false
         document.body.style.overflow = 'auto'
       },
       submit (e) {
         var form = e.target
         var data = api.checkForm(form, this.isMobile)
-        var url = ''
+        var url = 'saveSellMiner'
         var sendData = {token: this.token, order_id: this.order_id}
-        var tipsStr = ''
-        switch (this.edit) {
-          case 'sold':
-            url = 'saveSellMiner'
-            tipsStr = '出售成功'
-            break
-          case 'rent':
-            url = 'saveRentHash'
-            tipsStr = '出租成功'
-            break
-          case 'againRent':
-            url = 'saveSubletHash'
-            tipsStr = '转租成功'
-            sendData = {token: this.token, transfer_record_id: this.order_id}
-            break
-        }
+        var tipsStr = '出售成功'
         if (!data) return false
-        var self = this
-        util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.closeMask()
+        util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then((res) => {
+          api.checkAjax(this, res, () => {
+            this.closeMask()
             api.tips(tipsStr, () => {
-              self.fetchData()
+              this.fetchData()
             })
           })
         })
@@ -318,28 +272,17 @@
       onChange (obj) {
         var value = obj.e.target.value
         var name = obj.name
-        var unit = obj.unit
-        var total_price = 0
-        var amount_obj = this.form[this.edit][0]
-        var amount = amount_obj.value2 || amount_obj.value
-        if (name === 'total_price') {
-          total_price = value
-          var val = api.decimal(value / amount)
-          document.getElementsByName('transfer_price')[0].value = (isNaN(val) || !isFinite(val)) ? 0 : val
+        this.totalPrice = 0
+        var amount = this.sold[0].value2
+        if (name === 'amount') {
+          obj.e.target.value = (+value > amount) ? amount : value
+          this.inputAmount = obj.e.target.value
         } else {
-          if (name === 'amount') {
-            obj.e.target.value = (+value > amount) ? amount : value
-            if (unit !== '台') {
-              obj.e.target.value = api.decimal(isNaN(obj.e.target.value)? 0 : obj.e.target.value, 2)
-            }
-            this.inputAmount = obj.e.target.value
-          } else {
-            this.inputPrice = obj.e.target.value
-          }
-          total_price = api.decimal(this.inputAmount * this.inputPrice)
+          this.inputPrice = obj.e.target.value
         }
-        total_price = isNaN(total_price) ? 0 : total_price
-        document.getElementsByName('total_price')[0].value = total_price
+        this.totalPrice = api.decimal(this.inputAmount * this.inputPrice)
+        this.totalPrice = isNaN(this.totalPrice) ? 0 : this.totalPrice
+        document.getElementsByName('total_price')[0].value = this.totalPrice
       },
       goDetail (type, id) {
         var info = JSON.parse(localStorage.getItem('info'))
@@ -407,155 +350,165 @@
     }
     .mobile_box{
       background: #f4f4f4;
-      .type_nav_box{
-        position: fixed;
-        top: 0.88rem;
-        left: 0;
-        width: 100%;
-        height: 45px;
-        line-height: 45px;
-        background: $white;
-        @include flex(space-between)
-        padding:0 0.3rem;
-        .type_list{
-          width: 20%;
-          text-align:center;
-          .active{
-            @include triangle(bottom)
-            border-top: 7px solid #327fff;
-            margin-left:5px;
-            position: relative;
-            top:-2px;
-          }
-        }
-        .nav_list{
+      .mobile_order_box {
+        .type_nav_box{
           position: fixed;
-          left:0;
-          top: calc(45px + 0.88rem);
+          top: 0.88rem;
+          left: 0;
           width: 100%;
-          height: calc(100vh - 45px - 0.88rem);
-          background:rgba(0,0,0,.3);
-          .item{
-            @include flex(space-between)
-            background: white;
-            padding:0 0.3rem;
-            line-height: 40px;
-            .yes{
-              display:none;
+          height: 45px;
+          line-height: 45px;
+          background: $white;
+          @include flex(space-between)
+          padding:0 0.3rem;
+          .type_list{
+            width: 20%;
+            text-align:center;
+            .active{
+              @include triangle(bottom)
+              border-top: 7px solid #327fff;
+              margin-left:5px;
+              position: relative;
+              top:-2px;
             }
-            &.nuxt-link-active{
-              color: #327fff;
+          }
+          .nav_list{
+            position: fixed;
+            left:0;
+            top: calc(45px + 0.88rem);
+            width: 100%;
+            height: calc(100vh - 45px - 0.88rem);
+            background:rgba(0,0,0,.3);
+            .item{
+              @include flex(space-between)
+              background: white;
+              padding:0 0.3rem;
+              line-height: 40px;
               .yes{
-                display:block;
+                display:none;
+              }
+              &.nuxt-link-active{
+                color: #327fff;
+                .yes{
+                  display:block;
+                }
               }
             }
           }
-        }
-        a.active{
-          color: #327fff;
-        }
-      }
-      .order_data{
-        padding-top: 45px;
-        .item{
-          background:#fff;
-          margin-top: 0.2rem;
-          .order_product_name{
-            @include flex(space-between)
-            padding: 0.2rem 0.3rem;
-            span{
-              color:#121212;
-              font-size: 0.36rem;
-            }
-            em{
-              color:#999;
-              font-style: normal;
-              font-size: 0.28rem;
-            }
+          a.active{
+            color: #327fff;
           }
-          .order_product_value{
-            .order_value {
-              @include flex(space-between,flex-start)
-              background: #fafaff;
-              color: $light_black;
-              .order_text_img {
-                @include flex(flex-start,flex-start)
-                .order_img {
-                  width: 90px;
-                  height: 70px;
-                  text-align: center;
-                  border: 1px solid $border;
-                  margin-right: 0.3rem;
-                  background: #fff;
-                  img{
-                    width:60px;
-                    height: 50px;
-                    margin-top: 10px;
-                    object-fit: contain;
+        }
+        .order_data{
+          padding-top: 45px;
+          .item{
+            background:#fff;
+            margin-top: 0.2rem;
+            .order_product_name{
+              @include flex(space-between)
+              padding: 0.2rem 0.3rem;
+              span{
+                color:#121212;
+                font-size: 0.36rem;
+              }
+              em{
+                color:#999;
+                font-style: normal;
+                font-size: 0.28rem;
+              }
+            }
+            .order_product_value{
+              .order_value {
+                @include flex(space-between,flex-start)
+                background: #fafaff;
+                color: $light_black;
+                .order_text_img {
+                  @include flex(flex-start,flex-start)
+                  .order_img {
+                    width: 90px;
+                    height: 70px;
+                    text-align: center;
+                    border: 1px solid $border;
+                    margin-right: 0.3rem;
+                    background: #fff;
+                    img{
+                      width:60px;
+                      height: 50px;
+                      margin-top: 10px;
+                      object-fit: contain;
+                    }
+                  }
+                  .order_text {
+                    .order_name {
+                      color: $text;
+                      font-size: 0.32rem;
+                    }
                   }
                 }
-                .order_text {
-                  .order_name {
-                    color: $text;
-                    font-size: 0.32rem;
+                .order_value_price {
+                  text-align: right;
+                  .price {
+                    em {
+                      font-size: 12px;
+                    }
                   }
                 }
               }
-              .order_value_price {
+              .order_value,.order_price {
+                padding:0.2rem 0.3rem;
+              }
+              .order_price {
                 text-align: right;
+                color: $light_black;
                 .price {
+                  font-size: 0.4rem;
+                  color: $text;
                   em {
                     font-size: 12px;
                   }
                 }
               }
-            }
-            .order_value,.order_price {
-              padding:0.2rem 0.3rem;
-            }
-            .order_price {
-              text-align: right;
-              color: $light_black;
-              .price {
-                font-size: 0.4rem;
-                color: $text;
-                em {
-                  font-size: 12px;
+              .order_btn {
+                border-top: 1px solid $border;
+                margin:0 0.3rem;
+                padding:0.2rem 0;
+                text-align: right;
+                font-size: 12px;
+                span {
+                  display: inline-block;
+                  padding: 0.1rem 0.3rem;
+                  color: $orange;
+                  border: 1px solid $orange;
+                }
+                &:empty {
+                  display: none;
                 }
               }
             }
-            .order_btn {
-              border-top: 1px solid $border;
-              margin:0 0.3rem;
-              padding:0.2rem 0;
-              text-align: right;
-              font-size: 12px;
-              span {
-                display: inline-block;
-                padding: 0.1rem 0.3rem;
-                color: $orange;
-                border: 1px solid $orange;
-              }
-              &:empty {
-                display: none;
-              }
+          } 
+          .pager{
+            padding-top: 20px;
+            padding-bottom: 20px;
+            box-sizing: border-box;
+            .pager_box{
+              border-top: 1px solid #ddd !important;
             }
           }
-        } 
-        .pager{
-          padding-top: 20px;
-          padding-bottom: 20px;
-          box-sizing: border-box;
-          .pager_box{
-            border-top: 1px solid #ddd !important;
-          }
+        }
+        @include nodata
+        .nodata{
+          background: #fff;
+          margin-top:0;
+          padding-top:100px;
         }
       }
-      @include nodata
-      .nodata{
+      .form {
         background: #fff;
-        margin-top:0;
-        padding-top:100px;
+        min-height: 100vh;
+        @include form(v)
+        .fee {
+          padding: 0.3rem;
+        }
       }
     }
   }

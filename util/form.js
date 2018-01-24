@@ -51,5 +51,27 @@ module.exports = {
     {name: 'address', type: 'select', title: '地址', isChange: true},
     {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true},
     {name: 'is_default', type: 'radio', title: '是否设为默认地址'}
+  ],
+  sold: [
+    {name: 'amount', type: 'text', title: '出售数量', placeholder: '请输入出售数量', changeEvent: true, tipsInfo: '最大可出售数量', tipsUnit: '台', value: 0, value2: 0, pattern: 'int'},
+    {name: 'one_amount_value', type: 'text', title: '出售单价', placeholder: '请输入出售单价', changeEvent: true, tipsInfo: '购入价格', value2: 0, tipsUnit: '元', pattern: 'float'},
+    {name: 'total_price', type: 'text', title: '出售总价', edit: 'price', value: 0, tipsInfo: 'show', tipsUnit: '元'},
+    {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
+    {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
+  ],
+  rent: [
+    {name: 'amount', type: 'text', title: '出租数量', placeholder: '请输入出租数量', changeEvent: true, tipsInfo: '最大可出租数量', tipsUnit: 'T', value: 0, pattern: 'float'},
+    {name: 'transfer_time', type: 'select', title: '出租时长', option: [{id: 0, item: '30'}, {id: 1, item: '90'}, {id: 2, item: '180'}, {id: 3, item: '360'}], unit: '天'},
+    {name: 'transfer_price', type: 'text', title: '出租单价', placeholder: '请输入出租单价', changeEvent: true, tipsInfo: 'show', tipsUnit: '元', pattern: 'float'},
+    {name: 'total_price', type: 'text', title: '出租总价', edit: 'price', value: 0, tipsInfo: 'show', tipsUnit: '元'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
+    {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
+  ],
+  againRent: [
+    {name: 'amount', type: 'text', title: '转租数量', placeholder: '请输入出租数量', edit: 'price', tipsInfo: 'show', tipsUnit: 'T', value: 0, pattern: 'float'},
+    {name: 'transfer_time', type: 'text', title: '转租时长', edit: 'price', value: '', tipsInfo: '已使用时长', value2: 0, tipsUnit: '天'},
+    {name: 'transfer_price', type: 'text', title: '转租单价', placeholder: '请输入出租单价', edit: 'price', value: 0, tipsInfo: 'show', tipsUnit: '元'},
+    {name: 'total_price', type: 'text', title: '转租总价', placeholder: '请输入转租总价', changeEvent: true, tipsInfo: 'show', tipsUnit: '元', pattern: 'float'},
+    {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'},
+    {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}
   ]
 }

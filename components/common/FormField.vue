@@ -9,7 +9,7 @@
         <template v-if="!f.edit">
           <template v-if="f.type!=='select'">
             <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :title="f.pattern&&check[f.pattern].tips" :value="bank_card&&bank_card.card_no" v-if="f.value">
-            <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :title="f.pattern&&check[f.pattern].tips" :isChange="f.isChange" :maxlength="f.len" @change="f.changeEvent&&onChange($event,f.name,f.tipsUnit)" @input="f.focusEvent&&onFocus($event)" v-else>
+            <input :type="f.type" :name="f.name" autocomplete="off" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern&&check[f.pattern].code" :title="f.pattern&&check[f.pattern].tips" :isChange="f.isChange" :maxlength="f.len" @change="f.changeEvent&&onChange($event,f.name)" @input="f.focusEvent&&onFocus($event)" v-else>
           </template>
           <div class="sel" v-else-if="f.option">
             <select :name="f.name" @change="f.changeEvent&&onChange($event)" :isChange="f.isChange">

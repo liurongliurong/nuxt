@@ -44,7 +44,7 @@
           <span>验证S码</span>
           <span class="icon_close" @click="closeMask"></span>
         </div>
-        <form class="form form_content" @submit.prevent="submit" novalidate>
+        <form class="form" @submit.prevent="submit" novalidate>
           <!-- <p>请输入S码绑定算力产业基金</p> -->
           <div class="input">
             <span>S码</span>
@@ -87,7 +87,7 @@
     },
     methods: {
       submit () {
-        var form = document.querySelector('.form_content')
+        var form = document.querySelector('.form')
         var data = api.checkForm(form, this.isMobile)
         var self = this
         if (!data) return false

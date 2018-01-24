@@ -26,7 +26,7 @@
           <div class="item_text">{{n.title}}</div>
         </div>
       </div>
-      <div class="base_text">{{detail.incomeType}}</div>
+      <div class="base_text" v-if="params2!=='1'">{{detail.incomeType}}</div>
     </div>
   </div>
 </template>

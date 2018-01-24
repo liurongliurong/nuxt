@@ -1,6 +1,6 @@
 <template>
   <div class="administration">
-    <div class="form_list">
+    <div class="form_list" v-if="!edit">
       <a href="javascript:;" class="form_item" @click="passwordReset">
         <span class="name">密码重置</span>
         <em></em>
@@ -10,7 +10,11 @@
         <em></em>
       </router-link>
     </div>
-    <my-mask :form="login" title="密码重置" @submit="submit" @closeMask="closeMask" v-if="edit"></my-mask>
+    <form class="form" @submit.prevent="submit" novalidate v-else>
+      <form-field :form="login"></form-field>
+      <button name="btn">确认提交</button>
+      <div class="btn" @click="closeMask">取消</div>
+    </form>
   </div>
 </template>
 
@@ -20,10 +24,10 @@
   import { login } from '@/util/form'
   import md5 from 'js-md5'
   import { mapState } from 'vuex'
-  import MyMask from '@/components/common/Mask'
+  import FormField from '@/components/common/FormField'
   export default {
     components: {
-      MyMask
+      FormField
     },
     data() {
       return {
@@ -68,7 +72,6 @@
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .administration {
-    width: 100%;
     font-size: 0.3rem;
     background: #f4f4f4;
     padding-top: 1.1rem;
@@ -97,6 +100,11 @@
           border-bottom: none;
         }
       }
+    }
+    .form {
+      background: #fff;
+      min-height: calc(100vh - 1.1rem);
+      @include form(v)
     }
   }
 </style>

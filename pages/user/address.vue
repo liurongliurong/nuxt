@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="mobile_box" v-else-if="isMobile===1">
-      <div class="address_box">
+      <div class="address_box" v-if="!show">
         <div class="item" v-for="a,k in data">
           <div class="address_desc" @click="selectAddress(k)">
             <div class="address_title">
@@ -33,12 +33,13 @@
         </div>
         <div class="address_btn" @click="openMask">添加新地址</div>
       </div>
+      <form class="form" @submit.prevent="submit" novalidate v-else>
+        <address-input :form="address" :val="addressData"></address-input>
+        <button name="btn">确认提交</button>
+        <div class="btn" @click="closeMask">取消</div>
+      </form>
     </div>
-    <div class="nodata" v-if="show">
-      <div class="nodata_img"></div>
-      <p>暂无列表信息</p>
-    </div>
-    <MyMask :form="address" :val="addressData" :title="addressData.id?'编辑地址':'新增地址'" v-if="show" @submit="submit" @closeMask="closeMask"></MyMask>
+    <my-mask :form="address" :val="addressData" :title="addressData.id?'编辑地址':'新增地址'" v-if="!isMobile&&show" @submit="submit" @closeMask="closeMask"></my-mask>
   </section>
 </template>
 
@@ -48,9 +49,10 @@
   import { mapState } from 'vuex'
   import { post_address } from '@/util/form'
   import MyMask from '@/components/common/Mask'
+  import AddressInput from '@/components/common/AddressInput'
   export default {
     components: {
-      MyMask
+      MyMask, AddressInput
     },
     data () {
       return {
@@ -197,9 +199,8 @@
       }
     }
     .mobile_box{
-      width: 100%;
       font-size: 0.3rem;
-      padding: 0.2rem 0 0;
+      padding-top: 0.22rem;
       background: #f4f4f4;
       .address_box{
         .item{
@@ -289,7 +290,11 @@
           border-radius: 5px;
         }
       }
+      .form {
+        background: #fff;
+        min-height: calc(100vh - 1.1rem);
+        @include form(v)
+      }
     }
-    @include nodata
   }
 </style>
