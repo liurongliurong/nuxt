@@ -50,6 +50,10 @@
         util.post('bindAddress', {sign: api.serialize(Object.assign(data, {token: this.token}))}).then((res) => {
           api.checkAjax(this, res, () => {
             api.tips('设置成功', () => {
+              if (this.callUrl) {
+                this.$router.push({path: this.callUrl})
+                this.$store.commit('SET_URL', '')
+              }
               this.requestData()
             })
             this.closeMask()
@@ -88,6 +92,7 @@
     },
     computed: {
       ...mapState({
+        callUrl: state => state.callUrl,
         token: state => state.info.token,
         address: state => state.info.address
       })

@@ -42,7 +42,12 @@
             api.tips('实名认证已提交，请您耐心等待几秒即可看到认证结果', () => {
               setTimeout(() => {
                 this.requestData(() => {
-                  api.tips('恭喜您实名认证成功')
+                  api.tips('恭喜您实名认证成功', () => {
+                    if (this.callUrl) {
+                      this.$router.push({path: this.callUrl})
+                      this.$store.commit('SET_URL', '')
+                    }
+                  })
                 })
               }, 7000)
             })
@@ -73,6 +78,7 @@
     },
     computed: {
       ...mapState({
+        callUrl: state => state.callUrl,
         token: state => state.info.token,
         true_name: state => state.info.true_name
       })

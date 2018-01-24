@@ -26,6 +26,7 @@
     methods: {
       goPage () {
         if (this.isMobile) {
+          this.$store.commit('SET_URL', this.$route.path)
           if (this.no === 0) {
             this.$router.push({name: 'mobile-idVerfication'})
           } else if (this.no === 1) {

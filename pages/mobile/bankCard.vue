@@ -43,7 +43,12 @@
             api.tips('银行卡绑定已提交，请您耐心等待几秒即可看到认证结果', () => {
               setTimeout(() => {
                 this.requestData(() => {
-                  api.tips('恭喜您银行卡绑定成功')
+                  api.tips('恭喜您银行卡绑定成功', () => {
+                    if (this.callUrl) {
+                      this.$router.push({path: this.callUrl})
+                      this.$store.commit('SET_URL', '')
+                    }
+                  })
                 })
               }, 7000)
             })
@@ -86,6 +91,7 @@
     },
     computed: {
       ...mapState({
+        callUrl: state => state.callUrl,
         token: state => state.info.token,
         bank_card: state => state.info.bank_card
       })
