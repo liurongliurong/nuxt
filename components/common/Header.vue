@@ -53,7 +53,7 @@
           {title: '云算力', path: '/minerShop/miner/2'},
           {title: '品牌矿机', path: '/minerShop/miner/1'},
           {title: 'BDC托管', path: '/bdc'},
-          {title: '产业资讯', path: '/mobile/property'},
+          {title: '产业资讯', path: '/quickNews'},
         ],
         navPerson: [
           {title: '我的资产', path: '/mobile/property', icon: 'icon-31shoucangxuanzhong'},
