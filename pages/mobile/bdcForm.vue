@@ -34,7 +34,7 @@
         util.post('depositMessage', {sign: api.serialize(Object.assign(data, {token: this.token}))}).then(function (res) {
           api.checkAjax(self, res, () => {
             api.tips('提交成功，稍后工作人员会与您联系', () => {
-              self.$router.push({name: 'index'})
+              window.location.reload()
             })
           }, form.btn)
         })

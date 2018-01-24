@@ -539,7 +539,6 @@
       height: auto;
       padding: 45px 15px 0 15px;
       background: #13141f;
-      margin-bottom: -61px;
       .card {
         @include flex(center, center, column);
         margin-bottom: 20px;

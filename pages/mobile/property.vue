@@ -82,8 +82,7 @@
         totalPrice: 0,
         product_hash_type: '',
         maskNo: -1,
-        cloudMiner: 2,
-        property: {total_money: 0, balance_account: 0, freeze_account: 0, coin_list: [], total_miner: 2, total_hash: 100}
+        property: {total_money: 0, balance_account: 0, freeze_account: 0, coin_list: [], total_miner: 0, total_hash: 0}
       }
     },
     methods: {
@@ -167,13 +166,22 @@
         var form = document.querySelector('.form')
         var data = api.checkForm(form, 1)
         var sendData = {token: this.token}
+        var url = ''
+        var tipsStr = ''
         if (!data) return false
         form.btn.setAttribute('disabled', true)
+        if (this.edit === 2) {
+          url = 'withdraw'
+          tipsStr = '提现成功'
+        } else if (this.edit === 1) {
+          url = 'withdrawCoin'
+          tipsStr = '提币成功'
+        }
         var self = this
-        util.post('withdrawCoin', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
+        util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.edit = 0
-            api.tips('提币成功')
+            api.tips(tipsStr)
           }, form.btn)
         })
       },

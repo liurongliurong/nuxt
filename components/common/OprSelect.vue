@@ -26,7 +26,13 @@
     methods: {
       goPage () {
         if (this.isMobile) {
-          this.$router.push({name: 'mobile-administration'})
+          if (this.no === 0) {
+            this.$router.push({name: 'mobile-idVerfication'})
+          } else if (this.no === 1) {
+            this.$router.push({name: 'mobile-bankCard'})
+          } else {
+            this.$router.push({name: 'mobile-assetsAddress'})
+          }
         } else {
           this.$router.push({name: 'user-account'})
         }

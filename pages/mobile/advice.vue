@@ -31,7 +31,7 @@ export default {
           api.checkAjax(self, res, () => {
             api.tips('提交成功 ！')
             setTimeout(() => {
-              self.$router.push({name: 'mobile-personcenter'})
+              self.$router.push({name: 'mobile-administration'})
             }, 3000)
           })
         })

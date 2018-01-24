@@ -252,7 +252,9 @@
           &:after{
             margin-left:3px;
           }
-          @include mobile_hide
+          @media screen and (max-width: $mobile) {
+            display: none !important;
+          }
         }
         input.level ~ .password_level{
           display: flex

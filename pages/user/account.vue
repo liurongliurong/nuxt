@@ -116,6 +116,9 @@
               }, 7000)
             } else if (self.edit === 'address') {
               self.requestData(callbackUrl, sendData, val)
+            } else if (self.edit === 'login') {
+              self.$store.commit('LOGOUT')
+              self.$router.push({path: '/auth/login'})
             }
             self.closeMask()
           })
