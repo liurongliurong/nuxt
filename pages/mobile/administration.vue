@@ -55,7 +55,10 @@
         data.password1 = md5(data.password1)
         util.post('changeLoginPassword', {sign: api.serialize(Object.assign(data, {token: this.token}))}).then((res) => {
           api.checkAjax(self, res, () => {
-            api.tips('修改成功')
+            api.tips('修改成功', () => {
+              this.$store.commit('LOGOUT')
+              this.$router.push({path: '/auth/login'})
+            })
             this.closeMask()
           })
         })

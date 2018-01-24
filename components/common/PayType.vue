@@ -6,7 +6,7 @@
     <div :class="['pay_item', {active:payNo===1}]" @click="setPayNo(1)">
       <span class="yue">可用余额</span>
       <span class="val">{{balance}}元</span>
-      <router-link to="/mobile/recharge">充值</router-link>
+      <a href="javascript:;" @click="goRecharge('/mobile/recharge')">充值</a>
     </div>
   </div>
 </template>
@@ -26,6 +26,10 @@
     methods: {
       setPayNo (k) {
         this.$emit('setPayNo', k)
+      },
+      goRecharge (url) {
+        this.$store.commit('SET_URL', this.$route.path)
+        this.$router.push({path: url})
       }
     }
   }
