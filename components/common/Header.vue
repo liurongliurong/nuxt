@@ -9,7 +9,7 @@
             <img class="normal_logo" :src="require('@/assets/images/mobile/logo2.png')">
           </nuxt-link>
         </div>
-        <div class="title">{{title}}</div>
+        <div class="title">{{pages[$route.path]}}</div>
         <div class="header_right">
           <template v-if="token === 0">
             <router-link to="/auth/regist">注册</router-link>
@@ -23,10 +23,10 @@
       </div>
       <div class="mobile_header_nav" v-if="showNav !== ''" @click="showNavlink">
         <div class="white_bg">
-          <a href="javascript:;" @click="goPage(i.title,i.path)" v-for="i,k in navList" :key="k" class="item">
-            <span>{{i.title}}</span>
+          <nuxt-link :to="i" v-for="i,k in navList" :key="k" class="item">
+            <span>{{pages[i]}}</span>
             <em></em>
-          </a>
+          </nuxt-link>
           <div class="item" v-if="token !== 0 && showNav === 'person'">
             <span>{{mobile}}</span>
             <span @click="logout()">退出</span>
@@ -45,25 +45,33 @@
     name: 'header',
     data () {
       return {
+        pages: {
+          '/minerShop/miner/2': '云算力',
+          '/minerShop/miner/1': '品牌矿机',
+          '/bdc': 'BDC托管',
+          '/quickNews': '产业资讯',
+          '/mobile/property': '我的资产',
+          '/mobile/order/0': '我的订单',
+          '/mobile/order/3': '我的订单',
+          '/mobile/message': '消息中心',
+          '/mobile/moneyFlow': '账户流水',
+          '/mobile/idVerfication': '个人认证',
+          '/mobile/bankCard': '银行卡管理',
+          '/mobile/assetsAddress': '收益地址管理',
+          '/mobile/administration': '账户设置',
+          '/mobile/address': '邮寄地址',
+          '/mobile/help': '常见问题',
+          '/mobile/advice': '意见反馈',
+          '/mobile/orderDetail': '订单详情',
+          '/mobile/cloudProduct': '云算力列表',
+          '/mobile/recharge': '充值'
+        },
         showNav: '',
         scroll: false,
         headerType: '',
         navList: [],
-        navLink: [
-          {title: '云算力', path: '/minerShop/miner/2'},
-          {title: '品牌矿机', path: '/minerShop/miner/1'},
-          {title: 'BDC托管', path: '/bdc'},
-          {title: '产业资讯', path: '/quickNews'},
-        ],
-        navPerson: [
-          {title: '我的资产', path: '/mobile/property', icon: 'icon-31shoucangxuanzhong'},
-          {title: '我的订单', path: '/mobile/order/0', icon: 'icon-31shoucangxuanzhong'},
-          {title: '消息中心', path: '/mobile/message', icon: 'icon-31wangwangxuanzhong'},
-          {title: '账户流水', path: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
-          {title: '个人认证', path: '/mobile/idVerfication', icon: 'icon-wodezichan'},
-          {title: '银行卡管理', path: '/mobile/bankCard', icon: 'icon-wodezichan'},
-          {title: '收益地址管理', path: '/mobile/assetsAddress', icon: 'icon-pinpaizhuanxiang'},
-          {title: '账户设置', path: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'}
+        navLink: ['/minerShop/miner/2', '/minerShop/miner/1', '/bdc', '/quickNews'],
+        navPerson: ['/mobile/property', '/mobile/order/0', '/mobile/message', '/mobile/moneyFlow', '/mobile/idVerfication', '/mobile/bankCard', '/mobile/assetsAddress', '/mobile/administration'
         ],
         isBlueHeader: ['bdc', 'mobile-assetDetail', 'mobile-property', 'mobile-personalCenter'],
         noHeader: ['mobileIndex', 'auth-login', 'auth-regist', 'auth-passwordRetrieval']
@@ -101,18 +109,13 @@
         } else {
           this.$router.push({path: '/'})
         }
-      },
-      goPage (title, link) {
-        this.$store.commit('SET_TITLE', title)
-        this.$router.push({path: link})
       }
     },
     computed: {
       ...mapState({
         isMobile: state => state.isMobile,
         token: state => state.info.token,
-        mobile: state => state.info.mobile,
-        title: state => state.title
+        mobile: state => state.info.mobile
       })
     },
     filters: {

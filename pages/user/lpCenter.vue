@@ -6,7 +6,7 @@
           <span class="form_title">验证S码</span>
           <span class="form_icon">*</span>
           <input ref="scode" type="text" name="scode" autocomplete="off" placeholder="请输入S码" @blur="test" pattern="^[0-9a-zA-Z]{6}$" data-status="" maxlength="6">
-          <span title="请输入6位字符串" tips="请输入S码"></span>
+          <span class="tips" title="请输入6位字符串" tips="请输入S码"></span>
         </div>
         <button @click="check">提交</button>
       </div>
@@ -50,7 +50,7 @@
             <span>S码</span>
             <span>*</span>
             <input type="text" name="scode" autocomplete="off" placeholder="请输入S码" @blur="test" pattern="^[0-9a-zA-Z]{6}$" data-status="" maxlength="6">
-            <span title="请输入6位字符串" tips="请输入S码"></span>
+            <span class="tips" title="请输入6位字符串" tips="请输入S码"></span>
           </div>
           <button>确认提交</button>
         </form>

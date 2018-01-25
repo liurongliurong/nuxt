@@ -23,8 +23,7 @@ const state = {
   num: '',
   callUrl: '',
   isMobile: false,
-  addressData: {},
-  title: ''
+  addressData: {}
 }
 
 const getters = {

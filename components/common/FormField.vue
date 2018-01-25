@@ -113,14 +113,14 @@
           }
         }
         if (ele.getAttribute('disabled') === 'true') return false
+        api.countDown(e)
+        ele.setAttribute('disabled', true)
         util.post('send_code', {sign: api.serialize({token: this.token, mobile: form.dep_tel ? form.dep_tel.value : form.mobile.value})}).then(res => {
           if (!this.isMobile) {
             api.setTips(form.code, 'success')
           } else {
             api.tips('发送成功')
           }
-          api.countDown(e)
-          ele.setAttribute('disabled', true)
         })
       },
       onChange (e, name, unit) {

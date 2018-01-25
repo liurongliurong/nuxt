@@ -90,6 +90,10 @@
         .name_box{
           font-size: 0.36rem;
           font-weight: bold;
+          max-width: 100px;
+          height: 18px;
+          display: inline-block;
+          @include ellipsis
         }
         .left_amount{
           color: $orange;

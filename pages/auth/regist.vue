@@ -10,7 +10,7 @@
       </label>
       <button name="btn">注册</button>
     </form>
-    <MyMask title="“算力网”用户使用协议" contract="selfEdit" v-if="show" @closeMask="closeMask">
+    <MyMask title="“算力网”用户使用协议" position="bottom" contract="selfEdit" v-if="show" @closeMask="closeMask">
       <user-agreement class="popup_body" slot="selfEdit"></user-agreement>
     </MyMask>
     <div class="popup regist_popup" v-if="registed">

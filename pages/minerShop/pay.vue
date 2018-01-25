@@ -255,14 +255,15 @@
         ff.btn.setAttribute('disabled', true)
         util.post(url, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
-            self.paySuccess(callbackUrl, res)
+            self.paySuccess(callbackUrl, res, ff.btn)
           }, ff.btn)
         })
       },
-      paySuccess (url, data) {
+      paySuccess (url, data, btn) {
         var str = '恭喜您购买成功！'
         if (this.payNo === 2) {
           this.alipay(url, data)
+          btn.removeAttribute('disabled')
         } else {
           api.tips(str, () => {
             api.setStorge('info', {payType: this.params2, addressData: this.addressObject})

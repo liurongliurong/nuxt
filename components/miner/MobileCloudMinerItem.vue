@@ -48,9 +48,6 @@
         api.goPage(id, type, this)
       }
     },
-    mounted() {
-      this.$store.commit('SET_TITLE', '云算力')
-    },
     computed: {
       remain: function() {
         return this.itemData.amount - this.itemData.buyed_amount < 0 ? 0 : this.itemData.amount - this.itemData.buyed_amount

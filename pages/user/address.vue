@@ -156,7 +156,6 @@
       '$route': 'fetchData'
     },
     mounted () {
-      this.$store.commit('SET_TITLE', '邮寄地址')
       this.fetchData()
     },
     computed: {

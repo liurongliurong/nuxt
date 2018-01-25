@@ -154,6 +154,7 @@
         }
         this.number = +n < minNum || isNaN(+n) || typeof +n !== 'number' ? minNum : isOver ? this.detail.leftNum : n
         this.number = parseInt(this.number)
+        document.querySelector('#number').value = this.number
       },
       getData () {
         if (this.params1) {

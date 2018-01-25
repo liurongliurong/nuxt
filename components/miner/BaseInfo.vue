@@ -30,7 +30,7 @@
           <span class="left_miner">数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量</span>
           <div class="input_box right_miner">
             <span @click="changeNum(+number-1)">-</span>
-            <input type="text" :value="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum($event.target.value)">
+            <input type="text" :value="number" id="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum($event.target.value)">
             <span @click="changeNum(+number+1)">+</span>
           </div>
           <p class="miner_number">库存{{detail.leftNum}}台<span class="detail_limit_text">({{(parseInt(detail.single_limit_amount)||1)+'台起售'}})</span></p>
@@ -73,7 +73,7 @@
       <div class="cloud_miner_right">
         <div class="price_text">我要购买<span class="detail_limit_text">({{(parseInt(detail.single_limit_amount)||1)+'台起售'}})</span></div>
         <div class="input_box">
-          <input type="text" :value="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum($event.target.value)">
+          <input type="text" :value="number" id="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum($event.target.value)">
           <span>台</span>
         </div>
         <div class="price_text1">总算力：<span class="money">{{(detail.hash*number)|format}}T</span></div>
