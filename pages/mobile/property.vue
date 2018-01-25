@@ -24,7 +24,7 @@
           <div class="coin_data" v-for="c,k in property.coin_list">
             <div class="val">
               <span class="val_title">{{(+c.balance_account).toFixed(8)}}BTC：</span>
-              <span class="val_num">≈{{+c.coin_price|currency}}元</span>
+              <span class="val_num">≈{{+c.coin_price*(+c.balance_account)|currency}}元</span>
             </div>
             <div class="opr">
               <span @click="openMask(1, k, c.balance_account)">提币</span>
