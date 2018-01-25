@@ -74,7 +74,9 @@
       },
       closeMask () {
         this.show = ''
-        document.body.style.overflow = 'auto'
+        if (this.isMobile) {
+          document.body.style.overflow = 'auto'
+        }
       },
       submit (e) {
         var form = e.target
@@ -120,11 +122,13 @@
           return false
         }
         this.addressData = {}
-        window.scroll(0, 0)
-        document.body.style.overflow = 'hidden'
         this.show = true
         if (this.data[k]) {
           this.addressData = this.data[k]
+        }
+        if (this.isMobile) {
+          window.scroll(0, 0)
+          document.body.style.overflow = 'hidden'
         }
       },
       fetchData () {
@@ -199,8 +203,9 @@
     }
     .mobile_box{
       font-size: 0.3rem;
-      padding-top: 0.22rem;
+      padding: 0.3rem 0;
       background: #f4f4f4;
+      height: calc(100vh - 0.88rem);
       .address_box{
         .item{
           margin-bottom: 0.2rem;

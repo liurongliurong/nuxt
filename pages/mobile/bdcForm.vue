@@ -62,8 +62,6 @@
 <style lang="scss">
   @import '../../assets/css/style.scss';
   .bdcform{
-    width: 100%;
-    height: 100vh;
     background: #f5f5f9;
     .bodyform{
       padding:15px;

@@ -7,7 +7,7 @@
           <MinerItem v-for="n,k in minerData" :n="n" :key="k"></MinerItem>
         </template>
         <template v-if="isMobile===1">
-          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="item_box">
+          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="item_box">
             <MobileMinerItem v-for="n,k in minerData" :n="n" :key="k"></MobileMinerItem>
           </div>
           <p v-if="loading"  class="loadmore">加载中······</p>

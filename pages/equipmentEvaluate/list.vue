@@ -1,50 +1,44 @@
 <template>
   <pageFrame isComponent="true">
-    <template v-if="isMobile === 0">
-      <div class="museum_right">
-        <h1 style="position:relative;">矿机测评<span class="icon iconfont icon-jiantou" style="transform:rotate(90deg);position:absolute;top:3px;"></span></h1>
-        <div class="museum_lists" v-for="n, k in list" :key="k">
-          <div @click="goDetail(n.id)">
-            <span class="label">BitCoin</span>
-            <img :src="n.image"/>
-            <div class="museum_content">
-              <p class="resume">{{n.title}}:{{n.resume}}</p>
-              <p class="time">{{n.dateline}}</p>
-            </div>
+    <div class="right_content equipment_right" v-if="isMobile === 0">
+      <h1>矿机测评<span class="icon iconfont icon-jiantou"></span></h1>
+      <div class="museum_lists" v-for="n, k in list" :key="k">
+        <div @click="goDetail(n.id)">
+          <span class="label">BitCoin</span>
+          <img :src="n.image"/>
+          <div class="museum_content">
+            <p class="resume">{{n.title}}:{{n.resume}}</p>
+            <p class="time">{{n.dateline}}</p>
           </div>
-        </div>
-        <div class="nodata" v-if="showImg">
-            <div class="nodata_img"></div>
-            <p>暂无列表信息</p>
-        </div>
-        <Pager :len="len" style="padding-top:0;"></Pager>
-      </div>
-    </template>
-    <template v-else-if="isMobile === 1">
-      <div class="mobileequipment">
-        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="equipment_lists" v-if="!showcontent">
-          <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)" class="equipment_list">
-            <h4>{{ item.title}}</h4>
-            <p>{{item.resume}}</p>
-            <div class="opacity">
-              <img :src="item.image"/>
-              <span>BitCoin</span>
-            </div>
-          </div>
-        </div>
-        <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
-        <p v-if="showno" class="showno">暂无数据······</p>
-        <div class="quicknews_content"  v-if="showcontent">
-          <div class="title">
-            <span>{{content.title}}</span>
-            <a class="button" onclick="window.location.reload()">< 返回列表</a>
-          </div>
-          <div class="info_quick" v-html="content.content"></div>
         </div>
       </div>
-    </template>
-    <!-- <pequipment-evalute v-if="!isMobile"></pequipment-evalute>
-    <mequipment-evalute v-else></mequipment-evalute> -->
+      <div class="nodata" v-if="showImg">
+        <div class="nodata_img"></div>
+        <p>暂无列表信息</p>
+      </div>
+      <Pager :len="len" :now="now" @setPage="setPage"></Pager>
+    </div>
+    <div class="mobile_equipment" v-else-if="isMobile === 1">
+      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="equipment_lists" v-if="!showcontent">
+        <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)" class="equipment_list">
+          <h4>{{ item.title}}</h4>
+          <p>{{item.resume}}</p>
+          <div class="opacity">
+            <img :src="item.image"/>
+            <span>BitCoin</span>
+          </div>
+        </div>
+      </div>
+      <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
+      <p v-if="showno" class="showno">暂无数据······</p>
+      <div class="quicknews_content"  v-if="showcontent">
+        <div class="title">
+          <span>{{content.title}}</span>
+          <a class="button" onclick="window.location.reload()">< 返回列表</a>
+        </div>
+        <div class="info_quick" v-html="content.content"></div>
+      </div>
+    </div>
   </pageFrame>
 </template>
 
@@ -52,13 +46,11 @@
   import util from '@/util/index'
   import api from '@/util/function'
   import { mapState } from 'vuex'
-  import pageFrame from '@/components/computeNews/pageFrame'
+  import pageFrame from '@/components/common/PageFrame'
   import Pager from '@/components/common/Pager'
   import Vue from 'vue'
   import { InfiniteScroll } from 'mint-ui'
   Vue.use(InfiniteScroll)
-  // import PequipmentEvalute from './pc'
-  // import MequipmentEvalute from './mobile'
   export default {
     components: {
       Pager, pageFrame
@@ -109,7 +101,13 @@
         localStorage.setItem('icon_id', JSON.stringify([id]))
         this.$router.push({path: '/equipmentEvaluate/detail/'})
       },
-            loadMore () {
+      setPage (n) {
+        this.now = n
+        if (!this.isMobile) {
+          this.getList()
+        }
+      },
+      loadMore () {
         var self = this
         this.loading = true
         if (this.total === 0) {
@@ -159,41 +157,8 @@
 </script>
 
 <style lang="scss">
-  .nodata{
-    width: 234px;
-    height: 275px;
-    position: absolute;
-    left: 50%;
-    margin-top: 100px;
-    margin-left: -67px;
-    p{
-      text-align: center;
-    }
-  }
-  .nodata_img{
-    display: inline-block;
-    width: 234px;
-    height: 215px;
-    margin:0 auto;
-    margin-top: 200px;
-    background: url('~assets/images/css_sprites.png') -335px -10px;
-  }
-  .museum_right{
-    float: left;
-    width: 1110px;
-    height: 1424px;
-    background: white;
-    padding:32px 62px 0 62px;
-    box-sizing: border-box;
-    h1{
-      color: #121212;
-      font-size: 24px;
-      font-weight: 800;
-      span{
-        font-size: 20px;
-        margin-left: 13px;
-      }
-    }
+  @import '~assets/css/style.scss';
+  .equipment_right{
     .museum_lists{
       width: 218px;
       height: 285px;
@@ -264,8 +229,12 @@
         margin-right: 0;
       }
     }
+    @include nodata
+    .nodata {
+      margin-top: 200px;
+    }
   }
-  .mobileequipment{
+  .mobile_equipment{
     width: 100%;
     overflow: hidden;
     background: white;
@@ -323,10 +292,10 @@
       }
     }
     .loadmore{
-        width: 100%;
-        height: 1.08rem;
-        text-align: center;
-        line-height: 1.08rem;
+      width: 100%;
+      height: 1.08rem;
+      text-align: center;
+      line-height: 1.08rem;
     }
     .quicknews_content{
       width: 100%;

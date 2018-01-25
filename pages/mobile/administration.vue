@@ -77,7 +77,7 @@
   .administration {
     font-size: 0.3rem;
     background: #f4f4f4;
-    padding-top: 1.1rem;
+    padding: 0.3rem 0;
     .form_list {
       padding-left: 0.3rem;
       background: #fff;

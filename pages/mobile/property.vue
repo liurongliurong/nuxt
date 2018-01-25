@@ -47,7 +47,7 @@
       <div class="bg"></div>
       <form-field :form="form" @onChange="onChange"></form-field>
       <p class="fee" v-if="edit===1">手续费：{{fee + (hashType[nowEdit] && hashType[nowEdit].name).toLowerCase()}}</p>
-      <p class="fee" v-if="edit===2">手续费：{{totalPrice * fee + '元(' + (fee * 100) + '%)'}}</p>
+      <p class="fee" v-if="edit===2">手续费：{{(+totalPrice * +fee).toFixed(2) + '元(' + (fee * 100) + '%)'}}</p>
       <button name="btn">确认提交</button>
       <div class="btn" @click="closeMask">取消</div>
     </form>
@@ -158,8 +158,6 @@
               this.form = this.withdrawals
             }
             this.edit = k
-            window.scroll(0, 0)
-            document.body.style.overflow = 'hidden'
           })
         })
       },
@@ -201,7 +199,6 @@
       closeMask () {
         this.edit = 0
         this.maskNo = -1
-        document.body.style.overflow = 'auto'
       }
     },
     mounted () {

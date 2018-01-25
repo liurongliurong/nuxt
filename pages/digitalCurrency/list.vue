@@ -1,31 +1,31 @@
 <template>
   <pageFrame isComponent="true">
-      <div class="mobiledigital">
-        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="digital_lists" v-if="!showcontent">
-          <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)">
-            <div class="left">
-              <img :src="item.icon"/>
-              <p>{{item.coin_name}}</p>
-            </div>
-            <p class="right">市值: 暂无</p>
+    <div class="mobiledigital">
+      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="digital_lists" v-if="!showcontent">
+        <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)">
+          <div class="left">
+            <img :src="item.icon"/>
+            <p>{{item.coin_name}}</p>
           </div>
-        </div>
-        <p v-if="loading && !showcontent" class="loadmore">加载中······</p>
-        <div class="quicknews_content"  v-if="showcontent">
-          <div class="title">
-            <span>{{content.title}}</span>
-            <a class="button" onclick="window.location.reload()">< 返回列表</a>
-          </div>
-          <div class="info_quick" v-html="content.content"></div>
+          <p class="right">市值: 暂无</p>
         </div>
       </div>
+      <p v-if="loading && !showcontent" class="loadmore">加载中······</p>
+      <div class="quicknews_content"  v-if="showcontent">
+        <div class="title">
+          <span>{{content.title}}</span>
+          <a class="button" onclick="window.location.reload()">< 返回列表</a>
+        </div>
+        <div class="info_quick" v-html="content.content"></div>
+      </div>
+    </div>
   </pageFrame>
 </template>
 <script>
   import util from '@/util/index'
   import api from '@/util/function'
   import { mapState } from 'vuex'
-  import pageFrame from '@/components/computeNews/pageFrame'
+  import pageFrame from '@/components/common/PageFrame'
   import Vue from 'vue'
   import { InfiniteScroll } from 'mint-ui'
   Vue.use(InfiniteScroll)

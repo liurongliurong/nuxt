@@ -95,12 +95,14 @@
         return true
       },
       scrollFunc (e) {
-        if (!this.headerType) {
-          return false
-        }
-
+        // if (!this.headerType) {
+        //   return false
+        // }
         let scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
-        this.scroll = scrollTop > 0
+        this.scroll = scrollTop > 30
+        if (scrollTop > 5) {
+          this.showNav = ''
+        }
       },
       logout () {
         this.$store.commit('LOGOUT')
@@ -134,16 +136,18 @@
   @import '~assets/css/style.scss';
   .mobile_header{
     height: 0.88rem;
-    position: fixed;
-    top:0;
-    width: 100%;
-    z-index: 1000002;
     background: #fff;
     &.blue.scroll {
-      background: $blue;
+      position: static;
+      display: none;
     }
     &.blue {
+      position: fixed;
+      top:0;
+      width: 100%;
       background: transparent;
+      z-index: 100;
+      display: block;
       .mobile_header_box {
         border-bottom: 0;
         &,a {
@@ -187,7 +191,6 @@
       }
       .title{
         font-size: 0.32rem;
-        letter-spacing: 0.05rem;
       }
       .header_right{
         position: relative;

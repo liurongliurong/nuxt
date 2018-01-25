@@ -81,13 +81,9 @@
           this.assetsAddress[1].value = ''
         }
         this.edit = true
-        window.scroll(0, 0)
-        document.body.style.overflow = 'hidden'
       },
       closeMask () {
         this.edit = false
-        this.edit = ''
-        document.body.style.overflow = 'auto'
       }
     },
     computed: {
@@ -104,7 +100,7 @@
   @import '~assets/css/style.scss';
   .assets_address {
     font-size: 0.3rem;
-    padding-top: 1.1rem;
+    padding: 0.3rem 0;
     background: #f4f4f4;
     .address_box {
       padding: 0 0.3rem;

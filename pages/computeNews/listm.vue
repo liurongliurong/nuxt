@@ -1,38 +1,38 @@
 <template>
   <div class="listm">
     <div class="mobile_computehome">
-        <div class="mobile_navcompute">
-        <router-link :to="n.path" v-for="n, k in navcompute" :key="k">
-            <em>{{n.title}}</em>
-            <span>|</span>
-        </router-link>
-        </div>
+      <div class="mobile_navcompute">
+      <router-link :to="n.path" v-for="n, k in navcompute" :key="k">
+        <em>{{n.title}}</em>
+        <span>|</span>
+      </router-link>
+      </div>
     </div>
     <div class="mobilelists">
-        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists" v-if="!showcontent">
+      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="list_lists" v-if="!showcontent">
         <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)" class="list_list">
-            <div class="list_left">
+          <div class="list_left">
             <h3>{{item.title}}</h3>
             <p>{{item.resume?item.resume: '暂无简介'}}</p>
             <div><span></span>{{item.source?item.source: '算力网'}}</div>
-            </div>
-            <div class="list_right">
+          </div>
+          <div class="list_right">
             <img :src="item.image"/>
             <div class="time">
-                <p><span class="icon iconfont icon-shijian2"></span>{{item.dateline.split(" ")[0].split("-")[1]}}月{{item.dateline.split(" ")[0].split("-")[2]}}日</p>
-                <p><span class="icon iconfont icon-yuedu1"></span>{{item.view_count?item.view_count : '0'}}</p>
+              <p><span class="icon iconfont icon-shijian2"></span>{{item.dateline.split(" ")[0].split("-")[1]}}月{{item.dateline.split(" ")[0].split("-")[2]}}日</p>
+              <p><span class="icon iconfont icon-yuedu1"></span>{{item.view_count?item.view_count : '0'}}</p>
             </div>
-            </div>
+          </div>
         </div>
-        </div>
-        <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
-        <div class="quicknews_content"  v-if="showcontent">
+      </div>
+      <p v-if="loading && !showcontent" class="loadmore">加载中······</p>
+      <div class="quicknews_content" v-if="showcontent">
         <div class="title">
-            <span>{{content.title}}</span>
-            <a class="button" @click="showcontent1(false)">< 返回列表</a>
+          <span>{{content.title}}</span>
+          <a class="button" @click="showcontent1(false)">< 返回列表</a>
         </div>
         <div class="info_quick" v-html="content.content"></div>
-        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -47,7 +47,6 @@
   export default {
     data () {
       return {
-        len: 0,
         now: 1,
         total: 0,
         loading: false,
@@ -59,19 +58,19 @@
     },
     methods: {
       loadMore () {
-        var self = this
+        console.log(11)
         this.loading = true
         if (this.total > this.museum.length || this.museum.length === 0) {
           let time = this.museum.length === 0 ? 0 : 1000
           setTimeout(() => {
-            util.post('suanliMessage', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
+            util.post('suanliMessage', {sign: api.serialize({token: 0, page: this.now})}).then((res) => {
               api.checkAjax(self, res, () => {
-                self.total = res.total
+                this.total = res.total
                 for (let i = 0, len = res.list.length; i < len; i++) {
-                  self.museum.push(res.list[i])
+                  this.museum.push(res.list[i])
                 }
-                self.loading = false
-                self.now++
+                this.loading = false
+                this.now++
               })
             }).catch(res => {
               console.log(res)

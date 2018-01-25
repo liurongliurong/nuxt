@@ -21,6 +21,32 @@ api.date = (d, t) => {
       return year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':' + seconds
   }
 }
+api.pastTime = (time) => {
+  var arr = [24 * 3600 * 1000, 3600 * 1000, 60 * 1000, 1000]
+  var now = new Date()
+  var allTime = now.getTime() - new Date(time.replace(/-/g, '/')).getTime()
+  var days = Math.floor(allTime / arr[0])
+  if (days > 0) {
+    if (days >= 28) {
+      return time
+    } else {
+      return days + '天前'
+    }
+  }
+  var leaveDays = allTime % arr[0]
+  var hours = Math.floor(leaveDays / arr[1])
+  if (hours > 0) {
+    return hours + '小时前'
+  }
+  var leaveHours = leaveDays % arr[1]
+  var minutes = Math.floor(leaveHours / arr[2])
+  if (minutes > 0) {
+    return minutes + '分钟前'
+  }
+  var leaveMinutes = leaveHours % arr[2]
+  var seconds = Math.floor(leaveMinutes / arr[3])
+  return seconds + '秒前'
+}
 api.serialize = data => {
   var str = []
   for (let [k, v] of Object.entries(data)) {

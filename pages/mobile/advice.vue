@@ -53,7 +53,6 @@ export default {
   }
   .bdcform{
     width: 100%;
-    height: 100vh;
     background: #f5f5f9;
     button{
       background:#327fff;

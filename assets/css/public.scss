@@ -6,7 +6,7 @@ body {
   font-family: "Microsoft Yahei";
   color: $text;
 }
-body,div,aside,section,article,h1,h2,h3,h4,h5,h6,p,span,input,textarea,button,ul,li,a,form,label{
+body,div,aside,section,article,h1,h2,h3,h4,h5,h6,p,span,input,textarea,button,ul,li,a,form,label,em{
   margin:0;
   padding:0;
   box-sizing: border-box;
@@ -68,8 +68,7 @@ table{
 }
 @media screen and (max-width: $mobile) {
   .body{
-    min-height: 100vh;
-    padding-top: 0.88rem;
+    min-height: calc(100vh - 0.88rem);
   }
 }
 input::-webkit-input-placeholder {

@@ -1,7 +1,7 @@
 <template>
   <pageFrame isComponent="true">
-    <div class="news_left currency_right" v-if="!isMobile">
-      <h1><span>算力快报</span></h1>
+    <div class="quick_news right_content" v-if="isMobile===0">
+      <h2><span>算力快报</span></h2>
       <div class="scroll_news">
         <div class="news_lists" v-for="n, k in newslists">
           <span class="icon iconfont icon-yinhao"></span>
@@ -10,8 +10,8 @@
         </div>
       </div>
     </div>
-    <div class="mobilequicknews" v-else>
-      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="quicknews_lists1">
+    <div class="mobile_quick_news" v-else-if="isMobile===1">
+      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="quicknews_lists1">
         <div v-for="item, k in museum" :key="k" class="total">
           <h4> {{item.title}} </h4>
           <p v-html="item.content"></p>
@@ -22,11 +22,12 @@
     </div>
   </pageFrame>
 </template>
+
 <script>
   import util from '@/util/index'
   import api from '@/util/function'
   import { mapState } from 'vuex'
-  import pageFrame from '@/components/computeNews/pageFrame'
+  import pageFrame from '@/components/common/PageFrame'
   import Vue from 'vue'
   import { InfiniteScroll } from 'mint-ui'
   Vue.use(InfiniteScroll)
@@ -78,20 +79,7 @@
               api.checkAjax(self, res, () => {
                 self.total = res.total
                 for (var a = 0; a < res.list.length; a++) {
-                  var date1 = res.list[a].dateline
-                  var date2 = new Date()
-                  var date3 = date2.getTime() - new Date(date1.replace(/-/g, '/')).getTime()
-                  var leave1 = date3 % (24 * 3600 * 1000)
-                  var days = Math.floor(date3 / (24 * 3600 * 1000)) * 24
-                  var hours = Math.floor((Math.floor(leave1 / (3600 * 1000)) + days) / 60)
-                  if (hours > 24) {
-                    hours = Math.floor(hours / 24) + '天前'
-                  } else if(hours <= 0) {
-                    hours = '目前'
-                  } else {
-                    hours = hours + '小时前'
-                  }
-                  self.times.push(hours)
+                  self.times.push(api.pastTime(res.list[a].dateline))
                 }
                 for (let i = 0, len = res.list.length; i < len; i++) {
                   self.museum.push(res.list[i])
@@ -119,26 +107,20 @@
     }
   }
 </script>
+
 <style lang="scss">
-  .news_left{
-    float: left;
-    width: 1002px;
-    background: white;
-    padding:32px 62px 0 62px;
-    box-sizing: border-box;
-    h1{
-      width: 100%;
+  .quick_news{
+    h2{
       height: 53px;
       border-bottom: 1px solid #fe5039;
       margin-bottom: 28px;
       span{
         width: 183px;
-        height: 100%;
         background: #fe5039;
         text-align: center;
-        display:inline-block;
+        display: inline-block;
         line-height: 53px;
-        color:white;
+        color: #fff;
         font-weight: 800;
       }
     }
@@ -196,7 +178,7 @@
         }
     }
   }
-  .mobilequicknews{
+  .mobile_quick_news{
     width: 100%;
     overflow: hidden;
     background: white;
@@ -234,10 +216,10 @@
       }
     }
     .loadmore{
-        width: 100%;
-        height: 1.06rem;
-        text-align: center;
-        line-height: 1.06rem;
+      width: 100%;
+      height: 1.06rem;
+      text-align: center;
+      line-height: 1.06rem;
     }
   }
 </style>

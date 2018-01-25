@@ -7,7 +7,7 @@
           <CloudMinerItem v-for="d,k in cloudMinerData" :d="d" :key="k"></CloudMinerItem>
         </template>
         <template v-else-if="isMobile===1">
-          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="list_lists">
+          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="list_lists">
             <MobileCloudMinerItem v-for="d,k in cloudMinerData" :itemData="d" @click="goPay(d.id)" :key="k"></MobileCloudMinerItem>
           </div>
           <p v-if="loading"  class="loadmore">加载中······</p>

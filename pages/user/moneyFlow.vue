@@ -48,7 +48,7 @@
         <span>资金用途</span>
         <span>金额（元）</span>
       </p>
-      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len">
+      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
         <div class="money_box">
           <div v-for="n, k in list" class="money_list">
             <span class="left">
@@ -329,7 +329,7 @@
       @include nodata
     }
     @media screen and (max-width: $mobile) {
-      padding: 1rem 15px 0;
+      padding-top: 0.3rem;
     }
   }
 </style>

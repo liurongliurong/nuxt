@@ -129,7 +129,6 @@
               @include block(8)
               @include arrow(down)
               margin-top:0.34rem;
-              transform: rotate(135deg);
               float:right;
             }
           }
@@ -139,7 +138,7 @@
           &.open{
             color:#327fff;
             em{
-              transform: rotate(-45deg);
+              transform: rotate(135deg);
             }
           }
         }
