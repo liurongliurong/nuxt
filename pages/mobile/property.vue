@@ -23,8 +23,9 @@
           </div>
           <div class="coin_data" v-for="c,k in property.coin_list">
             <div class="val">
-              <span class="val_title">{{(+c.balance_account).toFixed(8)}}BTC：</span>
-              <span class="val_num">≈{{+c.coin_price*(+c.balance_account)|currency}}元</span>
+              <span class="val_title">币资产：</span>
+              <span class="val_num">{{(+c.balance_account).toFixed(8)}}btc</span>
+              <!-- <span class="val_num">≈{{+c.hash_balance_account|currency}}元</span> -->
             </div>
             <div class="opr">
               <span @click="openMask(1, k, c.balance_account)">提币</span>
@@ -37,7 +38,7 @@
         </div>
       </div>
       <div class="property_chart">
-        <div class="chart_title">近七日收益折线图（人民币结算）</div>
+        <div class="chart_title">近期收益折线图</div>
         <income-chart></income-chart>
       </div>
       <coin-returns></coin-returns>
