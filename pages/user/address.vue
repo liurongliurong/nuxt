@@ -13,7 +13,12 @@
       </div>
     </div>
     <div class="mobile_box" v-else-if="isMobile===1">
-      <div class="address_box" v-if="!show">
+      <form class="form" @submit.prevent="submit" novalidate v-if="show||!data.length">
+        <address-input :form="address" :val="addressData"></address-input>
+        <button name="btn">确认提交</button>
+        <div class="btn" @click="closeMask">取消</div>
+      </form>
+      <div class="address_box" v-else>
         <div class="item" v-for="a,k in data">
           <div class="address_desc" @click="selectAddress(k)">
             <div class="address_title">
@@ -33,11 +38,6 @@
         </div>
         <div class="address_btn" @click="openMask">添加新地址</div>
       </div>
-      <form class="form" @submit.prevent="submit" novalidate v-else>
-        <address-input :form="address" :val="addressData"></address-input>
-        <button name="btn">确认提交</button>
-        <div class="btn" @click="closeMask">取消</div>
-      </form>
     </div>
     <my-mask :form="address" :val="addressData" :title="addressData.id?'编辑地址':'新增地址'" v-if="!isMobile&&show" @submit="submit" @closeMask="closeMask"></my-mask>
   </section>

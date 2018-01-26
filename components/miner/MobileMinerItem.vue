@@ -2,10 +2,7 @@
   <div class="mobile_miner_item item" @click="goDetail(n.id, '1')">
     <div class="null">
       <div class="mobile_minerfixed">
-        <p class="status1" v-if="n.status===1">热销中</p>
-        <p class="gray1" v-if="n.status===3">已下架</p>
-        <p class="gray1" v-if="n.status===2">已售罄</p>
-        <p class="gray1" v-if="n.status===4" style="background: #32cf99;">预热</p>
+        <p :class="[{red: n.status===1}, {green: n.status===4}, {gray: n.status===2||n.status===3}]">{{status[n.status]}}</p>
       </div>
       <img :src="n.minerPicture"/>
     </div>
@@ -43,7 +40,8 @@
         showno: false,
         total: -1,
         currentPage: 1,
-        items: {'one_amount_value': {title: '矿机单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'buyed_amount': {title: '剩余数量', unit: '台'}}
+        items: {'one_amount_value': {title: '矿机单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'buyed_amount': {title: '剩余数量', unit: '台'}},
+        status: {1: '热销', 2: '已售罄', 3: '产品撤销', 4: '预热'}
       }
     },
     methods: {
@@ -80,12 +78,15 @@
           font-size: 0.3rem;
           text-align: center;
           line-height: 0.6rem;
-        }
-        .status1{
-          background: #fe5039;
-        }
-        .gray1{
-          background: #c5c4c4;
+          &.red {
+            background: #fe5039;
+          }
+          &.gray {
+            background: #c5c4c4;
+          }
+          &.green {
+            background: #32cf99;
+          }
         }
       }
       img{

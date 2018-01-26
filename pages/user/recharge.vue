@@ -189,8 +189,8 @@
       border-top:1px solid $border;
     }
     @media screen and (max-width: $mobile) {
-      background:#f4f4f4;
-      padding:0.88rem 0 0;
+      background: #f4f4f4;
+      padding: 0;
       h2{
         display: none;
       }

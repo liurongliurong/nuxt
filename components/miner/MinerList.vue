@@ -58,7 +58,7 @@
     },
     methods: {
       loadMore () {
-        if (this.now <= this.len ) {
+        if (this.now < this.len ) {
           this.loading = true
           this.$emit('getMobileData', 1)
           setTimeout(() => {

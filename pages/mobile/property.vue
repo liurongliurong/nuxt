@@ -5,39 +5,41 @@
         <div class="property_data">
           <div class="data_title">总资产 (元)</div>
           <div class="data_value">{{+property.total_money|currency}}</div>
-          <div class="balance">
-            <div class="val">
-              <span class="val_title">可用余额：</span>
-              <span class="val_num">{{+property.balance_account|currency}}</span>
-            </div>
-            <div class="opr">
-              <span @click="openMask(2)">提现</span>
-              <span @click="openMask(3)">充值</span>
-            </div>
-          </div>
-          <div class="frozen_balance">
-            <div class="val">
-              <span class="val_title">冻结余额：</span>
-              <span class="val_num">{{+property.freeze_account|currency}}</span>
-            </div>
-          </div>
-          <div class="coin_data" v-for="c,k in property.coin_list">
-            <div class="val">
-              <span class="val_title">币资产：</span>
-              <span class="val_num">{{(+c.balance_account).toFixed(8)}}btc</span>
-              <!-- <span class="val_num">≈{{+c.hash_balance_account|currency}}元</span> -->
-            </div>
-            <div class="opr">
-              <span @click="openMask(1, k, c.balance_account)">提币</span>
-            </div>
-          </div>
         </div>
-        <div class="miner_data">
+        <div class="miner_data" v-if="property.total_miner">
           <span>共有云算力{{property.total_miner}}台，算力{{property.total_hash}}T</span>
           <nuxt-link to="/mobile/cloudProduct">了解详情></nuxt-link>
         </div>
       </div>
-      <div class="property_chart">
+      <div class="property_detail">
+        <div class="balance">
+          <div class="val">
+            <span class="val_title">可用余额：</span>
+            <span class="val_num">{{+property.balance_account|currency}}</span>
+          </div>
+          <div class="opr">
+            <span @click="openMask(2)">提现</span>
+            <span @click="openMask(3)">充值</span>
+          </div>
+        </div>
+        <div class="frozen_balance">
+          <div class="val">
+            <span class="val_title">冻结余额：</span>
+            <span class="val_num">{{+property.freeze_account|currency}}</span>
+          </div>
+        </div>
+        <div class="coin_data" v-for="c,k in property.coin_list">
+          <div class="val">
+            <span class="val_title">BTC：</span>
+            <span class="val_num">{{(+c.balance_account).toFixed(8)}}</span>
+            <!-- <span class="val_num">≈{{+c.hash_balance_account|currency}}元</span> -->
+          </div>
+          <div class="opr">
+            <span @click="openMask(1, k, c.balance_account)">提币</span>
+          </div>
+        </div>
+      </div>
+      <div class="property_chart" v-if="showChart">
         <div class="chart_title">近期收益折线图</div>
         <income-chart></income-chart>
       </div>
@@ -83,6 +85,7 @@
         totalPrice: 0,
         product_hash_type: '',
         maskNo: -1,
+        showChart: false,
         property: {total_money: 0, balance_account: 0, freeze_account: 0, coin_list: [], total_miner: 0, total_hash: 0}
       }
     },
@@ -98,6 +101,14 @@
           util.post('user_account', {sign: 'token=' + this.token}).then((res) => {
             api.checkAjax(this, res, () => {
               this.property = res
+            })
+          })
+          util.post('showIncome', {sign: api.serialize({token: this.token, product_hash_type: 1})}).then((res) => {
+            api.checkAjax(self, res, () => {
+              let chart = res.income.filter((v) => {
+                return v > 0
+              })
+              this.showIncome = chart.length > 0
             })
           })
         } else {
@@ -226,6 +237,7 @@
   .mobile_propery {
     background:#f5f5f9;
     padding-top: 0;
+    min-height: 100vh;
     .property_box {
       .property_view {
         background: url(~assets/images/mobile/property.jpg);
@@ -237,40 +249,6 @@
           .data_value {
             color: #fff;
             font-size: 0.9rem;
-            padding-top: 0.2rem;
-            padding-bottom: 0.4rem;
-          }
-          .balance,.frozen_balance,.coin_data {
-            @include flex(space-between)
-            padding-bottom: 0.2rem;
-            .val {
-              .val_num {
-                color: #fff
-              }
-            }
-            .opr {
-              width: 2.2rem;
-              text-align: left;
-              span {
-                padding: 0.05rem 0.2rem;
-                font-size: 0.28rem;
-                border: 1px solid;
-                border-radius: 2px;
-                color: rgba(255, 255, 255, 0.9);
-                & + span {
-                  margin-left: 0.2rem
-                }
-                &:first-child {
-                  border-color: #ccc #fff #fff #ccc;
-                }
-                &:last-child {
-                  border-color: #ccc #ccc #fff #fff;
-                }
-                &:only-child {
-                  border-color: #fff #fff #ccc #ccc;
-                }
-              }
-            }
           }
         }
         .miner_data {
@@ -285,8 +263,36 @@
           }
         }
       }
+      .property_detail {
+        margin-bottom: 0.3rem;
+        padding: 0.3rem 0.3rem 0.1rem;
+        background: #fff;
+        .balance,.frozen_balance,.coin_data {
+          @include flex(space-between)
+          padding-bottom: 0.2rem;
+          .val {
+            .val_title {
+              color: $light_black;
+            }
+          }
+          .opr {
+            width: 2.6rem;
+            text-align: left;
+            span {
+              padding: 0.05rem 0.3rem;
+              font-size: 0.28rem;
+              border: 1px solid;
+              border-radius: 2px;
+              color: $blue;
+              & + span {
+                margin-left: 0.2rem
+              }
+            }
+          }
+        }
+      }
       .property_chart {
-        margin: 0.3rem 0;
+        margin-bottom: 0.3rem;
         background: #fff;
         .chart_title {
           padding: 0.2rem 0.3rem;

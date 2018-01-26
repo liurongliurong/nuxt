@@ -1,17 +1,17 @@
 <template>
   <div class="bank_card">
-    <div class="card_box" v-if="!edit">
+    <form class="form" @submit.prevent="submit" novalidate v-if="edit||!bank_card">
+      <form-field :form="card" @onChange="onChange"></form-field>
+      <button name="btn">确认提交</button>
+      <div class="btn" @click="closeMask">取消</div>
+    </form>
+    <div class="card_box" v-else>
       <div class="card" v-if="bank_card">
         <span class="bank_name">{{bank_card&&bank_card.open_bank}}</span>
         <p class="number">{{bank_card&&bank_card.card_no|format}}</p>
       </div>
       <a class="button" @click="openMask">{{bank_card?'修改银行卡':'新增银行卡'}}</a>
     </div>
-    <form class="form" @submit.prevent="submit" novalidate v-else>
-      <form-field :form="card" @onChange="onChange"></form-field>
-      <button name="btn">确认提交</button>
-      <div class="btn" @click="closeMask">取消</div>
-    </form>
   </div>
 </template>
 

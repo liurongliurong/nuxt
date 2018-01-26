@@ -73,8 +73,8 @@
         cloudInfo: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: '矿场相册'}],
         minerInfo: [{name: 'MInerBrief', title: '产品介绍'}, {name: 'MinerAdvantage', title: '产品参数'}, {name: 'prProtocolSpeciaification', title: '补充说明'}],
         params: {chips_num: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '矿机尺寸', minerOuterSize: '外箱尺寸', cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
-        statusObj: {1: {title: '热销中', color: 'red'}, 2: {title: '已售罄', color: 'gray'}, 3: {title: '产品撤销', color: 'gray'}, 4: {title: '预热中', color: 'red'}},
-        str: {4: '预热中', 5: '可售', 7: '已售馨', 10: '活动'},
+        status: {1: '热销', 2: '已售罄', 3: '产品撤销', 4: '预热'},
+        str: {4: '预热', 5: '可售', 7: '已售馨', 10: '活动'},
         number: 1,
         buyStatus: 0,
         params1: '',
@@ -183,8 +183,7 @@
                 self.detail.name = res.name
                 self.detail = Object.assign(self.detail, res.miner_list)
                 self.detail.weight = (res.miner_list && res.miner_list.weight) || ''
-                self.detail.statusStr = self.statusObj[res.status].title
-                self.detail.statusColor = self.statusObj[res.status].color
+                self.detail.statusStr = self.status[res.status]
               }
             })
           })
