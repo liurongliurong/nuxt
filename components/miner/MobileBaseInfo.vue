@@ -8,7 +8,7 @@
       <div class="base_title">
         <div>
           <span class="name_box">{{detail.name}}</span>
-          <span :class="['status_box', {'gray': detail.status === 7 || detail.status === 2 || detail.status === 3}]">{{(detail.sell_type===2&&'转售')||detail.statusStr}}</span>
+          <span :class="['status_box', {'gray': detail.status === 7 || detail.status === 2 || detail.status === 3}]">{{(detail.sell_type===2&&detail.status!==7&&'转售')||detail.statusStr}}</span>
           <span class="hash_type" v-if="detail.hashType">{{detail.hashType}}</span>
         </div>
         <div class="left_amount">剩余{{detail.leftNum}}台</div>

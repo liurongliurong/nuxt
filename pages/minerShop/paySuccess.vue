@@ -24,8 +24,8 @@
       <h3 class="success_title">恭喜您，支付成功</h3>
       <p class="success_text" v-if="addressData.id">寄送至 ： </span>{{addressData.province_name+addressData.city_name+addressData.area_name+addressData.area_details}}(<span class="te">{{addressData.post_user}}</span> 收) <span class="te">{{addressData.post_mobile}}</span></p>
       <p v-else>您的算力服务器已开启运行，预计今日收益20.20元，下次收益结算日期为：2017年12月12日</p>
-      <router-link to="/mobile/order/3" class="btn" v-if="addressData.id">查看我的交易</router-link>
-      <router-link to="/mobile/property" class="btn" v-else>查看我的资产</router-link>
+      <router-link to="/mobile/order/3" class="btn" v-if="addressData.id">查看我的订单</router-link>
+      <router-link to="/mobile/order/0" class="btn" v-else>查看我的订单</router-link>
     </div>
   </div>
 </template>

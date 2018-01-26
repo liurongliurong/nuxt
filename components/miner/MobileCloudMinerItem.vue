@@ -3,7 +3,7 @@
     <div class="item_title">
       <div class="left">
         <span class="name">{{itemData.name}}</span>
-        <span :class="['sell_type', {active: itemData.sell_type===2}, {gray: itemData.status===7}]">{{(itemData.sell_type===2&&'转售')||str[itemData.status]}}</span>
+        <span :class="['sell_type', {active: itemData.sell_type===2&&itemData.status!==7}, {gray: itemData.status===7}]">{{(itemData.sell_type===2&&itemData.status!==7&&'转售')||str[itemData.status]}}</span>
         <span class="coin_sign" v-if="itemData.hashtype">{{itemData.hashtype.name}}</span>
       </div>
       <div class="right">

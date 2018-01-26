@@ -62,10 +62,14 @@
               <span class="problem">?</span>
               <div class="frozee_tips">提币申请后，会暂时放入冻结数量中</div>
             </div>
+            <div class="frozeeData" v-else-if="k==='today_hash'">
+              <span>{{d}}</span>
+              <span class="problem">?</span>
+              <div class="frozee_tips">币价:{{computeData.coin_price}}CNY</div>
+            </div>
             <p v-else>{{d}}</p>
             <template v-if="k==='today_hash'">
               <span class="currency">{{(computeData.coin_price * computeData.balance_account)|format(1)}}</span>
-              <span class="coin_price">币价:{{computeData.coin_price}}CNY</span>
               <span class=""> CNY</span>
             </template>
             <template v-else-if="k==='total_hash'">
@@ -254,7 +258,9 @@
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.closeMask()
-            api.tips(tipsStr)
+            api.tips(tipsStr, () => {
+              window.location.reload()
+            })
           }, form.btn)
         })
       },
@@ -326,12 +332,6 @@
           position: relative;
           width:34%;
           padding-right: 15px;
-          .coin_price {
-            position: absolute;
-            top: 3px;
-            left: 100px;
-            font-size: 12px;
-          }
           .frozeeData{
             position: relative;
             span{
@@ -355,7 +355,7 @@
               font-size: 12px;
               line-height: 20px;
               color:$light_text;
-              width:120px;
+              width:130px;
               position: absolute;
               top: -12px;
               left: 88px;

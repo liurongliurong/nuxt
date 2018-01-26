@@ -191,7 +191,11 @@
         util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.edit = 0
-            api.tips(tipsStr)
+            api.tips(tipsStr, () => {
+              if (this.edit === 2) {
+                window.location.reload()
+              }
+            })
           }, form.btn)
         })
       },

@@ -337,12 +337,12 @@
     .pc_box{
       .order_title{
         padding: 0 25px;
-        padding-top:15px;
+        padding-top: 15px;
         .order_type_select{
           @include select_list
-          margin-bottom:30px;
+          margin-bottom: 30px;
           .title_content {
-            width:93px;
+            width: 100px;
           }
         }
         @include user_tab
@@ -373,8 +373,6 @@
           @include flex(space-between)
           padding:0 0.3rem;
           .type_list{
-            width: 20%;
-            text-align:center;
             .active{
               @include triangle(bottom)
               border-top: 7px solid #327fff;

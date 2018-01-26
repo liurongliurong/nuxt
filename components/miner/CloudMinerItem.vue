@@ -3,7 +3,7 @@
     <h3>
       <span>{{d.name}}</span>
       <span :class="'icon_currency '+((d.hashtype&&d.hashtype.name)||d.type_name)" v-if="d.hashtype"></span>
-      <span :class="['sell_type', {active: d.sell_type===2}, {gray: d.status===7}]">{{(d.sell_type===2&&'转售')||str[d.status]}}</span>
+      <span :class="['sell_type', {active: d.sell_type===2&&d.status!==7}, {gray: d.status===7}]">{{(d.sell_type===2&&d.status!==7&&'转售')||str[d.status]}}</span>
     </h3>
     <div class="info_box">
       <template v-for="n,i in dataNav">

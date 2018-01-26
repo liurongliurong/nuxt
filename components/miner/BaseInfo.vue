@@ -48,7 +48,7 @@
       <div class="cloud_miner_left">
         <h4>
           {{detail.product_name}}
-          <span>{{(detail.sell_type===2&&'转售')||detail.statusStr}}</span>
+          <span>{{(detail.sell_type===2&&detail.status!==7&&'转售')||detail.statusStr}}</span>
         </h4>
         <div class="product_data">
           <div class="item" v-for="d,k in proData">

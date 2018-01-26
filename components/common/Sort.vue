@@ -66,7 +66,7 @@
           this.no = 0
         }
         this.edit = (n >= 0) ? n : -1
-        var param = this.sort[n].option[this.no]
+        let param = this.sort[n] ? this.sort[n].option[this.no] : ''
         this.$emit('fetchData', param)
       },
       setStatus (n) {
