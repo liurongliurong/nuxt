@@ -155,10 +155,10 @@
           title: '设备之家',
           link: '/equipments/list',
           route: [{
-            name: '算力服务器测评 >',
+            name: '测评 >',
             path: '/equipmentEvaluate/list'
           }, {
-            name: '算力服务器博物馆 >',
+            name: '博物馆 >',
             path: '/equipments/list'
           }]
         }, {
@@ -418,11 +418,13 @@
                       margin-top: 12px;
                       margin-left: 14px;
                       a{
-                          color: white;
-                          display: block;
-                          &:hover{
-                              color: #327fff;
-                          }
+                        color: white;
+                        margin-right: 10px;
+                        width: 75px;
+                        display: inline-block;
+                        &:hover{
+                          color: #327fff;
+                        }
                       }
                   }
                   &:last-child{
