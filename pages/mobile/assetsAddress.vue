@@ -1,6 +1,11 @@
 <template>
   <div class="assets_address">
-    <div class="address_box" v-if="!edit">
+    <form class="form" @submit.prevent="submit" novalidate v-if="edit||!address.length">
+      <form-field :form="assetsAddress"></form-field>
+      <button name="btn">确认提交</button>
+      <div class="btn" @click="closeMask">取消</div>
+    </form>
+    <div class="address_box" v-else>
       <div class="address_lists">
         <section v-for="item in address" class="item">
           <div class="name">
@@ -18,11 +23,6 @@
       </div>
       <a class="button" @click="openMask">新增算力收益地址</a>
     </div>
-    <form class="form" @submit.prevent="submit" novalidate v-else>
-      <form-field :form="assetsAddress"></form-field>
-      <button name="btn">确认提交</button>
-      <div class="btn" @click="closeMask">取消</div>
-    </form>
   </div>
 </template>
 

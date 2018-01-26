@@ -2,7 +2,7 @@
   <div class="home">
     <div class="fullpage-wp" v-fullpage="opts">
       <div class="page-1 page-common">
-        <img class="logo" src="../assets/images/mobile/index/logo.png"/>
+        <!-- <img class="logo" src="../assets/images/mobile/index/logo.png"/> -->
         <p class="main-slogen">算力驱动未来&nbsp;&nbsp;&nbsp;信任链接天下</p>
         <p class="title">全球算力产业综合服务平台</p>
         <div class="main">
@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="page-2 page-common">
-        <img class="logo" src="~/assets/images/mobile/index/logo.png"/>
+        <!-- <img class="logo" src="~/assets/images/mobile/index/logo.png"/> -->
         <div class="main">
           <div class="page-number">
             <hr>
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="page-3 page-common">
-        <img class="logo" src="../assets/images/mobile/index/logo.png"/>
+        <!-- <img class="logo" src="../assets/images/mobile/index/logo.png"/> -->
         <div class="main">
           <div class="page-number">
             <hr>

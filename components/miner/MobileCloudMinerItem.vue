@@ -3,8 +3,7 @@
     <div class="item_title">
       <div class="left">
         <span class="name">{{itemData.name}}</span>
-        <span :class="['sell_type', {active: itemData.sell_type===2}]" v-if="itemData.status!==7">{{(itemData.sell_type===2&&'转售')||str[itemData.status]||(itemData.status===10&&'活动')}}</span>
-        <span class="sell_type gray" v-if="itemData.status&&(itemData.status===2||itemData.status===3)||(itemData.amount-itemData.buyed_amount<=0)">已售罄</span>
+        <span :class="['sell_type', {active: itemData.sell_type===2}, {gray: itemData.status===7}]">{{(itemData.sell_type===2&&'转售')||str[itemData.status]}}</span>
         <span class="coin_sign" v-if="itemData.hashtype">{{itemData.hashtype.name}}</span>
       </div>
       <div class="right">
@@ -39,7 +38,7 @@
     },
     data () {
       return {
-        str: {4: '预热', 5: '热销'},
+        str: {4: '预热', 5: '热销', 7: '已售馨', 10: '活动'},
         percent: ''
       }
     },

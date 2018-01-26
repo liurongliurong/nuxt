@@ -10,7 +10,7 @@
       </div>
       <div class="miner_right">
         <h4>
-          <span :class="detail.statusColor">{{detail.statusStr}}</span>
+          <span :class="(detail.status===2||detail.status===3)?'gray':'red'">{{detail.statusStr}}</span>
           <span>{{detail.name}}</span>
         </h4>
         <p class="time">{{detail.DeliveryTime}}</p>
@@ -48,7 +48,7 @@
       <div class="cloud_miner_left">
         <h4>
           {{detail.product_name}}
-          <span>{{detail.statusStr}}</span>
+          <span>{{(detail.sell_type===2&&'转售')||detail.statusStr}}</span>
         </h4>
         <div class="product_data">
           <div class="item" v-for="d,k in proData">
@@ -105,7 +105,11 @@
     },
     data () {
       return {
-        proData: {one_amount_value: {title: '每台价格', unit: '元'}, hash: {title: '每台算力', unit: 'T'}, amount: {title: '出售总数', unit: '台'}}
+        proData: {
+          one_amount_value: {title: '每台价格', unit: '元'},
+          hash: {title: '每台算力', unit: 'T'},
+          amount: {title: '出售总数', unit: '台'}
+        }
       }
     },
     filters: {
