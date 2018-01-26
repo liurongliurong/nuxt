@@ -1,6 +1,11 @@
 <template>
   <div class="bank_card">
-    <div class="card_box" v-if="!edit">
+    <form class="form" @submit.prevent="submit" novalidate v-if="edit||!(true_name && true_name.status === 1)">
+      <form-field :form="auth"></form-field>
+      <button name="btn">确认提交</button>
+      <div class="btn" @click="closeMask">取消</div>
+    </form>
+    <div class="card_box" v-else>
       <div class="card" v-if="true_name && true_name.status === 1">
         <p class="info">实名认证成功</p>
         <span class="bank_name">{{true_name&&true_name.truename}}</span>
@@ -8,11 +13,6 @@
       </div>
       <a class="button" @click="openMask" v-else>去认证</a>
     </div>
-    <form class="form" @submit.prevent="submit" novalidate v-else>
-      <form-field :form="auth"></form-field>
-      <button name="btn">确认提交</button>
-      <div class="btn" @click="closeMask">取消</div>
-    </form>
   </div>
 </template>
 
