@@ -1,5 +1,5 @@
 <template>
-  <div class="bank_card">
+  <div class="id_verfication">
     <form class="form" @submit.prevent="submit" novalidate v-if="edit||!(true_name && true_name.status === 1)">
       <form-field :form="auth"></form-field>
       <button name="btn">确认提交</button>
@@ -88,7 +88,7 @@
 
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
-  .bank_card {
+  .id_verfication {
     font-size: 0.32rem;
     padding: 0.3rem 0;
     background: #f4f4f4;
