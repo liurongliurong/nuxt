@@ -1,17 +1,18 @@
 <template>
   <div class="bank_card">
-    <div class="card_box" v-if="!edit">
+    <form class="form" @submit.prevent="submit" novalidate v-if="edit||!(true_name && true_name.status === 1)">
+      <form-field :form="auth"></form-field>
+      <button name="btn">确认提交</button>
+      <div class="btn" @click="closeMask">取消</div>
+    </form>
+    <div class="card_box" v-else>
       <div class="card" v-if="true_name && true_name.status === 1">
+        <p class="info">实名认证成功</p>
         <span class="bank_name">{{true_name&&true_name.truename}}</span>
         <p class="number">{{true_name&&true_name.idcard|format}}</p>
       </div>
       <a class="button" @click="openMask" v-else>去认证</a>
     </div>
-    <form class="form" @submit.prevent="submit" novalidate v-else>
-      <form-field :form="auth"></form-field>
-      <button name="btn">确认提交</button>
-      <div class="btn" @click="closeMask">取消</div>
-    </form>
   </div>
 </template>
 
@@ -95,19 +96,25 @@
       padding: 0 0.3rem;
       .card {
         width: 100%;
-        height: 2.7rem;
-        padding-top: 0.49rem;
+        height: 200px;
         color: #fff;
-        background: url('~assets/images/mobile/bank_card.png') no-repeat;
+        @include flex(center, flex-start, column);
+        background: url('~assets/images/mobile/IDcard-auth.png') no-repeat;
         background-size: 100%;
+        .info {
+          width: 100%;
+          text-align: center;
+          margin-bottom: 0.2rem;
+        }
         .bank_name {
-          margin-left: 0.42rem;
+          margin-left: 0.54rem;
+          font-size: 0.3rem;
+          font-weight: bold;
         }
         .number {
           width: 100%;
-          text-align: center;
-          font-size: 0.48rem;
-          font-weight: bold;
+          margin-left: 0.54rem;
+          font-size: 0.3rem;
           position: relative;
           top: 0.15rem;
         }

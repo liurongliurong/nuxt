@@ -8,13 +8,17 @@
     </div>
     <div class="form_content" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading"
     infinite-scroll-distance="10">
-      <section v-for="item in formData" class="form_item">
+      <section v-for="item in formData" class="form_item" v-if="!showTips">
         <aside class="content_left">
           <span class="name">{{item.product_name}}</span>
           <span class="time">{{item.paid_time}}</span>
         </aside>
         <span class="content_right">+{{item.paid_amount}}</span>
       </section>
+      <div v-if="showTips" class="none_tips">
+        <span>目前没有收益记录</span>
+        <nuxt-link class="button" to="/minerShop/miner/2">立即购买云算力</nuxt-link>
+      </div>
     </div>
     <p v-if="loading" class="load_more">加载中······</p>
   </div>
@@ -40,7 +44,8 @@
           {name: 'BTC收益明细', active: 'btc', type: 1}
         ],
         formData: [],
-        loading: false
+        loading: false,
+        showTips: false
       }
     },
     methods: {
@@ -58,11 +63,11 @@
               for (let i = 0, len = res.value_list.length; i < len; i ++) {
                 this.formData.push(res.value_list[i])
               }
+              this.showTips = this.formData.length ? false : true
             })
           })
       },
       loadMore () {
-        console.log('loadMore')
         if (this.formData.length < this.length ) {
           this.loading = true
           this.page ++
@@ -145,6 +150,22 @@
       height: 1.3rem;
       text-align: center;
       line-height: 1.3rem;
+    }
+    .none_tips {
+      height: 100%;
+      @include flex(center, center, column);
+      span {
+        color: #999;
+        margin: -0.3rem 0 0.2rem;
+      }
+      .button {
+        display: block;
+        text-align: center;
+        background: #ff721f;
+        color: #fff;
+        padding: 0.1rem 0.4rem;
+        border-radius: 5px;
+      }
     }
   }
 </style>
