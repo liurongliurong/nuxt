@@ -13,45 +13,50 @@
       </div>
     </div>
     <div class="mobile_box" v-else-if="isMobile===1">
-      <div class="address_box">
+      <form class="form" @submit.prevent="submit" novalidate v-if="show||!data.length">
+        <address-input :form="address" :val="addressData"></address-input>
+        <button name="btn">确认提交</button>
+        <div class="btn" @click="closeMask">取消</div>
+      </form>
+      <div class="address_box" v-else>
         <div class="item" v-for="a,k in data">
           <div class="address_desc" @click="selectAddress(k)">
             <div class="address_title">
               <span>{{a.post_user}}</span>
               <span>{{a.post_mobile}}</span>
             </div>
-            <p>{{a.province_name+a.city_name+a.area_name+a.area_details}}</p>
+            <p class="address_content">{{a.province_name+a.city_name+a.area_name+a.area_details}}</p>
           </div>
           <div class="address_opr">
-            <div class="default_address" v-if="a.is_default">默认地址</div>
-            <div class="set_default" v-else @click="setDefault(a.id)">设为默认</div>
-            <span class="opr" @click="openMask(k)">编辑</span>
-            <span class="opr" @click="deleteAddress(a.id,k)">删除</span>
+            <!-- <div class="default_address" v-if="a.is_default">默认地址</div> -->
+            <div class="set_default" @click="setDefault(a.id)"><i :class="['check_box', {check_acitve: a.is_default}]"></i>设为默认</div>
+            <aside class="right">
+              <span class="opr" @click="openMask(k)"><i class="edit"></i>编辑</span>
+              <span class="opr" @click="deleteAddress(a.id,k)"><i class="delete"></i>删除</span>
+            </aside>
           </div>
         </div>
         <div class="address_btn" @click="openMask">添加新地址</div>
       </div>
     </div>
-    <div class="nodata" v-if="show">
-      <div class="nodata_img"></div>
-      <p>暂无列表信息</p>
-    </div>
-    <MyMask :form="address" :val="addressData" :title="addressData.id?'编辑地址':'新增地址'" v-if="show" @submit="submit" @closeMask="closeMask"></MyMask>
+    <my-mask :form="address" :val="addressData" :title="addressData.id?'编辑地址':'新增地址'" v-if="!isMobile&&show" @submit="submit" @closeMask="closeMask"></my-mask>
   </section>
 </template>
 
 <script>
   import util from '@/util'
   import api from '@/util/function'
-  import MyMask from '@/components/common/Mask'
   import { mapState } from 'vuex'
+  import { post_address } from '@/util/form'
+  import MyMask from '@/components/common/Mask'
+  import AddressInput from '@/components/common/AddressInput'
   export default {
     components: {
-      MyMask
+      MyMask, AddressInput
     },
     data () {
       return {
-        address: [{name: 'post_user', type: 'text', title: '姓名', placeholder: '请输入姓名', isChange: true}, {name: 'post_mobile', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'}, {name: 'address', type: 'select', title: '地址', isChange: true}, {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true}, {name: 'is_default', type: 'radio', title: '是否设为默认地址'}],
+        address: post_address,
         data: [],
         addressData: {},
         show: false
@@ -69,7 +74,9 @@
       },
       closeMask () {
         this.show = ''
-        document.body.style.overflow = 'auto'
+        if (this.isMobile) {
+          document.body.style.overflow = 'auto'
+        }
       },
       submit (e) {
         var form = e.target
@@ -115,11 +122,13 @@
           return false
         }
         this.addressData = {}
-        window.scroll(0, 0)
-        document.body.style.overflow = 'hidden'
         this.show = true
         if (this.data[k]) {
           this.addressData = this.data[k]
+        }
+        if (this.isMobile) {
+          window.scroll(0, 0)
+          document.body.style.overflow = 'hidden'
         }
       },
       fetchData () {
@@ -193,57 +202,103 @@
       }
     }
     .mobile_box{
+      font-size: 0.3rem;
+      padding: 0.3rem 0;
+      background: #f4f4f4;
+      height: calc(100vh - 0.88rem);
       .address_box{
         .item{
-          padding: 10px 15px;
-          @include flex(space-between)
+          margin-bottom: 0.2rem;
+          background: #fff;
+          padding: 0 0.3rem;
+          border-bottom: solid 1px #eee;
+          @include flex(space-between, center, column);
           .address_desc{
-            width:70%;
+            @include flex(flex-start, flex-start, column);
+            width: 100%;
+            height: 1.8rem;
+            font-size: 0.32rem;
+            color: #333;
+            border-bottom: solid 1px #e5e5e5;
             .address_title{
-              font-size: 0.3rem;
-              font-weight: bold;
-              padding:5px 0;
+              padding-top: 0.4rem;
+              width: 100%;
+              line-height: 0.6rem;
+              @include flex(space-between, center);
+              color: #333;
+              font-size: 0.34rem;
             }
             p{
-              color:$light_text;
-              @include ellipsis(2)
+              line-height: 0.5rem;
+              word-break: break-all;
+              color: #999;
+              font-size: 0.26rem;
             }
           }
           .address_opr{
-            .default_address{
-              border:1px solid $orange;
-              padding:0 5px;
-              border-radius:3px;
-              color:$orange;
-            }
+            height: 0.9rem;
+            width: 100%;
+            @include flex(space-between, center);
+            font-size: 0.28rem;
+            color: #666;
             .set_default{
-              color:$orange
+              .check_box {
+                display: inline-block;
+                margin-right: 0.12rem;
+                @include checkbox(14)
+                width: 0.28rem;
+                height: 0.28rem;
+                position: relative;
+                top: -1px;
+              }
+              .check_acitve {
+                background: #327fff;
+              }
             }
-            .set_default,.default_address{
-              font-size: 12px;
-              margin:5px 0;
-            }
-            .opr{
-              font-size: 12px;
-              color:$blue;
-              & + .opr{
-                margin-left:5px
+            .right {
+              .opr{
+                i {
+                  width: 0.28rem;
+                  height: 0.28rem;
+                  margin-right: 0.1rem;
+                  position: relative;
+                  top: 1px;
+                  display: inline-block;
+                }
+                .edit {
+                  background: url('../../assets/images/mobile/edit.png') no-repeat;
+                  background-size: 0.28rem;
+                }
+                .delete {
+                  background: url('../../assets/images/mobile/delete.png') no-repeat;
+                  background-size: 0.28rem;
+                }
+                &:first-child {
+                  margin-right: 0.45rem;
+                }
               }
             }
           }
           &:not(:last-child){
-            border-bottom:1px solid $border
+            border-bottom: 1px solid $border;
           }
         }
         .address_btn{
-          margin:15px;
-          line-height: 2.4;
-          text-align: center;
-          border-radius:5px;
-          @include button($orange)
+          width: calc(100% - 0.6rem);
+          height: 0.8rem;
+          @include flex(center, center);
+          margin: 0.8rem auto 0;
+          background: #327fff;
+          color: #fff;
+          font-size: 0.32rem;
+          border-radius: 5px;
         }
       }
+      .form {
+        background: #fff;
+        min-height: calc(100vh - 1.1rem);
+        @include form(v)
+      }
     }
-    @include nodata
   }
 </style>

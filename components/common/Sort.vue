@@ -14,10 +14,13 @@
           <a href="javascript:;" :class="{active:status==n.code}" v-for="n,k in s.options" @click="setStatus(n.code)">{{n.title}}</a>
         </div>
       </div>
-      <div class="sort_allitems">
-        <span class="sort_allitems_title">排序方式</span>
+      <div class="sort_items">
+        <span class="sort_items_title">排序方式</span>
         <div :class="['item', 'next', {active1: !sort[edit]}]" @click="setSort()">综合排序</div>
-        <div :class="['item', {active: edit==k}, {up: edit==k&&no==1}]" v-for="s,k in sort" @click="setSort(k)">{{s.title}}<span class="iconfont">&#xe611;</span></div>
+        <div :class="['item', {active: (s.option.indexOf(sortText)>-1)&&edit==k}, {up: (s.option.indexOf(sortText)>-1)&&edit==k&&no==1}]" @click="setSort(k)" v-for="s,k in sort">
+          <span>{{s.title}}</span>
+          <span class="iconfont">&#xe611;</span>
+        </div>
       </div>
     </div>
     <div class="mobile_sort" v-else-if="isMobile===1">
@@ -40,6 +43,9 @@
       },
       status: {
         type: Number
+      },
+      sortText: {
+        type: String
       }
     },
     data () {
@@ -49,7 +55,7 @@
       }
     },
     methods: {
-      setSort (n, i) {
+      setSort (n) {
         if (this.edit === n) {
           if (this.no === 1) {
             this.no = 0
@@ -60,7 +66,7 @@
           this.no = 0
         }
         this.edit = (n >= 0) ? n : -1
-        var param = (this.edit !== -1) ? [n, this.no] : ''
+        var param = this.sort[n].option[this.no]
         this.$emit('fetchData', param)
       },
       setStatus (n) {
@@ -136,31 +142,41 @@
           }
         }
       }
-      .sort_allitems{
+      .sort_items{
         @include flex
         background: #F5F5F5;
         padding:0 20px;
-        .sort_allitems_title{
+        .sort_items_title{
           color:$light_black;
           margin-right:30px;
         }
         .item{
+          position: relative;
           cursor: pointer;
-          padding-left:20px;
-          line-height: 40px;
+          line-height: 20px;
           color:#999;
-          &:before{
-            content:'|';
-            color:#ddd;
-            margin-right:20px
+          width: 120px;
+          margin: 10px 0;
+          border: solid #ddd;
+          border-width: 0 0 0 1px;
+          text-align: center;
+          .iconfont{
+            position: absolute;
+            top: 2px;
+            font-size: 26px;
+            line-height: 32px;
+            height: 14px;
+            transition: all .3s;
+            transform:rotate(0deg);
           }
-          &:last-child:after{
-            content:'|';
-            color:#ddd;
-            margin-left:15px
+          &.active{
+            color:$blue;
           }
-          &:nth-child(2){
-            padding-left:0
+          &.up .iconfont{
+            transform:rotate(180deg);
+          }
+          &:last-child{
+            border-width: 0 1px 0 1px;
           }
         }
         .next{
@@ -186,7 +202,6 @@
       }
       .mobile_sort_items{
      	  background: #fff;
-        // margin-top:15px;
         @include flex(space-between)
         padding:0 0.2rem;
         border-bottom:1px solid $border;
@@ -199,32 +214,6 @@
             color:#FE5039;
             border-color:#FE5039
           }
-        }
-      }
-    }
-    .box .item,.sort_items .item{
-      .iconfont{
-        @include block(24)
-        height:16px;
-        line-height: 40px;
-        text-align: center;
-        vertical-align: text-bottom;
-        font-size: 26px;
-        transition: all .3s;
-        transform:rotate(0deg);
-        position: relative;
-        top: -9px;
-      }
-      &.active{
-        color:$blue;
-        .iconfont{
-          position: relative;
-        }
-      }
-      &.up{
-        .iconfont{
-          transform:rotate(180deg);
-          top: 10px;
         }
       }
     }

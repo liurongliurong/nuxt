@@ -88,11 +88,20 @@
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
   .account_evaluate{
-    padding:40px 0;
-    @include article
+    margin: 0 auto;
+    padding: 40px 0;
+    min-height: 800px;
+    h2{
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      border-bottom:1px solid $border
+    }
     .box_content{
+      padding:40px 90px;
       aside{
         margin-bottom:15px;
+        font-size: 16px;
         .question{
           span{
             color: $red;
@@ -119,6 +128,14 @@
               }
             }
           }
+        }
+      }
+      .btn{
+        text-align: center;
+        button{
+          padding:10px 50px;
+          @include button($blue)
+          font-size: 16px;
         }
       }
     }

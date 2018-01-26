@@ -1,6 +1,6 @@
 <template>
   <div class="pay_success">
-    <div class="pay_success_box">
+    <div class="pay_success_box" v-if="isMobile===0">
       <div class="success_top">
         <div class="success_text">
           <span class="spanone"><img src="~assets/images/true.png"/></span>
@@ -17,12 +17,23 @@
         </div>
       </div>
     </div>
+    <div class="mobile_box" v-if="isMobile===1">
+      <div class="success_box">
+        <div class="icon_success"></div>
+      </div>
+      <h3 class="success_title">恭喜您，支付成功</h3>
+      <p class="success_text" v-if="addressData.id">寄送至 ： </span>{{addressData.province_name+addressData.city_name+addressData.area_name+addressData.area_details}}(<span class="te">{{addressData.post_user}}</span> 收) <span class="te">{{addressData.post_mobile}}</span></p>
+      <p v-else>您的算力服务器已开启运行，预计今日收益20.20元，下次收益结算日期为：2017年12月12日</p>
+      <router-link to="/mobile/order/3" class="btn" v-if="addressData.id">查看我的交易</router-link>
+      <router-link to="/mobile/property" class="btn" v-else>查看我的资产</router-link>
+    </div>
   </div>
 </template>
 
 <script>
   import util from '@/util'
   import api from '@/util/function'
+  import { mapState } from 'vuex'
   import MinerItem from '@/components/miner/MinerItem'
   import CloudMinerItem from '@/components/miner/CloudMinerItem'
   export default {
@@ -56,6 +67,11 @@
       } else {
         // this.$router.push({path: '/minerShop/detail'})
       }
+    },
+    computed: {
+      ...mapState({
+        isMobile: state => state.isMobile
+      })
     }
   }
 </script>
@@ -64,7 +80,7 @@
   @import '../../assets/css/style.scss';
   .pay_success{
     background: #f7f8fa;
-    .pay_success_box{
+    .pay_success_box {
       @include main
       overflow: hidden;
       margin-top: 29px;
@@ -140,6 +156,37 @@
           }
         }
       }
+    }
+    .mobile_box {
+      text-align: center;
+      padding-top: 1rem;
+      .success_box {
+        position: relative;
+        @include block(40, 50%)
+        background: #61de44;
+        .icon_success {
+          @include right(18, 12)
+          border-width: 0 0 2px 2px;
+        }
+      }
+      h3 {
+        margin: 0.2rem 0;
+      }
+      p {
+        color: #a0a0a0;
+        padding: 0.3rem 0.6rem;
+        font-size: 12px;
+      }
+      a.btn {
+        display: inline-block;
+        padding: 0.1rem 0.3rem;
+        @include button($blue, 3px)
+        margin-top: 0.3rem;
+      }
+    }
+    @media screen and (max-width: 768px) {
+      min-height: calc(100vh - 0.88rem);
+      background: #fff;
     }
   }
 </style>

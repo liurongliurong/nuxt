@@ -1,5 +1,5 @@
 <template>
-  <div :class="headerClass" :disabled="$route.name==='notFound'" :title="($route.name==='auth-login'||$route.name==='bdc')&&'border'">
+  <div :class="[headerClass, {bg_opacity:scroll}]" :disabled="$route.name==='notFound'" :title="($route.name==='auth-login'||$route.name==='bdc')&&'border'">
     <section class="box">
       <div class="nav_left1">
         <router-link class="logo" to="/"></router-link>
@@ -43,9 +43,19 @@
     name: 'header',
     data () {
       return {
-        nav: [{name: 'miner/1', text: '算力服务器', link: '/minerShop/miner/1'}, {name: 'miner/2', text: '云算力', link: '/minerShop/miner/2'}, {name: 'bdc', text: 'BDC托管', link: '/bdc'}, {name: 'industryInformation', text: '产业资讯', link: '/industryInformation'}],
-        path: {frame_header: ['regist', 'passwordRetrieval', '/minerShop/activity', '/minerShop/list', 'user', 'account', '/detail', '/pay', '/currency', 'webInfo', 'article/agreement', 'minerShop/miner', '/industryInformation', 'computeNews', 'transaction', 'quickNews', 'digitalCurrency', 'equipments', 'equipmentEvaluate', 'manufacturer', 'computeChart'], border: ['login', 'bdc'], shadow: ['regist', 'passwordRetrieval'], web_box: ['webInfo', 'minerShop/miner']},
-        headerClass: ''
+        nav: [
+          {name: 'miner/1', text: '算力服务器', link: '/minerShop/miner/1'},
+          {name: 'miner/2', text: '云算力', link: '/minerShop/miner/2'},
+          {name: 'bdc', text: 'BDC托管', link: '/bdc'},
+          {name: 'industryInformation', text: '产业资讯', link: '/industryInformation'}
+        ],
+        path: {
+          frame_header: ['regist', 'passwordRetrieval', '/minerShop/activity', '/minerShop/list', 'user', 'account', '/detail', '/pay', '/currency', 'webInfo', 'article/agreement', 'minerShop/miner', '/industryInformation', 'computeNews', 'transaction', 'quickNews', 'digitalCurrency', 'equipments', 'equipmentEvaluate', 'manufacturer', 'computeChart'],
+          border: ['login', 'bdc'],
+          shadow: ['regist', 'passwordRetrieval'], web_box: ['webInfo', 'minerShop/miner']
+        },
+        headerClass: '',
+        scroll: false
       }
     },
     computed: {
@@ -60,14 +70,11 @@
         this.$store.commit('LOGOUT')
       },
       test (e) {
-        var ele = document.querySelector('.fixed_header')
-        if (!ele) return false
+        if (this.headerClass.indexOf('frame_header') > -1) return false
         var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
-        if (scrollTop > 0 || this.showNav) {
-          ele.className = 'pc_header fixed_header bg_opacity'
+        if (scrollTop > 0) {
           this.scroll = true
         } else {
-          ele.className = 'pc_header fixed_header'
           this.scroll = false
         }
       },
@@ -158,10 +165,9 @@
       }
       .side_nav{
         a{
-          @include gap(10,h)
+          padding: 0 10px;
           &.btn{
             line-height: 1.8;
-            @include gap(0,h)
             display: inline-block;
             width:70px;
             text-align: center;

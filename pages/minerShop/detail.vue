@@ -23,39 +23,29 @@
         <button disabled v-else-if="detail.status===4">立即购买</button>
         <button @click="checkPay" v-else>立即购买</button>
       </div>
-      <div class="popup" v-if="sheetVisible" @click="closeMask">
-        <div class="popup_con buy_box">
-          <div class="img_text">
-            <div class="popup_img">
-              <img :src="detail.product_img||detail.minerPicture" alt="">
-            </div>
-            <div class="popup_text">
-              <div class="price">￥{{detail.one_amount_value}}</div>
-              <div class="name">{{detail.name}}</div>
-              <div class="left">剩余可售{{detail.leftNum}}台<span class="detail_limit_text">({{(parseInt(detail.single_limit_amount)||1)+'台起售'}})</span></div>
-            </div>
+      <my-mask title="选择购买数量" @closeMask="closeMask" :maskClose="true" position="bottom" v-if="sheetVisible">
+        <template slot="buy_box">
+          <div class="buy_text">
+            <div>单价</div>
+            <div>{{detail.one_amount_value}}元/台</div>
           </div>
-          <div class="buy_num">
-            <div>购买数量</div>
+          <div class="buy_text">
+            <div>数量</div>
             <div class="input_box">
               <span @click="changeNum(+number-1)">-</span>
               <input type="text" v-model="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum(number)">
               <span @click="changeNum(+number+1)">+</span>
             </div>
           </div>
-          <div class="buy_text">
-            <div class="item">购买算力</div>
-            <div class="item">{{(detail.hash*number)|format}}T</div>
-          </div>
           <div class="buy_text last">
-            <div class="item">支付金额</div>
+            <div class="item">总价</div>
             <div class="item">{{(detail.one_amount_value*number)|format}}元</div>
           </div>
-          <div class="mobile_btn" style="z-index:9999999;">
-            <button @click="goPay(false)">立即购买</button>
+          <div class="mobile_btn">
+            <button @click="goPay(false)">确认购买</button>
           </div>
-        </div>
-      </div>
+        </template>
+      </my-mask>
     </div>
     <my-mask title="立即认证" :position="maskPosition" @closeMask="closeMask" v-if="mask">
       <opr-select slot="select_opr" :no="0" @closeMask="closeMask"></opr-select>
@@ -79,12 +69,12 @@
     },
     data () {
       return {
-        detail: {incomeType: '每日结算，次日发放', fee: '', product_name: '', name: '', status: 0},
+        detail: {incomeType: '每日结算，隔日发放', fee: '', product_name: '', name: '', status: 0},
         cloudInfo: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: 'BDC中心相册'}],
         minerInfo: [{name: 'MInerBrief', title: '产品介绍'}, {name: 'MinerAdvantage', title: '产品参数'}, {name: 'prProtocolSpeciaification', title: '补充说明'}],
-        params: {chips_num: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '算力服务器尺寸', minerOuterSize: '外箱尺寸', cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
-        statusObj: {1: {title: '热销中', color: 'red'}, 2: {title: '已售罄', color: 'gray'}, 3: {title: '产品撤销', color: 'gray'}, 4: {title: '预热中', color: 'red'}},
-        str: {4: '预热中', 5: '可售', 7: '已售馨', 10: '活动'},
+        params: {chips_num: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '服务器尺寸', minerOuterSize: '外箱尺寸', cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
+        status: {1: '热销', 2: '已售罄', 3: '产品撤销', 4: '预热'},
+        str: {4: '预热', 5: '可售', 7: '已售馨', 10: '活动'},
         number: 1,
         buyStatus: 0,
         params1: '',
@@ -96,6 +86,10 @@
     },
     methods: {
       checkPay (isLoan) {
+        if (!this.detail.amount) {
+          api.tips('抱歉，库存不足')
+          return false
+        }
         var startTime = this.detail.sell_start_time
         var now = Date.parse(new Date()) / 1000
         if (now < startTime) {
@@ -128,11 +122,8 @@
         this.sheetVisible = true
       },
       closeMask (e) {
-        var popup = document.querySelector('.popup')
-        if (e && (e.target === popup)) {
-          document.body.style.overflow = 'auto'
-          this.sheetVisible = false
-        }
+        document.body.style.overflow = 'auto'
+        this.sheetVisible = false
         this.mask = false
       },
       goPay (isLoan) {
@@ -147,13 +138,13 @@
           }
           return false
         }
-        var data = {name: this.detail.name ? this.detail.name : this.detail.product_name, one_amount_value: this.detail.one_amount_value || '', number: this.number || '', hash: this.detail.hash || '', hashType: this.detail.hashType || '', incomeType: this.detail.incomeType || '', output: this.detail.output || '', total_electric_fee: this.detail.total_electric_fee || '', batch_area: this.detail.batch_area || '', isLoan: isLoan}
+        var data = {name: this.detail.name ? this.detail.name : this.detail.product_name, one_amount_value: this.detail.one_amount_value || '', number: this.number || '', hash: this.detail.hash || '', hashType: this.detail.hashType || '', incomeType: this.detail.incomeType || '', output: this.detail.output || '', total_electric_fee: this.detail.total_electric_fee || '', batch_area: this.detail.batch_area || '', isLoan: isLoan, img: this.detail.product_img||this.detail.minerPicture, bdc_id: this.detail.bdc_message_id}
         api.setStorge('info', data)
         this.$router.push({name: 'minerShop-pay'})
       },
       changeNum (n) {
         if (this.detail.leftNum === 0) return false
-        var minNum = this.detail.single_limit_amount || 1
+        var minNum = +this.detail.single_limit_amount || 1
         var isOver = n > this.detail.leftNum
         if (isOver) {
           this.buyStatus = 2
@@ -163,6 +154,7 @@
         }
         this.number = +n < minNum || isNaN(+n) || typeof +n !== 'number' ? minNum : isOver ? this.detail.leftNum : n
         this.number = parseInt(this.number)
+        document.querySelector('#number').value = this.number
       },
       getData () {
         if (this.params1) {
@@ -181,7 +173,7 @@
               self.detail.leftNum = res.amount - res.buyed_amount
               self.detail = Object.assign(self.detail, res)
               self.detail.sellProgress = ((+self.detail.buyed_amount)/self.detail.amount*100).toFixed(0)+'%'
-              self.number = parseInt(self.detail.single_limit_amount)
+              self.number = parseInt(self.detail.single_limit_amount) || 1
               if (self.params2 !== '1') {
                 self.detail = Object.assign(self.detail, res.has_product_miner_base)
                 self.detail.name = res.product_name
@@ -191,8 +183,7 @@
                 self.detail.name = res.name
                 self.detail = Object.assign(self.detail, res.miner_list)
                 self.detail.weight = (res.miner_list && res.miner_list.weight) || ''
-                self.detail.statusStr = self.statusObj[res.status].title
-                self.detail.statusColor = self.statusObj[res.status].color
+                self.detail.statusStr = self.status[res.status]
               }
             })
           })
@@ -231,7 +222,6 @@
   @import '~assets/css/style.scss';
   .product{
     background: #f7f8fa;
-    padding-bottom: 50px;
     .top_nav{
       background-image: url('~assets/images/miner_shop/miner_bg.jpg');
       width: 100%;
@@ -255,56 +245,36 @@
       }
     }
     .mobile_box{
+      min-height: calc(100vh - 0.88rem);
+      padding-bottom: 57px;
       .popup{
         .buy_box{
-          padding:0 15px;
-          .img_text,.buy_num{
-            padding: 15px 0;
-          }
-          .img_text{
-            @include flex
-            .popup_img{
-              width:130px;
-              margin-right:15px;
-              height:90px;
-              img{
-                height:90px;
-                width: 130px;
-                object-fit:contain
-              }
-            }
-            .popup_text{
-              .price{
-                color:$orange;
-                font-size: 0.36rem;
-              }
-              .name{
-                font-weight: bold;
-              }
-            }
-          }
-          .buy_num{
-            border-top:1px solid $border;
-            border-bottom:1px solid $border;
-            @include flex(space-between)
-            .input_box{
-              line-height: 30px;
-              border:1px solid $border;
-              @include number_box
-              span{
-                width:18%;
-                color:$text !important
-              }
-              input{
-                width:58%
-              }
-            }
-          }
+          font-size: 16px;
           .buy_text{
             @include flex(space-between)
-            padding-top:15px;
+            border-bottom: 1px solid $border;
+            margin: 0 15px;
+            padding: 10px 0;
+            .input_box{
+              width:160px;
+              line-height: 30px;
+              border:1px solid $border;
+              @include flex
+              span{
+                width:30%;
+                color:$light_text;
+                font-size: 22px;
+                text-align: center;
+              }
+              input{
+                width:40%;
+                border-left: 1px solid $border;
+                border-right: 1px solid $border;
+                line-height: 30px;
+                text-align: center;
+              }
+            }
             &.last{
-              padding-bottom:20px;
               .item:last-child{
                 color: $orange;
               }
@@ -313,7 +283,12 @@
           .mobile_btn{
             position: relative;
             border: 0;
-            padding: 9px 0;
+            padding: 15px;
+            button{
+              background: transparent;
+              color: $blue;
+              border: 1px solid $blue;
+            }
           }
         }
       }

@@ -1,40 +1,35 @@
 <template>
   <pageFrame isComponent="true">
-    <template v-if="isMobile === 0">
-      <div class="museum_right1" style="padding-bottom: 60px !important;min-height:900px;">
-        <h1 style="position:relative;">算力服务器制造商<span class="icon iconfont icon-jiantou" style="transform:rotate(90deg);position:absolute;top:3px;"></span></h1>
-        <div class="museum_lists1" v-for="n, k in museum" :key="k">
-          <div class="museuming1"><img :src="n.image"/></div>
-          <div class="museum_content1">
-            <h6>{{n.title}}</h6>
-            <p>{{n.resume}}</p>
-            <div @click="goDetail(n.id)">查看详情</div>
-          </div>
-        </div>
-        <Pager :len="len" style="padding-top:0;" v-if="!isMobile" :now="now" @setPage="setPage"></Pager>
-      </div>
-    </template>
-    <template v-else-if="isMobile === 1">
-      <div class="mobilequicknews">
-        <h1 v-if="!showcontent">主流算力服务器制造商</h1>
-        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="quicknews_lists" v-if="!showcontent">
-          <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)">
-            <img :src="item.image"/>
-            <p>{{ item.title}}</p>
-          </div>
-        </div>
-        <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
-        <div class="quicknews_content"  v-if="showcontent">
-          <div class="title">
-            <span>{{content.title}}</span>
-            <a class="button" onclick="window.location.reload()">< 返回列表</a>
-          </div>
-          <div class="info_quick" v-html="content.content"></div>
+    <div class="right_content manufacture_right" v-if="isMobile === 0">
+      <h1>算力服务器制造商<span class="icon iconfont icon-jiantou"></span></h1>
+      <div class="manufacture_item" v-for="n, k in museum" :key="k">
+        <div class="manufacture_img"><img :src="n.image"/></div>
+        <div class="manufacture_content">
+          <h6>{{n.title}}</h6>
+          <p>{{n.resume}}</p>
+          <div class="go_detail" @click="goDetail(n.id)">查看详情</div>
         </div>
       </div>
-    </template>
+      <Pager :len="len" :now="now" @setPage="setPage"></Pager>
+    </div>
+    <div class="mobile_manufacture" v-else-if="isMobile === 1">
+      <h1 v-if="!showcontent">主流算力服务器制造商</h1>
+      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="quicknews_lists" v-if="!showcontent">
+        <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)">
+          <img :src="item.image"/>
+          <p>{{ item.title}}</p>
+        </div>
+      </div>
+      <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
+      <div class="quicknews_content"  v-if="showcontent">
+        <div class="title">
+          <span>{{content.title}}</span>
+          <a class="button" onclick="window.location.reload()">< 返回列表</a>
+        </div>
+        <div class="info_quick" v-html="content.content"></div>
+      </div>
+    </div>
   </pageFrame>
-
 </template>
 
 <script>
@@ -42,7 +37,7 @@
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import Pager from '@/components/common/Pager'
-  import pageFrame from '@/components/computeNews/pageFrame'
+  import pageFrame from '@/components/common/PageFrame'
   import Vue from 'vue'
   import { InfiniteScroll } from 'mint-ui'
   Vue.use(InfiniteScroll)
@@ -102,6 +97,12 @@
         localStorage.setItem('icon_id', JSON.stringify([id]))
         this.$router.push({path: '/manufacturer/detail/'})
       },
+      setPage (n) {
+        this.now = n
+        if (!this.isMobile) {
+          this.getList()
+        }
+      },
       loadMore () {
         if (this.now <= this.len ) {
           this.loading = true
@@ -137,44 +138,29 @@
 </script>
 
 <style lang="scss">
-  .museum_right1{
-    float: left;
-    width: 1110px;
-    background: white;
-    padding:32px 62px 0 62px;
-    box-sizing: border-box;
-    h1{
-      color: #121212;
-      font-size: 24px;
-      font-weight: 800;
-      span{
-        font-size: 20px;
-        margin-left: 13px;
-      }
-    }
-    .museum_lists1{
-      width: 100%;
+  @import '~assets/css/style.scss';
+  .manufacture_right{
+    .manufacture_item{
       height: 232px;
-      background: #fff;
       box-shadow: 0 0 10px #c2c2c2;
       margin-top: 20px;
       border-radius: 8px;
       display: flex;
       align-items: center;
-      cursor: pointer;
-      .museuming1{
-        width: 254px;
+      .manufacture_img{
+        width: 30%;
         height: 170px;
         border-right: 1px solid #999999;
         text-align: center;
         float: left;
         img{
           width: 191px;
-          vertical-align: middle;
-          margin-top: 49px;
+          margin-top: 8%;
+          height: 80%;
+          object-fit: contain;
         }
       }
-      .museum_content1{
+      .manufacture_content{
         width: 70%;
         float: left;
         padding-left: 58px;
@@ -187,14 +173,14 @@
           line-height: 22px;
           color: #666666;
           height: 42px;
-          overflow: hidden;
           padding-right: 45px;
+          @include ellipsis(2)
         }
-        div{
+        .go_detail{
           width: 172px;
           height: 38px;
           border:1px solid #bfbfbf;
-          background:white;
+          background:#fff;
           color: #a9a9a9;
           margin-top: 27px;
           float: right;
@@ -202,16 +188,17 @@
           text-align: center;
           line-height: 38px;
           border-radius: 5px;
+          cursor: pointer;
           &:hover{
             background:#fe5039;
-            color: white;
+            color: #fff;
             border:0;
           }
         }
       }
     }
   }
-  .mobilequicknews{
+  .mobile_manufacture{
     width: 100%;
     overflow: hidden;
     background: white;
@@ -259,10 +246,10 @@
       }
     }
     .loadmore{
-        width: 100%;
-        height: 1.08rem;
-        text-align: center;
-        line-height: 1.08rem;
+      width: 100%;
+      height: 1.08rem;
+      text-align: center;
+      line-height: 1.08rem;
     }
     .quicknews_content{
       width: 100%;

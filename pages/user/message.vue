@@ -19,7 +19,7 @@
     <div class="mobile_box" v-else-if="isMobile===1">
       <div v-show="contentShow" class="message_box">
         <div class="read_num" @click="setRead()" v-if="unread_num"><span></span>全部标为已读</div>
-        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="message_list">
+        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="message_list">
           <div v-for="d,k in data" :key="k" @click="goDetail(d.id)" :class="['itemlist', {isread: d.is_read}]">
             <span>{{d.title}}</span>
             <i>{{d.created_at.split(" ")[0]}}</i>
@@ -155,9 +155,6 @@
   @import '~assets/css/style.scss';
   .message{
     padding:0 15px;
-    h2{
-      padding:0 15px !important;
-    }
     h3{
       .read{
         float: right;
@@ -171,7 +168,7 @@
         line-height: 50px;
         border-bottom:1px solid $border;
         @include flex(space-between)
-        @include gap(15,h)
+        padding: 0 15px;
         cursor: pointer;
         color: $text;
         .title,.time{
@@ -188,7 +185,7 @@
           text-align: right;
         }
         .text{
-          width:leave(480);
+          width:calc(100% - 480px);
           @include ellipsis
           color:#bfbfbf
         }
@@ -204,7 +201,6 @@
       }
     }
     .mobile_box{
-      padding-top:10px;
       .message_box{
         width: 100%;
         overflow: hidden;
@@ -230,9 +226,10 @@
             justify-content: space-between;
             border-bottom: 1px solid #999;
              span{
-              width: 50%;
+              width: 70%;
               color: #121212;
               font-weight: 800;
+              @include ellipsis
             }
             i{
               color: #a9a9a9;
@@ -263,7 +260,7 @@
         width: 100%;
         height: 100%;
         background:white;
-        padding:1rem .5rem;
+        padding:0.3rem;
         button{
           width: 1.5rem;
           height: 0.6rem;
@@ -280,6 +277,9 @@
           display: block;
         }
       }
+    }
+    @media screen and (max-width: $mobile) {
+      padding-top: 0.3rem;
     }
     @include nodata
   }

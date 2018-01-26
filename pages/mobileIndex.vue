@@ -2,7 +2,7 @@
   <div class="home">
     <div class="fullpage-wp" v-fullpage="opts">
       <div class="page-1 page-common">
-        <img class="logo" src="../assets/images/mobile/index/logo.png"/>
+        <!-- <img class="logo" src="../assets/images/mobile/index/logo.png"/> -->
         <p class="main-slogen">算力驱动未来&nbsp;&nbsp;&nbsp;信任链接天下</p>
         <p class="title">全球算力产业综合服务平台</p>
         <div class="main">
@@ -20,12 +20,12 @@
           <p class="content slogen">算力是未来可计量的生产力</p>
         </div>
         <div class="footer">
-          <a class="button" @click="jump(3)">跳过</a>
+          <a class="button" @click="jump(2)">跳过</a>
           <p class="introduce">Clould mining<i>|</i>Miner<i>|</i>Escrow</p>
         </div>
       </div>
       <div class="page-2 page-common">
-        <img class="logo" src="~/assets/images/mobile/index/logo.png"/>
+        <!-- <img class="logo" src="~/assets/images/mobile/index/logo.png"/> -->
         <div class="main">
           <div class="page-number">
             <hr>
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="page-3 page-common">
-        <img class="logo" src="../assets/images/mobile/index/logo.png"/>
+        <!-- <img class="logo" src="../assets/images/mobile/index/logo.png"/> -->
         <div class="main">
           <div class="page-number">
             <hr>
@@ -66,11 +66,11 @@
           <p class="title">算力网&nbsp;suanLi.com&nbsp;&nbsp;&nbsp;每秒都为你产生利润</p>
         </div>
         <div class="footer">
-          <a class="button" @click="jump(3)">体验数字货币带来的乐趣</a>
+          <a class="button" @click="goToPage('/minerShop/miner/2',2)">体验数字货币带来的乐趣</a>
           <p class="introduce">Clould mining<i>|</i>Miner<i>|</i>Escrow</p>
         </div>
       </div>
-      <div class="page-4 page-common">
+      <!-- <div class="page-4 page-common">
         <header>
           <img class="logo" src="../assets/images/mobile/index/logo.png" />
           <div class="login" v-if="token === 0">
@@ -78,10 +78,23 @@
             <span>|</span>
             <a @click="goToPage('/auth/login', 3)">登录</a>
           </div>
-          <div class="login" v-else>
-            <a @click="goToPage('/mobile/personcenter', 3)">个人中心</a>
+          <div class="login" v-else> -->
+            <!-- <a class="iconfont" @click="goToPage('/mobile/personalCenter', 3)">&#xe63f;</a> -->
+          <!--  <span class="iconfont" @click="showNavlink('person')">&#xe63f;</span>
           </div>
         </header>
+        <div class="mobile_header_nav" v-if="showNav !== ''" @click="showNavlink">
+          <div class="white_bg">
+            <nuxt-link :to="i.path" v-for="i,k in navPerson" :key="k" class="item">
+              <span>{{i.title}}</span>
+              <em></em>
+            </nuxt-link>
+            <div class="item" v-if="token !== 0">
+              <span>{{mobile}}</span>
+              <span @click="logout()">退出</span>
+            </div>
+          </div>
+        </div>
         <div class="introduce">
           <p class="title">我们为您提供丰富可靠的算力服务。</p>
           <p class="content">整合全球算力产业链资源</p>
@@ -96,7 +109,7 @@
             <i class="arrow"></i>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -119,6 +132,7 @@ export default {
         afterChange: (prev, next) => {
         }
       },
+      showNav: '',
       page2Text: [
         {title: '云算力', content: '我们一站式帮你购买算力服务器，对接合规BDC托管服务，配置专人全天维护，快速部署，算力稳定收益透明，让你真正实现无忧收益。'},
         {title: '算力服务器销售', content: '聚合全球顶级厂商新货、二手算力服务器及配件资源，精心筛选质量保证，线上交易全流程存证，安全有保障。'},
@@ -129,6 +143,15 @@ export default {
         {title: '云算力', sub: 'CLOUD MINING', link: '/minerShop/miner/2'},
         {title: '算力服务器', sub: 'MINER', link: '/minerShop/miner/1'},
         {title: 'BDC托管', sub: 'BDC ESCROW', link: '/bdc'}
+      ],
+      navPerson: [
+        {title: '我的订单', path: '/mobile/order/0', icon: 'icon-31shoucangxuanzhong'},
+        {title: '消息中心', path: '/mobile/message', icon: 'icon-31wangwangxuanzhong'},
+        {title: '账户流水', path: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
+        {title: '个人认证', path: '/mobile/moneyFlow', icon: 'icon-wodezichan'},
+        {title: '银行卡管理', path: '/mobile/bankCard', icon: 'icon-wodezichan'},
+        {title: '收益地址管理', path: '/mobile/assetsAddress', icon: 'icon-pinpaizhuanxiang'},
+        {title: '账户设置', path: '/mobile/administration', icon: 'icon-pinpaizhuanxiang'}
       ]
     }
   },
@@ -165,11 +188,24 @@ export default {
     goToPage (url, page) {
       sessionStorage.setItem('mobileIndex', page);
       this.$router.push({path: url})
+    },
+    showNavlink(type) {
+      if (typeof type !== 'string') {
+        this.showNav = ''
+        return
+      }
+      this.showNav = this.showNav === type ? '' : type
+      this.navList = type === 'person'? [...this.navPerson] : []
+    },
+    logout () {
+      this.$router.push({name: 'index'})
+      this.$store.commit('LOGOUT')
     }
   },
   computed: {
     ...mapState({
-      token: state => state.info.token
+      token: state => state.info.token,
+      mobile: state => state.info.mobile
     })
   }
 }
@@ -177,11 +213,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='scss' scoped>
+@import '~assets/css/style.scss';
 
 .home {
   width: 100%;
   max-height: 100vh;
   background: #243461;
+  padding-top: 0;
 
   .page-common {
     width: 100% !important;
@@ -471,6 +509,38 @@ export default {
         &:nth-child(3) {
           background: url('~/assets/images/mobile/index/bdc.png') no-repeat;
           background-size: cover;
+        }
+      }
+    }
+  }
+  .mobile_header_nav{
+    position: absolute;
+    top: 1.08rem;
+    width: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    height: 100%;
+    .white_bg{
+      width: 100%;
+      height: auto;
+      .item{
+        width: 100%;
+        height: 0.88rem;
+        background: #fff;
+        @include flex (space-between, center);
+        padding: 0 0.3rem;
+        border-bottom: 1px solid #efefef;
+        text-align: center;
+        line-height: 0.88rem;
+        font-size: 0.32rem;
+        letter-spacing: 0.05rem;
+
+        em{
+          @include block(5);
+          @include arrow(right, #c7c7c9);
+          width: 0.1rem;
+          height:0.1rem;
+          border-width: 1px;
         }
       }
     }

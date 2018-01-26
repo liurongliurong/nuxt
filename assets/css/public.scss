@@ -6,7 +6,7 @@ body {
   font-family: "Microsoft Yahei";
   color: $text;
 }
-body,div,aside,section,article,h1,h2,h3,h4,h5,h6,p,span,input,textarea,button,ul,li,a,form,label{
+body,div,aside,section,article,h1,h2,h3,h4,h5,h6,p,span,input,textarea,button,ul,li,a,form,label,em{
   margin:0;
   padding:0;
   box-sizing: border-box;
@@ -22,7 +22,7 @@ a {
   color: $light_text;
   font-style:normal;
 }
-i{
+i,em{
   font-style: normal
 }
 input,textarea,button{
@@ -68,8 +68,7 @@ table{
 }
 @media screen and (max-width: $mobile) {
   .body{
-    min-height: 100vh;
-    padding-bottom:2rem;
+    min-height: calc(100vh - 0.88rem);
   }
 }
 input::-webkit-input-placeholder {
@@ -148,6 +147,15 @@ input::-webkit-input-placeholder {
           @include close
           top:15px;
         }
+        .mobile_close{
+          @include position(20,18)
+          @include block(12)
+          @include arrow(left, #bababa, 1)
+          display: none
+        }
+        @media screen and (max-width: $mobile) {
+          display: none
+        }
       }
       .popup_body{
         width: 100%;
@@ -200,17 +208,7 @@ input::-webkit-input-placeholder {
     }
     @media screen and (max-width: $mobile) {
       .popup_con{
-        &:not(.middle){
-          width:100vw;
-          top: auto;
-          bottom:0;
-          left:0;
-          transform: translate(0, 0);
-          max-height:80vh;
-        }
-        &.middle {
-          width:90%;
-        }
+        width:100vw;
         .popup_title{
           font-size: 0.36rem;
           background: #fff;
@@ -228,13 +226,41 @@ input::-webkit-input-placeholder {
           }
         }
         .form{
-          padding:0.3rem;
+          padding:0;
           overflow: auto;
           max-height: 70vh;
           .checkbox input{
             margin-right: 10px;
           }
+          p {
+            padding: 0.2rem 0.3rem 0;
+          }
         }
+      }
+      &.all,&.bottom {
+        .popup_con {
+          top: auto;
+          bottom:0;
+          left:0;
+          transform: translate(0, 0);
+        }
+      }
+      &.all {
+        background: transparent;
+        .popup_con {
+          height: calc(100vh - 1.1rem);
+        }
+      }
+      &.bottom .popup_con .popup_title {
+        &,.mobile_close {
+          display: block;
+        }
+        .icon_close {
+          display: none;
+        }
+      }
+      &.middle .popup_con {
+        width:80%;
       }
       &.bank_card_popup .popup_con .form .input{
         input,.sel,.select{

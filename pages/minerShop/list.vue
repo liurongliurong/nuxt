@@ -137,7 +137,7 @@
       @include bg(1920,466px,#070a0f)
       background:none;
       .bg{
-        background:url(../../assets/images/miner_shop/miner_list.jpg) no-repeat;
+        background:url(~assets/images/miner_shop/miner_list.jpg) no-repeat;
         height: 498px;
         width:100%;
         background-size: 100% 100% !important;
@@ -275,7 +275,7 @@
     }
     .miner_loan{
       @include mobile_hide
-      background:#363A4E url('../../assets/images/miner_shop/loan.jpg');
+      background:#363A4E url('~assets/images/miner_shop/loan.jpg');
       background-size:100% 100%;
       width:100%;
       height:350px;
@@ -307,14 +307,38 @@
         }
       }
     }
-    .millsList{
-      padding-top: 30px;
-      @include mobile_hide
-      margin-top:0 !important;
-    }
     .product_list{
       .box h2{
         @include mobile_hide
+      }
+    }
+    .miner_list,.product_list {
+      h2 {
+        @include flex(space-between)
+        @include main
+        margin: 15px auto;
+        position: relative;
+        span:nth-child(1){
+          font-size: 24px;
+          font-weight: bold;
+        }
+        span:nth-child(2){
+          width:452px;
+          height:27px;
+          margin-left:20px;
+          font-size: 14px;
+          background: linear-gradient(to right, #b28850, #cfa972);
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b28850', endColorstr='#cfa972',GradientType=1 );
+          color:$white;
+          padding:3px 10px
+        }
+        a{
+          font-size: 16px;
+          color:#999;
+          &:hover{
+            color:$blue
+          }
+        }
       }
     }
   }

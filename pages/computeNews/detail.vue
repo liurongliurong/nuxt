@@ -5,8 +5,8 @@
 </template>
 
 <script>
-  import pageFrame from '@/components/computeNews/pageFrame'
-  import WebInfoDetail from '@/components/info/detail'
+  import pageFrame from '@/components/common/PageFrame'
+  import WebInfoDetail from '@/components/common/Detail'
   export default {
     components: {
       pageFrame, WebInfoDetail

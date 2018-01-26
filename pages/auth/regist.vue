@@ -6,11 +6,11 @@
       <label for="accept">
         <input type="checkbox" id="accept" name="accept" checked>
         <span>阅读并接受<a class="accept_link" href="javascript:;" @click="show=true">《用户使用协议》</a></span>
-        <span class="select_accept">请选择</span>
+        <!-- <span class="select_accept">请选择</span> -->
       </label>
       <button name="btn">注册</button>
     </form>
-    <MyMask title="“算力网”用户使用协议" contract="selfEdit" v-if="show" @closeMask="closeMask">
+    <MyMask title="“算力网”用户使用协议" position="bottom" contract="selfEdit" v-if="show" @closeMask="closeMask">
       <user-agreement class="popup_body" slot="selfEdit"></user-agreement>
     </MyMask>
     <div class="popup regist_popup" v-if="registed">
@@ -36,6 +36,7 @@
   import { mapState } from 'vuex'
   import util from '@/util/index'
   import api from '@/util/function'
+  import { auth } from '@/util/form'
   import md5 from 'js-md5'
   import MyMask from '@/components/common/Mask'
   import FormField from '@/components/common/FormField'
@@ -47,10 +48,15 @@
     },
     data () {
       return {
-        form: [{name: 'mobile', type: 'text', title: '手机号码', error: '该用户已存在', placeholder: '请输入手机号', pattern: 'tel', changeEvent: true}, {name: 'imgCode', type: 'text', title: '图形验证', placeholder: '请输入图形验证码', addon: 1, pattern: 'imgCode'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}, {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password', focusEvent: true}, {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}],
-        auth: [{name: 'truename', type: 'text', title: '真实姓名', placeholder: '请输入姓名', isChange: true}, {name: 'card_type', type: 'text', title: '证件类型', edit: 'card_type', isChange: true}, {name: 'idcard', type: 'text', title: '证件号码', placeholder: '请输入您的证件号码', pattern: 'idCard'}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
+        form: [
+          {name: 'mobile', type: 'text', title: '手机号码', error: '该用户已存在', placeholder: '请输入手机号', pattern: 'tel', changeEvent: true},
+          {name: 'imgCode', type: 'text', title: '图形验证', placeholder: '请输入图形验证码', addon: 1, pattern: 'imgCode'},
+          {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6},
+          {name: 'password', type: 'password', title: '设置密码', placeholder: '请输入密码', pattern: 'password', focusEvent: true},
+          {name: 'password1', type: 'password', title: '确认密码', placeholder: '请再次输入密码', pattern: 'password', error: '两次密码不一致'}
+        ],
+        auth: auth,
         show: false,
-        card_type: '中国大陆身份证',
         registed: false,
         mobileStatus: true
       }
@@ -199,7 +205,7 @@
   .rigist_block{
     width:420px;
     margin:0 auto;
-    padding-top:35px;
+    padding:35px 0;
     form.regist{
       @include form;
       h2{
@@ -213,13 +219,69 @@
       .accept_link{
         color:$blue
       }
-      input{
-        margin-right: 10px;
-        & ~ span.select_accept{
-          display: none;
+      .input {
+        input{
+          margin-right: 10px;
+          & ~ span.select_accept{
+            display: none;
+          }
+          &[data-status='invalid'] ~ span.select_accept{
+            display: inline;
+          }
         }
-        &[data-status='invalid'] ~ span.select_accept{
-          display: inline;
+        .password_level{
+          @include position(9,0,5,auto)
+          left:104%;
+          @include flex
+          display: none;
+          .item{
+            width:80px;
+            height:15px;
+            background: $border;
+            & + .item{
+              margin-left:2px;
+            }
+          }
+          &:before,&:after{
+            font-size: 12px;
+          }
+          &:before{
+            content:'密码强度';
+            width:52px;
+          }
+          &:after{
+            margin-left:3px;
+          }
+          @media screen and (max-width: $mobile) {
+            display: none !important;
+          }
+        }
+        input.level ~ .password_level{
+          display: flex
+        }
+        input.level1 ~ .password_level{
+          .item:first-child{
+            background: #FF5F2D;
+          }
+          &:after{
+            content:'低'
+          }
+        }
+        input.level2 ~ .password_level{
+          .item:first-child,.item:nth-child(2){
+            background: #FFA31E;
+          }
+          &:after{
+            content:'中'
+          }
+        }
+        input.level3 ~ .password_level{
+          .item{
+            background: #8DC420;
+          }
+          &:after{
+            content:'高'
+          }
         }
       }
     }
@@ -230,7 +292,6 @@
     }
     .regist_popup .popup_con{
       width:600px;
-      margin-left:-300px;
       .popup_title{
         background: #3A69D3 url(~assets/images/popup_bg.png) bottom right no-repeat;
         color:#fff;

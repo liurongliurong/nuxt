@@ -57,7 +57,7 @@
         })
       },
       back () {
-        window.location.reload()
+        this.show = true
       }
     },
     mounted () {
@@ -99,9 +99,6 @@
       text-indent:0rem !important;
       img{
         width: 100%;
-        height: auto;
-        position: relative;
-        left: -1.2rem;
       }
       span{
         text-indent:0rem !important;
@@ -132,7 +129,6 @@
               @include block(8)
               @include arrow(down)
               margin-top:0.34rem;
-              transform: rotate(135deg);
               float:right;
             }
           }
@@ -142,7 +138,7 @@
           &.open{
             color:#327fff;
             em{
-              transform: rotate(-45deg);
+              transform: rotate(135deg);
             }
           }
         }

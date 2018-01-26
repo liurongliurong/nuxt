@@ -1,18 +1,31 @@
 <template>
   <pageFrame isComponent="true">
-    <WebInfoList class="currency_right" style="min-height:900px;"></WebInfoList>
+    <section class="right_content suanli_news">
+      <h1>算力资讯<span class="icon iconfont icon-jiantou"></span></h1>
+      <div :class="['item', 'img_text', {active: true}]" @click="goDetail(list.id)" v-for="list in lists" :key="lists.id">
+        <img v-if="list.image" :src="list.image"/>
+        <img v-else :src="img1"/>
+        <div class="right">
+          <p class="title">{{list.title}}</p>
+          <p class="time" v-if="list.source"><span>{{list.source}}</span>|<span>{{list.dateline}}</span></p>
+          <p class="time" v-else><span>《算力网》</span>|<span>{{list.dateline}}</span></p>
+          <p class="notice_content" v-if="list.resume">{{list.resume}}......</p>
+          <p class="notice_content" v-else>暂无简介</p>
+        </div>
+      </div>
+      <Pager :len="len" :now="now" @setPage="setPage"></Pager>
+    </section>
   </pageFrame>
 </template>
 
 <script>
   import util from '@/util/index'
   import api from '@/util/function'
-  import { mapState } from 'vuex'
-  import pageFrame from '@/components/computeNews/pageFrame'
-  import WebInfoList from '@/components/info/list'
+  import pageFrame from '@/components/common/PageFrame'
+  import Pager from '@/components/common/Pager'
   export default {
     components: {
-      pageFrame, WebInfoList
+      pageFrame, Pager
     },
     head () {
       return {
@@ -23,118 +36,86 @@
         ]
       }
     },
-    computed: {
-      ...mapState({
-        isMobile: state => state.isMobile
-      })
+    data () {
+      return {
+        lists: [],
+        img1: require('@/assets/images/zx.jpg'),
+        len: 0,
+        now: 1,
+        allid: []
+      }
+    },
+    methods: {
+      getList () {
+        var n = this.$route.params.type
+        var url = 'suanliMessage'
+        var self = this
+        util.post(url, {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
+          api.checkAjax(self, res, () => {
+            self.lists = res.list
+            self.allid = res.id_list
+            localStorage.setItem('all_id', JSON.stringify(self.allid))
+            if (self.now > 1) return false
+            self.len = Math.ceil(res.total / 7)
+          })
+        })
+      },
+      goDetail (id) {
+        localStorage.setItem('icon_id', JSON.stringify([id]))
+        this.$router.push({path: '/computeNews/detail/'})
+      },
+      setPage (n) {
+        this.now = n
+        if (!this.isMobile) {
+          this.getList()
+        }
+      }
+    },
+    mounted () {
+      this.getList()
     }
   }
 </script>
 
 <style lang="scss">
-  .nodata{
-    width: 234px;
-    height: 275px;
-    position: absolute;
-    left: 50%;
-    margin-top: 100px;
-    margin-left: -67px;
-    p{
-      text-align: center;
-    }
-  }
-  .nodata_img{
-    display: inline-block;
-    width: 234px;
-    height: 215px;
-    margin:0 auto;
-    margin-top: 200px;
-    background: url('~assets/images/css_sprites.png') -335px -10px;
-  }
-  .museum_right{
-    float: left;
-    width: 1110px;
-    height: 1424px;
-    background: white;
-    padding:32px 62px 0 62px;
-    box-sizing: border-box;
-    h1{
-      color: #121212;
-      font-size: 24px;
-      font-weight: 800;
-      span{
-        font-size: 20px;
-        margin-left: 13px;
-      }
-    }
-    .museum_lists{
-      width: 218px;
-      height: 285px;
-      background: white;
-      box-shadow: 0 0 10px #c2c2c2;
-      margin: 20px 38px 20px 0;
-      border-radius: 8px;
-      padding: 0 15px;
-      display: inline-block;
-      .label {
-        display: inline-block;
-        width: 70px;
-        line-height: 26px;
-        font-size: 12px;
-        text-align: center;
-        color: #fff;
-        background: #01beb5;
-        position: relative;
-        left: -15px;
-        top: 13px;
-      }
+  .suanli_news{
+    .img_text{
+      width: 100%;
+      padding-bottom: 27px;
+      display: block;
+      border-bottom:1px dashed #e5e5e5;
+      overflow: hidden;
+      margin-bottom: 28px;
+      cursor: pointer;
       img{
-        width: 188px;
-        height: 156px;
+        width: 200px;
+        height: 120px;
         float: left;
-        object-fit: cover;
-        margin: 0;
+        margin-right: 30px;
       }
-      .museum_content{
-        width: 100%;
-        float: left;
-        .resume {
-          color: #59493f;
-          line-height: 53px;
-          font-size: 16px;
-          cursor: pointer;
-          
-          &:hover {
-            color: #327fff;
+      .title{
+        color: black;
+        font-size: 15px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+      .time{
+        font-size: 12px;
+        span {
+          &:first-child {
+            margin-right:10px;
           }
-        }
-        .time {
-          line-height: 22px;
-          color: #666;
-          height: 42px;
-          font-size: 12px;
-          overflow: hidden;
-          padding-right: 45px;
-        }
-        button{
-          width: 172px;
-          height: 38px;
-          border:1px solid #bfbfbf;
-          background:white;
-          color: #a9a9a9;
-          margin-top: 27px;
-          float: right;
-          margin-right: 37px;
-          &:hover{
-            background:#fe5039;
-            color: white;
-            border:0;
+          &:nth-child(2) {
+            margin-left:10px;
           }
         }
       }
-
-      &:nth-of-type(4n) {
-        margin-right: 0;
+      .notice_content{
+        margin-top: 10px;
+        font-size: 12px;
+        line-height: 20px;
+        height: 57px;
+        overflow: hidden;
       }
     }
   }

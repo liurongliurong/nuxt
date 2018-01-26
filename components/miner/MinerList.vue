@@ -7,7 +7,7 @@
           <MinerItem v-for="n,k in minerData" :n="n" :key="k"></MinerItem>
         </template>
         <template v-if="isMobile===1">
-          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="len" class="item_box">
+          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="item_box">
             <MobileMinerItem v-for="n,k in minerData" :n="n" :key="k"></MobileMinerItem>
           </div>
           <p v-if="loading"  class="loadmore">加载中······</p>
@@ -58,7 +58,7 @@
     },
     methods: {
       loadMore () {
-        if (this.now <= this.len ) {
+        if (this.now < this.len ) {
           this.loading = true
           this.$emit('getMobileData', 1)
           setTimeout(() => {
@@ -91,12 +91,9 @@
   @import '../../assets/css/style.scss';
   .miner_list{
     background: #f6f7f9;
-    padding-top: 20px;
+    padding-top: 50px;
     .miner_list_box{
       @include main
-      h2{
-        @include data_title
-      }
       .loadmore{
         width: 100%;
         height: 0.89rem;

@@ -1,9 +1,6 @@
 <template>
   <div class="miner_item item" @click="goDetail(n.id, '1')">
-    <span class="status" v-if="n.status===1">热销中</span>
-    <span class="gray" v-if="n.status===3">已下架</span>
-    <span class="gray" v-if="n.status===2">已售罄</span>
-    <span class="gray" v-if="n.status===4" style="background: #32cf99;">预热</span>
+    <span :class="['status', {red: n.status===1}, {green: n.status===4}, {gray: n.status===2||n.status===3}]">{{status[n.status]}}</span>
     <div class="img1">
       <img :src="n.minerPicture"/>
     </div>
@@ -42,7 +39,12 @@
     },
     data () {
       return {
-        items: {'one_amount_value': {title: '单价', unit: '元'}, 'hash': {title: '算力', unit: 'T'}, 'buyed_amount': {title: '剩余数量', unit: '台'}}
+        items: {
+          'one_amount_value': {title: '单价', unit: '元'},
+          'hash': {title: '算力', unit: 'T'},
+          'buyed_amount': {title: '剩余数量', unit: '台'}
+        },
+        status: {1: '热销', 2: '已售罄', 3: '产品撤销', 4: '预热'}
       }
     },
     methods: {
@@ -86,25 +88,20 @@
       display: block;
       text-align: center;
       line-height: 25px;
-      background: #ff6458;
       color:white;
       font-size: 12px;
       position: absolute;
       left: 0;
       left:0;
-    }
-    .gray{
-      background: #bfbfbf;
-      width: 70px;
-      height: 25px;
-      display: block;
-      text-align: center;
-      line-height: 25px;
-      color:white;
-      font-size: 12px;
-      position: absolute;
-      left: 0;
-      top:0;
+      &.red {
+        background: #ff6458;
+      }
+      &.gray {
+        background: #bfbfbf;
+      }
+      &.green {
+        background: #32cf99;
+      }
     }
     h6{
       font-size: 16px;

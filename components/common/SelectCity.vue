@@ -17,8 +17,8 @@
   export default {
     name: 'selectCity',
     props: {
-      payNo: {
-        type: Number
+      val: {
+        type: Object
       }
     },
     data () {
@@ -59,9 +59,27 @@
       }
     },
     mounted () {
+      if (this.val) {
+        this.p = this.val.province_name
+        this.c = this.val.city_name
+        this.n = this.val.area_name
+      }
       this.province = city
       this.setCity(this.p)
       this.setCounty(this.c)
     }
   }
 </script>
+
+<style type="text/css" lang="scss">
+  @import '~assets/css/style.scss';
+  .select{
+    @include flex(space-between)
+    select{
+      width:33%;
+      height:32px;
+      line-height: 32px;
+      border:none;
+    }
+  }
+</style>

@@ -59,6 +59,12 @@
           height:100%
         }
       }
+      .box .form h2{
+        font-size: 24px;
+        text-align:center;
+        color:$blue;
+        margin: 35px 0;
+      }
       @media screen and (max-width: $mobile) {
         min-height:100vh;
       }
@@ -119,9 +125,19 @@
         padding:15px;
         min-height:auto;
         background: transparent;
-        .form button{
-          line-height: 2;
-          margin-top:30px;
+        .form {
+          .input input {
+            padding: .3rem 0;
+          }
+          label {
+            padding: 0;
+          }
+          button {
+            width: 100%;
+            line-height: 2;
+            margin-top:30px;
+            margin: 30px 0 0;
+          }
         }
       }
       &.login_block .box{

@@ -1,15 +1,13 @@
 <template>
-  <section class="order">
+  <section class="repayment">
     <div class="order_title">
-      <div class="text">
-        <span class="text_title">还款管理</span>
-      </div>
+      <h2>还款管理</h2>
       <nav>
         <nuxt-link :to="'/user/repayment/'+ k" v-for="n,k in nav[0]" :key="k">{{n}}</nuxt-link>
       </nav>
     </div>
-    <div class="order_box">
-      <table style="margin-top:0;">
+    <div class="repayment_box">
+      <table>
         <thead>
           <tr>
             <th>算力服务器</th>
@@ -141,107 +139,17 @@
 
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
-  .order{
+  .repayment{
     .order_title{
-      @include gap(25,h)
-      padding-top:15px;
-      border-bottom: 1px solid $border;
-      .text{
-        @include select_list
-        margin-bottom:30px;
-      }
-      nav{
-        a{
-          @include gap(10,h)
-          display: inline-block;
-          padding-bottom:10px;
-          border-bottom: 3px solid transparent;
-          color:#6b7d90;
-          & + a{
-            margin-left:30px
-          }
-          &:hover,&.nuxt-link-active{
-            border-color:#7e92a8
-          }
-        }
+      padding:0 25px;
+      @include user_tab
+      h2 {
+        padding:0;
       }
     }
-    .order_box{
+    .repayment_box{
       padding:20px 25px;
-      table{
-        width: 100%;
-        text-align: center;
-        thead{
-          tr{
-            border-bottom:1px solid $border;
-            background: #f7f8fa;
-            color: $light_text;
-            border-top:1px solid $border;
-            border-bottom:0;
-            th{
-              font-size: 12px;
-              font-weight: normal;
-              line-height: 50px;
-            }
-          }
-        }
-        tbody{
-          tr{
-            border-bottom:1px solid $border;
-            td{
-              line-height:54px;
-              i.icon_currency{
-                vertical-align: sub;
-                margin-left:5px
-              }
-              .nuxt-link-active{
-                background: #327fff;
-                color:white;
-              }
-              &:last-child{
-                width:186px;
-                button,a{
-                  line-height: 34px;
-                  @include gap(15,h)
-                }
-                button{
-                  @include button($blue)
-                  margin-right:5px;
-                  &.sold{
-                    margin-bottom:8px
-                  }
-                  &:disabled{
-                    background: #759fe4;
-                    border-color:#759fe4;
-                    cursor: no-drop;
-                  }
-                }
-                a{
-                  display: block;
-                  margin: 0 auto;
-                  width: 88px;
-                  height: 36px !important;
-                  padding:0;
-                  @include button($blue,border)
-                  border-radius: 5px;
-                  .btn:not(:disabled){
-                    @include button($orange)
-                    cursor: pointer;
-                  }
-                }
-              }
-            }
-            &:hover{
-              background: #f7f8fa;
-            }
-            &:hover .blue{
-              background: #327fff;
-              color:white;
-            }
-          }
-        }
-      }
-      @include nodata
+      @include button_table
     }
   }
 </style>

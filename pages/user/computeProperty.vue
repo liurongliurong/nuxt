@@ -20,7 +20,7 @@
       </div>
       <div class="btn">
         <button @click="openMask('recharge')">充值</button>
-        <button @click="openMask('Withdrawals', '资金提现')">提现</button>
+        <button @click="openMask('withdrawals', '资金提现')">提现</button>
       </div>
     </div>
     <div class="compute_title">
@@ -50,7 +50,7 @@
       </div>
       <div class="btn">
         <router-link to="/user/incomeChart">收益图表</router-link>
-        <button @click="openMask('GetIncome', '提取收益')">提取收益</button>
+        <button @click="openMask('getIncome', '提取收益')">提取收益</button>
       </div>
     </div>
     <div class="compute_box compute_account">
@@ -66,7 +66,7 @@
             <template v-if="k==='today_hash'">
               <span class="currency">{{(computeData.coin_price * computeData.balance_account)|format(1)}}</span>
               <span class="coin_price">币价:{{computeData.coin_price}}CNY</span>
-              <span class=""> {{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}</span>
+              <span class=""> CNY</span>
             </template>
             <template v-else-if="k==='total_hash'">
               <span class="currency">{{computeData.output&&computeData.output.split(" ")[0]}}</span>
@@ -74,7 +74,7 @@
             </template>
             <template v-else>
               <span class="currency">{{computeData[k]}}</span>
-              <span class=""> CNY</span>
+              <span class=""> {{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}</span>
             </template>
           </div>
           <div class="line"></div>
@@ -107,8 +107,8 @@
     </div>
     <MyMask :form="form[edit]" :title="editText" v-if="edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
       <template slot="fee">
-        <p v-if="edit==='Withdrawals'">手续费：{{total_price * fee|format}}元<span class="fee">({{fee*100+'%'}})</span></p>
-        <p v-if="edit==='GetIncome'">手续费：0.0002btc</p>
+        <p v-if="edit==='withdrawals'">手续费：{{total_price * fee|format}}元<span class="fee">({{fee*100+'%'}})</span></p>
+        <p v-if="edit==='getIncome'">手续费：0.0002btc</p>
       </template>
       <opr-select slot="select_opr" :no="maskNo" @closeMask="closeMask"></opr-select>
     </MyMask>
@@ -119,6 +119,7 @@
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
+  import { getIncome, withdrawals } from '@/util/form'
   import MyMask from '@/components/common/Mask'
   import OprSelect from '@/components/common/OprSelect'
   export default {
@@ -128,27 +129,20 @@
     data () {
       return {
         nowEdit: 0,
-        priceall: '',
         moneyNav: {account: '总资金', freeze_account: '冻结资金', balance_account: '账户余额'},
-        moneyData: {freeze_account: 0, balance_account: 0},
+        moneyData: {account: 0, freeze_account: 0, balance_account: 0},
         computeNav: {today_hash: '今日收益', balance_account: '账户余额', total_hash: '累积已获得收益'},
-        computeNav1: {freeze_coin_withdraw_account: '冻结资产', today_hash: '现货资产', total_hash: '单位挖矿产出'},
+        computeNav1: {freeze_coin_withdraw_account: '冻结资产', today_hash: '现货资产', total_hash: '单位收益产出'},
         computeData: {today_hash: 0, balance_account: 0, total_hash: 0},
         computeProperty: {total_miner: ['已购入云算力', '台'], total_hash: ['算力总和', 'T'], selled_miner: ['已出售云算力', '台'], selling_miner: ['出售中云算力', '台']},
-        // , selled_hash: ['已出租云算力', '台'], selling_hash: ['出租中云算力', '台']
         dataProperty: {total_miner: 0, total_hash: 0, buy_transfer_hash: 0, selled_miner: 0, selling_miner: 0, selled_hash: 0, selling_hash: 0},
         computeFund: {total_miner: ['云算力', '台'], total_hash: ['云算力总和', 'T'], selled_miner: ['已出租云算力', 'T'], selling_miner: ['出租中云算力', 'T']},
         dataFund: {total_miner: 0, total_hash: 0, selled_miner: 0, selling_miner: 0},
         edit: '',
-        form: {
-          Withdrawals: [{name: 'amount', type: 'text', title: '提现金额', placeholder: '请输入提现金额', changeEvent: true, pattern: 'money', len: 7, tipsInfo: '余额', tipsUnit: '元', value2: 0}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}],
-          GetIncome: [{name: 'product_hash_type', type: 'text', title: '算力类型', edit: 'hashType', value: ''}, {name: 'amount', type: 'text', title: '提取额度', placeholder: '请输入提取额度', changeEvent: true, pattern: 'coin', tipsInfo: '余额', value2: 0, tipsUnit: ''}, {name: 'mobile', type: 'text', title: '手机号码', edit: 'mobile'}, {name: 'code', type: 'text', title: '短信验证', placeholder: '请输入短信验证码', addon: 2, pattern: 'telCode', len: 6}]
-        },
+        form: {getIncome, withdrawals},
         editText: '',
         fee: 0,
         total_price: 0,
-        qwsl: '',
-        output: '',
         maskNo: 0
       }
     },
@@ -166,7 +160,7 @@
           this.$router.push({name: 'user-recharge'})
           return false
         }
-        if (str === 'GetIncome') {
+        if (str === 'getIncome') {
           if (!this.address.length) {
             this.goAuth ('立即绑定', 2)
             return false
@@ -179,7 +173,7 @@
           requestUrl = 'showWithdrawCoin'
           data = {token: this.token, product_hash_type: nowHash && nowHash.id}
         }
-        if (str === 'Withdrawals') {
+        if (str === 'withdrawals') {
           if (!(this.bank_card && this.bank_card.status === 1)) {
             this.goAuth ('立即绑定', 1)
             return false
@@ -194,12 +188,12 @@
         var self = this
         util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
           api.checkAjax(self, res, () => {
-            if (str === 'Withdrawals') {
+            if (str === 'withdrawals') {
               self.fee = res.withdraw_fee
-              self.form.Withdrawals[0].value2 = parseInt(res.balance_account)
-            } else if (str === 'GetIncome') {
+              self.form.withdrawals[0].value2 = parseInt(res.balance_account)
+            } else if (str === 'getIncome') {
               self.fee = res.withdraw_coin_fee
-              self.form.GetIncome[1].value2 = res.coin_account
+              self.form.getIncome[1].value2 = res.coin_account
             }
             window.scroll(0, 0)
             document.body.style.overflow = 'hidden'
@@ -219,8 +213,8 @@
       getList () {
         var self = this
         var nowHash = this.hashType[this.nowEdit]
-        this.form.GetIncome[0].value = nowHash.name
-        this.form.GetIncome[1].tipsUnit = nowHash.name.toLowerCase()
+        this.form.getIncome[0].value = nowHash.name
+        this.form.getIncome[1].tipsUnit = nowHash.name.toLowerCase()
         var sendData = {token: this.token, product_hash_type: (nowHash && nowHash.id) || '1'}
         util.post('myHashAccount', {sign: api.serialize(sendData)}).then(function (res) {
           api.checkAjax(self, res, () => {
@@ -245,11 +239,11 @@
         var sendData = {token: this.token}
         var tipsStr = ''
         switch (this.edit) {
-          case 'Withdrawals':
+          case 'withdrawals':
             url = 'withdraw'
             tipsStr = '提现成功'
             break
-          case 'GetIncome':
+          case 'getIncome':
             url = 'withdrawCoin'
             tipsStr = '提币成功'
             break
@@ -266,7 +260,7 @@
       },
       onChange (obj) {
         var value = obj.e.target.value
-        var amount = this.edit === 'GetIncome' ? this.form.GetIncome[1].value2 : this.form.Withdrawals[0].value2
+        var amount = this.edit === 'getIncome' ? this.form.getIncome[1].value2 : this.form.withdrawals[0].value2
         if (parseFloat(value) > parseFloat(amount)) {
           obj.e.target.value = amount
         }
@@ -321,11 +315,8 @@
   @import '~assets/css/style.scss';
   .compute_property{
     padding:0 15px;
-    h2{
-      padding:0 15px !important;
-    }
     .compute_box{
-      @include gap(25,v)
+      margin: 25px 0;
       @include flex(space-between)
       margin-bottom:10px;
       .data{
@@ -377,7 +368,7 @@
       }
       .btn{
         @include detail_btn
-        @include gap(25,h)
+        padding: 0 25px;
         a{
           @include button($orange)
         }

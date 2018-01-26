@@ -152,7 +152,6 @@
         .params_table{
           margin:0 20px;
           margin-bottom:20px;
-          // box-shadow: #9a9a9a -4px 0 5px -3px;
           table{
             width:70%;
             border: 1px solid $light_black;

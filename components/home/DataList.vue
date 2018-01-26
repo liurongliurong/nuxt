@@ -101,21 +101,20 @@
         @include row(4, 1%)
       }
       table{
-        @include table;
+        @include table(#ecf3ff)
         @include main;
         background: #fff;
-        margin:0 auto;
-        th{
-          font-size: 18px;
-          line-height: 65px;
+        thead {
           border-bottom: 1px solid $border;
-          font-weight: bold;
+          th {
+            font-size: 18px;
+            line-height: 65px;
+          }
         }
         td{
           font-size: 16px;
           color:$light_text;
           line-height: 75px;
-          border-bottom: 1px solid $border;
           .iconfont{
             color:$orange;
             font-size: 24px
@@ -124,9 +123,6 @@
         tbody{
           tr{
             cursor: pointer;
-            &:hover{
-              background: #ecf3ff;
-            }
             td:nth-child(3),a{
               color:$orange
             }

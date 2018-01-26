@@ -1,6 +1,6 @@
 <template>
   <section class="compute_shop">
-    <Sort :sort="sort" :sortNav="type==='1'?sortNav:sortNav2" :status="status" @setStatus="setStatus" @fetchData="fetchData"></Sort>
+    <Sort :sort="sort" :sortText="sortText" :sortNav="type==='1'?sortNav:sortNav2" :status="status" @setStatus="setStatus" @fetchData="fetchData"></Sort>
     <MinerList v-if="type==='1'" :status="status" :minerData="minerData" :len="len" :now="now" @getMobileData="getMobileData"></MinerList>
     <CloudMinerList :status="status" :cloudMinerData="cloudMinerData" :len="len" :now="now" @getMobileData="getMobileData" v-else></CloudMinerList>
     <Pager :len="len" v-if="!isMobile" :now="now" @setPage="setPage"></Pager>
@@ -21,16 +21,45 @@
     },
     data () {
       return {
-        sort: [{title: '价格', option: ['price_asc', 'price_desc']}, {title: '算力', option: ['base_asc','base_desc']}, {title: '剩余总数', option: ['num_asc', 'num_desc']}],
-        sortNav: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 1, title: '热销'}, {code: 4, title: '预热'}, {code: 2, title: '已售罄'}]}],
-        sortNav2: [{name: 'status', title: '商品状态', options: [{code: 0, title: '综合推荐'}, {code: 5, title: '热销'}, {code: 4, title: '预热'}, {code: 10, title: '活动'}, {code: 1000, title: '转售'}, {code: 7, title: '已售罄'}]}],
+        sort: [
+          {title: '价格', option: ['price_asc', 'price_desc']},
+          {title: '算力', option: ['base_asc','base_desc']},
+          {title: '剩余总数', option: ['num_asc', 'num_desc']}
+        ],
+        sortNav: [
+          {
+            name: 'status',
+            title: '商品状态', 
+            options: [
+              {code: 0, title: '综合推荐'},
+              {code: 1, title: '热销'},
+              {code: 4, title: '预热'},
+              {code: 2, title: '已售罄'}
+            ]
+          }
+        ],
+        sortNav2: [
+          {
+            name: 'status',
+            title: '商品状态',
+            options: [
+              {code: 0, title: '综合推荐'},
+              {code: 5, title: '热销'},
+              {code: 4, title: '预热'},
+              {code: 10, title: '活动'},
+              {code: 1000, title: '转售'},
+              {code: 7, title: '已售罄'}
+            ]
+          }
+        ],
         cloudMinerData: [],
         minerData: [],
         len: 0,
         now: 1,
         show: false,
         status: 0,
-        sortText: ''
+        sortText: '',
+        type : ''
       }
     },
     asyncData ({ params }) {
@@ -39,13 +68,12 @@
     methods: {
       fetchData (sort, more) {
         var self = this
-        this.cloudMinerData = []
-        this.minerData = []
         this.type = this.$route.params.type
         var obj = {token: this.token, page: this.now, product_type: '1'}
         var url = ''
-        if (sort !== '' && sort && sort.length) {
-          obj = Object.assign({sort: this.sort[sort[0]].option[sort[1]]}, obj)
+        if (sort) {
+          this.sortText = sort
+          obj = Object.assign({sort}, obj)
         }
         if (this.status) {
           obj = Object.assign({status: this.status}, obj)
@@ -58,21 +86,9 @@
         util.post(url, {sign: api.serialize(obj)}).then(function (res) {
           api.checkAjax(self, res, () => {
             if (self.type === '1') {
-              if (more) {
-                for (let i = 0, len = res.data.length; i < len; i++) {
-                  self.minerData.push(res.data[i])
-                }
-              } else {
-                self.minerData = res.data
-              }
+              self.setData(more, res.data, 'minerData')
             } else {
-              if (more) {
-                for (let i = 0, len = res.data.length; i < len; i++) {
-                  self.cloudMinerData.push(res.data[i])
-                }
-              } else {
-                self.cloudMinerData = res.data
-              }
+              self.setData(more, res.data, 'cloudMinerData')
             }
             self.show = !res.data.length
             if (self.now > 1) return false
@@ -82,23 +98,30 @@
       },
       setStatus (n) {
         this.now = 1
+        this.sortText = ''
         this.status = n
-        if (this.isMobile) {
-          this.fetchData(this.status, 1)
-        } else {
-          this.fetchData(this.status)
-        }
+        this.fetchData()
       },
       getMobileData (isMore) {
         if (isMore) {
           this.now++
-          this.fetchData(0, 1)
+          this.fetchData('', 1)
         }
       },
       setPage (n) {
         this.now = n
+        this.sortText = ''
         if (!this.isMobile) {
           this.fetchData()
+        }
+      },
+      setData (more, data, dataText) {
+        if (more) {
+          for (let i = 0, len = data.length; i < len; i++) {
+            this[dataText].push(data[i])
+          }
+        } else {
+          this[dataText] = data
         }
       }
     },
