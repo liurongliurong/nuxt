@@ -1,5 +1,5 @@
 <template>
-  <article class="bdc" v-if="!isMobile">
+  <article class="bdc" v-if="isMobile===0">
     <div class="bg_box">
       <div class="bg"></div>
     </div>
@@ -21,16 +21,10 @@
       </div>
       <div class="float_right form_box">
         <div class="form_header">提交托管矿机申请</div>
-        <form class="data_form" @submit.prevent="submit" novalidate v-if="!success">
-          <div class="form_line" v-for="f in form">
-            <span class="label">{{f.title}}</span><input :class="{yan: f.addon}" type="text" :name="f.name" :placeholder="f.placeholder" @blur="test" :pattern="f.pattern" :title="f.tips" :maxlength="f.maxlength" v-if="f.type==='text'">
-            <div class="form_btn count_btn" @click="getCode" v-if="f.addon">{{str}}</div>
-            <select :name="f.name" v-if="f.type==='select'">
-              <option v-for="(item, index) in list" :key="item.bdc_name" :value="item.id">{{item.bdc_name}}</option>
-            </select>
-          </div>
+        <form class="form data_form" action="" @submit.prevent="submit" novalidate v-if="!success">
+          <form-field :form="form" :mode="1"></form-field>
           <div class="tips">{{tips}}</div>
-          <button class="btn">提交申请</button>
+          <button name="btn">提交申请</button>
         </form>
         <div class="success" v-else>
           <div>
@@ -57,7 +51,7 @@
       </div>
     </div>
   </article>
-  <div class="mobile_bdc" v-else>
+  <div class="mobile_bdc" v-else-if="isMobile===1">
     <div class="introduce">
       <div class="background">
         <img :src="require('@/assets/images/mobile/bdc.jpg')">
@@ -88,17 +82,15 @@
   import util from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
+  import { bdc } from '@/util/form'
+  import FormField from '@/components/common/FormField'
   export default {
+    components: {
+      FormField
+    },
     data () {
       return {
-        form: [
-          {name: 'dep_name', type: 'text', title: '申请人', placeholder: '请输入您的姓名'},
-          {name: 'dep_tel', type: 'text', title: '手机号码', placeholder: '请输入手机号码', tips: '请输入11位手机号', pattern: '^1[3578][0-9]{9}$'},
-          {name: 'code', type: 'text', title: '手机验证码', placeholder: '请输入验证码', addon: true, tips: '请输入6位数字', pattern: '^[0-9]{6}$'},
-          {name: 'dep_bdc_id', type: 'select', title: '选择BDC'},
-          {name: 'dep_type', type: 'text', title: '服务器型号', placeholder: '请输入服务器类型'},
-          {name: 'dep_number', type: 'text', title: '服务器数量', placeholder: '请输入托管服务器数量', tips: '请输入整数', pattern: '^[0-9]+$', maxlength: 5}
-        ],
+        form: bdc,
         bcdParamsLists: [
           {name: '供电类型', field: 'bdc_electric_type', value: ''},
           {name: '散热方式', field: 'bdc_radiating_type', value: ''},
@@ -130,51 +122,16 @@
       submit (e) {
         let self = this
         var form = e.target
-        var data = api.validityForm(form)
-        if (data.status && data.status === 2) {
-          this.tips = form[data.n].placeholder
-          return false
-        } else if (data.status && data.status === 1) {
-          this.tips = form[data.n].title
-          return false
-        }
-        util.post('depositMessage', {sign: api.serialize({token: this.token, dep_name: encodeURIComponent(form.dep_name.value), dep_tel: form.dep_tel.value, dep_bdc_id: form.dep_bdc_id.value, dep_type: encodeURIComponent(form.dep_type.value), dep_number: form.dep_number.value, code: form.code.value})}).then(function (res) {
+        var data = api.checkForm(form, 1)
+        if (!data) return false
+        form.btn.setAttribute('disabled', true)
+        util.post('depositMessage', {sign: api.serialize(Object.assign(data, {token: this.token}))}).then(function (res) {
           api.checkAjax(self, res, () => {
             self.success = true
             setTimeout(function () {
               window.location.reload()
             }, 3000)
-          })
-        })
-      },
-      test (e) {
-        var ele = e.target
-        if (!(ele.checkValidity ? ele.checkValidity() : api.check(ele.pattern || ele.getAttribute('pattern'), ele.value))) {
-          this.tips = ele.title
-        } else {
-          this.tips = ''
-          return true
-        }
-      },
-      getCode () {
-        var self = this
-        var form = document.querySelector('.data_form')
-        var ele = document.querySelector('.count_btn')
-        var telEle = form.dep_tel
-        var isTel = api.checkOne(telEle, this.isMobile)
-        if (isTel) {
-          if (isTel === 1) {
-            this.tips = telEle.placeholder
-          } else {
-            this.tips = telEle.title
-          }
-          return false
-        }
-        if (ele.getAttribute('disabled') === 'true') return false
-        util.post('send_code', {sign: api.serialize({token: this.token, mobile: form.dep_tel.value})}).then(res => {
-          self.tips = '短信验证码发送成功'
-          api.countDown(ele)
-          ele.setAttribute('disabled', true)
+          }, form.btn)
         })
       }
     },
@@ -182,8 +139,10 @@
       let self = this
       util.post('bdcinfoList', {sign: 'token=0'}).then(function (data) {
         self.list = data
+        var options = []
         for (let i = 0, len = self.list.length; i < len; i++) {
           self.list[i].params = []
+          options[i] = {id: data[i].id, item: data[i].bdc_name}
           for (let j = 0, paramsLen = self.bcdParamsLists.length; j < paramsLen; j++) {
             self.list[i].params.push({
               name: self.bcdParamsLists[j]['name'],
@@ -191,6 +150,7 @@
             })
           }
         }
+        self.form[3].option = options
       })
     },
     computed: {
@@ -264,63 +224,43 @@
           color: #fff;
         }
         .data_form{
-          .form_line{
+          @include form(v)
+          .input{
             position: relative;
             height: 40px;
             border-radius: 5px;
             background-color: #fff;
             font-size: 16px;
             line-height: 40px;
-            &:not(:nth-child(6)){
+            &:not(:last-child) {
               margin-bottom: 12px;
             }
-            & .tip{
-              position: absolute;
+            &:last-child {
+              margin-bottom: 0;
             }
-            & .label{
-              font-size: 16px;
+            span.form_title{
               width: 105px;
               height: 20px;
               line-height: 20px;
-              display: inline-block;
               border-right: 1px solid #ccc;
-              margin-left: 12px;
               color: #666;
+              top: 10px;
             }
-            & input{
-              display: inline-block;
-              width: 200px;
-              padding-left: 20px;
-              font-size: 16px;
+            .form_icon{
+              display: none;
             }
-            & select{
+            input,.sel{
+              padding-left: 136px;
               border: none;
-              font-size: 16px;
-              outline: none;
-              width: 190px;
-              padding-left: 20px;
+              line-height: 20px;
               height: 40px;
             }
-            .yan{
-              width:113px;
-              height:20px;
-              border-right:1px solid #ccc;
-            }
-            div{
-              display: inline-block;
-              color: white;
+            .count_btn{
               width: 70px;
-              text-align: center;
-              background: #327fff;
-              height: 30px;
-              line-height: 30px;
-              margin-left: 10px;
-              font-size: 12px;
               border-radius: 3px;
-              cursor: pointer;
-              vertical-align: middle;
-              position: relative;
-              top: -2px;
+              font-size: 12px;
+              height: 26px;
+              line-height: 26px;
             }
           }
           .tips{
@@ -330,16 +270,9 @@
             color:white;
             font-size: 12px;
           }
-          .btn{
-            color: #fff;
-            width:100%;
-            height: 40px;
-            line-height: 40px;
-            text-align: center;
-            background-color: #327fff;
-            border-radius: 5px;
-            cursor: pointer;
-            border:0
+          button{
+            margin-top: 0;
+            font-size: 14px;
           }
         }
         .success{
@@ -537,7 +470,7 @@
     .bdc-lists {
       width: 100%;
       height: auto;
-      padding: 45px 15px 0 15px;
+      padding: 100px 15px 0 15px;
       background: #13141f;
       .card {
         @include flex(center, center, column);

@@ -63,6 +63,9 @@
     props: {
       form: {
         type: Array
+      },
+      mode: {
+        type: Number
       }
     },
     data () {
@@ -85,9 +88,9 @@
         if (!ele.value) return false
         var ff = ele.parentNode.parentNode.parentNode
         if (ele.name === 'password1') {
-          api.checkFiled(ele, this.isMobile, ff.password)
+          api.checkFiled(ele, this.isMobile || this.mode, ff.password)
         } else {
-          api.checkFiled(ele, this.isMobile)
+          api.checkFiled(ele, this.isMobile || this.mode)
         }
       },
       changeCode () {
@@ -99,12 +102,12 @@
         var form = ele.parentNode.parentNode.parentNode
         var telEle = form.dep_tel || form.mobile
         var imgCode = form.imgCode
-        if (telEle && api.checkOne(telEle, this.isMobile)) return false
+        if (telEle && api.checkOne(telEle, this.isMobile || this.mode)) return false
         if (telEle.getAttribute('data-error') === 'true') {
-          api.setTips(telEle, 'error', this.isMobile, '该用户已存在')
+          api.setTips(telEle, 'error', this.isMobile || this.mode, '该用户已存在')
           return false
         }
-        if (imgCode && api.checkOne(imgCode, this.isMobile)) return false
+        if (imgCode && api.checkOne(imgCode, this.isMobile || this.mode)) return false
         if (price && num) {
           var money = price * num
           if (+this.balance < money) {
@@ -116,7 +119,7 @@
         api.countDown(e)
         ele.setAttribute('disabled', true)
         util.post('send_code', {sign: api.serialize({token: this.token, mobile: form.dep_tel ? form.dep_tel.value : form.mobile.value})}).then(res => {
-          if (!this.isMobile) {
+          if (!(this.isMobile || this.mode)) {
             api.setTips(form.code, 'success')
           } else {
             api.tips('发送成功')

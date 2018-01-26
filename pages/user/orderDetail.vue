@@ -146,17 +146,20 @@
       },
       getBaoquan () {
         var data = {token: this.token, order_id: this.orderId, security_hash_type: this.orderType}
-        var self = this
         // var newTab = window.open('about:blank')
         // var a = document.createElement('a')
         // document.body.appendChild(a)
         // a.target = '_blank'
-        util.post('getBaoquan', {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
+        util.post('getBaoquan', {sign: api.serialize(data)}).then((res) => {
+          api.checkAjax(this, res, () => {
             // newTab.location.href = 'https://www.baoquan.com/attestations/' + res
-            location.href = 'https://www.baoquan.com/attestations/' + res
             // a.click()
             // document.body.removeChild(a)
+            if (this.isMobile) {
+              location.href = 'https://www.baoquan.com/mobile/attestations/' + res
+            } else {
+              location.href = 'https://www.baoquan.com/attestations/' + res
+            }
           })
         })
       },

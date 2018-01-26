@@ -85,7 +85,7 @@
             <span class="active"></span>
           </div>
           <a :class="{active: status==k}" href="javascript:;" @click="fetchData(k)" v-for="n,k in nav[nowEdit]">{{n}}</a>
-          <div class="nav_list" v-show="typeList">
+          <div class="nav_list" v-show="typeList" @click="closePopup">
             <router-link class="item" :to="'/mobile/order/'+k" v-for="n,k in scode?title2:title" :key="k">
               <span>{{n}}</span>
               <span class="yes">√</span>
@@ -234,7 +234,6 @@
             this.sold[1].value2 = res.one_amount_value
             this.fee = res.sell_miner_fee
             window.scroll(0, 0)
-            document.body.style.overflow = 'hidden'
             this.edit = true
           })
         })
@@ -251,7 +250,6 @@
       },
       closeMask () {
         this.edit = false
-        document.body.style.overflow = 'auto'
       },
       submit (e) {
         var form = e.target
@@ -298,6 +296,18 @@
       setPage (n) {
         this.now = n
         this.fetchData()
+      },
+      closePopup (e) {
+        var ele = document.querySelector('.nav_list')
+        if (e.target === ele) {
+          this.typeList = false
+        }
+      },
+      scrollFunc (e) {
+        let scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
+        if (scrollTop > 5) {
+          this.typeList = false
+        }
       }
     },
     computed: {
@@ -313,6 +323,7 @@
     },
     mounted () {
       this.fetchData()
+      window.addEventListener('scroll', this.scrollFunc, false)
     },
     filters: {
       format: api.decimal
@@ -352,10 +363,7 @@
       background: #f4f4f4;
       .mobile_order_box {
         .type_nav_box{
-          position: fixed;
-          top: 0.88rem;
-          left: 0;
-          width: 100%;
+          position: relative;
           height: 45px;
           line-height: 45px;
           background: $white;
@@ -373,9 +381,9 @@
             }
           }
           .nav_list{
-            position: fixed;
+            position: absolute;
             left:0;
-            top: calc(45px + 0.88rem);
+            top: 45px;
             width: 100%;
             height: calc(100vh - 45px - 0.88rem);
             background:rgba(0,0,0,.3);
@@ -400,7 +408,6 @@
           }
         }
         .order_data{
-          padding-top: 45px;
           .item{
             background:#fff;
             margin-top: 0.2rem;

@@ -52,6 +52,14 @@ module.exports = {
     {name: 'area_details', type: 'text', title: '详细地址', placeholder: '请输入详细地址', isChange: true},
     {name: 'is_default', type: 'radio', title: '是否设为默认地址'}
   ],
+  bdc: [
+    {name: 'dep_name', type: 'text', title: '申请人', placeholder: '请输入您的姓名', isChange: true},
+    {name: 'dep_tel', type: 'text', title: '手机号码', placeholder: '请输入手机号码', pattern: 'tel'},
+    {name: 'code', type: 'text', title: '手机验证码', placeholder: '手机验证码', addon: 2, pattern: 'telCode', len: 6},
+    {name: 'dep_bdc_id', type: 'select', title: '选择BDC', option: []},
+    {name: 'dep_type', type: 'text', title: '服务器类型', placeholder: '请输入算力服务器类型', isChange: true},
+    {name: 'dep_number', type: 'text', title: '服务器数量', placeholder: '输入托管算力服务器数量', pattern: 'int', maxlength: 5}
+  ],
   sold: [
     {name: 'amount', type: 'text', title: '出售数量', placeholder: '请输入出售数量', changeEvent: true, tipsInfo: '最大可出售数量', tipsUnit: '台', value: 0, value2: 0, pattern: 'int'},
     {name: 'one_amount_value', type: 'text', title: '出售单价', placeholder: '请输入出售单价', changeEvent: true, tipsInfo: '购入价格', value2: 0, tipsUnit: '元', pattern: 'float'},
