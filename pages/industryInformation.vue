@@ -1,10 +1,6 @@
 <template>
   <div class="cominfor">
-    <div class="compute_news_nav">
-      <div class="compute_news_box">
-        <router-link :to="n.path" v-for="n, k in computationallist" :class="{'active': active === k}" :key="k">{{n.title}}</router-link>
-      </div>
-    </div>
+    <info-nav></info-nav>
     <div class="cominfor_header">
       <div class="cominfor_headercon">
         <div class="cominfo_headerleft">
@@ -113,7 +109,7 @@
         </div>
       </div>
     </div>
-    <mining-currency></mining-currency>
+    <currency-list></currency-list>
     <div class="cominfor_auto">
       <h4>
         <p class="title">BDC中心相册</p>
@@ -135,10 +131,11 @@
   import util from '@/util/index'
   import api from '@/util/function'
   import { mapState } from 'vuex'
-  import MiningCurrency from '@/components/common/MiningCurrency'
+  import CurrencyList from '@/components/common/CurrencyList'
+  import InfoNav from '@/components/common/InfoNav'
   export default {
     components: {
-      MiningCurrency
+      CurrencyList, InfoNav
     },
     data () {
       return {
@@ -163,13 +160,13 @@
           }]
         }, {
           title: '数字货币',
-          link: '/digitalCurrency/list',
+          link: '/currency/list',
           route: [{
             name: '主流币种 >',
-            path: '/currency'
+            path: '/currency/list'
           }, {
             name: '数字货币 >',
-            path: '/currency'
+            path: '/currency/list'
           }]
         }, {
           title: '二手资讯',
@@ -177,19 +174,13 @@
         }],
         bigimglist: '',
         show: 0,
-        computationallist: [
-          {title: '算力资讯', path: '/computeNews/list'},
-          {title: '设备之家', path: '/equipments/list'},
-          {title: '交易信息', path: '/transaction'},
-          {title: '币种介绍', path: '/currency'}
-        ],
         infoleft: [],
         inforight: [],
         active: 0,
         qwsl: '',
         miners: [
           {big: require('@/assets/images/information5.jpg'), title: '算力服务器-设备之家', route: '前往了解 >', path: '/equipments/list'},
-          {big: require('@/assets/images/information2.jpg'), title: '算力服务器-数字货币', route: '前往了解 >', path: '/currency'},
+          {big: require('@/assets/images/information2.jpg'), title: '算力服务器-数字货币', route: '前往了解 >', path: '/currency/list'},
           {big: require('@/assets/images/information3.jpg'), title: '平台交易最新资讯', route: '前往了解 >', path: '/transaction'}
         ]
       }
@@ -282,54 +273,6 @@
     width: 100%;
     height: 100%;
     background:#eceff8;
-     .compute_news_nav{
-      width: 100%;
-      height: 50px;
-      background: white;
-      border-top: 1px solid #e5e5e5;
-      .compute_news_box{
-        width: 1180px;
-        margin:0 auto;
-        height: 50px;
-        line-height: 50px;
-        box-sizing: border-box;
-        a{
-          display:inline-block;
-          width: 64px;
-          height: 50px;
-          box-sizing: border-box;
-          text-align: center;
-          margin-right: 34px;
-          color: #666666;
-          font-size: 14px;
-          border-top: 2px solid white;
-          &:hover{
-            color:#327fff;
-            height: 50px;
-            box-sizing: border-box;
-            border-top: 2px solid #327fff;
-          }
-          &.avtive{
-            color:#327fff;
-            height: 50px;
-            box-sizing: border-box;
-            border-top: 2px solid #327fff;
-          }
-          &:first-child{
-            color:#327fff;
-            height: 50px;
-            box-sizing: border-box;
-            border-top: 2px solid #327fff;
-          }
-          &.router-link-active{
-            color:#327fff;
-            height: 50px;
-            box-sizing: border-box;
-            border-top: 2px solid #327fff;
-          }
-        }
-      }
-    }
     .cominfor_header{
       width: 100%;
       height: 490px;

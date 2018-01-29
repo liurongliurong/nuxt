@@ -1,5 +1,5 @@
 <template>
-  <pageFrame isComponent="true">
+  <pageFrame>
     <div class="right_content museum_right">
       <h1>算力服务器博物馆<span class="icon iconfont icon-jiantou"></span></h1>
       <div class="museum_lists" v-for="n, k in museum" :key="k">
@@ -31,9 +31,7 @@
         len: 0,
         now: 1,
         museum: [],
-        allid: [],
-        computationallist: [{title: '算力资讯', path: '/industryInformation'}, {title: '设备之家', path: '/equipments/list'}, {title: '交易信息', path: '/transaction'}, {title: '收益币种', path: '/currency'}],
-        leftnav: [{big: 'icon-zixun', title: '资讯', path: '/computeNews/list'}, {big: 'icon-zixun1', title: '快报', path: '/quickNews'}, {big: 'icon-zhizaohangye', title: '厂商', path: '/manufacturer/list'}, {big: 'icon-kuangji', title: '测评', path: '/equipmentEvaluate/list'}, {big: 'icon-bowuguan', title: '博物馆', path: '/equipments/list'}, {big: 'icon-bitebi', title: '历史曲线', path: '/computeChart'}],
+        allid: []
       }
     },
     head () {

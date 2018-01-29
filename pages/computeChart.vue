@@ -1,5 +1,5 @@
 <template>
-  <pageFrame isComponent="true">
+  <pageFrame>
     <div class="compute_chart right_content">
       <div class="chart_show">
         <div class="chart_main">

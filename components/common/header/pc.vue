@@ -50,7 +50,7 @@
           {name: 'industryInformation', text: '产业资讯', link: '/industryInformation'}
         ],
         path: {
-          frame_header: ['regist', 'passwordRetrieval', '/minerShop/activity', '/minerShop/list', 'user', 'account', '/detail', '/pay', '/currency', 'webInfo', 'article/agreement', 'minerShop/miner', '/industryInformation', 'computeNews', 'transaction', 'quickNews', 'digitalCurrency', 'equipments', 'equipmentEvaluate', 'manufacturer', 'computeChart'],
+          frame_header: ['regist', 'passwordRetrieval', '/minerShop/activity', '/minerShop/list', 'user', 'account', '/detail', '/pay', 'webInfo', 'article/agreement', 'minerShop/miner', '/industryInformation', 'computeNews', 'transaction', 'quickNews', 'currency', 'equipments', 'equipmentEvaluate', 'manufacturer', 'computeChart'],
           border: ['login', 'bdc'],
           shadow: ['regist', 'passwordRetrieval'], web_box: ['webInfo', 'minerShop/miner']
         },

@@ -1,10 +1,6 @@
 <template>
   <div class="transaction">
-    <div class="compute_news_nav">
-      <div class="compute_news_box">
-        <router-link :to="n.path" v-for="n, k in computationallist" :class="{'active': k === 2}" :key="k">{{n.title}}</router-link>
-      </div>
-    </div>
+    <info-nav></info-nav>
     <div class="transaction_all">
       共有<span>{{total}}</span>条交易信息
     </div>
@@ -55,17 +51,17 @@
   import util from '@/util/index'
   import api from '@/util/function'
   import Pager from '@/components/common/Pager'
+  import InfoNav from '@/components/common/InfoNav'
   import { mapState } from 'vuex'
   export default {
     components: {
-      Pager
+      Pager, InfoNav
     },
     data () {
       return {
         len: 0,
         now: 1,
         total: '',
-        computationallist: [{title: '算力资讯', path: '/computeNews/list'}, {title: '设备之家', path: '/equipments/list'}, {title: '交易信息', path: '/transaction'}, {title: '收益币种', path: '/currency'}],
         lists: '',
         times: [],
         show: -1
@@ -136,68 +132,26 @@
     overflow: hidden;
     margin:0 auto;
     background: #eceff8;
-     .compute_news_nav{
-      width: 100%;
-      height: 50px;
-      background: white;
-      border-top: 1px solid #e5e5e5;
-      .compute_news_box{
-        width: 1180px;
-        margin:0 auto;
-        height: 50px;
-        line-height: 50px;
-        box-sizing: border-box;
-        a{
-          display:inline-block;
-          width: 64px;
-          height: 50px;
-          box-sizing: border-box;
-          text-align: center;
-          margin-right: 34px;
-          color: #666666;
-          font-size: 14px;
-          border-top: 2px solid white;
-          &:hover{
-            color:#327fff;
-            height: 50px;
-            box-sizing: border-box;
-            border-top: 2px solid #327fff;
-          }
-          &.router-link-active{
-            color:#327fff;
-            height: 50px;
-            box-sizing: border-box;
-            border-top: 2px solid #327fff;
-          }
-          &.active{
-            color:#327fff;
-            height: 50px;
-            box-sizing: border-box;
-            border-top: 2px solid #327fff;
-          }
-        }
-      }
-    }
     .transaction_all{
-        width: 1180px;
-        height: 40px;
-        border:1px solid #f2e5d2;
-        margin:0 auto;
-        position: relative;
-        margin-top: 20px;
-        box-sizing: border-box;
-        background: #fbfaf5;
-        padding-left: 20px;
-        line-height: 40px;
-        color:#999999;
-        font-size: 12px;
-        box-shadow: #999 0 0 10px;
-        span{
-            color:#fe5039;
-            font-weight: 800;
-            margin:0 5px;
-            font-size: 16px;
-        }
+      width: 1180px;
+      height: 40px;
+      border:1px solid #f2e5d2;
+      margin:0 auto;
+      position: relative;
+      margin-top: 20px;
+      box-sizing: border-box;
+      background: #fbfaf5;
+      padding-left: 20px;
+      line-height: 40px;
+      color:#999999;
+      font-size: 12px;
+      box-shadow: #999 0 0 10px;
+      span{
+        color:#fe5039;
+        font-weight: 800;
+        margin:0 5px;
+        font-size: 16px;
+      }
     }
     .transaction_lists{
       width: 1180px;
@@ -206,104 +160,103 @@
       margin: 0 auto;
       margin-top: 20px;
       .transaction_list{
-          width: 100%;
-          height: 150px;
-          box-shadow: #999 0 0 10px;
-          background:white;
-          margin-bottom: 20px;
-          .transaction_left{
-              width: 75%;
-              float: left;
+        width: 100%;
+        height: 150px;
+        box-shadow: #999 0 0 10px;
+        background:white;
+        margin-bottom: 20px;
+        .transaction_left{
+          width: 75%;
+          float: left;
+          height: 100%;
+          padding-top: 20px;
+          padding-left: 20px;
+          h2{
+            font-size: 16px;
+            color: #333333;
+            margin-bottom: 7px;
+            span{
+              color: #fe5039;
+              margin-right: 12px;
+            }
+            .gray{
+              color: #327fff;
+              margin-right: 12px;
+            }
+          }
+          .text{
+            font-size: 14px;
+            color:#999999;
+            width: 626px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin-bottom: 7px;
+          }
+          .address{
+            font-size: 14px;
+            color:#999999;
+            margin-bottom: 7px;
+          }
+          .time{
+            font-size: 14px;
+            color: #333333;
+          }
+        }
+        .transaction_right{
+          text-align: right;
+          float: right;
+          width: 266px;
+          margin-right: 17px;
+          margin-top: 28px;
+          .mobile{
+            width: 266px;
+            height: 38px;
+            border:1px solid #dcdcdc;
+            line-height: 38px;
+            text-align: center;
+            color: #666;
+            font-weight: 800;
+            font-size: 18px;
+            span{
+              display:inline-block;
+              width: 38px;
               height: 100%;
-              padding-top: 20px;
-              padding-left: 20px;
-              h2{
-                  font-size: 16px;
-                  color: #333333;
-                  margin-bottom: 7px;
-                  span{
-                      color: #fe5039;
-                      margin-right: 12px;
-                  }
-                  .gray{
-                    color: #327fff;
-                      margin-right: 12px;
-                  }
-              }
-              .text{
-                  font-size: 14px;
-                  color:#999999;
-                  width: 626px;
-                  white-space: nowrap;
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                  margin-bottom: 7px;
-              }
-              .address{
-                  font-size: 14px;
-                  color:#999999;
-                  margin-bottom: 7px;
-              }
-              .time{
-                  font-size: 14px;
-                  color: #333333;
-              }
+              background: #fe5039;
+              border-right:1px solid #dcdcdc;
+              float: left;
+              line-height:46px;
+            }
+            .icon-dianhua1:before{
+              color:white;
+              font-size:24px;
+              font-weight: 100;
+            }
           }
-          .transaction_right{
-              text-align: right;
-              float: right;
-              width: 266px;
-              margin-right: 17px;
-              margin-top: 28px;
-              .mobile{
-                  width: 266px;
-                  height: 38px;
-                  border:1px solid #dcdcdc;
-                  line-height: 38px;
-                  text-align: center;
-                  color: #666;
-                  font-weight: 800;
-                  font-size: 18px;
-                  span{
-                    display:inline-block;
-                    width: 38px;
-                    height: 100%;
-                    background: #fe5039;
-                    border-right:1px solid #dcdcdc;
-                    float: left;
-                    line-height:46px;
-                  }
-                  .icon-dianhua1:before{
-                    color:white;
-                    font-size:24px;
-                    font-weight: 100;
-                  }
-              }
-              button{
-                  width: 266px;
-                  height: 38px;
-                  font-size: 16px;
-                  color: #fe5039;
-                  border:1px solid #fe5039;
-                  margin-top: 18px;
-                  background:white;
-                  &:hover{
-                    background: #fe5039;
-                    color: white;
-                  }
-                  &:disabled {
-                    background: #fff !important;
-                    color: rgb(153, 153, 153) !important;
-                    border: solid rgb(153, 153, 153) 1px !important;
-                  }
-              }
+          button{
+            width: 266px;
+            height: 38px;
+            font-size: 16px;
+            color: #fe5039;
+            border:1px solid #fe5039;
+            margin-top: 18px;
+            background:white;
+            &:hover{
+              background: #fe5039;
+              color: white;
+            }
+            &:disabled {
+              background: #fff !important;
+              color: rgb(153, 153, 153) !important;
+              border: solid rgb(153, 153, 153) 1px !important;
+            }
           }
-          &:hover{
-            background: #f6f7fb;
-            cursor: pointer;
-          }
+        }
+        &:hover{
+          background: #f6f7fb;
+          cursor: pointer;
+        }
       }
     }
   }
 </style>
-

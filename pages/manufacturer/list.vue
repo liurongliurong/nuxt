@@ -1,5 +1,5 @@
 <template>
-  <pageFrame isComponent="true">
+  <pageFrame>
     <div class="right_content manufacture_right" v-if="isMobile === 0">
       <h1>算力服务器制造商<span class="icon iconfont icon-jiantou"></span></h1>
       <div class="manufacture_item" v-for="n, k in museum" :key="k">

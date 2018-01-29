@@ -1,5 +1,27 @@
 <template>
-  <pageFrame isComponent="true">
+  <div class="currency" v-if="isMobile===0">
+    <info-nav></info-nav>
+    <div class="currency_content">
+      <currency-list></currency-list>
+    </div>
+    <div class="currency_items">
+      <h1>主流币种资料<span class="icon iconfont icon-jiantou"></span></h1>
+      <div class="currency_item">
+        <div class="item" @click="goDetail(n.id)" v-for="n, k in mainCurrency" :key="k">
+          <img :src="n.icon"/>
+          <span>{{n.coin_name}}</span>
+        </div>
+      </div>
+      <h1 class="other_list">各类代币资料<span class="icon iconfont icon-jiantou"></span></h1>
+      <div class="currency_item">
+        <div class="item" @click="goDetail(n.id)" v-for="n, k in otherCurrency" :key="k">
+          <img :src="n.icon"/>
+          <span>{{n.coin_name}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <pageFrame v-else-if="isMobile===1">
     <div class="mobiledigital">
       <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="digital_lists" v-if="!showcontent">
         <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)">
@@ -21,44 +43,47 @@
     </div>
   </pageFrame>
 </template>
+
 <script>
   import util from '@/util/index'
   import api from '@/util/function'
   import { mapState } from 'vuex'
+  import CurrencyList from '@/components/common/CurrencyList'
+  import InfoNav from '@/components/common/InfoNav'
   import pageFrame from '@/components/common/PageFrame'
   import Vue from 'vue'
   import { InfiniteScroll } from 'mint-ui'
   Vue.use(InfiniteScroll)
   export default {
     components: {
-      pageFrame
+      InfoNav, CurrencyList, pageFrame
     },
     data () {
       return {
+        mainCurrency: [],
+        otherCurrency: [],
         len: 0,
         now: 1,
         total: 0,
         loading: false,
         museum: [],
         showcontent: false,
-        content: '',
-        toplists: [{unit: require('@/assets/images/BDC-2.png'), name: '比特币(Bitcoin)'}, {unit: require('@/assets/images/BDC-2.png'), name: '比特币(Bitcoin)'}],
-        bottomlists: [{unit: require('@/assets/images/BDC-2.png'), name: '比特币(Bitcoin)'}, {unit: require('@/assets/images/BDC-2.png'), name: '比特币(Bitcoin)'}]
+        content: ''
+      }
+    },
+    head () {
+      return {
+        title: '比特币-数字货币-算力网',
+        meta: [
+          { hid: 'keywords', name: 'keywords', content: '数字货币,比特币,莱特币,以太币,数字货币查询' },
+          { hid: 'description', name: 'description', content: '算力网（www.suanli.com）列举了常见的数字货币，如比特币，莱特币，以太币等主流币种，以及各类代币如DASH、ZCash、EOS等。' }
+        ]
       }
     },
     methods: {
-      getList () {
-        var self = this
-        if (!this.isMobile) {
-          util.post('showCoinInfo', {sign: api.serialize({token: this.token})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.toplists = res.main_coin
-              self.bottomlists = res.other_coin
-            })
-          }).catch(res => {
-            console.log(res)
-          })
-        }
+      goDetail (id) {
+        localStorage.setItem('icon_id', JSON.stringify([id]))
+        this.$router.push({path: '/currency/detail'})
       },
       loadMore () {
         var self = this
@@ -94,7 +119,13 @@
       }
     },
     mounted () {
-      this.getList()
+      var self = this
+      util.post('showCoinInfo', {sign: api.serialize({token: 0})}).then(function (res) {
+        api.checkAjax(self, res, () => {
+          self.mainCurrency = res.main_coin
+          self.otherCurrency = res.other_coin
+        })
+      })
     },
     computed: {
       ...mapState({
@@ -106,6 +137,75 @@
 </script>
 
 <style lang="scss">
+  .currency{
+    background: #eceff8;
+    overflow: hidden;
+    .currency_content{
+      height: 540px;
+      background: url('~assets/images/information.png');
+      background-size: 100% 100%;
+      padding-top: 30px;
+      .currency_list {
+        padding-top: 20px;
+        background: #fff;
+        box-shadow: none;
+        h4 {
+          margin-bottom: 0;
+          padding-bottom: 10px;
+        }
+      }
+    }
+    .currency_items{
+      width: 1180px;
+      margin: 20px auto 60px;
+      background: white;
+      padding: 40px 62px 192px;
+      h1{
+        position:relative;
+        color: #121212;
+        font-size: 24px;
+        font-weight: 800;
+        span{
+          font-size: 20px;
+          margin-left: 13px;
+          transform:rotate(90deg);
+          position:absolute;
+          top:3px;
+        }
+        &.other_list{
+          margin-top: 58px;
+        }
+      }
+      .currency_item{
+        padding-top: 30px;
+        overflow: hidden;
+        .item{
+          width: 240px;
+          height: 45px;
+          border:1px solid #bfbfbf;
+          float: left;
+          margin-right: 24px;
+          margin-bottom: 17px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          img{
+            width:25px;
+            margin-left: 20px;
+          }
+          span{
+            margin-left: 20px;
+            line-height: 45px;
+            font-size: 14px;
+            color: #333333;
+          }
+          &:hover {
+            box-shadow:#ddd 0 0 10px;
+          }
+        }
+      }
+    }
+  }
   .mobiledigital{
     width: 100%;
     overflow: hidden;

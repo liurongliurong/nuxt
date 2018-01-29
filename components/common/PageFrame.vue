@@ -1,10 +1,6 @@
 <template>
   <div class="page_frame" v-if="isMobile===0">
-    <div class="frame_nav">
-      <div class="nav_box">
-        <router-link :to="n.path" v-for="n, k in computationallist" :class="{'active': k === 1}" :key="k">{{n.title}}</router-link>
-      </div>
-    </div>
+    <info-nav></info-nav>
     <div class="frame_body">
       <div class="frame_header">suanLi&nbsp;之家 <span>全面聚合算力产业信息</span></div>
       <div class="frame_content">
@@ -16,37 +12,33 @@
             </router-link>
           </div>
         </div>
-        <router-view class="right_content" v-if="!isComponent"></router-view>
-        <slot class="right_content" v-else></slot>
+        <slot></slot>
       </div>
     </div>
   </div>
   <div class="mobile_frame" v-else-if="isMobile===1">
-    <div class="mobile_navcompute">
+    <div class="mobile_nav">
       <router-link :to="n.path" v-for="n, k in navcompute" :key="k">
         <em>{{n.title}}</em>
         <span>|</span>
       </router-link>
     </div>
-    <slot class="currency_right" v-if="isComponent"></slot>
-    <router-view class="currency_right" v-else></router-view>
+    <slot></slot>
   </div>
 </template>
 
 <script>
   import { mapState } from 'vuex'
+  import InfoNav from '@/components/common/InfoNav'
   export default {
-    props: {
-      isComponent: {
-        type: String
-      }
+    components: {
+      InfoNav
     },
     data () {
       return {
         active: '',
-        computationallist: [{title: '算力资讯', path: '/industryInformation'}, {title: '设备之家', path: '/computeNews/list'}, {title: '交易信息', path: '/transaction'}, {title: '收益币种', path: '/currency'}],
         leftnav: [{big: 'icon-zixun', title: '资讯', path: '/computeNews/list'}, {big: 'icon-zixun1', title: '快报', path: '/quickNews'}, {big: 'icon-zhizaohangye', title: '厂商', path: '/manufacturer/list'}, {big: 'icon-kuangji', title: '测评', path: '/equipmentEvaluate/list'}, {big: 'icon-bowuguan', title: '博物馆', path: '/equipments/list'}, {big: 'icon-bitebi', title: '历史曲线', path: '/computeChart'}],
-        navcompute: [{title: '快讯', path: '/quickNews'}, {title: '资讯', path: '/computeNews/listm'}, {title: '测评', path: '/equipmentEvaluate/list'}, {title: '币种', path: '/digitalCurrency/list'}, {title: '厂商', path: '/manufacturer/list'}]
+        navcompute: [{title: '快讯', path: '/quickNews'}, {title: '资讯', path: '/computeNews/list'}, {title: '测评', path: '/equipmentEvaluate/list'}, {title: '币种', path: '/currency/list'}, {title: '厂商', path: '/manufacturer/list'}]
       }
     },
     computed: {
@@ -61,31 +53,6 @@
   @import '~assets/css/style.scss';
   .page_frame{
     background: #eceff8;
-    .frame_nav{
-      height: 50px;
-      background: #fff;
-      border-top: 1px solid #e5e5e5;
-      .nav_box{
-        @include main
-        height: 50px;
-        line-height: 50px;
-        a{
-          display:inline-block;
-          width: 64px;
-          height: 50px;
-          text-align: center;
-          margin-right: 34px;
-          color: #666666;
-          font-size: 14px;
-          border-top: 2px solid #fff;
-          &:hover,&.active,&.nuxt-link-active{
-            color:#327fff;
-            height: 50px;
-            border-top: 2px solid #327fff;
-          }
-        }
-      }
-    }
     .frame_body{
       padding-bottom: 50px;
       background: #303849;
@@ -117,6 +84,12 @@
               padding-top: 10px;
               width: 100%;
               height: 100%;
+              &:hover,&.active,&.nuxt-link-active{
+                background: #327fff;
+                span,i{
+                  color:#fff;
+                }
+              }
             }
             span{
               font-size:22px;
@@ -128,12 +101,6 @@
             i{
               font-size: 12px;
               color:#999;
-            }
-            &:hover,&.active,&.nuxt-link-active{
-              background: #327fff;
-              span,i{
-                color:#fff;
-              }
             }
           }
         }
@@ -166,12 +133,7 @@
   .mobile_frame{
     width: 100%;
     height: 100%;
-    .mobile_navcompute{
-      width: 100%;
-      height: 0.89rem;
-      background: white;
-      display: flex;
-      justify-content: space-between;
+    .mobile_nav{
       border-bottom:1px solid #bfbfbf;
       :last-child span{
         display:none;

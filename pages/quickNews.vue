@@ -1,5 +1,5 @@
 <template>
-  <pageFrame isComponent="true">
+  <pageFrame>
     <div class="quick_news right_content" v-if="isMobile===0">
       <h2><span>算力快报</span></h2>
       <div class="scroll_news">
@@ -11,14 +11,14 @@
       </div>
     </div>
     <div class="mobile_quick_news" v-else-if="isMobile===1">
-      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="quicknews_lists1">
-        <div v-for="item, k in museum" :key="k" class="total">
+      <div class="quick_news_lists" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+        <div class="total" v-for="item, k in museum" :key="k">
           <h4> {{item.title}} </h4>
           <p v-html="item.content"></p>
           <div class="time"><span class="icon iconfont icon-shijian2"></span>{{times[k]}}</div>
         </div>
       </div>
-      <p v-if="loading"  class="loadmore">加载中······</p>
+      <p v-if="loading" class="loadmore">加载中······</p>
     </div>
   </pageFrame>
 </template>
@@ -184,7 +184,7 @@
     background: white;
     padding:0 0.3rem;
     box-sizing: border-box;
-    .quicknews_lists1{
+    .quick_news_lists{
       width: 100%;
       .total{
         border-bottom: 1px solid #bfbfbf;

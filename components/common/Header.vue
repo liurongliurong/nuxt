@@ -24,6 +24,7 @@
           <nuxt-link :to="i" v-for="i,k in navList" :key="k" class="item">
             <span>{{pages[i]}}</span>
             <em></em>
+            <span class="unread_num" v-if="i==='/mobile/message'">{{unread_num}}</span>
           </nuxt-link>
           <div class="item" v-if="token !== 0 && showNav === 'person'">
             <span>{{mobile}}</span>
@@ -50,7 +51,7 @@
           '/quickNews': '产业资讯',
           '/computeNews/listm': '产业资讯',
           '/equipmentEvaluate/list': '产业资讯',
-          '/digitalCurrency/list': '产业资讯',
+          '/currency/list': '产业资讯',
           '/manufacturer/list': '产业资讯',
           '/mobile/property': '我的资产',
           '/mobile/order/0': '我的订单',
@@ -118,7 +119,8 @@
       ...mapState({
         isMobile: state => state.isMobile,
         token: state => state.info.token,
-        mobile: state => state.info.mobile
+        mobile: state => state.info.mobile,
+        unread_num: state => state.info.unread_num
       })
     },
     filters: {
@@ -216,6 +218,7 @@
         height: auto;
         background: #fff;
         .item{
+          position: relative;
           width: 100%;
           height: 0.88rem;
           background: #fff;
@@ -226,13 +229,24 @@
           line-height: 0.88rem;
           font-size: 0.32rem;
           letter-spacing: 0.05rem;
-
           em{
             @include block(5);
             @include arrow(right, #c7c7c9);
             width: 0.1rem;
             height:0.1rem;
             border-width: 1px;
+          }
+          .unread_num {
+            position: absolute;
+            right: 25px;
+            font-size: 12px;
+            color: #fff;
+            background: #ff0000;
+            width: 14px;
+            height: 14px;
+            line-height: 14px;
+            text-align: center;
+            border-radius: 50%;
           }
         }
       }

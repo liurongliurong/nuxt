@@ -1,6 +1,6 @@
 <template>
-  <pageFrame isComponent="true">
-    <WebInfoDetail class="currency_right"></WebInfoDetail>
+  <pageFrame>
+    <WebInfoDetail class="right_content"></WebInfoDetail>
   </pageFrame>
 </template>
 

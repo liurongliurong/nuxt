@@ -1,5 +1,5 @@
 <template>
-  <pageFrame isComponent="true">
+  <pageFrame>
     <div class="right_content equipment_right" v-if="isMobile === 0">
       <h1>算力服务器测评<span class="icon iconfont icon-jiantou"></span></h1>
       <div class="museum_lists" v-for="n, k in list" :key="k">
