@@ -10,16 +10,13 @@
         </div>
       </div>
     </div>
-    <div class="mobile_quick_news" v-else-if="isMobile===1">
-      <div class="quick_news_lists" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-        <div class="total" v-for="item, k in museum" :key="k">
-          <h4> {{item.title}} </h4>
-          <p v-html="item.content"></p>
-          <div class="time"><span class="icon iconfont icon-shijian2"></span>{{times[k]}}</div>
-        </div>
+    <scroll-list :loading="loading" @loadMore="loadMore" v-else-if="isMobile===1">
+      <div class="quick_news_item" v-for="item, k in newslists" :key="k">
+        <h4> {{item.title}} </h4>
+        <p v-html="item.content"></p>
+        <div class="time"><span class="icon iconfont icon-shijian2"></span>{{times[k]}}</div>
       </div>
-      <p v-if="loading" class="loadmore">加载中······</p>
-    </div>
+    </scroll-list>
   </pageFrame>
 </template>
 
@@ -28,12 +25,10 @@
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import pageFrame from '@/components/common/PageFrame'
-  import Vue from 'vue'
-  import { InfiniteScroll } from 'mint-ui'
-  Vue.use(InfiniteScroll)
+  import ScrollList from '@/components/common/ScrollList'
   export default {
     components: {
-      pageFrame
+      pageFrame, ScrollList
     },
     data () {
       return {
@@ -42,8 +37,6 @@
         now: 1,
         total: 0,
         loading: false,
-        museum: [],
-        content: '',
         times: []
       }
     },
@@ -57,47 +50,48 @@
       }
     },
     methods: {
-      getList () {
-        var self = this
-        if (!this.isMobile) {
-          util.post('NewsBriefList', {sign: api.serialize({token: 0})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.newslists = res
-            })
-          }).catch(res => {
-            console.log(res)
+      getList (more) {
+        let url = more ? 'showBrief_h5' : 'NewsBriefList'
+        let data = more ? {token: 0, page: this.now} : {token: 0}
+        util.post(url, {sign: api.serialize(data)}).then((res) => {
+          api.checkAjax(this, res, () => {
+            if (more) {
+              for (let i = 0, len = res.list.length; i < len; i++) {
+                this.newslists.push(res.list[i])
+                this.times.push(api.pastTime(res.list[i].dateline))
+              }
+              if (this.now > 1) return false
+              this.total = res.total
+            } else {
+              this.newslists = res
+            }
           })
-        }
+        })
       },
       loadMore () {
-        var self = this
-        this.loading = true
-        if (this.total > this.museum.length || this.museum.length === 0) {
-          let time = this.museum.length === 0 ? 0 : 1000
+        if (this.total > this.newslists.length) {
+          this.loading = true
+          this.now++
+          this.getList(1)
           setTimeout(() => {
-            util.post('showBrief_h5', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
-              api.checkAjax(self, res, () => {
-                self.total = res.total
-                for (var a = 0; a < res.list.length; a++) {
-                  self.times.push(api.pastTime(res.list[a].dateline))
-                }
-                for (let i = 0, len = res.list.length; i < len; i++) {
-                  self.museum.push(res.list[i])
-                }
-                self.loading = false
-                self.now++
-              })
-            }).catch(res => {
-              console.log(res)
-            })
-          }, time)
+            this.loading = false
+          }, 1000)
         } else {
           this.loading = false
+        }
+      },
+      pageInit () {
+        if (this.isMobile !== false) {
+          this.getList(this.isMobile)
+        } else {
+          setTimeout(() => {
+            this.pageInit()
+          }, 5)
         }
       }
     },
     mounted () {
-      this.getList()
+      this.pageInit()
     },
     computed: {
       ...mapState({
@@ -178,48 +172,34 @@
         }
     }
   }
-  .mobile_quick_news{
-    width: 100%;
-    overflow: hidden;
-    background: white;
-    padding:0 0.3rem;
-    box-sizing: border-box;
-    .quick_news_lists{
+  .scroll_list .list_box{
+    .quick_news_item{
+      border-bottom: 1px solid #bfbfbf;
       width: 100%;
-      .total{
-        border-bottom: 1px solid #bfbfbf;
+      overflow: hidden;
+      padding: 0.2rem 0;
+      h4{
+        font-size: 0.3rem;
+        font-weight: 800;
+        padding:0.1rem 0;
         width: 100%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         overflow: hidden;
-        padding: 0.2rem 0;
-        h4{
+      }
+      p{
+        box-sizing: border-box;
+        font-size: 0.22rem;
+      }
+      .time{
+        padding-top: 0.1rem;
+        font-size: 0.3rem;
+        span{
+          color: #999;
+          margin-right: .2rem;
           font-size: 0.3rem;
-          font-weight: 800;
-          padding:0.1rem 0;
-          width: 100%;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-        }
-        p{
-          box-sizing: border-box;
-          font-size: 0.22rem;
-        }
-        .time{
-          padding-top: 0.1rem;
-          font-size: 0.3rem;
-          span{
-            color: #999;
-            margin-right: .2rem;
-            font-size: 0.3rem;
-          }
         }
       }
-    }
-    .loadmore{
-      width: 100%;
-      height: 1.06rem;
-      text-align: center;
-      line-height: 1.06rem;
     }
   }
 </style>

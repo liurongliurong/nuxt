@@ -29,15 +29,15 @@
         <div class="miner_input">
           <span class="left_miner">数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量</span>
           <div class="input_box right_miner">
-            <span @click="changeNum(+number-1)">-</span>
-            <input type="text" :value="number" id="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum($event.target.value)">
-            <span @click="changeNum(+number+1)">+</span>
+            <span :class="{active:number>detail.single_limit_amount}" @click="changeNum(+number-1)">-</span>
+            <input type="text" :value="number" id="number" :placeholder="detail.single_limit_amount+'台起售'" @blur="changeNum($event.target.value)">
+            <span :class="{active:number!==detail.leftNum}" @click="changeNum(+number+1)">+</span>
           </div>
-          <p class="miner_number">库存{{detail.leftNum}}台<span class="detail_limit_text">({{(parseInt(detail.single_limit_amount)||1)+'台起售'}})</span></p>
+          <p class="miner_number">库存{{detail.leftNum}}台<span class="detail_limit_text">({{detail.single_limit_amount+'台起售'}})</span></p>
         </div>
         <button class="btn" disabled v-if="detail.status===2">已售罄</button>
         <button class="btn" disabled v-else-if="detail.status===3">产品撤销</button>
-        <button :class="['btn buy_btn', {error: buyStatus===1}, {over: buyStatus===2}]" @click="checkPay(false)" :disabled="detail.status===4" v-else>立即购买</button>
+        <button class="btn" @click="checkPay(false)" :disabled="detail.status===4" v-else>立即购买</button>
       </div>
     </div>
     <div class="cloud_miner" v-if="params2!=='1'">
@@ -71,15 +71,15 @@
         </div>
       </div>
       <div class="cloud_miner_right">
-        <div class="price_text">我要购买<span class="detail_limit_text">({{(parseInt(detail.single_limit_amount)||1)+'台起售'}})</span></div>
+        <div class="price_text">我要购买<span class="detail_limit_text">({{detail.single_limit_amount+'台起售'}})</span></div>
         <div class="input_box">
-          <input type="text" :value="number" id="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum($event.target.value)">
+          <input type="text" :value="number" id="number" :placeholder="detail.single_limit_amount+'台起售'" @blur="changeNum($event.target.value)">
           <span>台</span>
         </div>
         <div class="price_text1">总算力：<span class="money">{{(detail.hash*number)|format}}T</span></div>
         <div class="price_text1">需支付：<span class="money">{{(detail.one_amount_value*number)|format}}元</span></div>
         <button class="btn" disabled v-if="detail.status===7">已售罄</button>
-        <button :class="['btn buy_btn', {error: buyStatus===1}, {over: buyStatus===2}]" @click="checkPay(false)" v-else :disabled="detail.status===4">立即购买</button>
+        <button class="btn" @click="checkPay(false)" v-else :disabled="detail.status===4">立即购买</button>
         <button class="btn loan_btn" @click="checkPay(true)" v-if="detail.status!==4&&params2==='2'&&detail.is_loan===1">分期购买</button>
       </div>
     </div>
@@ -97,9 +97,6 @@
         type: String
       },
       number: {
-        type: Number
-      },
-      buyStatus: {
         type: Number
       }
     },
@@ -271,6 +268,11 @@
               text-align: center;
               line-height: 30px;
               cursor: pointer;
+              color: #c5c5c5;
+              user-select: none;
+              &.active {
+                color: #333333;
+              }
             }
             input{
               width: 96px;
@@ -281,12 +283,10 @@
             :nth-child(1){
               border-top-left-radius: 3px;
               border-bottom-left-radius: 3px;
-              color: #c5c5c5;
             }
             :nth-child(3){
               border-top-right-radius: 3px;
               border-bottom-right-radius: 3px;
-              color: #333333;
             }
           }
           .miner_number{
@@ -308,17 +308,6 @@
           color: white;
           font-size: 18px;
           margin-left: 79px;
-          &:before{
-            @include position(-20)
-            color:$orange;
-            font-size: 12px;
-          }
-          &.error:before{
-            content:'请输入数量';
-          }
-          &.over:before{
-            content:'您输入的数量已超出库存';
-          }
           &:disabled{
             background: #b5b0af;
           }
@@ -482,22 +471,7 @@
           color: white;
           font-size: 18px;
           &:disabled{
-            // opacity: 0.7;
             background: #b5b0af;
-          }
-          &.buy_btn{
-            position: relative;
-            &:before{
-              @include position(-20)
-              color:$orange;
-              font-size: 12px;
-            }
-            &.error:before{
-              content:'请输入数量';
-            }
-            &.over:before{
-              content:'您输入的数量已超出库存';
-            }
           }
           &.loan_btn{
             background: #01bfb5;

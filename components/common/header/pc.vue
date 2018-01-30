@@ -27,7 +27,7 @@
             <router-link class="btn" to="/auth/regist">注册</router-link>
           </template>
           <template v-else>
-            <router-link class="tel" to="/user/computeProperty"><span class="iconfont">&#xe63f; </span>{{mobile|format}}</router-link>
+            <router-link class="tel" to="/user/computeProperty"><span class="iconfont">&#xe63f; </span>{{mobile|format}}<i v-if="unread_num"></i></router-link>
             <a href="javascript:;" @click="logout">退出</a>
           </template>
         </template>
@@ -61,7 +61,8 @@
     computed: {
       ...mapState({
         token: state => state.info.token,
-        mobile: state => state.info.mobile
+        mobile: state => state.info.mobile,
+        unread_num: state => state.info.unread_num
       })
     },
     methods: {
@@ -225,6 +226,16 @@
           .tel{
             color: $blue;
             font-weight: bold;
+            position: relative;
+            i {
+              position: absolute;
+              right: 0;
+              top:0;
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+              background: #ff0000;
+            }
           }
           .btn{
             color:$white

@@ -22,25 +22,15 @@
     </div>
   </div>
   <pageFrame v-else-if="isMobile===1">
-    <div class="mobiledigital">
-      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="digital_lists" v-if="!showcontent">
-        <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)">
-          <div class="left">
-            <img :src="item.icon"/>
-            <p>{{item.coin_name}}</p>
-          </div>
-          <p class="right">市值: 暂无</p>
+    <scroll-list :content="content" :loading="loading" :showContent="showContent" @loadMore="loadMore" @back="showContent=false">
+      <div class="currency_item" v-for="item, k in list" :key="k" @click="clickcontent(item.id)">
+        <div class="left">
+          <img :src="item.icon"/>
+          <p>{{item.coin_name}}</p>
         </div>
+        <div class="right">市值: 暂无</div>
       </div>
-      <p v-if="loading && !showcontent" class="loadmore">加载中······</p>
-      <div class="quicknews_content"  v-if="showcontent">
-        <div class="title">
-          <span>{{content.title}}</span>
-          <a class="button" onclick="window.location.reload()">< 返回列表</a>
-        </div>
-        <div class="info_quick" v-html="content.content"></div>
-      </div>
-    </div>
+    </scroll-list>
   </pageFrame>
 </template>
 
@@ -51,24 +41,21 @@
   import CurrencyList from '@/components/common/CurrencyList'
   import InfoNav from '@/components/common/InfoNav'
   import pageFrame from '@/components/common/PageFrame'
-  import Vue from 'vue'
-  import { InfiniteScroll } from 'mint-ui'
-  Vue.use(InfiniteScroll)
+  import ScrollList from '@/components/common/ScrollList'
   export default {
     components: {
-      InfoNav, CurrencyList, pageFrame
+      InfoNav, CurrencyList, pageFrame, ScrollList
     },
     data () {
       return {
         mainCurrency: [],
         otherCurrency: [],
-        len: 0,
         now: 1,
         total: 0,
         loading: false,
-        museum: [],
-        showcontent: false,
-        content: ''
+        list: [],
+        showContent: false,
+        content: {}
       }
     },
     head () {
@@ -86,46 +73,49 @@
         this.$router.push({path: '/currency/detail'})
       },
       loadMore () {
-        var self = this
-        this.loading = true
-        if (this.total > this.museum.length || this.museum.length === 0) {
-          let time = this.museum.length === 0 ? 0 : 1000
-          setTimeout(() => {
-            util.post('showCoinlist_h5', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
-              api.checkAjax(self, res, () => {
-                self.total = res.total
-                for (let i = 0, len = res.list.length; i < len; i++) {
-                  self.museum.push(res.list[i])
-                }
-                self.loading = false
-                self.now++
-              })
-            }).catch(res => {
-              console.log(res)
+        if (this.total > this.list.length || this.list.length === 0) {
+          this.loading = true
+          util.post('showCoinlist_h5', {sign: api.serialize({token: 0, page: this.now})}).then((res) => {
+            api.checkAjax(this, res, () => {
+              this.loading = false
+              this.now++
+              for (let i = 0, len = res.list.length; i < len; i++) {
+                this.list.push(res.list[i])
+              }
+              if (this.now > 1) return false
+              this.total = res.total
             })
-          }, time)
+          })
         } else {
           this.loading = false
         }
       },
       clickcontent (id) {
-        this.showcontent = true
-        var self = this
-        util.post('showCoinInfoDetail', {sign: 'token=0&coin_id=' + id}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.content = res
+        this.showContent = true
+        util.post('showCoinInfoDetail', {sign: 'token=0&coin_id=' + id}).then((res) => {
+          api.checkAjax(this, res, () => {
+            this.content = res
           })
         })
+      },
+      pageInit () {
+        if (this.isMobile !== false) {
+          if (this.isMobile) return false
+          util.post('showCoinInfo', {sign: api.serialize({token: 0})}).then((res) => {
+            api.checkAjax(this, res, () => {
+              this.mainCurrency = res.main_coin
+              this.otherCurrency = res.other_coin
+            })
+          })
+        } else {
+          setTimeout(() => {
+            this.pageInit()
+          }, 5)
+        }
       }
     },
     mounted () {
-      var self = this
-      util.post('showCoinInfo', {sign: api.serialize({token: 0})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.mainCurrency = res.main_coin
-          self.otherCurrency = res.other_coin
-        })
-      })
+      this.pageInit()
     },
     computed: {
       ...mapState({
@@ -206,75 +196,40 @@
       }
     }
   }
-  .mobiledigital{
-    width: 100%;
-    overflow: hidden;
-    background: white;
-    .digital_lists{
+  .scroll_list .list_box{
+    .currency_item{
       width: 100%;
-      padding:0 0.5rem;
-      box-sizing: border-box;
-      div{
-        width: 100%;
-        height: 1.08rem;
+      height: 1.08rem;
+      display:flex;
+      border-bottom: 1px solid #bfbfbf;
+      .left{
+        float: left;
+        width: 50%;
         display:flex;
-        justify-content: space-between;
-        border-bottom: 1px solid #bfbfbf;
-        .left{
-          float: left;
-          width: 50%;
-          img{
-            width: 0.32rem;
-            height: 0.32rem;
-            position: relative;
-            top:0.37rem;
-          }
-          p{
-            font-weight: 800;
-            margin-left: .16rem;
-            width: 90%;
-            white-space: normal;
-            text-overflow: hidden;
-            overflow: hidden;
-            font-size: 0.28rem;
-            line-height: 1.08rem;
-          }
+        img{
+          width: 0.32rem;
+          height: 0.32rem;
+          position: relative;
+          top:0.37rem;
         }
-        .right{
-          float:right;
-          width: 50%;
-          font-size: 0.24rem;
-          color: #747474;
-          text-align: right;
-          line-height:1.08rem;
+        p{
+          font-weight: 800;
+          margin-left: .16rem;
+          width: 90%;
+          white-space: normal;
+          text-overflow: hidden;
+          overflow: hidden;
+          font-size: 0.28rem;
+          line-height: 1.08rem;
         }
       }
-    }
-    .loadmore{
-        width: 100%;
-        height: 1.08rem;
-        text-align: center;
-        line-height: 1.08rem;
-    }
-    .quicknews_content{
-      width: 100%;
-      padding-bottom: 50px;
-      background: white;
-      .title{
-        padding: 0.3rem;
-      }
-      span{
-        font-weight: 800;
-        font-size: 0.4rem;
-      }
-      a{
-        float: right;
-        color:#327fff;
-        font-size: 0.27rem;
-      }
-      .info_quick{
-        width: 100%;
-        padding:0 0.5rem;
+      .right{
+        float:right;
+        width: 50%;
+        font-size: 0.24rem;
+        color: #747474;
+        text-align: right;
+        line-height:1.08rem;
       }
     }
   }

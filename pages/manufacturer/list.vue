@@ -2,7 +2,7 @@
   <pageFrame>
     <div class="right_content manufacture_right" v-if="isMobile === 0">
       <h1>算力服务器制造商<span class="icon iconfont icon-jiantou"></span></h1>
-      <div class="manufacture_item" v-for="n, k in museum" :key="k">
+      <div class="manufacture_item" v-for="n, k in list" :key="k">
         <div class="manufacture_img"><img :src="n.image"/></div>
         <div class="manufacture_content">
           <h6>{{n.title}}</h6>
@@ -12,23 +12,13 @@
       </div>
       <Pager :len="len" :now="now" @setPage="setPage"></Pager>
     </div>
-    <div class="mobile_manufacture" v-else-if="isMobile === 1">
-      <h1 v-if="!showcontent">主流算力服务器制造商</h1>
-      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="quicknews_lists" v-if="!showcontent">
-        <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)">
-          <img :src="item.image"/>
-          <p>{{ item.title}}</p>
-        </div>
+    <scroll-list class="mobile_manufacture" :content="content" :loading="loading" :showContent="showContent" @loadMore="loadMore" @back="showContent=false" v-else-if="isMobile === 1">
+      <h1 v-if="!showContent" slot="title">主流算力服务器制造商</h1>
+      <div class="item" v-for="item, k in list" :key="k" @click="clickcontent(item.id)">
+        <img :src="item.image"/>
+        <p>{{ item.title}}</p>
       </div>
-      <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
-      <div class="quicknews_content"  v-if="showcontent">
-        <div class="title">
-          <span>{{content.title}}</span>
-          <a class="button" onclick="window.location.reload()">< 返回列表</a>
-        </div>
-        <div class="info_quick" v-html="content.content"></div>
-      </div>
-    </div>
+    </scroll-list>
   </pageFrame>
 </template>
 
@@ -38,22 +28,19 @@
   import { mapState } from 'vuex'
   import Pager from '@/components/common/Pager'
   import pageFrame from '@/components/common/PageFrame'
-  import Vue from 'vue'
-  import { InfiniteScroll } from 'mint-ui'
-  Vue.use(InfiniteScroll)
+  import ScrollList from '@/components/common/ScrollList'
   export default {
     components: {
-      Pager, pageFrame
+      Pager, pageFrame, ScrollList
     },
     data () {
       return {
         len: 0,
         now: 1,
-        museum: [],
-        total: 0,
+        list: [],
         loading: false,
-        showcontent: false,
-        content: '',
+        showContent: false,
+        content: {},
         allid: []
       }
     },
@@ -68,23 +55,20 @@
     },
     methods: {
       getList (more) {
-        var self = this
-        util.post('NewsManfacturerList', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
-          api.checkAjax(self, res, () => {
+        util.post('NewsManfacturerList', {sign: api.serialize({token: 0, page: this.now})}).then((res) => {
+          api.checkAjax(this, res, () => {
             if (more) {
               for (let i = 0, len = res.list.length; i < len; i++) {
-                self.museum.push(res.list[i])
+                this.list.push(res.list[i])
               }
             } else {
-              self.museum = res.list
-              self.allid = res.id_list
-              localStorage.setItem('all_id', JSON.stringify(self.allid))
+              this.list = res.list
+              this.allid = res.id_list
+              localStorage.setItem('all_id', JSON.stringify(this.allid))
             }
-            if (self.now > 1) return false
-            self.len = Math.ceil(res.total_num / 6)
+            if (this.now > 1) return false
+            this.len = Math.ceil(res.total_num / 6)
           })
-        }).catch(res => {
-          console.log(res)
         })
       },
       setPage (n) {
@@ -104,7 +88,7 @@
         }
       },
       loadMore () {
-        if (this.now <= this.len ) {
+        if (this.now < this.len) {
           this.loading = true
           this.now++
           this.getList(1)
@@ -116,11 +100,10 @@
         }
       },
       clickcontent (id) {
-        this.showcontent = true
-        var self = this
-        util.post('content', {sign: 'token=0&news_id=' + id}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.content = res
+        this.showContent = true
+        util.post('content', {sign: 'token=0&news_id=' + id}).then((res) => {
+          api.checkAjax(this, res, () => {
+            this.content = res
           })
         })
       }
@@ -198,80 +181,36 @@
       }
     }
   }
-  .mobile_manufacture{
-    width: 100%;
-    overflow: hidden;
-    background: white;
-    h1{
-      width: 100%;
-      font-size: 0.3rem;
-      color:#333333;
-      padding: 0.3rem;
-    }
-    .quicknews_lists{
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      border-top: 1px solid #dcdcdc;
-      padding-bottom: 0.5rem;
-      div{
-        display: block;
-        width: 50%;
-        border-bottom: 1px solid #dcdcdc;
-        border-right: 1px solid #dcdcdc;
-        box-sizing: border-box;
-        height: 2.36rem;
-        text-align: center;
-        padding: 0 0.5rem;
-        img{
-          width: 1.78rem;
-          height: 0.48rem;
-          object-fit: contain;
-          margin-top: 0.56rem;
-        }
-        p{
-          color:#666666;
-          font-weight: 800;
-          widows: 100%;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          margin-top: 0.42rem;
-          font-size: 0.3rem;
-        }
-      }
-      :nth-of-type(even){
-        border-right: 0;
-      }
-    }
-    .loadmore{
-      width: 100%;
-      height: 1.08rem;
+  .scroll_list.mobile_manufacture .list_box{
+    padding: 0;
+    .item{
+      display: block;
+      width: 50%;
+      border-bottom: 1px solid #dcdcdc;
+      border-right: 1px solid #dcdcdc;
+      box-sizing: border-box;
+      height: 2.36rem;
       text-align: center;
-      line-height: 1.08rem;
-    }
-    .quicknews_content{
-      width: 100%;
-      padding-bottom: 20px;
-      background: white;
-      .title{
-        padding: 0.3rem;
-        padding-bottom: 0;
+      padding: 0 0.5rem;
+      img{
+        width: 1.78rem;
+        height: 0.48rem;
+        object-fit: contain;
+        margin-top: 0.56rem;
       }
-      span{
+      p{
+        color:#666666;
         font-weight: 800;
+        widows: 100%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-top: 0.42rem;
         font-size: 0.3rem;
       }
-      a{
-        float: right;
-        color:#327fff;
-        font-size: 0.3rem;
-      }
-      .info_quick{
-        width: 100%;
-        padding:0 0.3rem;
-      }
+    }
+    :nth-of-type(even){
+      border-right: 0;
     }
   }
 </style>

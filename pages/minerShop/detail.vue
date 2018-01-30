@@ -10,7 +10,7 @@
           <span>></span>
           <em>{{detail.name}}</em>
         </div>
-        <BaseInfo :params2="params2" :detail="detail" :buyStatus="buyStatus" :number="number" @changeNum="changeNum" @checkPay="checkPay"></BaseInfo>
+        <BaseInfo :params2="params2" :detail="detail" :number="number" @changeNum="changeNum" @checkPay="checkPay"></BaseInfo>
       </div>
       <ProductInfo :params2="params2" :detail="detail" :cloudInfo="cloudInfo" :minerInfo="minerInfo" :params="params"></ProductInfo>
     </template>
@@ -32,9 +32,9 @@
           <div class="buy_text">
             <div>数量</div>
             <div class="input_box">
-              <span @click="changeNum(+number-1)">-</span>
-              <input type="text" v-model="number" :placeholder="(parseInt(detail.single_limit_amount)||1)+'台起售'" @blur="changeNum(number)">
-              <span @click="changeNum(+number+1)">+</span>
+              <span :class="{active:number>detail.single_limit_amount}" @click="changeNum(+number-1)">-</span>
+              <input type="text" id="number" :value="number" :placeholder="detail.single_limit_amount+'台起售'" @blur="changeNum($event.target.value)">
+              <span :class="{active:number!==detail.leftNum}" @click="changeNum(+number+1)">+</span>
             </div>
           </div>
           <div class="buy_text last">
@@ -128,14 +128,10 @@
       },
       goPay (isLoan) {
         if (this.number < 1) {
-          if (!this.isMobile) {
-            this.buyStatus = 1
-            setTimeout(() => {
-              this.buyStatus = 0
-            }, 2000)
-          } else {
-            api.tips('请输入或添加至少1台算力服务器')
-          }
+          api.tips('请输入或添加至少1台算力服务器')
+          return false
+        }
+        if (this.buyStatus === 1) {
           return false
         }
         var data = {name: this.detail.name ? this.detail.name : this.detail.product_name, one_amount_value: this.detail.one_amount_value || '', number: this.number || '', hash: this.detail.hash || '', hashType: this.detail.hashType || '', incomeType: this.detail.incomeType || '', output: this.detail.output || '', total_electric_fee: this.detail.total_electric_fee || '', batch_area: this.detail.batch_area || '', isLoan: isLoan, img: this.detail.product_img||this.detail.minerPicture, bdc_id: this.detail.bdc_message_id}
@@ -143,17 +139,17 @@
         this.$router.push({name: 'minerShop-pay'})
       },
       changeNum (n) {
+        n = +n
         if (this.detail.leftNum === 0) return false
-        var minNum = +this.detail.single_limit_amount || 1
+        var minNum = +this.detail.single_limit_amount
         var isOver = n > this.detail.leftNum
         if (isOver) {
-          this.buyStatus = 2
-          setTimeout(() => {
+          this.buyStatus = 1
+          api.tips('抱歉，您输入的数量超出库存', () => {
             this.buyStatus = 0
-          }, 2000)
+          })
         }
-        this.number = +n < minNum || isNaN(+n) || typeof +n !== 'number' ? minNum : isOver ? this.detail.leftNum : n
-        this.number = parseInt(this.number)
+        this.number = n < minNum || isNaN(n) || typeof n !== 'number' ? minNum : isOver ? this.detail.leftNum : n
         document.querySelector('#number').value = this.number
       },
       getData () {
@@ -172,8 +168,9 @@
             api.checkAjax(self, res, () => {
               self.detail.leftNum = res.amount - res.buyed_amount
               self.detail = Object.assign(self.detail, res)
+              self.detail.single_limit_amount = parseInt(self.detail.single_limit_amount) || 1
               self.detail.sellProgress = ((+self.detail.buyed_amount)/self.detail.amount*100).toFixed(0)+'%'
-              self.number = parseInt(self.detail.single_limit_amount) || 1
+              self.number = self.detail.single_limit_amount
               if (self.params2 !== '1') {
                 self.detail = Object.assign(self.detail, res.has_product_miner_base)
                 self.detail.name = res.product_name
@@ -262,9 +259,12 @@
               @include flex
               span{
                 width:30%;
-                color:$light_text;
                 font-size: 22px;
                 text-align: center;
+                color: #c5c5c5;
+                &.active {
+                  color:$light_text;
+                }
               }
               input{
                 width:40%;

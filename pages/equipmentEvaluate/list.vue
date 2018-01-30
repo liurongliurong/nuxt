@@ -12,33 +12,22 @@
           </div>
         </div>
       </div>
-      <div class="nodata" v-if="showImg">
+      <div class="nodata" v-if="!list.length">
         <div class="nodata_img"></div>
         <p>暂无列表信息</p>
       </div>
       <Pager :len="len" :now="now" @setPage="setPage"></Pager>
     </div>
-    <div class="mobile_equipment" v-else-if="isMobile === 1">
-      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="equipment_lists" v-if="!showcontent">
-        <div v-for="item, k in museum" :key="k" @click="clickcontent(item.id)" class="equipment_list">
-          <h4>{{ item.title}}</h4>
-          <p>{{item.resume}}</p>
-          <div class="opacity">
-            <img :src="item.image"/>
-            <span>BitCoin</span>
-          </div>
+    <scroll-list :content="content" :loading="loading" :noData="!list.length" :showContent="showContent" @loadMore="loadMore" @back="showContent=false" v-else-if="isMobile === 1">
+      <div class="evaluate_item" v-for="item, k in list" :key="k" @click="clickcontent(item.id)">
+        <h4>{{ item.title}}</h4>
+        <p>{{item.resume}}</p>
+        <div class="opacity">
+          <img :src="item.image"/>
+          <span>BitCoin</span>
         </div>
       </div>
-      <p v-if="loading && !showcontent"  class="loadmore">加载中······</p>
-      <p v-if="showno" class="showno">暂无数据······</p>
-      <div class="quicknews_content"  v-if="showcontent">
-        <div class="title">
-          <span>{{content.title}}</span>
-          <a class="button" onclick="window.location.reload()">< 返回列表</a>
-        </div>
-        <div class="info_quick" v-html="content.content"></div>
-      </div>
-    </div>
+    </scroll-list>
   </pageFrame>
 </template>
 
@@ -48,25 +37,19 @@
   import { mapState } from 'vuex'
   import pageFrame from '@/components/common/PageFrame'
   import Pager from '@/components/common/Pager'
-  import Vue from 'vue'
-  import { InfiniteScroll } from 'mint-ui'
-  Vue.use(InfiniteScroll)
+  import ScrollList from '@/components/common/ScrollList'
   export default {
     components: {
-      Pager, pageFrame
+      Pager, pageFrame, ScrollList
     },
     data () {
       return {
         len: 0,
         now: 1,
-        showImg: false,
         list: [],
-        total: -1,
         loading: false,
-        museum: [],
-        showcontent: false,
-        content: '',
-        showno: false,
+        showContent: false,
+        content: {},
         allid: []
       }
     },
@@ -80,22 +63,22 @@
       }
     },
     methods: {
-      getList () {
-        var self = this
-        if (!this.isMobile) {
-          util.post('NewsReviewList', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.list = res.list
-              self.allid = res.id_list
-              localStorage.setItem('all_id', JSON.stringify(self.allid))
-              self.showImg = !res.total
-              if (self.now > 1) return false
-              self.len = Math.ceil(res.total / 5)
-            })
-          }).catch(res => {
-            console.log(res)
+      getList (more) {
+        util.post('NewsReviewList', {sign: api.serialize({token: 0, page: this.now})}).then((res) => {
+          api.checkAjax(this, res, () => {
+            if (more) {
+              for (let i = 0, len = res.list.length; i < len; i++) {
+                this.list.push(res.list[i])
+              }
+            } else {
+              this.list = res.list
+              this.allid = res.id_list
+              localStorage.setItem('all_id', JSON.stringify(this.allid))
+            }
+            if (this.now > 1) return false
+            this.len = Math.ceil(res.total / 5)
           })
-        }
+        })
       },
       setPage (n) {
         this.now = n
@@ -114,39 +97,22 @@
         }
       },
       loadMore () {
-        var self = this
-        this.loading = true
-        if (this.total === 0) {
-          this.loading = false
-          this.showno = true
-          return
-        }
-        if (this.total > this.museum.length || this.museum.length === 0) {
-          let time = this.museum.length === 0 ? 0 : 1000
+        if (this.now < this.len) {
+          this.loading = true
+          this.now++
+          this.getList(1)
           setTimeout(() => {
-            util.post('NewsReviewList', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
-              api.checkAjax(self, res, () => {
-                self.total = res.total
-                for (let i = 0, len = res.list.length; i < len; i++) {
-                  self.museum.push(res.list[i])
-                }
-                self.loading = false
-                self.now++
-              })
-            }).catch(res => {
-              console.log(res)
-            })
-          }, time)
+            this.loading = false
+          }, 1000)
         } else {
           this.loading = false
         }
       },
       clickcontent (id) {
-        this.showcontent = true
-        var self = this
-        util.post('content', {sign: 'token=0&news_id=' + id}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.content = res
+        this.showContent = true
+        util.post('content', {sign: 'token=0&news_id=' + id}).then((res) => {
+          api.checkAjax(this, res, () => {
+            this.content = res
           })
         })
       }
@@ -240,95 +206,53 @@
       margin-top: 200px;
     }
   }
-  .mobile_equipment{
-    width: 100%;
-    overflow: hidden;
-    background: white;
-    .equipment_lists{
+  .scroll_list .list_box {
+    .evaluate_item{
+      border-bottom: 1px solid #bfbfbf;
       width: 100%;
-      padding:0 0.3rem;
-      box-sizing: border-box;
-      padding-bottom: 0.3rem;
-      .equipment_list{
-        border-bottom: 1px solid #bfbfbf;
-        width: 100%;
-        overflow: hidden;
-        padding: 0.3rem 0;
-        h4{
-          font-size: 0.3rem;
-          font-weight: 800;
-          padding-bottom: 0.23rem;
-        }
-        p{
-          color: #999;
-          height: 0.55rem;
-          font-size: 0.5rem;
-          padding:0;
-          margin:0;
-          overflow: hidden;
-          margin-bottom: 0.23rem;
-        }
-        .opacity{
-          width: 100%;
-          position: relative;
-          height: 2.3rem;
-          img{
-            width: 100%;
-            position: absolute;
-            left: 0;
-            height: auto;
-            top:0;
-            height: 100%;
-            object-fit: contain;
-          }
-          span{
-            position: absolute;
-            left: 0;
-            top:0;
-            display: block;
-            width: 0.97rem;
-            height: 0.37rem;
-            background: #01beb5;
-            color:white;
-            font-size: 0.3rem;
-            text-align: center;
-            line-height: 0.37rem;
-          }
-        }
-      }
-    }
-    .loadmore{
-      width: 100%;
-      height: 1.08rem;
-      text-align: center;
-      line-height: 1.08rem;
-    }
-    .quicknews_content{
-      width: 100%;
-      padding-bottom: 50px;
-      background: white;
-      .title{
-        padding: 0.3rem;
-        padding-bottom: 0;
-      }
-      span{
+      overflow: hidden;
+      padding: 0.3rem 0;
+      h4{
+        font-size: 0.3rem;
         font-weight: 800;
-        font-size: 0.3rem;
+        padding-bottom: 0.23rem;
       }
-      a{
-        float: right;
-        color:#327fff;
-        font-size: 0.3rem;
+      p{
+        color: #999;
+        height: 0.55rem;
+        font-size: 0.5rem;
+        padding:0;
+        margin:0;
+        overflow: hidden;
+        margin-bottom: 0.23rem;
       }
-      .info_quick{
+      .opacity{
         width: 100%;
-        padding:0 0.3rem;
+        position: relative;
+        height: 2.3rem;
+        img{
+          width: 100%;
+          position: absolute;
+          left: 0;
+          height: auto;
+          top:0;
+          height: 100%;
+          object-fit: contain;
+        }
+        span{
+          position: absolute;
+          left: 0;
+          top:0;
+          display: block;
+          width: 0.97rem;
+          height: 0.37rem;
+          background: #01beb5;
+          color:white;
+          font-size: 0.3rem;
+          text-align: center;
+          line-height: 0.37rem;
+        }
       }
-    }
-    .showno{
-      text-align: center;
-      padding-top: 3rem;
-      color:#666666;
     }
   }
 </style>

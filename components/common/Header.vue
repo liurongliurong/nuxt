@@ -14,7 +14,7 @@
             <span class="line">|</span>
             <router-link class="link" to="/auth/login">登录</router-link>
           </template>
-          <span class="header_mobile iconfont" v-else @click="showNavlink('person')">&#xe63f;</span>
+          <span class="header_mobile iconfont" v-else @click="showNavlink('person')">&#xe63f;<i v-if="unread_num"></i></span>
           <span class="nav_link iconfont icon-more" v-if="showNav !== 'product'" @click="showNavlink('product')"></span>
           <span class="nav_link iconfont icon-close" v-if="showNav === 'product'" @click="showNavlink('product')"></span>
         </div>
@@ -199,6 +199,18 @@
         text-align: right;
         .line {
           margin: 0 8px;
+        }
+        .header_mobile {
+          position: relative;
+          i {
+            position: absolute;
+            right: -6px;
+            top:0;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ff0000;
+          }
         }
         .nav_link{
           font-size: 18px;
