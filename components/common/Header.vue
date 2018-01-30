@@ -24,7 +24,7 @@
           <nuxt-link :to="i" v-for="i,k in navList" :key="k" class="item">
             <span>{{pages[i]}}</span>
             <em></em>
-            <span class="unread_num" v-if="i==='/mobile/message'">{{unread_num}}</span>
+            <span class="unread_num" v-if="i==='/mobile/message'&&unread_num">您有{{unread_num}}条未读消息</span>
           </nuxt-link>
           <div class="item" v-if="token !== 0 && showNav === 'person'">
             <span>{{mobile}}</span>
