@@ -242,11 +242,11 @@
             font-size: 12px;
             color: #fff;
             background: #ff0000;
-            width: 14px;
             height: 14px;
             line-height: 14px;
-            text-align: center;
-            border-radius: 50%;
+            padding: 0 3px;
+            border-radius: 20px;
+            letter-spacing: initial;
           }
         }
       }

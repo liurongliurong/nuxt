@@ -146,9 +146,9 @@
 
 <style type="text/css" lang="scss">
   @import '~assets/css/style.scss';
-  .compute_shop{
+  .compute_shop {
     background: #f7f8fa;
-    .pager{
+    .pager {
       background: #f7f8fa;
       padding-top:0;
       padding-bottom:30px;
