@@ -71,7 +71,7 @@
         </div>
       </div>
       <button class="apply">
-        <router-link to="/mobile/bdcForm">点击申请算力服务器托管</router-link>
+        <a href="javascript:;" @click="goApply">点击申请算力服务器托管</a>
       </button>
       <span class="tips">算力网全国BDC即将陆续开放...</span>
     </div>
@@ -133,6 +133,13 @@
             }, 3000)
           }, form.btn)
         })
+      },
+      goApply () {
+        if (this.list.length) {
+          this.$router.push({path: '/mobile/bdcForm'})
+        } else {
+          api.tips('暂无BDC，敬请期待！')
+        }
       }
     },
     mounted () {

@@ -131,7 +131,7 @@
           api.tips('请输入或添加至少1台算力服务器')
           return false
         }
-        if (this.buyStatus === 1) {
+        if (this.buyStatus !== 0) {
           return false
         }
         var data = {name: this.detail.name ? this.detail.name : this.detail.product_name, one_amount_value: this.detail.one_amount_value || '', number: this.number || '', hash: this.detail.hash || '', hashType: this.detail.hashType || '', incomeType: this.detail.incomeType || '', output: this.detail.output || '', total_electric_fee: this.detail.total_electric_fee || '', batch_area: this.detail.batch_area || '', isLoan: isLoan, img: this.detail.product_img||this.detail.minerPicture, bdc_id: this.detail.bdc_message_id}
@@ -140,16 +140,23 @@
       },
       changeNum (n) {
         n = +n
-        if (this.detail.leftNum === 0) return false
-        var minNum = +this.detail.single_limit_amount
-        var isOver = n > this.detail.leftNum
-        if (isOver) {
-          this.buyStatus = 1
-          api.tips('抱歉，您输入的数量超出库存', () => {
+        if (isNaN(n)) {
+          this.buyStatus = 2
+          api.tips('抱歉，输入有误', () => {
             this.buyStatus = 0
           })
+        } else {
+          if (this.detail.leftNum === 0) return false
+          var minNum = +this.detail.single_limit_amount
+          var isOver = n > this.detail.leftNum
+          if (isOver) {
+            this.buyStatus = 1
+            api.tips('抱歉，您输入的数量超出库存', () => {
+              this.buyStatus = 0
+            })
+          }
+          this.number = n < minNum ? minNum : isOver ? this.detail.leftNum : n
         }
-        this.number = n < minNum || isNaN(n) || typeof n !== 'number' ? minNum : isOver ? this.detail.leftNum : n
         document.querySelector('#number').value = this.number
       },
       getData () {
