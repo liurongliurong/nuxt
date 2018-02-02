@@ -234,7 +234,7 @@
         },
         activityType: {
           1: {dataRequest: 'showMiner', dataCommit: 'saveMiner', agreement: '《算力服务器销售协议》'},
-          2: {dataRequest: 'showProduct', dataCommit: 'productMall', agreement: '《云算力购买协议》和《算力服务器托管协议》'}
+          2: {dataRequest: 'showProduct', dataCommit: 'productMall', agreement: '《云算力购买协议》和《云算力托管协议》'}
         },
         totalHash: '0.00',
         totalPrice: '0.00',

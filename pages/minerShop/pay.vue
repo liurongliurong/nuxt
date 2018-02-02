@@ -53,7 +53,7 @@
             <FormField :form="form" class="form" v-if="payNo===1"></FormField>
              <label for="accept">
               <input type="checkbox" checked id="accept" name="accept">
-              <span @click="openMask(1)">阅读并接受<a href="javascript:;">《算力服务器销售协议》</a><template v-if="params2!=='1'">和<a href="javascript:;">《算力服务器托管协议》</a></template></span>
+              <span @click="openMask(1)">阅读并接受<a href="javascript:;" v-if="params2==='1'">《算力服务器销售协议》</a><template v-else><a href="javascript:;">《云算力销售协议》</a>、<a href="javascript:;">《云算力托管协议》</a></template></span>
             </label> 
             <button name="btn">确认支付</button>
           </form>
@@ -120,7 +120,7 @@
         <FormField :form="form" v-if="payNo===1"></FormField>
         <label for="accept">
           <input type="checkbox" checked id="accept" name="accept">
-          <span @click="openMask(1)">阅读并接受<a href="javascript:;">《算力服务器销售协议》</a><template v-if="params2!=='1'">、<a href="javascript:;">《算力服务器托管协议》</a></template></span>
+          <span @click="openMask(1)">阅读并接受<a href="javascript:;" v-if="params2==='1'">《算力服务器销售协议》</a><template v-else><a href="javascript:;">《云算力销售协议》</a>、<a href="javascript:;">《云算力托管协议》</a></template></span>
         </label>
         <div class="mobile_btn">
           <button name="btn">确认支付</button>
