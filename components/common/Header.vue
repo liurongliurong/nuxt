@@ -22,7 +22,7 @@
       <div class="mobile_header_nav" v-if="showNav !== ''" @click="showNavlink">
         <div class="white_bg">
           <nuxt-link :to="i" v-for="i,k in navList" :key="k" class="item">
-            <span>{{pages[i]}}</span>
+            <span :class="{active:i==='/minerShop/activity'}">{{pages[i]}}</span>
             <em></em>
             <span class="unread_num" v-if="i==='/mobile/message'&&unread_num">您有{{unread_num}}条未读消息</span>
           </nuxt-link>
@@ -45,8 +45,8 @@
     data () {
       return {
         pages: {
-          '/minerShop/miner': '云算力',
-          '/minerShop/cloudCompute': '算力服务器',
+          '/minerShop/cloudCompute': '云算力',
+          '/minerShop/miner': '算力服务器',
           '/bdc': 'BDC托管',
           '/quickNews': '产业资讯',
           '/computeNews/listm': '产业资讯',
@@ -242,6 +242,9 @@
           line-height: 0.88rem;
           font-size: 0.32rem;
           letter-spacing: 0.05rem;
+          span.active {
+            color: #fe5039
+          }
           em{
             @include block(5);
             @include arrow(right, #c7c7c9);

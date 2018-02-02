@@ -669,7 +669,7 @@
           text-align: center;
           margin-bottom: 0.5rem;
           position: absolute;
-          top: 3.8rem;
+          top: 4.7rem;
         }
       }
       .mobile_activity_form{
