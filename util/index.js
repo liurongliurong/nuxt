@@ -30,7 +30,7 @@ api.interceptors.response.use(res => {
 })
 
 api.interceptors.request.use(config => {
-  config.data = qs.stringify(config.data)
+  config.data = util.serialize(config.data)
   config.data = window.btoa ? window.btoa(config.data) : util.btoa(config.data)
   config.data = qs.stringify({sign: config.data})
   return config

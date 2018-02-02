@@ -429,6 +429,7 @@
       var p = api.getStorge('suanli')
       this.number = p.number || 1
       this.pageInit()
+      document.body.style.overflow = 'auto'
     },
     filters: {
       format: api.decimal

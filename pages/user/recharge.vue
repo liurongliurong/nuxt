@@ -83,7 +83,6 @@
                 this.$router.push({path: this.callUrl})
                 this.$store.commit('SET_URL', '')
               }
-              // form.btn.removeAttribute('disabled')
             })
           }, form.btn)
         }
