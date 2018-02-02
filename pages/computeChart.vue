@@ -12,7 +12,6 @@
 </template>
 
 <script>
-  import api from '@/util/function'
   import util from '@/util'
   import echarts from 'echarts/lib/echarts'
   import 'echarts/lib/chart/line'
@@ -103,14 +102,13 @@
       }
     },
     mounted () {
-      var self = this
-      util.post('showMiningPoolData', {sign: 'token=0'}).then(function (data) {
-        data.data.diff_history.slice(0, 250).forEach((v, k) => {
-          self.data1.push({name: v._id, value: [v.timestamp, v.difficulty]})
-          self.data2.push({name: v._id, value: [v.timestamp, v.avg_network_hashrate[0], v.avg_network_hashrate[1]]})
+      util.post('showMiningPoolData', {token: 0}).then((data) => {
+        data.msg.data.diff_history.slice(0, 250).forEach((v, k) => {
+          this.data1.push({name: v._id, value: [v.timestamp, v.difficulty]})
+          this.data2.push({name: v._id, value: [v.timestamp, v.avg_network_hashrate[0], v.avg_network_hashrate[1]]})
         })
-        self.initChart('.myChart', self.data1, '算力困难度历史曲线')
-        self.initChart('.myChart2', self.data2, '全网算力历史曲线')
+        this.initChart('.myChart', this.data1, '算力困难度历史曲线')
+        this.initChart('.myChart2', this.data2, '全网算力历史曲线')
       })
     }
   }

@@ -45,8 +45,8 @@
     data () {
       return {
         pages: {
-          '/minerShop/miner/2': '云算力',
-          '/minerShop/miner/1': '算力服务器',
+          '/minerShop/miner': '云算力',
+          '/minerShop/cloudCompute': '算力服务器',
           '/bdc': 'BDC托管',
           '/quickNews': '产业资讯',
           '/computeNews/listm': '产业资讯',
@@ -73,7 +73,7 @@
         scroll: false,
         headerType: '',
         navList: [],
-        navLink: ['/minerShop/miner/2', '/minerShop/miner/1', '/bdc', '/quickNews'],
+        navLink: ['/minerShop/miner', '/minerShop/cloudCompute', '/bdc', '/quickNews'],
         navPerson: ['/mobile/property', '/mobile/order/0', '/mobile/message', '/mobile/moneyFlow', '/mobile/idVerfication', '/mobile/bankCard', '/mobile/assetsAddress', '/mobile/administration'
         ],
         isBlueHeader: ['bdc', 'mobile-assetDetail', 'mobile-property', 'mobile-personalCenter', 'mobileIndex'],
@@ -109,7 +109,7 @@
       logout () {
         this.$store.commit('LOGOUT')
         if (this.isMobile) {
-          this.$router.push({path: '/minerShop/miner/2'})
+          this.$router.push({path: '/minerShop/cloudCompute'})
         } else {
           this.$router.push({path: '/'})
         }

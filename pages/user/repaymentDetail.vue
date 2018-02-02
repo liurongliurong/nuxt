@@ -71,7 +71,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import MyMask from '@/components/common/Mask'
@@ -95,12 +95,9 @@
     methods: {
       items () {
         if (this.token !== 0 && this.detailId) {
-          var self = this
-          util.post('getLoanListDetail', {sign: api.serialize({token: this.token, loan_id: this.detailId})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.moneydata = res
-              self.item = res.list
-            })
+          fetchApiData(this, 'getLoanListDetail', {token: this.token, loan_id: this.detailId}, (res) => {
+            this.moneydata = res
+            this.item = res.list
           })
         } else {
           setTimeout(() => {
@@ -113,15 +110,13 @@
         var data = api.checkForm(form, this.isMobile)
         if (!data) return false
         form.btn.setAttribute('disabled', true)
-        var self = this
-        util.post('repayment', {sign: api.serialize({token: this.token, repayment_id: this.repaymentId, product_hash_type: 1, mode: this.model, mobile: form.mobile.value, code: form.code.value})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            api.tips('提交成功', () => {
-              self.show = false
-              window.location.reload()
-            })
-          }, form.btn)
-        })
+        let sendData = {token: this.token, repayment_id: this.repaymentId, product_hash_type: 1, mode: this.model, mobile: form.mobile.value, code: form.code.value}
+        fetchApiData(this, 'repayment', sendData, (res) => {
+          api.tips('提交成功', () => {
+            this.show = false
+            window.location.reload()
+          })
+        }, form.btn)
       },
       onChange (obj) {
         this.model = obj.e.target.value
@@ -135,19 +130,17 @@
       },
       openMask (id) {
         this.repaymentId = id
-        var self = this
-        util.post('showRepayment', {sign: api.serialize({token: this.token, repayment_id: this.repaymentId, product_hash_type: 1, mode: 0})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.loanData[0].data1 = res.user_coin_value
-            self.loanData[0].data2 = res.coin_repayment
-            self.loanData[1].data1 = res.user_balance
-            self.loanData[1].data2 = res.repayment
-            self.form[1].value = self.loanData[self.model].data1 + self.loanData[self.model].unit
-            self.form[2].value = self.loanData[self.model].data2 + self.loanData[self.model].unit
-            window.scroll(0, 0)
-            document.body.style.overflow = 'hidden'
-            self.show = true
-          })
+        let sendData = {token: this.token, repayment_id: this.repaymentId, product_hash_type: 1, mode: 0}
+        fetchApiData(this, 'showRepayment', sendData, (res) => {
+          this.loanData[0].data1 = res.user_coin_value
+          this.loanData[0].data2 = res.coin_repayment
+          this.loanData[1].data1 = res.user_balance
+          this.loanData[1].data2 = res.repayment
+          this.form[1].value = this.loanData[this.model].data1 + this.loanData[this.model].unit
+          this.form[2].value = this.loanData[this.model].data2 + this.loanData[this.model].unit
+          window.scroll(0, 0)
+          document.body.style.overflow = 'hidden'
+          this.show = true
         })
       },
       closeMask () {

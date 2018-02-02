@@ -8,11 +8,11 @@
 </template>
 
 <script>
-  import util from '../util'
-  import api from '../util/function'
+  import util, { fetchApiData } from '@/util'
+  import api from '@/util/function'
   import { mapState } from 'vuex'
-  import MyHead from '../components/common/Header'
-  import MyFoot from '../components/common/Footer'
+  import MyHead from '@/components/common/Header'
+  import MyFoot from '@/components/common/Footer'
   export default {
     scrollToTop: true,
     components: {
@@ -34,6 +34,19 @@
         ]
       }
     },
+    methods: {
+      pageInit() {
+        if (this.token !== 0) {
+          fetchApiData(this, 'getAll', {token: this.token}, (res) => {
+            this.$store.commit('SET_INFO', res)
+          })
+        } else {
+          setTimeout(() => {
+            this.pageInit()
+          }, 5)
+        }
+      }
+    },
     mounted () {
       // 7.5 = 750 / 100
       var width = document.documentElement.clientWidth
@@ -52,16 +65,9 @@
       if (this.token === 0) {
         this.$store.dispatch('getInfo')
       }
-      var self = this
-      util.post('getAll', {sign: api.serialize({token: this.token})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.$store.commit('SET_INFO', res)
-        })
-      })
-      util.post('getCurrencys', {sign: api.serialize({token: this.token})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.$store.commit('SET_HASH_TYPE', res)
-        })
+      this.pageInit()
+      util.post('getCurrencys', {token: 0}).then( (res) => {
+        this.$store.commit('SET_HASH_TYPE', res.msg)
       })
     },
     computed: {

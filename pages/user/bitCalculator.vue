@@ -128,7 +128,6 @@
 
 <script>
   import util from '@/util/index'
-  import api from '@/util/function'
   import { mapState } from 'vuex'
   export default {
     data () {
@@ -204,22 +203,13 @@
       }
     },
     mounted () {
-      var self = this
-      util.post('showCoinData', {sign: api.serialize({token: 0})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.CoinPrice = res[0].price
-          self.message8 = res[0].output.split(' ')[0]
-        })
-      }).catch(res => {
-        console.log(res)
+      util.post('showCoinData', {token: 0}).then((res) => {
+        this.CoinPrice = res.msg[0].price
+        this.message8 = res.msg[0].output.split(' ')[0]
       })
-      util.post('showDifficulty', {sign: api.serialize({token: 0})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.difficulty = (res.difficulty.replace(/,/g, '') * 7.158 * 0.001 / 1000000).toFixed(0)
-          self.message8 = ((1000 / self.difficulty * 7.158 * 0.001) * 1800).toFixed(5)
-        })
-      }).catch(res => {
-        console.log(res)
+      util.post('showDifficulty', {token: 0}).then((res) => {
+        this.difficulty = (res.msg.difficulty.replace(/,/g, '') * 7.158 * 0.001 / 1000000).toFixed(0)
+        this.message8 = ((1000 / this.difficulty * 7.158 * 0.001) * 1800).toFixed(5)
       })
       this.time = document.getElementsByClassName('el-range-input')[0].value
       this.time1 = document.getElementsByClassName('el-range-input')[1].value

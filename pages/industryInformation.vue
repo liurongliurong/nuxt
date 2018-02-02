@@ -129,7 +129,6 @@
 
 <script>
   import util from '@/util/index'
-  import api from '@/util/function'
   import { mapState } from 'vuex'
   import CurrencyList from '@/components/common/CurrencyList'
   import InfoNav from '@/components/common/InfoNav'
@@ -207,56 +206,33 @@
       }
     },
     mounted () {
-      var self = this
-      util.post('showDifficulty', {sign: api.serialize({token: 0})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.qwsl = res
-        })
-      }).catch(res => {
-        console.log(res)
+      util.post('showDifficulty', {token: 0}).then((res) => {
+        this.qwsl = res.msg
       })
-      util.post('NewsManfacturer', {sign: api.serialize({token: 0})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.sheol1 = res
-        })
-      }).catch(res => {
-        console.log(res)
+
+      util.post('NewsManfacturer', {token: 0}).then((res) => {
+        this.sheol1 = res.msg
       })
-      util.post('NewsReview', {sign: api.serialize({token: 0})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.sheol2 = res
-        })
-      }).catch(res => {
-        console.log(res)
+
+      util.post('NewsReview', {token: 0}).then((res) => {
+        this.sheol2 = res.msg
       })
-      util.post('NewsMuseum', {sign: api.serialize({token: 0})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.sheol3 = res
-        })
-      }).catch(res => {
-        console.log(res)
+
+      util.post('NewsMuseum', {token: 0}).then((res) => {
+        this.sheol3 = res.msg
       })
-      util.post('NewsBrief', {sign: api.serialize({token: 0})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.scroll = res
-        })
-      }).catch(res => {
-        console.log(res)
+
+      util.post('NewsBrief', {token: 0}).then((res) => {
+        this.scroll = res.msg
       })
-      util.post('showSecondHandTradeTopList', {sign: api.serialize({token: 0})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.inforight = res.buy_info
-          self.infoleft = res.transfer_info
-        })
-      }).catch(res => {
-        console.log(res)
+
+      util.post('showSecondHandTradeTopList', {token: 0}).then((res) => {
+        this.inforight = res.msg.buy_info
+        this.infoleft = res.msg.transfer_info
       })
-      util.post('showBannerNews', {sign: api.serialize({token: 0})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.bigimglist = res
-        })
-      }).catch(res => {
-        console.log(res)
+
+      util.post('showBannerNews', {token: 0}).then((res) => {
+        this.bigimglist = res.msg
       })
     },
     computed: {

@@ -9,8 +9,7 @@
 </template>
 
 <script>
-  import util from '@/util'
-  import api from '@/util/function'
+  import { fetchApiData } from '@/util'
   import { mapState } from 'vuex'
   import echarts from 'echarts/lib/echarts'
   import 'echarts/lib/chart/line'
@@ -110,13 +109,10 @@
       },
       getData () {
         if (this.token !== 0) {
-          var self = this
-          util.post('showIncome', {sign: api.serialize({token: this.token, product_hash_type: 1})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.date = res.time
-              self.val = res.income
-              self.drawLine()
-            })
+          fetchApiData(this, 'showIncome', {token: this.token, product_hash_type: 1}, (res) => {
+            this.date = res.time
+            this.val = res.income
+            this.drawLine()
           })
         } else {
           setTimeout(() => {

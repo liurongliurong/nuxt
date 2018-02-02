@@ -23,8 +23,8 @@ module.exports = {
   ],
   generate: {
     routes: [
-      '/minerShop/miner/1',
-      '/minerShop/miner/2',
+      // '/minerShop/miner/1',
+      // '/minerShop/miner/2',
       '/user/order/0',
       '/user/order/2',
       '/user/order/3',

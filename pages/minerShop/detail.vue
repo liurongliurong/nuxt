@@ -5,8 +5,8 @@
         <div class="top_nav_box">
           <router-link to="/minerShop/list">算力服务器商城</router-link>
           <span>></span>
-          <router-link to="/minerShop/miner/1" v-if="params2==='1'">算力服务器</router-link>
-          <router-link to="/minerShop/miner/2" v-else>云算力</router-link>
+          <router-link to="/minerShop/miner" v-if="params2==='1'">算力服务器</router-link>
+          <router-link to="/minerShop/cloudCompute" v-else>云算力</router-link>
           <span>></span>
           <em>{{detail.name}}</em>
         </div>
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import ProductInfo from '@/components/miner/ProductInfo'
@@ -161,7 +161,6 @@
       },
       getData () {
         if (this.params1) {
-          var self = this
           var url = ''
           var data = {token: this.token}
           if (this.params2 === '1') {
@@ -171,25 +170,23 @@
             url = 'productDetail'
             data = Object.assign({product_id: this.params1}, data)
           }
-          util.post(url, {sign: api.serialize(data)}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.detail.leftNum = res.amount - res.buyed_amount
-              self.detail = Object.assign(self.detail, res)
-              self.detail.single_limit_amount = parseInt(self.detail.single_limit_amount) || 1
-              self.detail.sellProgress = ((+self.detail.buyed_amount)/self.detail.amount*100).toFixed(0)+'%'
-              self.number = self.detail.single_limit_amount
-              if (self.params2 !== '1') {
-                self.detail = Object.assign(self.detail, res.has_product_miner_base)
-                self.detail.name = res.product_name
-                self.detail.hashType = (res.hashtype && res.hashtype.name) || ''
-                self.detail.statusStr = self.str[res.status]
-              } else {
-                self.detail.name = res.name
-                self.detail = Object.assign(self.detail, res.miner_list)
-                self.detail.weight = (res.miner_list && res.miner_list.weight) || ''
-                self.detail.statusStr = self.status[res.status]
-              }
-            })
+          fetchApiData(this, url, data, (res) => {
+            this.detail.leftNum = res.amount - res.buyed_amount
+            this.detail = Object.assign(this.detail, res)
+            this.detail.single_limit_amount = parseInt(this.detail.single_limit_amount) || 1
+            this.detail.sellProgress = ((+this.detail.buyed_amount)/this.detail.amount*100).toFixed(0)+'%'
+            this.number = this.detail.single_limit_amount
+            if (this.params2 !== '1') {
+              this.detail = Object.assign(this.detail, res.has_product_miner_base)
+              this.detail.name = res.product_name
+              this.detail.hashType = (res.hashtype && res.hashtype.name) || ''
+              this.detail.statusStr = this.str[res.status]
+            } else {
+              this.detail.name = res.name
+              this.detail = Object.assign(this.detail, res.miner_list)
+              this.detail.weight = (res.miner_list && res.miner_list.weight) || ''
+              this.detail.statusStr = this.status[res.status]
+            }
           })
         } else {
           setTimeout(() => {

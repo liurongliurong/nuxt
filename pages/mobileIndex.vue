@@ -66,7 +66,7 @@
           <p class="title">算力网&nbsp;suanLi.com&nbsp;&nbsp;&nbsp;每秒都为你产生利润</p>
         </div>
         <div class="footer">
-          <a class="button" @click="goToPage('/minerShop/miner/2',2)">体验数字货币带来的乐趣</a>
+          <a class="button" @click="goToPage('/minerShop/cloudCompute',2)">体验数字货币带来的乐趣</a>
           <p class="introduce">Clould mining<i>|</i>Miner<i>|</i>Escrow</p>
         </div>
       </div>
@@ -140,8 +140,8 @@ export default {
       ],
       page3Text: ['用电合规电力稳定', '专业团队安全可靠', '信息透明收益透明', '全程存证合法有效'],
       page4Text: [
-        {title: '云算力', sub: 'CLOUD MINING', link: '/minerShop/miner/2'},
-        {title: '算力服务器', sub: 'MINER', link: '/minerShop/miner/1'},
+        {title: '云算力', sub: 'CLOUD MINING', link: '/minerShop/cloudCompute'},
+        {title: '算力服务器', sub: 'MINER', link: '/minerShop/miner'},
         {title: 'BDC托管', sub: 'BDC ESCROW', link: '/bdc'}
       ],
       navPerson: [

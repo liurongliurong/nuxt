@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import api from '@/util/function'
+  import { fetchApiData } from '@/util'
   import util from '@/util'
   import { login } from '@/util/form'
   import md5 from 'js-md5'
@@ -53,14 +53,12 @@
         if (!data) return false
         data.password = md5(data.password)
         data.password1 = md5(data.password1)
-        util.post('changeLoginPassword', {sign: api.serialize(Object.assign(data, {token: this.token}))}).then((res) => {
-          api.checkAjax(self, res, () => {
-            api.tips('修改成功', () => {
-              this.$store.commit('LOGOUT')
-              this.$router.push({path: '/auth/login'})
-            })
-            this.closeMask()
+        fetchApiData(this, 'changeLoginPassword', Object.assign(data, {token: this.token}), (res) => {
+          api.tips('修改成功', () => {
+            this.$store.commit('LOGOUT')
+            this.$router.push({path: '/auth/login'})
           })
+          this.closeMask()
         })
       }
     },

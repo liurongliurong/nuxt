@@ -50,7 +50,7 @@
 </template>
 
 <script>
-  import util from '@/util/index'
+  import util from '@/util'
   import api from '@/util/function'
   import city from '@/util/city'
   import { mapState } from 'vuex'
@@ -118,7 +118,7 @@
         if (ele.getAttribute('disabled') === 'true') return false
         api.countDown(e)
         ele.setAttribute('disabled', true)
-        util.post('send_code', {sign: api.serialize({token: this.token, mobile: form.dep_tel ? form.dep_tel.value : form.mobile.value})}).then(res => {
+        util.post('send_code', {token: this.token, mobile: form.dep_tel ? form.dep_tel.value : form.mobile.value}).then((res) => {
           if (!(this.isMobile || this.mode)) {
             api.setTips(form.code, 'success')
           } else {

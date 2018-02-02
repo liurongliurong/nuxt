@@ -44,15 +44,15 @@
     data () {
       return {
         nav: [
-          {name: 'miner/1', text: '算力服务器', link: '/minerShop/miner/1'},
-          {name: 'miner/2', text: '云算力', link: '/minerShop/miner/2'},
+          {name: 'minerShop/miner', text: '算力服务器', link: '/minerShop/miner'},
+          {name: 'minerShop/cloudCompute', text: '云算力', link: '/minerShop/cloudCompute'},
           {name: 'bdc', text: 'BDC托管', link: '/bdc'},
           {name: 'industryInformation', text: '产业资讯', link: '/industryInformation'}
         ],
         path: {
-          frame_header: ['regist', 'passwordRetrieval', '/minerShop/activity', '/minerShop/list', 'user', 'account', '/detail', '/pay', 'webInfo', 'article/agreement', 'minerShop/miner', '/industryInformation', 'computeNews', 'transaction', 'quickNews', 'currency', 'equipments', 'equipmentEvaluate', 'manufacturer', 'computeChart'],
+          frame_header: ['regist', 'passwordRetrieval', '/minerShop/activity', '/minerShop/list', 'user', 'account', '/detail', '/pay', 'webInfo', 'article/agreement', 'minerShop/miner', 'minerShop/cloudCompute', '/industryInformation', 'computeNews', 'transaction', 'quickNews', 'currency', 'equipments', 'equipmentEvaluate', 'manufacturer', 'computeChart'],
           border: ['login', 'bdc'],
-          shadow: ['regist', 'passwordRetrieval'], web_box: ['webInfo', 'minerShop/miner']
+          shadow: ['regist', 'passwordRetrieval'], web_box: ['webInfo', 'minerShop/miner', 'minerShop/cloudCompute']
         },
         headerClass: '',
         scroll: false

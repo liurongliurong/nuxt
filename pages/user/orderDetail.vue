@@ -98,7 +98,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   export default {
@@ -120,7 +120,6 @@
       getContract () {
         var requestUrl = ''
         var data = {}
-        var self = this
         if (this.orderType === 0) {
           requestUrl = 'hash_contract'
           data = {token: this.token, order_id: this.orderId}
@@ -133,15 +132,13 @@
           requestUrl = 'miner_contract'
           data = {token: this.token, order_id: this.orderId}
         }
-        util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            if (res === '暂无协议') {
-              api.tips(res)
-            } else {
-              self.show = true
-              self.contract = res
-            }
-          })
+        fetchApiData(this, requestUrl, data, (res) => {
+          if (res === '暂无协议') {
+            api.tips(res)
+          } else {
+            this.show = true
+            this.contract = res
+          }
         })
       },
       getBaoquan () {
@@ -150,35 +147,30 @@
         // var a = document.createElement('a')
         // document.body.appendChild(a)
         // a.target = '_blank'
-        util.post('getBaoquan', {sign: api.serialize(data)}).then((res) => {
-          api.checkAjax(this, res, () => {
-            // newTab.location.href = 'https://www.baoquan.com/attestations/' + res
-            // a.click()
-            // document.body.removeChild(a)
-            if (this.isMobile) {
-              location.href = 'https://www.baoquan.com/mobile/attestations/' + res
-            } else {
-              location.href = 'https://www.baoquan.com/attestations/' + res
-            }
-          })
+        fetchApiData(this, 'getBaoquan', data, (res) => {
+          // newTab.location.href = 'https://www.baoquan.com/attestations/' + res
+          // a.click()
+          // document.body.removeChild(a)
+          if (this.isMobile) {
+            location.href = 'https://www.baoquan.com/mobile/attestations/' + res
+          } else {
+            location.href = 'https://www.baoquan.com/attestations/' + res
+          }
         })
       },
       getData () {
         if (this.token !== 0 && this.orderId) {
-          var self = this
           var requestUrl = this.requestUrl[this.orderType]
           var data = this.orderType !== 1 ? {token: this.token, order_id: this.orderId} : {token: this.token, orderid: this.orderId}
-          util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.data = res
-              self.processStatus = res.status === 8 ? 3 : 1
-              if (res.miner) {
-                self.data = Object.assign(self.data, res.miner)
-              }
-              if (res.user_addr) {
-                self.data = Object.assign(self.data, res.user_addr)
-              }
-            })
+          fetchApiData(this, requestUrl, data, (res) => {
+            this.data = res
+            this.processStatus = res.status === 8 ? 3 : 1
+            if (res.miner) {
+              this.data = Object.assign(this.data, res.miner)
+            }
+            if (res.user_addr) {
+              this.data = Object.assign(this.data, res.user_addr)
+            }
           })
         } else {
           setTimeout(() => {

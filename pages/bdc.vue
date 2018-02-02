@@ -41,9 +41,9 @@
           <div class="overflow">
             <img class="float_left" :src="item.bdc_img_arr[0]" alt="">
             <div class="float_left tip">
-              <div class="line"v-for="params in item.params">
-                <span>{{params.name}}</span>
-                {{params.value}}
+              <div class="line"v-for="params,k in bcdParamsLists">
+                <span>{{params}}</span>
+                {{item[k]}}
               </div>
             </div>
           </div>
@@ -65,9 +65,9 @@
       <div class="card" v-for="item in list">
         <span class="title">-{{item.bdc_name}}-</span>
         <img :src="item.bdc_img_arr[0]">
-        <div v-for="params in item.params" class="line">
-          <span class="name">{{params.name}}</span>
-          <span class="value">{{params.value}}</span>
+        <div v-for="params,k in bcdParamsLists" class="line">
+          <span class="name">{{params}}</span>
+          <span class="value">{{item[k]}}</span>
         </div>
       </div>
       <button class="apply">
@@ -79,7 +79,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import util, { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import { bdc } from '@/util/form'
@@ -91,13 +91,13 @@
     data () {
       return {
         form: bdc,
-        bcdParamsLists: [
-          {name: '供电类型', field: 'bdc_electric_type', value: ''},
-          {name: '散热方式', field: 'bdc_radiating_type', value: ''},
-          {name: '支持服务器', field: 'bdc_Mills_type', value: ''},
-          {name: '机房规模', field: 'bdc_scope', value: ''},
-          {name: '所在区域', field: 'bdc_address', value: ''}
-        ],
+        bcdParamsLists: {
+          bdc_electric_type: '供电类型',
+          bdc_radiating_type: '散热方式',
+          bdc_Mills_type: '支持服务器',
+          bdc_scope: '机房规模',
+          bdc_address: '所在区域'
+        },
         text: 'BDC是平台整合优质品牌商与分销商，通过平台的优势及服务以吸引广大消费者的一种形式，算力网通过自身的优势整合筛选出行业内优质合规的BDC机房，算力服务器生产商，为算力爱好者提供算力服务器托管，算力服务器采购，算力服务器租赁等服务，打通算力及衍生商品产业链的完整交易，做到平台，供应商，消费者三方互惠互利。',
         article: {
           title: 'Blockchain Data Center',
@@ -120,19 +120,16 @@
     },
     methods: {
       submit (e) {
-        let self = this
         var form = e.target
         var data = api.checkForm(form, 1)
         if (!data) return false
         form.btn.setAttribute('disabled', true)
-        util.post('depositMessage', {sign: api.serialize(Object.assign(data, {token: this.token}))}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.success = true
-            setTimeout(function () {
-              window.location.reload()
-            }, 3000)
-          }, form.btn)
-        })
+        fetchApiData(this, 'depositMessage', Object.assign(data, {token: this.token}), (res) => {
+          this.success = true
+          setTimeout(function () {
+            window.location.reload()
+          }, 3000)
+        }, form.btn)
       },
       goApply () {
         if (this.list.length) {
@@ -143,21 +140,13 @@
       }
     },
     mounted () {
-      let self = this
-      util.post('bdcinfoList', {sign: 'token=0'}).then(function (data) {
-        self.list = data
-        var options = []
-        for (let i = 0, len = self.list.length; i < len; i++) {
-          self.list[i].params = []
-          options[i] = {id: data[i].id, item: data[i].bdc_name}
-          for (let j = 0, paramsLen = self.bcdParamsLists.length; j < paramsLen; j++) {
-            self.list[i].params.push({
-              name: self.bcdParamsLists[j]['name'],
-              value: data[i][self.bcdParamsLists[j]['field']]
-            })
-          }
+      util.post('bdcinfoList', {token: 0}).then((data) => {
+        this.list = data.msg
+        let options = []
+        for (let i = 0, len = this.list.length; i < len; i++) {
+          options[i] = {id: this.list[i].id, item: this.list[i].bdc_name}
         }
-        self.form[3].option = options
+        this.form[3].option = options
       })
     },
     computed: {

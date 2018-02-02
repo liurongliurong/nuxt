@@ -12,34 +12,15 @@ let api = axios.create({
   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
   responseType: 'json'
 })
-// 修改返回数据格式
+
 api.defaults.transformResponse = (res) => {
   if (typeof res === 'string') {
     res = JSON.parse(res)
   }
-  if (res.code === '1000') {
-    return res.msg
-  } else if (res.code === '600001') {
-    return 'repeatLogin'
-  } else if (res.code === '100001') {
-    return 'overtime'
-  } else {
-    return res
-  }
-}
-
-api.defaults.validateStatus = (status) => {
-  return true
-  // return status >= 200 && status < 300
+  return res
 }
 
 api.interceptors.response.use(res => {
-  // console.log(res)
-  // if (res.status) {
-  //   return res.data
-  // }
-  // return res
-  // console.log(res)
   if (res.status >= 200 && res.status < 300) {
     return res.data
   }
@@ -49,19 +30,42 @@ api.interceptors.response.use(res => {
 })
 
 api.interceptors.request.use(config => {
-  if (config.data) {
-    if (config.data['sign']) {
-      if (window.btoa) {
-        config.data['sign'] = window.btoa(config.data['sign'])
-      } else {
-        config.data['sign'] = util.btoa(config.data['sign'])
-      }
-    }
-    config.data = qs.stringify(config.data)
-  }
+  config.data = qs.stringify(config.data)
+  config.data = window.btoa ? window.btoa(config.data) : util.btoa(config.data)
+  config.data = qs.stringify({sign: config.data})
   return config
 }, error => {
   return Promise.reject(error)
 })
 
 export default api
+
+function callbackLogin (obj) {
+  obj.$router.push({name: 'auth-login'})
+  obj.$store.commit('LOGOUT')
+}
+
+export function fetchApiData (obj, url, data, callback, btn, failback) {
+  api.post(url, data).then((res) => {
+    if (res.code === '1000') {
+      callback(res.msg)
+    } else if (res.code === '600001') {
+      util.tips('您的账号在别处登录', () => {
+        callbackLogin(obj)
+      })
+    } else if (res.code === '100001') {
+      util.tips('账户登录超时，请重新登录', () => {
+        callbackLogin(obj)
+      })
+    } else {
+      util.tips(res.msg, () => {
+        if (btn) {
+          btn.removeAttribute('disabled')
+        }
+        if (failback) {
+          failback()
+        }
+      })
+    }
+  })
+}

@@ -19,7 +19,7 @@
       <Pager :len="len" :now="now" @setPage="setPage"></Pager>
     </div>
     <scroll-list :content="content" :loading="loading" :noData="!list.length" :showContent="showContent" @loadMore="loadMore" @back="showContent=false" v-else-if="isMobile === 1">
-      <div class="evaluate_item" v-for="item, k in list" :key="k" @click="clickcontent(item.id)">
+      <div class="evaluate_item" v-for="item, k in list" :key="k" @click="getContent(item.id)">
         <h4>{{ item.title}}</h4>
         <p>{{item.resume}}</p>
         <div class="opacity">
@@ -33,8 +33,8 @@
 
 <script>
   import util from '@/util/index'
-  import api from '@/util/function'
   import { mapState } from 'vuex'
+  import { getMobileList, loadMore, setPage, getContent } from '@/service/article'
   import pageFrame from '@/components/common/PageFrame'
   import Pager from '@/components/common/Pager'
   import ScrollList from '@/components/common/ScrollList'
@@ -64,58 +64,17 @@
     },
     methods: {
       getList (more) {
-        util.post('NewsReviewList', {sign: api.serialize({token: 0, page: this.now})}).then((res) => {
-          api.checkAjax(this, res, () => {
-            if (more) {
-              for (let i = 0, len = res.list.length; i < len; i++) {
-                this.list.push(res.list[i])
-              }
-            } else {
-              this.list = res.list
-              this.allid = res.id_list
-              localStorage.setItem('all_id', JSON.stringify(this.allid))
-            }
-            if (this.now > 1) return false
-            this.len = Math.ceil(res.total / 5)
-          })
+        util.post('NewsReviewList', {token: 0, page: this.now}).then((res) => {
+          getMobileList(this, more, res.msg, 5)
         })
-      },
-      setPage (n) {
-        this.now = n
-        if (!this.isMobile) {
-          this.getList()
-        }
       },
       goDetail (id) {
         localStorage.setItem('icon_id', JSON.stringify([id]))
         this.$router.push({path: '/equipmentEvaluate/detail/'})
       },
-      setPage (n) {
-        this.now = n
-        if (!this.isMobile) {
-          this.getList()
-        }
-      },
-      loadMore () {
-        if (this.now < this.len) {
-          this.loading = true
-          this.now++
-          this.getList(1)
-          setTimeout(() => {
-            this.loading = false
-          }, 1000)
-        } else {
-          this.loading = false
-        }
-      },
-      clickcontent (id) {
-        this.showContent = true
-        util.post('content', {sign: 'token=0&news_id=' + id}).then((res) => {
-          api.checkAjax(this, res, () => {
-            this.content = res
-          })
-        })
-      }
+      setPage,
+      loadMore,
+      getContent
     },
     mounted () {
       this.getList()

@@ -62,7 +62,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import { getIncome, withdrawals } from '@/util/form'
@@ -92,24 +92,18 @@
     methods: {
       getData () {
         if (this.token !== 0 && this.hashType.length) {
-          util.post('showCoinData', {sign: 'token=' + this.token}).then((res) => {
-            api.checkAjax(this, res, () => {
-              this.qwsl = res[0]
-              this.output = res[0].output.split(" ")[0]
-            })
+          fetchApiData(this, 'showCoinData', {token: this.token}, (res) => {
+            this.qwsl = res[0]
+            this.output = res[0].output.split(" ")[0]
           })
-          util.post('user_account', {sign: 'token=' + this.token}).then((res) => {
-            api.checkAjax(this, res, () => {
-              this.property = res
-            })
+          fetchApiData(this, 'user_account', {token: this.token}, (res) => {
+            this.property = res
           })
-          util.post('showIncome', {sign: api.serialize({token: this.token, product_hash_type: 1})}).then((res) => {
-            api.checkAjax(self, res, () => {
-              let chart = res.income.filter((v) => {
-                return v > 0
-              })
-              this.showIncome = chart.length > 0
+          fetchApiData(this, 'showIncome', {token: this.token, product_hash_type: 1}, (res) => {
+            let chart = res.income.filter((v) => {
+              return v > 0
             })
+            this.showIncome = chart.length > 0
           })
         } else {
           setTimeout(() => {
@@ -155,21 +149,19 @@
           this.$router.push({name: 'mobile-recharge'})
           return false
         }
-        util.post(requestUrl, {sign: api.serialize(data)}).then((res) => {
-          api.checkAjax(this, res, () => {
-            if (k === 1) {
-              this.fee = res.withdraw_coin_fee
-              this.getIncome[1].value2 = res.coin_account
-              // this.title = '提取收益'
-              this.form = this.getIncome
-            } else if (k === 2) {
-              this.fee = res.withdraw_fee
-              this.withdrawals[0].value2 = parseInt(res.balance_account)
-              // this.title = '提取现金'
-              this.form = this.withdrawals
-            }
-            this.edit = k
-          })
+        fetchApiData(this, requestUrl, data, (res) => {
+          if (k === 1) {
+            this.fee = res.withdraw_coin_fee
+            this.getIncome[1].value2 = res.coin_account
+            // this.title = '提取收益'
+            this.form = this.getIncome
+          } else if (k === 2) {
+            this.fee = res.withdraw_fee
+            this.withdrawals[0].value2 = parseInt(res.balance_account)
+            // this.title = '提取现金'
+            this.form = this.withdrawals
+          }
+          this.edit = k
         })
       },
       submit () {
@@ -187,17 +179,14 @@
           url = 'withdrawCoin'
           tipsStr = '提币成功'
         }
-        var self = this
-        util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.edit = 0
-            api.tips(tipsStr, () => {
-              if (this.edit === 2) {
-                window.location.reload()
-              }
-            })
-          }, form.btn)
-        })
+        fetchApiData(this, url, Object.assign(data, sendData), (res) => {
+          this.edit = 0
+          api.tips(tipsStr, () => {
+            if (this.edit === 2) {
+              window.location.reload()
+            }
+          })
+        }, form.btn)
       },
       onChange (obj) {
         var amount = 0

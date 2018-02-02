@@ -47,8 +47,7 @@
 </template>
 
 <script>
-  import util from '@/util'
-  import api from '@/util/function'
+  import { fetchApiData } from '@/util'
   import { mapState } from 'vuex'
   import Pager from '@/components/common/Pager'
   export default {
@@ -71,25 +70,20 @@
     methods: {
       fetchData (sort) {
         this.nowEdit = sort || 0
-        var self = this
         this.list = []
-        var data = {token: this.token, product_hash_type: this.nowEdit + 1, page: this.now, sort: ''}
-        util.post('userCoinList', {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.list = res.value_list
-            self.showImg = !res.value_list.length
-            if (self.now > 1) return false
-            self.len = Math.ceil(res.total_num / 15)
-          })
+        var nowHash = this.hashType[this.nowEdit]
+        var data = {token: this.token, product_hash_type: nowHash.id, page: this.now, sort: ''}
+        fetchApiData(this, 'userCoinList', data, (res) => {
+          this.list = res.value_list
+          this.showImg = !res.value_list.length
+          if (this.now > 1) return false
+          this.len = Math.ceil(res.total_num / 15)
         })
       },
       getData () {
-        if (this.token !== 0) {
-          var self = this
-          util.post('userCoin', {sign: api.serialize({token: this.token, product_hash_type: '1'})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.data = res
-            })
+        if (this.token !== 0 && this.hashType.length) {
+          fetchApiData(this, 'userCoin', {token: this.token, product_hash_type: '1'}, (res) => {
+            this.data = res
           })
           this.fetchData()
         } else {

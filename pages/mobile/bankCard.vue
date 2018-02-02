@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { card } from '@/util/form'
   import cardList from '@/util/card'
@@ -38,32 +38,28 @@
         var form = e.target
         var data = api.checkForm(form, 1)
         if (!data) return false
-        util.post('BankCard', {sign: api.serialize(Object.assign(data, {token: this.token}))}).then((res) => {
-          api.checkAjax(this, res, () => {
-            api.tips('银行卡绑定已提交，请您耐心等待几秒即可看到认证结果', () => {
-              setTimeout(() => {
-                this.requestData(() => {
-                  api.tips('恭喜您银行卡绑定成功', () => {
-                    if (this.callUrl) {
-                      this.$router.push({path: this.callUrl})
-                      this.$store.commit('SET_URL', '')
-                    }
-                  })
+        fetchApiData(this, 'BankCard', Object.assign(data, {token: this.token}), (res) => {
+          api.tips('银行卡绑定已提交，请您耐心等待几秒即可看到认证结果', () => {
+            setTimeout(() => {
+              this.requestData(() => {
+                api.tips('恭喜您银行卡绑定成功', () => {
+                  if (this.callUrl) {
+                    this.$router.push({path: this.callUrl})
+                    this.$store.commit('SET_URL', '')
+                  }
                 })
-              }, 7000)
-            })
-            this.closeMask()
+              })
+            }, 5000)
           })
+          this.closeMask()
         })
       },
       requestData (callback) {
-        util.post('show_bankcard', {sign: api.serialize({token: this.token})}).then((res) => {
-          api.checkAjax(this, res, () => {
-            this.$store.commit('SET_INFO', {bank_card: res})
-            callback()
-          }, '', () => {
-            this.$store.commit('SET_INFO', {bank_card: ''})
-          })
+        fetchApiData(this, 'show_bankcard', {token: this.token}, (res) => {
+          this.$store.commit('SET_INFO', {bank_card: res})
+          callback()
+        }, '', () => {
+          this.$store.commit('SET_INFO', {bank_card: ''})
         })
       },
       openMask () {

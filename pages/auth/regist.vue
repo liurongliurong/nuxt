@@ -34,7 +34,7 @@
 
 <script>
   import { mapState } from 'vuex'
-  import util from '@/util/index'
+  import util, { fetchApiData } from '@/util/index'
   import api from '@/util/function'
   import { auth } from '@/util/form'
   import md5 from 'js-md5'
@@ -80,22 +80,19 @@
         data.password = md5(data.password)
         data.password1 = md5(data.password1)
         form.btn.setAttribute('disabled', true)
-        var self = this
-        util.post('/register', {sign: api.serialize(Object.assign(data, {token: 0}))}).then(res => {
-          api.checkAjax(self, res, () => {
-            api.tips('恭喜您注册成功！', () => {
-              if (self.isMobile) {
-                self.$router.push({name: 'index'})
-              } else {
-                self.$store.commit('SET_TOKEN', Object.assign(res, {mobile: data.mobile}))
-                util.post('getAll', {sign: api.serialize(res)}).then(function (data) {
-                  self.$store.commit('SET_INFO', data)
-                })
-                self.registed = true
-              }
-            })
-          }, form.btn)
-        })
+        fetchApiData(this, 'register', Object.assign(data, {token: 0}), (res) => {
+          api.tips('恭喜您注册成功！', () => {
+            if (this.isMobile) {
+              this.$router.push({name: 'index'})
+            } else {
+              this.$store.commit('SET_TOKEN', Object.assign(res, {mobile: data.mobile}))
+              util.post('getAll', res).then((data) => {
+                this.$store.commit('SET_INFO', data.msg)
+              })
+              this.registed = true
+            }
+          })
+        }, form.btn)
       },
       closeMask () {
         this.show = false
@@ -106,19 +103,18 @@
       checkMobile (ele) {
         var value = ele.value
         var re = new RegExp('^1[34578][0-9]{9}$')
-        var self = this
         if (value && re.test(value)) {
-          util.post('checkMobile', {sign: 'token=0&mobile=' + value}).then(res => {
+          util.post('checkMobile', {token: 0, mobile: value}).then(res => {
             if (res.code === '2000') {
               api.setTips(ele, 'error')
               ele.setAttribute('data-error', 'true')
-              self.mobileStatus = false
-              if (self.isMobile) {
-                api.tips('该用户已存在')
+              this.mobileStatus = false
+              if (this.isMobile) {
+                api.tips(res.msg)
               }
             } else {
               ele.setAttribute('data-error', 'false')
-              self.mobileStatus = true
+              this.mobileStatus = true
             }
           })
         }
@@ -160,30 +156,24 @@
         var tipsStr = '实名认证已提交，请您耐心等待几秒即可看到认证结果'
         var tipsStr2 = '恭喜您实名认证成功'
         if (!data) return false
-        var self = this
-        util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            api.tips(tipsStr)
-            self.$store.commit('SET_INFO', {[val]: {status: 0}})
-            setTimeout(() => {
-              self.requestData(callbackUrl, sendData, val, () => {
-                api.tips(tipsStr2)
-              })
-            }, 7000)
-          })
+        fetchApiData(this, url, Object.assign(data, sendData), (res) => {
+          api.tips(tipsStr)
+          this.$store.commit('SET_INFO', {[val]: {status: 0}})
+          setTimeout(() => {
+            this.requestData(callbackUrl, sendData, val, () => {
+              api.tips(tipsStr2)
+            })
+          }, 7000)
         })
       },
       requestData (url, sendData, val, callback) {
-        var self = this
-        util.post(url, {sign: api.serialize(sendData)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.$store.commit('SET_INFO', {[val]: res})
-            if (callback) {
-              callback()
-            }
-          }, '', () => {
-            self.$store.commit('SET_INFO', {[val]: ''})
-          })
+        fetchApiData(this, url, sendData, (res) => {
+          this.$store.commit('SET_INFO', {[val]: res})
+          if (callback) {
+            callback()
+          }
+        }, '', () => {
+          this.$store.commit('SET_INFO', {[val]: ''})
         })
       }
     },

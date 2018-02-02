@@ -46,16 +46,15 @@
         if (n !== 'gotop') {
           this.show = n
         } else {
-          var self = this
-          this.timer = setInterval(function () {
+          this.timer = setInterval(() => {
             var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
             var ispeed = 0
             ispeed = Math.floor(-scrollTop / 2)
             document.documentElement.scrollTop = document.body.scrollTop = scrollTop + ispeed
             if (scrollTop === 0) {
-              clearInterval(self.timer)
+              clearInterval(this.timer)
             }
-            self.isTop = false
+            this.isTop = false
           }, 50)
         }
       },

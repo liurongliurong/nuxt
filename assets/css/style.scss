@@ -300,7 +300,6 @@
         &:after{
           content:attr(tips)
         }
-        @include mobile_hide
       }
     }
     input,.sel,.select{
@@ -370,6 +369,9 @@
       margin-bottom:0;
       &.disabled{
         background: #fff;
+      }
+      span.tips {
+        display: none !important;
       }
     }
   }

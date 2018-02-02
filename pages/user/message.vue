@@ -42,8 +42,7 @@
 </template>
 
 <script>
-  import util from '@/util'
-  import api from '@/util/function'
+  import { fetchApiData } from '@/util'
   import { mapState } from 'vuex'
   import Pager from '@/components/common/Pager'
   import Vue from 'vue'
@@ -78,30 +77,24 @@
         }
       },
       setRead (i) {
-        var self = this
-        util.post('isRead', {sign: api.serialize({token: this.token, is_read: 0})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.$router.push({name: 'user-message'})
-            self.fetchData()
-          })
+        fetchApiData(this, 'isRead', {token: this.token, is_read: 0}, (res) => {
+          this.$router.push({name: 'user-message'})
+          this.fetchData()
         })
       },
       fetchData (more) {
         if (this.token !== 0) {
-          var self = this
-          util.post('MessageList', {sign: api.serialize({token: this.token, page: this.now})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.$store.commit('SET_INFO', {unread_num: res.unread_num})
-              if (more) {
-                for (let i = 0, len = res.list.length; i < len; i++) {
-                  self.data.push(res.list[i])
-                }
-              } else {
-                self.data = res.list
+          fetchApiData(this, 'MessageList', {token: this.token, page: this.now}, (res) => {
+            this.$store.commit('SET_INFO', {unread_num: res.unread_num})
+            if (more) {
+              for (let i = 0, len = res.list.length; i < len; i++) {
+                this.data.push(res.list[i])
               }
-              if (self.now > 1) return false
-              self.len = Math.ceil(res.total_num / 15)
-            })
+            } else {
+              this.data = res.list
+            }
+            if (this.now > 1) return false
+            this.len = Math.ceil(res.total_num / 15)
           })
         } else {
           setTimeout(() => {
@@ -111,13 +104,10 @@
       },
       goDetail (id) {
         if (this.isMobile) {
-          var self = this
           var messageid = id
           this.contentShow = false
-          util.post('Messagecontent', {sign: api.serialize({token: this.token, message_id: messageid})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.content = res
-            })
+          fetchApiData(this, 'Messagecontent', {token: this.token, message_id: messageid}, (res) => {
+            this.content = res
           })
         } else {
           var info = JSON.parse(localStorage.getItem('info'))

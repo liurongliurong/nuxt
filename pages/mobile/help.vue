@@ -21,7 +21,6 @@
 
 <script>
   import util from '@/util'
-  import api from '@/util/function'
   import { mapState } from 'vuex'
   export default {
     name: 'Issues',
@@ -40,20 +39,18 @@
           return false
         }
         this.list = []
-        var self = this
-        util.post('getHelp', {sign: api.serialize({token: this.token, help_class_id: id})}).then(function (res) {
-          self.list = res
+        util.post('getHelp', {token: this.token, help_class_id: id}).then((res) => {
+          this.list = res.msg
         })
         setTimeout(() => {
           this.$store.commit('SET_NUM', k)
         }, 0)
       },
       detailcontent (id) {
-        var self = this
         var helpid = id
         this.show = false
-        util.post('getHelpContent', {sign: api.serialize({token: this.token, help_id: helpid})}).then(function (res) {
-          self.nowItem = res
+        util.post('getHelpContent', {token: this.token, help_id: helpid}).then((res) => {
+          this.nowItem = res.msg
         })
       },
       back () {
@@ -61,10 +58,9 @@
       }
     },
     mounted () {
-      var self = this
-      util.post('getHelpClass', {sign: api.serialize({token: this.token})}).then(function (res) {
-        self.nav = res
-        self.fetchData(res[self.num || 0] && res[self.num || 0].help_class_id, self.num || 0)
+      util.post('getHelpClass', {token: this.token}).then((res) => {
+        this.nav = res.msg
+        this.fetchData(res.msg[this.num || 0] && res.msg[this.num || 0].help_class_id, this.num || 0)
       })
     },
     computed: {

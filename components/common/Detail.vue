@@ -13,8 +13,7 @@
 </template>
 
 <script>
-  import util from '@/util'
-  import api from '@/util/function'
+  import { fetchApiData } from '@/util'
   export default {
     data () {
       return {
@@ -31,15 +30,13 @@
         var data = ''
         if (this.$route.path === '/currency/detail') {
           url = 'showCoinInfoDetail'
-          data = 'token=0&coin_id=' + this.params1
+          data = {token: 0, coin_id: this.params1}
         } else {
           url = 'content'
-          data = 'token=0&news_id=' + this.params1
+          data = {token: 0, news_id: this.params1}
         }
-        util.post(url, {sign: data}).then((res) => {
-          api.checkAjax(this, res, () => {
-            this.content = res
-          })
+        fetchApiData(this, url, data, (res) => {
+          this.content = res
         })
       },
       clickcontent (type) {
@@ -68,12 +65,10 @@
     mounted () {
       var p = localStorage.getItem('icon_id')
       var id_lists = JSON.parse(localStorage.getItem('all_id'))
-      console.log(id_lists)
       if (p) {
         p = JSON.parse(p)
         this.params1 = p[0]
       }
-      console.log(this.$route.path)
       this.contentDetail()
       if (this.$route.path === '/currency/detail') {
         return false

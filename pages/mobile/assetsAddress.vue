@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { address } from '@/util/form'
   import { mapState } from 'vuex'
@@ -47,24 +47,20 @@
         var form = e.target
         var data = api.checkForm(form, 1)
         if (!data) return false
-        util.post('bindAddress', {sign: api.serialize(Object.assign(data, {token: this.token}))}).then((res) => {
-          api.checkAjax(this, res, () => {
-            api.tips('设置成功', () => {
-              if (this.callUrl) {
-                this.$router.push({path: this.callUrl})
-                this.$store.commit('SET_URL', '')
-              }
-              this.requestData()
-            })
-            this.closeMask()
+        fetchApiData(this, 'bindAddress', Object.assign(data, {token: this.token}), (res) => {
+          api.tips('设置成功', () => {
+            if (this.callUrl) {
+              this.$router.push({path: this.callUrl})
+              this.$store.commit('SET_URL', '')
+            }
+            this.requestData()
           })
+          this.closeMask()
         })
       },
       requestData (callback) {
-        util.post('show_Address', {sign: api.serialize({token: this.token})}).then((res) => {
-          api.checkAjax(this, res, () => {
-            this.$store.commit('SET_INFO', {address: res})
-          })
+        fetchApiData(this, 'show_Address', {token: this.token}, (res) => {
+          this.$store.commit('SET_INFO', {address: res})
         })
       },
       openMask (n,v) {

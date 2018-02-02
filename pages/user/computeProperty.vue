@@ -120,7 +120,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import { getIncome, withdrawals } from '@/util/form'
@@ -189,21 +189,18 @@
           requestUrl = 'showWithdraw'
           data = {token: this.token}
         }
-        var self = this
-        util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            if (str === 'withdrawals') {
-              self.fee = res.withdraw_fee
-              self.form.withdrawals[0].value2 = parseInt(res.balance_account)
-            } else if (str === 'getIncome') {
-              self.fee = res.withdraw_coin_fee
-              self.form.getIncome[1].value2 = res.coin_account
-            }
-            window.scroll(0, 0)
-            document.body.style.overflow = 'hidden'
-            self.editText = title
-            self.edit = str
-          })
+        fetchApiData(this, requestUrl, data, (res) => {
+          if (str === 'withdrawals') {
+            this.fee = res.withdraw_fee
+            this.form.withdrawals[0].value2 = parseInt(res.balance_account)
+          } else if (str === 'getIncome') {
+            this.fee = res.withdraw_coin_fee
+            this.form.getIncome[1].value2 = res.coin_account
+          }
+          window.scroll(0, 0)
+          document.body.style.overflow = 'hidden'
+          this.editText = title
+          this.edit = str
         })
       },
       closeMask () {
@@ -215,25 +212,18 @@
         this.getList()
       },
       getList () {
-        var self = this
         var nowHash = this.hashType[this.nowEdit]
         this.form.getIncome[0].value = nowHash.name
         this.form.getIncome[1].tipsUnit = nowHash.name.toLowerCase()
         var sendData = {token: this.token, product_hash_type: (nowHash && nowHash.id) || '1'}
-        util.post('myHashAccount', {sign: api.serialize(sendData)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.computeData = res
-          })
+        fetchApiData(this, 'myHashAccount', sendData, (res) => {
+          this.computeData = res
         })
-        util.post('hashAsset', {sign: api.serialize(sendData)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.dataProperty = res
-          })
+        fetchApiData(this, 'hashAsset', sendData, (res) => {
+          this.dataProperty = res
         })
-        util.post('hashFund', {sign: api.serialize(sendData)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.dataFund = res
-          })
+        fetchApiData(this, 'hashFund', sendData, (res) => {
+          this.dataFund = res
         })
       },
       submit (e) {
@@ -254,15 +244,12 @@
         }
         if (!data) return false
         form.btn.setAttribute('disabled', true)
-        var self = this
-        util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.closeMask()
-            api.tips(tipsStr, () => {
-              window.location.reload()
-            })
-          }, form.btn)
-        })
+        fetchApiData(this, url, Object.assign(data, sendData), (res) => {
+          this.closeMask()
+          api.tips(tipsStr, () => {
+            window.location.reload()
+          })
+        }, form.btn)
       },
       onChange (obj) {
         var value = obj.e.target.value
@@ -274,11 +261,8 @@
       },
       getData () {
         if (this.token !== 0 && this.hashType.length) {
-          var self = this
-          util.post('myAccount', {sign: api.serialize({token: this.token})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.moneyData = {...res, account: +res.freeze_account + (+res.balance_account)}
-            })
+          fetchApiData(this, 'myAccount', {token: this.token}, (res) => {
+            this.moneyData = {...res, account: +res.freeze_account + (+res.balance_account)}
           })
           this.getList()
         } else {

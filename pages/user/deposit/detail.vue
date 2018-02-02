@@ -15,7 +15,7 @@
   </section>
 </template>
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   export default {
@@ -28,15 +28,12 @@
     },
     methods: {
       items (params) {
-        var self = this
         if (this.token !== 0) {
-          util.post('getBdcMessage', {sign: api.serialize({token: this.token})}).then((res) => {
-            api.checkAjax(this, res, () => {
-              var obj = res.filter((v) => {
-                return params === v.id
-              })[0]
-              this.content = obj
-            })
+          fetchApiData(this, 'getBdcMessage', {token: this.token}, (res) => {
+            var obj = res.filter((v) => {
+              return params === v.id
+            })[0]
+            this.content = obj
           })
         } else {
           setTimeout(() => {

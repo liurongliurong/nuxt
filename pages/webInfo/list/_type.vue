@@ -13,7 +13,6 @@
 
 <script>
   import util from '@/util'
-  import api from '@/util/function'
   import Pager from '@/components/common/Pager'
   export default {
     components: {
@@ -33,15 +32,12 @@
       getList () {
         var n = this.$route.params.type
         var url = this.requestUrl[n]
-        var self = this
-        util.post(url, {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.lists = res.list
-            self.allid = res.id_list
-            localStorage.setItem('all_id', JSON.stringify(self.allid))
-            if (self.now > 1) return false
-             self.len = Math.ceil(res.total / 10)
-          })
+        util.post(url, {token: 0, page: this.now}).then((res) => {
+          this.lists = res.msg.list
+          this.allid = res.msg.id_list
+          localStorage.setItem('all_id', JSON.stringify(this.allid))
+          if (this.now > 1) return false
+           this.len = Math.ceil(res.msg.total / 10)
         })
       },
       goDetail (id) {

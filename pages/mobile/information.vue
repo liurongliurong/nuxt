@@ -25,7 +25,6 @@
 
 <script>
   import util from '../../util'
-  import api from '../../util/function'
   export default {
     data () {
       return {
@@ -37,24 +36,18 @@
     },
     methods: {
       judge () {
-        var self = this
-        util.post('suanliMessage', {sign: 'token=0'}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.lists = res
-          })
+        util.post('suanliMessage', {token: 0}).then((res) => {
+          this.lists = res.msg
         })
       },
       back () {
         window.location.reload()
       },
       detailcli (id) {
-        var self = this
         var newsid = id
         this.status = false
-        util.post('content', {sign: 'token=0&news_id=' + newsid}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.content = res
-          })
+        util.post('content', {token: 0, news_id: newsid}).then((res) => {
+          this.content = res.msg
         })
       }
     },

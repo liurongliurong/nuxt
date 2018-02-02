@@ -31,8 +31,7 @@
 </template>
 
 <script>
-  import util from '@/util'
-  import api from '@/util/function'
+  import { fetchApiData } from '@/util'
   import { mapState } from 'vuex'
   export default {
     data () {
@@ -45,12 +44,9 @@
     methods: {
       items () {
         if (this.token !== 0) {
-          var self = this
-          util.post('getBdcMessage', {sign: api.serialize({token: this.token})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.item = res
-              self.showImg = !res.length
-            })
+          fetchApiData(this, 'getBdcMessage', {token: this.token}, (res) => {
+            this.item = res
+            this.showImg = !res.length
           })
         } else {
           setTimeout(() => {

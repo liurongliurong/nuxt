@@ -27,14 +27,14 @@
             </tr>
           </tbody>
         </table>
-        <router-link class="get_more" to="/minerShop/miner/2">查看更多云算力 ></router-link>
+        <router-link class="get_more" to="/minerShop/cloudCompute">查看更多云算力 ></router-link>
       </template>
     </div>
     <div class="box">
       <div class="miner_list_box">
         <MinerItem v-for="n,k in minerData" :n="n" :key="k"></MinerItem>
       </div>
-      <router-link class="get_more" to="/minerShop/miner/1">查看更多算力服务器 ></router-link>
+      <router-link class="get_more" to="/minerShop/miner">查看更多算力服务器 ></router-link>
     </div>
   </div>
 </template>
@@ -65,21 +65,12 @@
       }
     },
     mounted () {
-      var self = this
-      util.post('product_top_list', {sign: api.serialize({token: this.token})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.cloudMinerData = res
-          self.total = res.length
-        })
-      }).catch(res => {
-        console.log(res)
+      util.post('product_top_list', {token: this.token}).then((res) => {
+        this.cloudMinerData = res
+        this.total = res.length
       })
-      util.post('showTopMiner', {sign: api.serialize({token: this.token})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.minerData = res
-        })
-      }).catch(res => {
-        console.log(res)
+      util.post('showTopMiner', {token: this.token}).then((res) => {
+        this.minerData = res.msg
       })
     },
     computed: {

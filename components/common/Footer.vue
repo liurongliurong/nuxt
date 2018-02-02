@@ -63,7 +63,7 @@
     data () {
       return {
         link: {'关于我们': '/webInfo/aboutUs', '常见问题': '/webInfo/issues/list'},
-        service: {'算力服务器': '/minerShop/miner/1', '云算力': '/minerShop/miner/2', 'BDC托管': '/bdc', '产业资讯': '/industryInformation'},
+        service: {'算力服务器': '/minerShop/miner', '云算力': '/minerShop/cloudCompute', 'BDC托管': '/bdc', '产业资讯': '/industryInformation'},
         partner: [],
         info: {'网站动态': '/webInfo/list/website', '产品公告': '/webInfo/list/product'},
         items: [
@@ -93,9 +93,8 @@
     },
     methods: {
       getFriendLinks () {
-        util.post('friendlinkList', {sign: 'token=0'}).then(
-          res => {
-            this.partner = res
+        util.post('friendlinkList', {token: 0}).then( (res) => {
+          this.partner = res.msg
         })
       },
       goPage (link) {

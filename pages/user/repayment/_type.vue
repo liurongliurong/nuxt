@@ -65,7 +65,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import Pager from '@/components/common/Pager'
@@ -93,15 +93,12 @@
       },
       items () {
         if (this.token !== 0) {
-          var self = this
           this.item = []
-          util.post('getLoanList', {sign: api.serialize({token: this.token, status: this.status, page: this.now})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.item = res.list
-              self.showImg = !res.total_num
-              if (self.now > 1) return false
-              self.len = Math.ceil(res.total_num / 15)
-            })
+          fetchApiData(this, 'getLoanList', {token: this.token, status: this.status, page: this.now}, (res) => {
+            this.item = res.list
+            this.showImg = !res.total_num
+            if (this.now > 1) return false
+            this.len = Math.ceil(res.total_num / 15)
           })
         } else {
           setTimeout(() => {

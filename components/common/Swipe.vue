@@ -69,11 +69,10 @@
         var h = window.innerHeight
         // this.offsetX = e.clientX / w * 40
         // this.offsetY = e.clientY / h * 20
-        var self = this
         setTimeout(() => {
           if (this.t === '' && this.autoPlay) {
-            self.t = setInterval(() => {
-              self.next()
+            this.t = setInterval(() => {
+              this.next()
             }, this.autoPlay)
           }
         }, 3000)

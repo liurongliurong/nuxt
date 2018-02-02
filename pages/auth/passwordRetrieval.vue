@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import util from '@/util/index'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import md5 from 'js-md5'
   import { mapState } from 'vuex'
@@ -46,28 +46,24 @@
         var form = e.target
         var data = api.checkForm(form, this.isMobile)
         if (!data) return false
-        var self = this
         if (n === 1) {
-          util.post('valid_code', {sign: api.serialize(Object.assign(data, {token: this.token}))}).then(res => {
-            api.checkAjax(self, res, () => {
-              self.mobile = data.mobile
-              self.code_id = res.id
-              self.valid_code = res.valid_code
-              self.next = true
-              api.clearForm(form)
-            })
+          fetchApiData(this, 'valid_code', Object.assign(data, {token: this.token}), (res) => {
+            this.mobile = data.mobile
+            this.code_id = res.id
+            this.valid_code = res.valid_code
+            this.next = true
+            api.clearForm(form)
           })
         } else {
           form.btn.setAttribute('disabled', true)
           data.password = md5(data.password)
           data.password1 = md5(data.password1)
-          util.post('forgitPwd', {sign: api.serialize(Object.assign(data, {token: this.token, valid_code: this.valid_code, code_id: this.code_id, mobile: this.mobile}))}).then(res => {
-            api.checkAjax(self, res, () => {
-              api.tips('重置密码成功', () => {
-                self.$router.push({name: 'auth-login'})
-              })
-            }, form.btn)
-          })
+          let sendData = Object.assign(data, {token: this.token, valid_code: this.valid_code, code_id: this.code_id, mobile: this.mobile})
+          fetchApiData(this, 'forgitPwd', sendData, (res) => {
+            api.tips('重置密码成功', () => {
+              this.$router.push({name: 'auth-login'})
+            })
+          }, form.btn)
         }
       }
     },

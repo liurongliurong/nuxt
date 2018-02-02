@@ -35,23 +35,23 @@
   import { mapState } from 'vuex'
   export default {
     props: {
-      sort: {
-        type: Array
-      },
       sortNav: {
         type: Array
       },
       status: {
         type: Number
-      },
-      sortText: {
-        type: String
       }
     },
     data () {
       return {
+        sort: [
+          {title: '价格', option: ['price_asc', 'price_desc']},
+          {title: '算力', option: ['base_asc','base_desc']},
+          {title: '剩余总数', option: ['num_asc', 'num_desc']}
+        ],
         edit: -1,
-        no: -1
+        no: -1,
+        sortText: ''
       }
     },
     methods: {
@@ -67,9 +67,12 @@
         }
         this.edit = (n >= 0) ? n : -1
         let param = this.sort[n] ? this.sort[n].option[this.no] : ''
+        this.sortText = param
         this.$emit('fetchData', param)
       },
       setStatus (n) {
+        this.sortText = ''
+        this.edit = -1
         this.no = -1
         this.$emit('setStatus', n)
       }

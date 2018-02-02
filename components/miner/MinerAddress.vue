@@ -15,7 +15,7 @@
 
 <script>
   import api from '@/util/function'
-  import util from '@/util/index'
+  import { fetchApiData } from '@/util/index'
   import { mapState } from 'vuex'
   export default {
     props: {
@@ -36,12 +36,9 @@
         this.$emit('selectAddress', k)
       },
       setDefault (id) {
-        var self = this
-        util.post('setDefault', {sign: api.serialize({token: this.token, post_id: id})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            api.tips('设置成功')
-            self.$emit('getAddress')
-          })
+        fetchApiData(this, 'setDefault', {token: this.token, post_id: id}, (res) => {
+          api.tips('设置成功')
+          this.$emit('getAddress')
         })
       },
       openMask (k) {

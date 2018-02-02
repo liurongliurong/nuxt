@@ -17,7 +17,6 @@
 
 <script>
   import util from '@/util/index'
-  import api from '@/util/function'
   import Pager from '@/components/common/Pager'
   import { mapState } from 'vuex'
   import pageFrame from '@/components/common/PageFrame'
@@ -45,18 +44,13 @@
     },
     methods: {
       getList () {
-        var self = this
-        util.post('NewsMuseumList', {sign: api.serialize({token: 0, page: this.now})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.museum = res.list
-            self.allid = res.id_list
-            localStorage.setItem('all_id', JSON.stringify(self.allid))
-            self.showImg = !res.total
-            if (self.now > 1) return false
-            self.len = Math.ceil(res.total / 5)
-          })
-        }).catch(res => {
-          console.log(res)
+        util.post('NewsMuseumList', {token: 0, page: this.now}).then((res) => {
+          this.museum = res.msg.list
+          this.allid = res.msg.id_list
+          localStorage.setItem('all_id', JSON.stringify(this.allid))
+          this.showImg = !res.msg.total
+          if (this.now > 1) return false
+          this.len = Math.ceil(res.msg.total / 5)
         })
       },
       goDetail (id) {

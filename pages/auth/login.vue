@@ -24,7 +24,7 @@
 </template>
 
 <script>
-  import util from '@/util/index'
+  import util, { fetchApiData } from '@/util'
   import md5 from 'js-md5'
   import api from '@/util/function'
   import FormField from '@/components/common/FormField'
@@ -48,26 +48,21 @@
         var data = api.checkForm(form, this.isMobile)
         if (!data) return false
         data.password = md5(data.password)
-        var self = this
         form.btn.setAttribute('disabled', true)
-        util.post('login', {sign: api.serialize(Object.assign(data, {token: 0}))}).then(res => {
-          api.checkAjax(self, res, () => {
-            self.$store.commit('SET_TOKEN', Object.assign(res, {mobile: data.mobile}))
-            util.post('getAll', {sign: api.serialize(res)}).then(function (data) {
-              self.$store.commit('SET_INFO', data)
-            })
-            if (self.callUrl) {
-              self.$router.push({path: self.callUrl})
-              self.$store.commit('SET_URL', '')
-            } else if (self.isMobile) {
-              self.$router.push({path: '/minerShop/miner/2'})
-            } else {
-              self.$router.push({path: '/'})
-            }
-          }, form.btn)
-        }).catch(res => {
-          api.tips('您的网络情况不太好，请稍后再尝试')
-        })
+        fetchApiData(this, 'login', Object.assign(data, {token: 0}), (res) => {
+          this.$store.commit('SET_TOKEN', Object.assign(res, {mobile: data.mobile}))
+          util.post('getAll', res).then((data) => {
+            this.$store.commit('SET_INFO', data.msg)
+          })
+          if (this.callUrl) {
+            this.$router.push({path: this.callUrl})
+            this.$store.commit('SET_URL', '')
+          } else if (this.isMobile) {
+            this.$router.push({path: '/minerShop/cloudCompute'})
+          } else {
+            this.$router.push({path: '/'})
+          }
+        }, form.btn)
       }
     },
     computed: {

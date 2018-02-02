@@ -36,7 +36,6 @@
 
 <script>
   import util from '@/util/index'
-  import api from '@/util/function'
   import { mapState } from 'vuex'
   import CurrencyList from '@/components/common/CurrencyList'
   import InfoNav from '@/components/common/InfoNav'
@@ -75,16 +74,14 @@
       loadMore () {
         if (this.total > this.list.length || this.list.length === 0) {
           this.loading = true
-          util.post('showCoinlist_h5', {sign: api.serialize({token: 0, page: this.now})}).then((res) => {
-            api.checkAjax(this, res, () => {
-              this.loading = false
-              this.now++
-              for (let i = 0, len = res.list.length; i < len; i++) {
-                this.list.push(res.list[i])
-              }
-              if (this.now > 1) return false
-              this.total = res.total
-            })
+          util.post('showCoinlist_h5', {token: 0, page: this.now}).then((res) => {
+            this.loading = false
+            this.now++
+            for (let i = 0, len = res.msg.list.length; i < len; i++) {
+              this.list.push(res.msg.list[i])
+            }
+            if (this.now > 1) return false
+            this.total = res.msg.total
           })
         } else {
           this.loading = false
@@ -92,20 +89,16 @@
       },
       clickcontent (id) {
         this.showContent = true
-        util.post('showCoinInfoDetail', {sign: 'token=0&coin_id=' + id}).then((res) => {
-          api.checkAjax(this, res, () => {
-            this.content = res
-          })
+        util.post('showCoinInfoDetail', {token: 0, coin_id: id}).then((res) => {
+          this.content = res.msg
         })
       },
       pageInit () {
         if (this.isMobile !== false) {
           if (this.isMobile) return false
-          util.post('showCoinInfo', {sign: api.serialize({token: 0})}).then((res) => {
-            api.checkAjax(this, res, () => {
-              this.mainCurrency = res.main_coin
-              this.otherCurrency = res.other_coin
-            })
+          util.post('showCoinInfo', {token: 0}).then((res) => {
+            this.mainCurrency = res.msg.main_coin
+            this.otherCurrency = res.msg.other_coin
           })
         } else {
           setTimeout(() => {

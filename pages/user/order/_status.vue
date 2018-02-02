@@ -158,7 +158,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import { sold } from '@/util/form'
@@ -205,18 +205,15 @@
       },
       getData () {
         if (this.token !== 0) {
-          var self = this
           this.data = []
           this.typeList = false
           if (this.nowEdit === 3) {
             this.status = 1
           }
-          util.post('fundOrder', {sign: api.serialize({token: this.token, type: this.nowEdit, status: this.status, page: this.now})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.data = (res && res.list) || []
-              if (self.now > 1) return false
-              self.len = Math.ceil(res.total_num / 15)
-            })
+          fetchApiData(this, 'fundOrder', {token: this.token, type: this.nowEdit, status: this.status, page: this.now}, (res) => {
+            this.data = (res && res.list) || []
+            if (this.now > 1) return false
+            this.len = Math.ceil(res.total_num / 15)
           })
         } else {
           setTimeout(() => {
@@ -228,23 +225,19 @@
         this.inputAmount = 0
         this.inputPrice = 0
         this.order_id = id
-        util.post('showSellMiner', {sign: api.serialize({token: this.token, order_id: id})}).then((res) => {
-          api.checkAjax(this, res, () => {
-            this.sold[0].value2 = res.show_miner
-            this.sold[1].value2 = res.one_amount_value
-            this.fee = res.sell_miner_fee
-            window.scroll(0, 0)
-            this.edit = true
-          })
+        fetchApiData(this, 'showSellMiner', {token: this.token, order_id: id}, (res) => {
+          this.sold[0].value2 = res.show_miner
+          this.sold[1].value2 = res.one_amount_value
+          this.fee = res.sell_miner_fee
+          window.scroll(0, 0)
+          this.edit = true
         })
       },
       quit (str, id) {
         var requestUrl = 'backOutSellMiner'
-        util.post(requestUrl, {sign: api.serialize({token: this.token, order_id: id})}).then((res) => {
-          api.checkAjax(this, res, () => {
-            api.tips('操作成功', () => {
-              this.fetchData()
-            })
+        fetchApiData(this, requestUrl, {token: this.token, order_id: id}, (res) => {
+          api.tips('操作成功', () => {
+            this.fetchData()
           })
         })
       },
@@ -258,12 +251,10 @@
         var sendData = {token: this.token, order_id: this.order_id}
         var tipsStr = '出售成功'
         if (!data) return false
-        util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then((res) => {
-          api.checkAjax(this, res, () => {
-            this.closeMask()
-            api.tips(tipsStr, () => {
-              this.fetchData()
-            })
+        fetchApiData(this, url, Object.assign(data, sendData), (res) => {
+          this.closeMask()
+          api.tips(tipsStr, () => {
+            this.fetchData()
           })
         })
       },

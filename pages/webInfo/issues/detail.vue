@@ -11,7 +11,6 @@
 
 <script>
   import util from '@/util'
-  import api from '@/util/function'
   export default {
     data () {
       return {
@@ -24,18 +23,12 @@
     },
     methods: {
       contentDetail () {
-        var self = this
-        var url = ''
-        url = 'getHelpContent'
-        util.post(url, {sign: 'token=0&help_id=' + this.params1}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.content = res
-          })
+        util.post('getHelpContent', {token: 0, help_id: this.params1}).then((res) => {
+          this.content = res.msg
         })
       },
      clickcontent (type) {
         let id_lists = JSON.parse(localStorage.getItem('all_id'))
-        console.log(id_lists)
         for (let i = 0; i < id_lists.length; i++) {
           if (this.params1 === id_lists[i].id) {
             if (type === 1) {
@@ -56,7 +49,6 @@
     mounted () {
       var p = localStorage.getItem('icon_id')
       var id_lists = JSON.parse(localStorage.getItem('all_id'))
-      console.log(id_lists)
       if (p) {
         p = JSON.parse(p)
         this.params1 = p[0]

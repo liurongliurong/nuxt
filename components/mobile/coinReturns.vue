@@ -17,7 +17,7 @@
       </section>
       <div v-if="showTips" class="none_tips">
         <span>目前没有收益记录</span>
-        <nuxt-link class="button" to="/minerShop/miner/2">立即购买云算力</nuxt-link>
+        <nuxt-link class="button" to="/minerShop/cloudCompute">立即购买云算力</nuxt-link>
       </div>
     </div>
     <p v-if="loading" class="load_more">加载中······</p>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import Vue from 'vue'
@@ -56,16 +56,13 @@
       fetchData (sort = 1) {
         this.coinType = sort
         let data = {token: this.token, product_hash_type: this.coinType, page: this.page, sort: ''}
-        util.post('userCoinList', {sign: api.serialize(data)}).then(
-          res => {
-            api.checkAjax(this, res, () => {
-              this.length = res.total_num
-              for (let i = 0, len = res.value_list.length; i < len; i ++) {
-                this.formData.push(res.value_list[i])
-              }
-              this.showTips = this.formData.length ? false : true
-            })
-          })
+        fetchApiData(this, 'userCoinList', (data), res => {
+          this.length = res.total_num
+          for (let i = 0, len = res.value_list.length; i < len; i ++) {
+            this.formData.push(res.value_list[i])
+          }
+          this.showTips = this.formData.length ? false : true
+        })
       },
       loadMore () {
         if (this.formData.length < this.length ) {

@@ -37,7 +37,7 @@
 
 <script>
   import api from '@/util/function'
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import cardList from '@/util/card'
   import { auth, address, login, card } from '@/util/form'
   import { mapState, mapGetters } from 'vuex'
@@ -103,25 +103,22 @@
             data.password1 = md5(data.password1)
             break
         }
-        var self = this
-        util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            api.tips(tipsStr)
-            if (self.edit === 'auth' || self.edit === 'card') {
-              self.$store.commit('SET_INFO', {[val]: {status: 0}})
-              setTimeout(() => {
-                self.requestData(callbackUrl, sendData, val, () => {
-                  api.tips(tipsStr2)
-                })
-              }, 7000)
-            } else if (self.edit === 'address') {
-              self.requestData(callbackUrl, sendData, val)
-            } else if (self.edit === 'login') {
-              self.$store.commit('LOGOUT')
-              self.$router.push({path: '/auth/login'})
-            }
-            self.closeMask()
-          })
+        fetchApiData(this, url, Object.assign(data, sendData), (res) => {
+          api.tips(tipsStr)
+          if (this.edit === 'auth' || this.edit === 'card') {
+            this.$store.commit('SET_INFO', {[val]: {status: 0}})
+            setTimeout(() => {
+              this.requestData(callbackUrl, sendData, val, () => {
+                api.tips(tipsStr2)
+              })
+            }, 7000)
+          } else if (this.edit === 'address') {
+            this.requestData(callbackUrl, sendData, val)
+          } else if (this.edit === 'login') {
+            this.$store.commit('LOGOUT')
+            this.$router.push({path: '/auth/login'})
+          }
+          this.closeMask()
         })
       },
       closeMask () {
@@ -131,16 +128,13 @@
         document.body.style.overflow = 'auto'
       },
       requestData (url, sendData, val, callback) {
-        var self = this
-        util.post(url, {sign: api.serialize(sendData)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.$store.commit('SET_INFO', {[val]: res})
-            if (callback) {
-              callback()
-            }
-          }, '', () => {
-            self.$store.commit('SET_INFO', {[val]: ''})
-          })
+        fetchApiData(this, url, sendData, (res) => {
+          this.$store.commit('SET_INFO', {[val]: res})
+          if (callback) {
+            callback()
+          }
+        }, '', () => {
+          this.$store.commit('SET_INFO', {[val]: ''})
         })
       },
       onChange (obj) {
