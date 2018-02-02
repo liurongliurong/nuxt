@@ -838,6 +838,7 @@
           span:nth-child(2){
             margin-left:0.1rem;
             font-size: 0.28rem;
+            width: calc(100% - 20px);
           }
         }
       }
