@@ -30,9 +30,10 @@ api.interceptors.response.use(res => {
 })
 
 api.interceptors.request.use(config => {
-  config.data = util.serialize(config.data)
-  config.data = window.btoa ? window.btoa(config.data) : util.btoa(config.data)
-  config.data = qs.stringify({sign: config.data})
+  if (config.data) {
+    let data = util.serialize(config.data)
+    config.data = qs.stringify({sign: util.btoa(data)})
+  }
   return config
 }, error => {
   return Promise.reject(error)
