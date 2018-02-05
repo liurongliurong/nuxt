@@ -201,16 +201,6 @@
     components: {
       MyMask, FormField
     },
-    head () {
-      return {
-        script:[
-          {
-            type: 'text/javascript',
-            src: 'http://js.users.51.la/19391187.js'
-          }
-        ]
-      }
-    },
     data () {
       return {
         params: {

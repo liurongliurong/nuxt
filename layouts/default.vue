@@ -30,6 +30,10 @@
           {
             type: 'text/javascript',
             src: 'https://api.map.baidu.com/api?v=2.0&ak=GKTGV62UVGc1FZb4wUBdWG8w'
+          },
+          {
+            type: 'text/javascript',
+            src: 'https://hm.baidu.com/hm.js?ca5ac0aa0de68de8aa013b447048408b'
           }
         ]
       }
