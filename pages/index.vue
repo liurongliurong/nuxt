@@ -79,6 +79,16 @@
     components: {
       Swiper, MyDataList, WebInfo, SideBar, DataMap
     },
+    head () {
+      return {
+        script:[
+          {
+            type: 'text/javascript',
+            src: '//js.users.51.la/19391187.js'
+          }
+        ]
+      }
+    },
     data () {
       return {
         link: [{route: 'http://www.tsinghua-zj.edu.cn/'}, {route: 'http://www.gosun.com/'}, {route: 'http://www.enjoyor.cc/'}, {route: 'https://canaan.io/'}, {route: 'http://www.ebang.com.cn/'}, {route: 'https://www.suanlibao.com/'}],
