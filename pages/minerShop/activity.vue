@@ -206,7 +206,7 @@
         script:[
           {
             type: 'text/javascript',
-            src: '//js.users.51.la/19391187.js'
+            src: 'http://js.users.51.la/19391187.js'
           }
         ]
       }
