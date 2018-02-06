@@ -68,7 +68,8 @@
           '/mobile/orderDetail': '订单详情',
           '/mobile/cloudProduct': '云算力列表',
           '/mobile/recharge': '充值',
-          '/minerShop/activity': '新春优惠购'
+          '/minerShop/activity': '新春优惠购',
+          '/minerShop/hirePurchase': '分期'
         },
         showNav: '',
         scroll: false,

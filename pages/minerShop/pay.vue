@@ -373,6 +373,10 @@
               this.rateList = res.period_num
               this.rate = this.rateList[0] && +this.rateList[0].num
               this.loan = +res.loan_limit
+              if (this.isMobile) {
+                this.totalPrice = this.totalPrice - this.detail.loanPrice
+                this.rate = this.detail.rate
+              }
             } else {
               this.content = res.content
             }

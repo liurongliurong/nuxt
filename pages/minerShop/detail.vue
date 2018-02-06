@@ -38,8 +38,19 @@
             </div>
           </div>
           <div class="buy_text last">
-            <div class="item">总价</div>
-            <div class="item">{{(detail.one_amount_value*number)|format}}元</div>
+            <div>总价</div>
+            <div>{{(detail.one_amount_value*number)|format}}元</div>
+          </div>
+          <div class="buy_text" v-if="detail.status!==4&&params2==='2'&&detail.is_loan===1">
+            <div>分期购买</div>
+            <div class="icon_loan">
+              <label for="isLoan1">
+                <input id="isLoan1" type="radio" value="1" name="isLoan"> 是
+              </label>
+              <label for="isLoan2">
+                <input id="isLoan2" type="radio" value="0" name="isLoan" checked> 否
+              </label>
+            </div>
           </div>
           <div class="mobile_btn">
             <button @click="goPay(false)">确认购买</button>
@@ -127,6 +138,10 @@
         this.mask = false
       },
       goPay (isLoan) {
+        let loanEle = document.querySelector('#isLoan1')
+        if (loanEle.checked) {
+          isLoan = true
+        }
         if (this.number < 1) {
           api.tips('请输入或添加至少1台算力服务器')
           return false
@@ -136,7 +151,11 @@
         }
         var data = {name: this.detail.name ? this.detail.name : this.detail.product_name, one_amount_value: this.detail.one_amount_value || '', number: this.number || '', hash: this.detail.hash || '', hashType: this.detail.hashType || '', incomeType: this.detail.incomeType || '', output: this.detail.output || '', total_electric_fee: this.detail.total_electric_fee || '', batch_area: this.detail.batch_area || '', isLoan: isLoan, img: this.detail.product_img||this.detail.minerPicture, bdc_id: this.detail.bdc_message_id}
         api.setStorge('info', data)
-        this.$router.push({name: 'minerShop-pay'})
+        if (isLoan && this.isMobile) {
+          this.$router.push({name: 'minerShop-hirePurchase'})
+        } else {
+          this.$router.push({name: 'minerShop-pay'})
+        }
       },
       changeNum (n) {
         n = +n
@@ -281,6 +300,16 @@
             &.last{
               .item:last-child{
                 color: $orange;
+              }
+            }
+            .icon_loan {
+              label {
+                input {
+                  @include checkbox
+                }
+                & + label {
+                  margin-left: 0.5rem
+                }
               }
             }
           }
