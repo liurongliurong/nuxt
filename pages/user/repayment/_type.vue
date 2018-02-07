@@ -142,9 +142,9 @@
         var data = {repaymentId: id}
         localStorage.setItem('info', JSON.stringify(Object.assign(info, data)))
         if (this.isMobile) {
-        	this.$router.push({path: '/mobile/repaymentDetail/'})
+        	this.$router.push({path: '/mobile/repaymentDetail'})
         } else {
-        	this.$router.push({path: '/user/repaymentDetail/'})
+        	this.$router.push({path: '/user/repaymentDetail'})
         }
       },
       setPage (n) {

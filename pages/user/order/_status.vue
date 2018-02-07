@@ -277,11 +277,10 @@
         var info = JSON.parse(localStorage.getItem('info'))
         var data = {orderType: type, orderId: id}
         localStorage.setItem('info', JSON.stringify(Object.assign(info, data)))
-        // this.$router.push({path: '/user/orderDetail/'})
         if (this.isMobile) {
-          location.href = '/mobile/orderDetail/'
+          location.href = '/mobile/orderDetail'
         } else {
-          location.href = '/user/orderDetail/'
+          location.href = '/user/orderDetail'
         }
       },
       setPage (n) {
