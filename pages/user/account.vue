@@ -54,7 +54,7 @@
           {title: '登录密码', desc: '登录算力网的重要凭证', text: '登录密码', name: 'login'},
           {title: '实名认证', desc: '完成实名认证，认证后可以获得更多权限。', text: '身份证号', name: 'auth'},
           {title: '绑定银行卡', desc: '绑定银行卡之后才能进行充值、购买和提现等操作。', text: '', name: 'card'},
-          {title: '算力收益地址', desc: '请选择算力类型并设置算力地址。', text: '', name: 'address'}
+          {title: '算力提币地址', desc: '绑定算力提币地址才能进行提币操作。', text: '', name: 'address'}
         ],
         form: { auth, address, login, card },
         edit: '',

@@ -245,7 +245,6 @@
           text-align: center;
           line-height: 0.88rem;
           font-size: 0.32rem;
-          letter-spacing: 0.05rem;
           span.active {
             color: #fe5039
           }
@@ -266,7 +265,6 @@
             line-height: 14px;
             padding: 0 3px;
             border-radius: 20px;
-            letter-spacing: initial;
           }
         }
       }
