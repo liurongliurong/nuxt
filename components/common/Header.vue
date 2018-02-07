@@ -56,6 +56,8 @@
           '/mobile/property': '我的资产',
           '/mobile/order/0': '我的订单',
           '/mobile/order/3': '我的订单',
+          '/mobile/repayment/0': '我的分期',
+          '/mobile/repayment/1': '我的分期',
           '/mobile/message': '消息中心',
           '/mobile/moneyFlow': '账户流水',
           '/mobile/idVerfication': '个人认证',
@@ -76,7 +78,7 @@
         headerType: '',
         navList: [],
         navLink: ['/minerShop/miner', '/minerShop/cloudCompute', '/bdc', '/quickNews', '/minerShop/activity'],
-        navPerson: ['/mobile/property', '/mobile/order/0', '/mobile/message', '/mobile/moneyFlow', '/mobile/idVerfication', '/mobile/bankCard', '/mobile/assetsAddress', '/mobile/administration'
+        navPerson: ['/mobile/property', '/mobile/order/0', '/mobile/repayment/0', '/mobile/message', '/mobile/moneyFlow', '/mobile/idVerfication', '/mobile/bankCard', '/mobile/assetsAddress', '/mobile/administration'
         ],
         isBlueHeader: ['bdc', 'mobile-assetDetail', 'mobile-property', 'mobile-personalCenter', 'mobileIndex'],
         noHeader: ['auth-login', 'auth-regist', 'auth-passwordRetrieval']

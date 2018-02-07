@@ -22,7 +22,8 @@
       <div class="box">
         <aside class="con" v-if="!$route.path.includes('accountEvaluate')">
           <router-link :class="['item', {active:$route.path.includes(n.name)}]" :to="n.path" v-for="n,k in nav" :key="k">{{n.title}}</router-link>
-        </aside><router-view class="main_content"></router-view>
+        </aside>
+        <router-view class="main_content"></router-view>
       </div>
     </section>
   </article>
@@ -174,7 +175,7 @@
           background: $white;
           margin-right:25px;
           border-radius:5px;
-          overflow: hidden;
+          @include mobile_hide
           a{
             display: block;
             line-height: 48px;
