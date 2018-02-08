@@ -1,8 +1,8 @@
 <template>
   <section class="mobile_hire_purchase">
     <div class="hire_title">
-      <span>分期金额</span>
-      <span>{{totalPrice.toFixed(2)}}</span>
+      <span>可分期金额</span>
+      <span>{{totalPrice.toFixed(2)}}<em>(配资{{loan*100}}%)</em></span>
     </div>
     <div class="hire_box">
       <div class="hire_box_head">选择分期类型</div>
@@ -48,7 +48,8 @@
         params1: '',
         detail: {},
         number: 0,
-        fee: 0
+        fee: 0,
+        loan: 0
       }
     },
     methods: {
@@ -56,6 +57,7 @@
         if (this.token && this.number) {
           let data = {product_id: this.params1, token: this.token, num: this.number}
           fetchApiData(this, 'productOrder', data, (res) => {
+            this.loan = res.loan_limit
             this.totalPrice = (this.detail.one_amount_value * +this.number) * res.loan_limit
             this.rateList = res.period_num
             this.rate = this.rateList[0] && +this.rateList[0].num
@@ -120,7 +122,12 @@
       padding: 0 0.3rem;
       span:last-child {
         margin-left: 0.3rem;
-        color: #000
+        color: #000;
+        em {
+          color:$light_black;
+          font-size: 0.24rem;
+          margin-left: 5px
+        }
       }
     }
     .hire_box {

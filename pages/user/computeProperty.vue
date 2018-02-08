@@ -137,7 +137,7 @@
         moneyData: {account: 0, freeze_account: 0, balance_account: 0},
         computeNav: {today_hash: '今日收益', balance_account: '账户余额', total_hash: '累积已获得收益'},
         computeNav1: {freeze_coin_withdraw_account: '冻结资产', today_hash: '现货资产', total_hash: '单位收益产出'},
-        computeData: {today_hash: 0, balance_account: 0, total_hash: 0},
+        computeData: {today_hash: 0, balance_account: 0, total_hash: 0, coin_price: 0, output: 0, freeze_coin_withdraw_account: 0},
         computeProperty: {total_miner: ['已购入云算力', '台'], total_hash: ['算力总和', 'T'], selled_miner: ['已出售云算力', '台'], selling_miner: ['出售中云算力', '台']},
         dataProperty: {total_miner: 0, total_hash: 0, buy_transfer_hash: 0, selled_miner: 0, selling_miner: 0, selled_hash: 0, selling_hash: 0},
         computeFund: {total_miner: ['云算力', '台'], total_hash: ['云算力总和', 'T'], selled_miner: ['已出租云算力', 'T'], selling_miner: ['出租中云算力', 'T']},
