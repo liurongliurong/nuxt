@@ -125,6 +125,7 @@
         var form = e.target
         var data = api.checkForm(form, this.isMobile)
         if (!data) return false
+        console.log(data)
         form.btn.setAttribute('disabled', true)
         let sendData = {token: this.token, repayment_id: this.repaymentId, product_hash_type: 1, mode: this.model, mobile: form.mobile.value, code: form.code.value}
         fetchApiData(this, 'repayment', sendData, (res) => {
@@ -302,8 +303,11 @@
         }
       }
     }
-    .popup .popup_con{
-      height: calc(100vh - 0.88rem);
+    .popup {
+      position: static;
+      .popup_con{
+        height: calc(100vh - 0.88rem);
+      }
     }
   }
 </style>
