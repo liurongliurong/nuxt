@@ -139,7 +139,7 @@
       },
       goPay (isLoan) {
         let loanEle = document.querySelector('#isLoan1')
-        if (loanEle.checked) {
+        if (loanEle && loanEle.checked) {
           isLoan = true
         }
         if (this.number < 1) {
