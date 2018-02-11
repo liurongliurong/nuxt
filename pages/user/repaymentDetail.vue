@@ -14,8 +14,8 @@
             <p>分期金额</p>
           </li>
           <li>
-            <h4>{{moneydata.fee_value*100}} <span>%</span></h4>
-            <p>手续费率</p>
+            <h4>{{moneydata.fee_value}} <span>元</span></h4>
+            <p>手续费</p>
           </li>
           <li>
             <h4>{{moneydata.loan_start_time}}</h4>
