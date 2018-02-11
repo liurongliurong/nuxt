@@ -82,7 +82,12 @@
         </div>
       </div>
     </div>
-    <my-mask :form="form" title="确认还款" v-if="show" @submit="submit" @closeMask="closeMask" @onChange="onChange"></my-mask>
+    <my-mask :form="form" title="确认还款" v-if="!isMobile&&show" @submit="submit" @closeMask="closeMask" @onChange="onChange"></my-mask>
+    <form class="form repayment_form" @submit.prevent="submit" novalidate v-if="isMobile&&show">
+      <form-field :form="form" @onChange="onChange"></form-field>
+      <button name="btn">确认提交</button>
+      <div class="btn" @click="closeMask">取消</div>
+    </form>
   </section>
 </template>
 
@@ -91,9 +96,10 @@
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import MyMask from '@/components/common/Mask'
+  import FormField from '@/components/common/FormField'
   export default {
     components: {
-      MyMask
+      MyMask, FormField
     },
     data () {
       return {
@@ -125,7 +131,6 @@
         var form = e.target
         var data = api.checkForm(form, this.isMobile)
         if (!data) return false
-        console.log(data)
         form.btn.setAttribute('disabled', true)
         let sendData = {token: this.token, repayment_id: this.repaymentId, product_hash_type: 1, mode: this.model, mobile: form.mobile.value, code: form.code.value}
         fetchApiData(this, 'repayment', sendData, (res) => {
@@ -139,11 +144,7 @@
         this.model = obj.e.target.value
         this.form[1].value = this.loanData[this.model].data1 + this.loanData[this.model].unit
         this.form[2].value = this.loanData[this.model].data2 + this.loanData[this.model].unit
-        if (+this.loanData[this.model].data1 < +this.loanData[this.model].data2) {
-          var form = document.querySelector('.form')
-          api.tips('余额不足')
-          form.btn.setAttribute('disabled', true)
-        }
+        this.initBtn()
       },
       openMask (id, status) {
         if (status === 0) return false
@@ -154,6 +155,7 @@
         this.repaymentId = id
         let sendData = {token: this.token, repayment_id: this.repaymentId, product_hash_type: 1, mode: 0}
         fetchApiData(this, 'showRepayment', sendData, (res) => {
+          this.show = true
           this.loanData[0].data1 = res.user_coin_value
           this.loanData[0].data2 = res.coin_repayment
           this.loanData[1].data1 = res.user_balance
@@ -162,12 +164,30 @@
           this.form[2].value = this.loanData[this.model].data2 + this.loanData[this.model].unit
           window.scroll(0, 0)
           document.body.style.overflow = 'hidden'
-          this.show = true
+          setTimeout(() => {
+            this.initBtn()
+          }, 5)
         })
       },
       closeMask () {
         this.show = ''
         document.body.style.overflow = 'auto'
+      },
+      initBtn () {
+        let form = document.querySelector('.form')
+        let count_btn = document.querySelector('.count_btn')
+        if (+this.loanData[this.model].data1 < +this.loanData[this.model].data2) {
+          api.tips('余额不足')
+          form && form.btn.setAttribute('disabled', true)
+          count_btn.setAttribute('disabled', true)
+        } else {
+          form && form.btn.removeAttribute('disabled')
+          count_btn.removeAttribute('disabled')
+        }
+        if (this.isMobile) {
+          this.form[1].value += '(余额)'
+          this.form[2].value += '(需支付)'
+        }
       }
     },
     mounted () {
@@ -303,11 +323,10 @@
         }
       }
     }
-    .popup {
-      position: static;
-      .popup_con{
-        height: calc(100vh - 0.88rem);
-      }
+    .repayment_form {
+      background: #fff;
+      min-height: calc(100vh - 0.88rem);
+      @include form(v)
     }
   }
 </style>
