@@ -30,7 +30,7 @@
         </div>
         <div class="coin_data" v-for="c,k in property.coin_list">
           <div class="val">
-            <span class="val_title">BTC：</span>
+            <span class="val_title">{{(hashType[k] && hashType[k].name)}}：</span>
             <span class="val_num">{{(+c.balance_account).toFixed(8)}}</span>
             <!-- <span class="val_num">≈{{+c.hash_balance_account|currency}}元</span> -->
           </div>
