@@ -81,7 +81,7 @@
     data () {
       return {
         detail: {incomeType: '每日结算，隔日发放', fee: '', product_name: '', name: '', status: 0},
-        cloudInfo: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: 'BDC中心相册'}],
+        cloudInfo: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'bdc_img', title: 'BDC中心相册'}],
         minerInfo: [{name: 'MInerBrief', title: '产品介绍'}, {name: 'MinerAdvantage', title: '产品参数'}, {name: 'prProtocolSpeciaification', title: '补充说明'}],
         params: {chips_num: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '服务器尺寸', minerOuterSize: '外箱尺寸', cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
         status: {1: '热销', 2: '已售罄', 3: '产品撤销', 4: '预热'},
@@ -200,6 +200,7 @@
               this.detail.name = res.product_name
               this.detail.hashType = (res.hashtype && res.hashtype.name) || ''
               this.detail.statusStr = this.str[res.status]
+              this.detail.bdc_img = res.bdctype.bdc_img
             } else {
               this.detail.name = res.name
               this.detail = Object.assign(this.detail, res.miner_list)
