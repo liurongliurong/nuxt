@@ -62,7 +62,7 @@
           '/mobile/moneyFlow': '账户流水',
           '/mobile/idVerfication': '个人认证',
           '/mobile/bankCard': '银行卡管理',
-          '/mobile/assetsAddress': '收益地址管理',
+          '/mobile/assetsAddress': '提币地址管理',
           '/mobile/administration': '账户设置',
           '/mobile/address': '邮寄地址',
           '/mobile/help': '常见问题',
