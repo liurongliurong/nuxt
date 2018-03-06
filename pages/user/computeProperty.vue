@@ -39,7 +39,7 @@
             <div class="frozeeData" v-if="k==='today_hash'">
               <span>{{d}}</span>
               <span class="problem">?</span>
-              <div class="frozee_tips">派发一天前收益，如:3号派发1号收益</div>
+              <div class="frozee_tips">派发一天前收益，如:2号派发1号收益</div>
             </div>
             <p v-else>{{d}}</p>
             <span class="currency">{{computeData[k]|format(8)}}</span>
@@ -55,34 +55,34 @@
     </div>
     <div class="compute_box compute_account">
       <div class="data">
-        <template v-for="d,k in computeNav1">
-          <div class="item">
-            <div class="frozeeData" v-if="k==='freeze_coin_withdraw_account'">
-              <span>{{d}}</span>
-              <span class="problem">?</span>
-              <div class="frozee_tips">提币申请后，会暂时放入冻结数量中</div>
-            </div>
-            <div class="frozeeData" v-else-if="k==='today_hash'">
-              <span>{{d}}</span>
-              <span class="problem">?</span>
-              <div class="frozee_tips">币价:{{computeData.coin_price}}CNY</div>
-            </div>
-            <p v-else>{{d}}</p>
-            <template v-if="k==='today_hash'">
-              <span class="currency">{{(computeData.coin_price * computeData.balance_account)|format(1)}}</span>
-              <span class=""> CNY</span>
-            </template>
-            <template v-else-if="k==='total_hash'">
-              <span class="currency">{{computeData.output&&computeData.output.split(" ")[0]}}</span>
-              <span class="">{{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}} /T/天</span>
-            </template>
-            <template v-else>
-              <span class="currency">{{computeData[k]}}</span>
-              <span class=""> {{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}</span>
-            </template>
+        <div class="item">
+          <div class="frozeeData">
+            <span>冻结资产</span>
+            <span class="problem">?</span>
+            <div class="frozee_tips">提币申请后，会暂时放入冻结数量中</div>
           </div>
-          <div class="line"></div>
-        </template>
+          <span class="currency">{{computeData.freeze_coin_withdraw_account}}</span>
+          <span class=""> {{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}</span>
+        </div>
+        <div class="line"></div>
+        <div class="item">
+          <div class="frozeeData">
+            <span>现货资产</span>
+            <span class="problem">?</span>
+            <div class="frozee_tips">币价:{{computeData2.coin_price}}CNY</div>
+          </div>
+          <span>≈ </span>
+          <span class="currency">{{(computeData2.coin_price * computeData.balance_account)|format(1)}}</span>
+          <span class=""> CNY</span>
+        </div>
+        <div class="line"></div>
+        <div class="item">
+          <p>单位收益产出</p>
+          <span>≈ </span>
+          <span class="currency">{{computeData2.out_put&&computeData2.out_put.split(" ")[0]}}</span>
+          <span class=""> {{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}/T/天</span>
+        </div>
+        <div class="line"></div>
       </div>
     </div>
     <h3>算力资产</h3>
@@ -136,8 +136,8 @@
         moneyNav: {account: '总资金', freeze_account: '冻结资金', balance_account: '账户余额'},
         moneyData: {account: 0, freeze_account: 0, balance_account: 0},
         computeNav: {today_hash: '今日收益', balance_account: '账户余额', total_hash: '累积已获得收益'},
-        computeNav1: {freeze_coin_withdraw_account: '冻结资产', today_hash: '现货资产', total_hash: '单位收益产出'},
-        computeData: {today_hash: 0, balance_account: 0, total_hash: 0, coin_price: 0, output: 0, freeze_coin_withdraw_account: 0},
+        computeData: {today_hash: 0, balance_account: 0, total_hash: 0, freeze_coin_withdraw_account: 0},
+        computeData2: {coin_price: 0, out_put: 0},
         computeProperty: {total_miner: ['已购入云算力', '台'], total_hash: ['算力总和', 'T'], selled_miner: ['已出售云算力', '台'], selling_miner: ['出售中云算力', '台']},
         dataProperty: {total_miner: 0, total_hash: 0, buy_transfer_hash: 0, selled_miner: 0, selling_miner: 0, selled_hash: 0, selling_hash: 0},
         computeFund: {total_miner: ['云算力', '台'], total_hash: ['云算力总和', 'T'], selled_miner: ['已出租云算力', 'T'], selling_miner: ['出租中云算力', 'T']},
@@ -218,6 +218,9 @@
         var sendData = {token: this.token, product_hash_type: (nowHash && nowHash.id) || '1'}
         fetchApiData(this, 'myHashAccount', sendData, (res) => {
           this.computeData = res
+        })
+        fetchApiData(this, 'myHashAccountOut', sendData, (res) => {
+          this.computeData2 = res
         })
         fetchApiData(this, 'hashAsset', sendData, (res) => {
           this.dataProperty = res

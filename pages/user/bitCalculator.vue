@@ -131,6 +131,15 @@
     },
     methods: {
       submit (e) {
+        if (!this.dateStart) {
+          this.days = 0
+          api.tips('请输入开始时间')
+          return false
+        } else if (!this.dateEnd) {
+          this.days = 0
+          api.tips('请输入结束时间')
+          return false
+        }
         this.getDays(this.dateStart, this.dateEnd)
       },
       initDate (addDay) {

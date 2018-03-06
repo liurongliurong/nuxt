@@ -148,12 +148,14 @@
       </div>
       <form class="form" @submit.prevent="submit" novalidate v-else>
         <form-field :form="sold" @onChange="onChange"></form-field>
-        <p class="fee">手续费：{{(totalPrice * fee).toFixed(2) + '元(' + (fee * 100) + '%)'}}</p>
+        <p class="fee">手续费：{{(totalPrice * fee).toFixed(2) + '元(' + (fee * 100) + '%)'}}<br><span class="fee_tips">注：转让订单三天内有效，到期未售出，订单将自动取消</span></p>
         <button name="btn">确认提交</button>
         <div class="btn" @click="closeMask">取消</div>
       </form>
     </div>
-    <MyMask :form="sold" title="出售云算力" v-if="!isMobile&&edit" @submit="submit" @closeMask="closeMask" @onChange="onChange"></MyMask>
+    <MyMask :form="sold" title="出售云算力" v-if="!isMobile&&edit" @submit="submit" @closeMask="closeMask" @onChange="onChange">
+      <p class="fee order_fee_tips" slot="fee">手续费：{{(totalPrice * fee).toFixed(2) + '元(' + (fee * 100) + '%)'}}<br><span class="fee_tips">注：转让订单三天内有效，到期未售出，订单将自动取消</span></p>
+    </MyMask>
   </section>
 </template>
 
@@ -508,6 +510,15 @@
           padding: 0.3rem;
         }
       }
+    }
+    .popup .popup_con .form .order_fee_tips.fee {
+      margin-top: -15px;
+      font-size: 14px;
+      color: $light_text
+    }
+    .fee_tips {
+      font-size: 12px;
+      color: $light_black
     }
   }
 </style>
