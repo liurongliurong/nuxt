@@ -78,7 +78,7 @@
         scroll: false,
         headerType: '',
         navList: [],
-        navLink: ['/minerShop/miner', '/minerShop/cloudCompute', '/bdc', '/quickNews', '/minerShop/activity'],
+        navLink: ['/minerShop/miner', '/minerShop/cloudCompute', '/bdc', '/quickNews'],
         navPerson: ['/mobile/property', '/mobile/order/0', '/mobile/repayment/0', '/mobile/message', '/mobile/moneyFlow', '/mobile/idVerfication', '/mobile/bankCard', '/mobile/assetsAddress', '/mobile/administration'
         ],
         isBlueHeader: ['bdc', 'mobile-assetDetail', 'mobile-property', 'mobile-personalCenter', 'mobileIndex'],
