@@ -44,7 +44,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import { post_address } from '@/util/form'
@@ -64,12 +64,9 @@
     },
     methods: {
       setDefault (id, k) {
-        var self = this
-        util.post('setDefault', {sign: api.serialize({token: this.token, post_id: id})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            api.tips('设置成功')
-            self.fetchData()
-          })
+        fetchApiData(this, 'setDefault', {token: this.token, post_id: id}, (res) => {
+          api.tips('设置成功')
+          this.fetchData()
         })
       },
       closeMask () {
@@ -95,25 +92,19 @@
           data.post_id = this.addressData.id
           strTips = '编辑成功'
         }
-        var self = this
-        util.post(url, {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.fetchData()
-            api.tips(strTips)
-            self.closeMask()
-          }, form.btn)
-        })
+        fetchApiData(this, url, data, (res) => {
+          this.fetchData()
+          api.tips(strTips)
+          this.closeMask()
+        }, form.btn)
       },
       deleteAddress (id, k) {
         if (!confirm('确定删除？')) {
           return false
         }
-        var self = this
-        util.post('deleteAddress', {sign: api.serialize({token: this.token, post_id: id})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            api.tips('删除成功')
-            self.fetchData()
-          })
+        fetchApiData(this, 'deleteAddress', {token: this.token, post_id: id}, (res) => {
+          api.tips('删除成功')
+          this.fetchData()
         })
       },
       openMask (k) {
@@ -133,11 +124,8 @@
       },
       fetchData () {
         if (this.token !== 0) {
-          var self = this
-          util.post('showAddress', {sign: api.serialize({token: this.token})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.data = res
-            })
+          fetchApiData(this, 'showAddress', {token: this.token}, (res) => {
+            this.data = res
           })
         } else {
           setTimeout(() => {

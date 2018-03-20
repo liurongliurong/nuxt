@@ -88,31 +88,26 @@
       }
     },
     mounted () {
-      var self = this
-      util.post('showSecondHandTradeList', {sign: api.serialize({token: this.token ? this.token : 0, page: this.now})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.lists = res.trade_info
-          for (var a = 0; a < res.trade_info.length; a++) {
-            var date1 = res.trade_info[a].created_time
-            var date2 = new Date()
-            var date3 = date2.getTime() - new Date(date1).getTime()
-            var leave1 = date3 % (24 * 3600 * 1000)
-            var days = Math.floor(date3 / (24 * 3600 * 1000)) * 24
-            var hours = Math.floor(leave1 / (3600 * 1000)) + days
-            var nowdays = ''
-            if (hours >= 24) {
-              nowdays = Math.floor(hours / 24) + ' 天前'
-            } else {
-              nowdays = hours + ' 小时前'
-            }
-            self.times.push(nowdays)
+      util.post('showSecondHandTradeList', {token: 0, page: this.now}).then((res) => {
+        this.lists = res.msg.trade_info
+        for (var a = 0; a < res.msg.trade_info.length; a++) {
+          var date1 = res.msg.trade_info[a].created_time
+          var date2 = new Date()
+          var date3 = date2.getTime() - new Date(date1).getTime()
+          var leave1 = date3 % (24 * 3600 * 1000)
+          var days = Math.floor(date3 / (24 * 3600 * 1000)) * 24
+          var hours = Math.floor(leave1 / (3600 * 1000)) + days
+          var nowdays = ''
+          if (hours >= 24) {
+            nowdays = Math.floor(hours / 24) + ' 天前'
+          } else {
+            nowdays = hours + ' 小时前'
           }
-          self.total = res.num
-          if (self.now > 1) return false
-          self.len = Math.ceil(res.num / 15)
-        })
-      }).catch(res => {
-        console.log(res)
+          this.times.push(nowdays)
+        }
+        this.total = res.msg.num
+        if (this.now > 1) return false
+        this.len = Math.ceil(res.msg.num / 15)
       })
     },
     filters: {

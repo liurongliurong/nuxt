@@ -59,10 +59,8 @@
       if (p && p.payType) {
         this.type = p.payType
         this.addressData = p.addressData || {}
-        util.post(this.typeList[this.type - 1].url, {sign: 'token=0'}).then(res => {
-          api.checkAjax(this, res, () => {
-            this.data = res
-          })
+        util.post(this.typeList[this.type - 1].url, {token: 0}).then(res => {
+          this.data = res.msg
         })
       } else {
         // this.$router.push({path: '/minerShop/detail'})

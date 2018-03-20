@@ -87,6 +87,7 @@
         computeData: {},
         computeRealData: {},
         timer: 0,
+        // {img: require('@/assets/images/swiper/3_1.jpg'), link: '/minerShop/activity', text: '查看详情', pos: 'center'}, 
         banners: [{img: require('@/assets/images/swiper/2_1.jpg'), link: '/minerShop/list', text: '开启收益之旅'}, {img: require('@/assets/images/swiper/1_1.jpg'), link: '/bdc', text: '前往申请机位', pos: 'center'}]
       }
     },
@@ -100,13 +101,10 @@
         }
       },
       getComputeData () {
-        util.post('showDifficulty', {sign: 'token=0'})
-        .then((res) => {
-          api.checkAjax(this, res, () => {
-            this.computeData = res
-            this.computeRealData = {hashrate:res.hashrate, difficulty: res.difficulty}
-            this.numberAnimate()
-          })
+        util.post('showDifficulty', {token: 0}).then((res) => {
+          this.computeData = res.msg
+          this.computeRealData = {hashrate:res.msg.hashrate, difficulty: res.msg.difficulty}
+          this.numberAnimate()
         })
       },
       randomNumber (number) {
@@ -198,10 +196,10 @@
             }
           }
           // &:nth-child(1){
-          //   background: linear-gradient(to bottom, #746BFC 10%, #D25CFE);
-          //   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FE5337', endColorstr='#FF9D02',GradientType=0 );
+          //   background: linear-gradient(to bottom, #951E24 10%, #AC1F25);
+          //   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#951E24', endColorstr='#AC1F25',GradientType=0 );
           //   a.btn{
-          //     color:#D25CFE;
+          //     color:#CD141C;
           //     left:calc(50% - 100px);
           //     top:290px;
           //   }

@@ -13,7 +13,6 @@
 
 <script>
   import util from '@/util'
-  import api from '@/util/function'
   import { mapState } from 'vuex'
   export default {
     name: 'Issues',
@@ -45,13 +44,12 @@
           eles[key].className = 'item'
         }
         this.list = []
-        var self = this
-        util.post('getHelp', {sign: api.serialize({token: this.token, help_class_id: id})}).then(function (res) {
-          self.list = res
-          for (var i = 0; i<res.length; i++) {
-            self.allid.push({id: res[i].id, title: res[i].title})
+        util.post('getHelp', {token: this.token, help_class_id: id}).then((res) => {
+          this.list = res.msg
+          for (var i = 0; i<res.msg.length; i++) {
+            this.allid.push({id: res.msg[i].id, title: res.msg[i].title})
           }
-          localStorage.setItem('all_id', JSON.stringify(self.allid))
+          localStorage.setItem('all_id', JSON.stringify(this.allid))
         })
         setTimeout(() => {
           this.$store.commit('SET_NUM', k)
@@ -60,11 +58,9 @@
       }
     },
     mounted () {
-      console.log(this.num)
-      var self = this
-      util.post('getHelpClass', {sign: api.serialize({token: this.token})}).then(function (res) {
-        self.nav = res
-        self.fetchData(res[self.num || 0].help_class_id, self.num || 0)
+      util.post('getHelpClass', {token: this.token}).then((res) => {
+        this.nav = res.msg
+        this.fetchData(res.msg[this.num || 0].help_class_id, this.num || 0)
       })
     },
     computed: {

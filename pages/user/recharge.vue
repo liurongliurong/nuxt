@@ -32,7 +32,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import util, { fetchApiData } from '@/util'
   import api from '@/util/function'
   import FormField from '@/components/common/FormField'
   import { mapState } from 'vuex'
@@ -60,39 +60,31 @@
         var sendData = {token: this.token}
         var callbackUrl = ''
         if (!data) return false
-        var self = this
         form.btn.setAttribute('disabled', true)
         if (this.rechargeNo) {
-          util.post('applyBalanceRecharge', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              res.subject = encodeURIComponent(res.subject)
-              if (self.isMobile) {
-                res = Object.assign(res, {is_mobile: 1})
-              } else {
-                res = Object.assign(res, {is_mobile: 0})
-              }
-              callbackUrl = location.protocol + '//' + location.host + self.callUrl
-              util.post('alipay', {sign: api.serialize(Object.assign({url: callbackUrl, token: self.token}, res))}).then((resData) => {
-                api.checkAjax(self, resData, () => {
-                  location.href = resData.url
-                })
-              })
+          fetchApiData(this, 'applyBalanceRecharge', Object.assign(data, sendData), (res) => {
+            res.subject = encodeURIComponent(res.subject)
+            if (this.isMobile) {
+              res = Object.assign(res, {is_mobile: 1})
+            } else {
+              res = Object.assign(res, {is_mobile: 0})
+            }
+            callbackUrl = location.protocol + '//' + location.host + this.callUrl
+            util.post('alipay', Object.assign({url: callbackUrl, token: this.token}, res)).then((resData) => {
+              location.href = resData.msg.url
             })
           })
         } else {
-          util.post('balance_recharge', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              form.amount.value = ''
-              form.request_id.value = ''
-              api.tips('提交成功，请等待工作人员确认', () => {
-                if (self.callUrl) {
-                  self.$router.push({path: self.callUrl})
-                  self.$store.commit('SET_URL', '')
-                }
-                // form.btn.removeAttribute('disabled')
-              })
-            }, form.btn)
-          })
+          fetchApiData(this, 'balance_recharge', Object.assign(data, sendData), (res) => {
+            form.amount.value = ''
+            form.request_id.value = ''
+            api.tips('提交成功，请等待工作人员确认', () => {
+              if (this.callUrl) {
+                this.$router.push({path: this.callUrl})
+                this.$store.commit('SET_URL', '')
+              }
+            })
+          }, form.btn)
         }
       },
       changeType (n) {

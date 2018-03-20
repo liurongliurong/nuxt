@@ -74,7 +74,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import MyMask from '@/components/common/Mask'
@@ -137,17 +137,14 @@
           return false
         }
         var data = {token: this.token}
-        var self = this
-        util.post('showWithdraw', {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.fee = res.withdraw_fee
-            self.balance = parseInt(res.balance_account)
-            self.withdrawals[0].value2 = self.balance
-            window.scroll(0, 0)
-            document.body.style.overflow = 'hidden'
-            self.edit = str
-            self.title = '资金提现'
-          })
+        fetchApiData(this, 'showWithdraw', data, (res) => {
+          this.fee = res.withdraw_fee
+          this.balance = parseInt(res.balance_account)
+          this.withdrawals[0].value2 = this.balance
+          window.scroll(0, 0)
+          document.body.style.overflow = 'hidden'
+          this.edit = str
+          this.title = '资金提现'
         })
       },
       closeMask () {
@@ -155,20 +152,17 @@
         document.body.style.overflow = 'auto'
       },
       fetchData (more) {
-        var self = this
         var data = {token: this.token, page: this.now, sort: ''}
-        util.post('userCapitalList', {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            if (more) {
-              for (let i = 0, len = res.value_list.length; i < len; i++) {
-                self.list.push(res.value_list[i])
-              }
-            } else {
-              self.list = res.value_list
+        fetchApiData(this, 'userCapitalList', data, (res) => {
+          if (more) {
+            for (let i = 0, len = res.value_list.length; i < len; i++) {
+              this.list.push(res.value_list[i])
             }
-            if (self.now > 1) return false
-            self.len = Math.ceil(res.total_num / 15)
-          })
+          } else {
+            this.list = res.value_list
+          }
+          if (this.now > 1) return false
+          this.len = Math.ceil(res.total_num / 15)
         })
       },
       submit (e) {
@@ -177,13 +171,10 @@
         var sendData = {token: this.token}
         if (!data) return false
         form.btn.setAttribute('disabled', true)
-        var self = this
-        util.post('withdraw', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.closeMask()
-            api.tips('提现成功')
-          }, form.btn)
-        })
+        fetchApiData('withdraw', Object.assign(data, sendData), (res) => {
+          this.closeMask()
+          api.tips('提现成功')
+        }, form.btn)
       },
       onChange (obj) {
         var value = obj.e.target.value
@@ -194,11 +185,8 @@
       },
       getData () {
         if (this.token !== 0) {
-          var self = this
-          util.post('userCapital', {sign: api.serialize({token: this.token})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.data = res
-            })
+          fetchApiData(this, 'userCapital', {token: this.token}, (res) => {
+            this.data = res
           })
           this.fetchData()
         } else {

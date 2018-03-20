@@ -26,7 +26,6 @@
 
 <script>
   import util from '@/util/index'
-  import api from '@/util/function'
   export default {
     data () {
       return {
@@ -35,13 +34,8 @@
       }
     },
     mounted () {
-      var self = this
-      util.post('showCoinData', {sign: api.serialize({token: 0})}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.lists = res
-        })
-      }).catch(res => {
-        console.log(res)
+      util.post('showCoinData', {token: 0}).then((res) => {
+        this.lists = res.msg
       })
     }
   }

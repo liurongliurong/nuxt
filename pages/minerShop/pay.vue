@@ -53,7 +53,7 @@
             <FormField :form="form" class="form" v-if="payNo===1"></FormField>
              <label for="accept">
               <input type="checkbox" checked id="accept" name="accept">
-              <span @click="openMask(1)">阅读并接受<a href="javascript:;">《算力服务器销售协议》</a><template v-if="params2!=='1'">和<a href="javascript:;">《算力服务器托管协议》</a></template></span>
+              <span @click="openMask(1)">阅读并接受<a href="javascript:;" v-if="params2==='1'">《算力服务器销售协议》</a><template v-else><a href="javascript:;">《云算力销售协议》</a>、<a href="javascript:;">《云算力托管协议》</a></template></span>
             </label> 
             <button name="btn">确认支付</button>
           </form>
@@ -120,7 +120,7 @@
         <FormField :form="form" v-if="payNo===1"></FormField>
         <label for="accept">
           <input type="checkbox" checked id="accept" name="accept">
-          <span @click="openMask(1)">阅读并接受<a href="javascript:;">《算力服务器销售协议》</a><template v-if="params2!=='1'">、<a href="javascript:;">《算力服务器托管协议》</a></template></span>
+          <span @click="openMask(1)">阅读并接受<a href="javascript:;" v-if="params2==='1'">《算力服务器销售协议》</a><template v-else><a href="javascript:;">《云算力销售协议》</a>、<a href="javascript:;">《云算力托管协议》</a></template></span>
         </label>
         <div class="mobile_btn">
           <button name="btn">确认支付</button>
@@ -134,7 +134,7 @@
 </template>
 
 <script>
-  import util from '@/util/index'
+  import util, { fetchApiData } from '@/util/index'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import { post_address } from '@/util/form'
@@ -251,13 +251,10 @@
             data = Object.assign({product_id: this.params1, num: this.number}, data)
           }
         }
-        var self = this
         ff.btn.setAttribute('disabled', true)
-        util.post(url, {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.paySuccess(callbackUrl, res, ff.btn)
-          }, ff.btn)
-        })
+        fetchApiData(this, url, data, (res) => {
+          this.paySuccess(callbackUrl, res, ff.btn)
+        }, ff.btn)
       },
       paySuccess (url, data, btn) {
         var str = '恭喜您购买成功！'
@@ -276,12 +273,9 @@
           api.tips('请在浏览器里打开')
           return false
         }
-        var self = this
         data.subject = encodeURIComponent(data.subject)
-        util.post('alipay_wap', {sign: api.serialize(Object.assign({is_mobile: +this.isMobile, url: url, token: self.token}, data))}).then((resData) => {
-          api.checkAjax(self, resData, () => {
-            location.href = resData.url
-          })
+        fetchApiData(this, 'alipay_wap', Object.assign({is_mobile: +this.isMobile, url: url, token: this.token}, data), (resData) => {
+          location.href = resData.url
         })
       },
       submit (e) {
@@ -290,14 +284,11 @@
         if (!data) return false
         data.is_default = 1
         data.token = this.token
-        var self = this
-        util.post('addAddress', {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.getAddress()
-            api.tips('添加成功')
-            self.closeMask()
-          }, form.btn)
-        })
+        fetchApiData(this, 'addAddress', data, (res) => {
+          this.getAddress()
+          api.tips('添加成功')
+          this.closeMask()
+        }, form.btn)
       },
       openMask (n) {
         document.body.style.overflow = 'hidden'
@@ -335,12 +326,9 @@
         }
       },
       getAddress () {
-        var self = this
-        util.post('showAddress', {sign: api.serialize({token: this.token})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.addressData = res
-            self.addressObject = self.addressData[0] || {}
-          })
+        fetchApiData(this, 'showAddress', {token: this.token}, (res) => {
+          this.addressData = res
+          this.addressObject = this.addressData[0] || {}
         })
       },
       selectAddress (k) {
@@ -374,28 +362,31 @@
             url = 'productOrder'
             data = Object.assign({product_id: this.params1}, data)
           }
-          util.post(url, {sign: api.serialize(data)}).then((res) => {
-            api.checkAjax(self, res, () => {
-              this.balance = +res.balance
-              if (res.output) {
-                this.detail.output = res.output
-                this.detail.total_electric_fee = res.total_electric_fee
+          fetchApiData(this, url, data, (res) => {
+            this.balance = +res.balance
+            if (res.output) {
+              this.detail.output = res.output
+              this.detail.total_electric_fee = res.total_electric_fee
+            }
+            if (this.detail.isLoan) {
+              this.content = res.part_content
+              this.rateList = res.period_num
+              this.rate = this.rateList[0] && +this.rateList[0].num
+              this.loan = +res.loan_limit
+              if (this.isMobile) {
+                this.totalPrice = this.totalPrice - this.detail.loanPrice
+                this.rate = this.detail.rate
               }
-              if (this.detail.isLoan) {
-                this.content = res.part_content
-                this.rateList = res.period_num
-                this.rate = this.rateList[0] && +this.rateList[0].num
-                this.loan = +res.loan_limit
-              } else {
-                this.content = res.content
-              }
-              if (this.params2 !== '1') {
-                this.content1 = res.content1
-              }
-            })
+            } else {
+              this.content = res.content
+            }
+            if (this.params2 !== '1') {
+              this.content1 = res.content1
+            }
           })
-          util.post('bdc_info', {sign: api.serialize({token: this.token, bdc_id: this.detail.bdc_id})}).then((res) => {
-            this.cloudMinerData = {...res, batch_area: this.detail.batch_area}
+          if (!this.detail.bdc_id) return false
+          util.post('bdc_info', {token: this.token, bdc_id: this.detail.bdc_id}).then((res) => {
+            this.cloudMinerData = {...res.msg, batch_area: this.detail.batch_area}
           })
         } else {
           setTimeout(() => {

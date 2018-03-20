@@ -47,8 +47,7 @@
 </template>
 
 <script>
-  import util from '@/util'
-  import api from '@/util/function'
+  import { fetchApiData } from '@/util'
   import { mapState } from 'vuex'
   import Pager from '@/components/common/Pager'
   export default {
@@ -58,9 +57,9 @@
     data () {
       return {
         nowEdit: 0,
-        dataNav: {total_income: '累积已获得BTC', total_electric_fee: '累计支付电费'},
+        dataNav: {total_income: '累积已获得收益', total_electric_fee: '累计支付电费'},
         data: {total_income: 0, total_electric_fee: 0},
-        nav: {product_name: '算力服务器', payable_time: '收益时间', paid_time: '派发时间', hold_amount: '总算力', paid_amount: '获得BTC', electric_fee: '支付电费', status: '状态'},
+        nav: {product_name: '算力服务器', payable_time: '收益时间', paid_time: '派发时间', hold_amount: '总算力', paid_amount: '获得收益', electric_fee: '支付电费', status: '状态'},
         list: [],
         len: 0,
         now: 1,
@@ -71,26 +70,21 @@
     methods: {
       fetchData (sort) {
         this.nowEdit = sort || 0
-        var self = this
         this.list = []
-        var data = {token: this.token, product_hash_type: this.nowEdit + 1, page: this.now, sort: ''}
-        util.post('userCoinList', {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.list = res.value_list
-            self.showImg = !res.value_list.length
-            if (self.now > 1) return false
-            self.len = Math.ceil(res.total_num / 15)
-          })
+        var nowHash = this.hashType[this.nowEdit]
+        var data = {token: this.token, product_hash_type: nowHash.id, page: this.now, sort: ''}
+        fetchApiData(this, 'userCoinList', data, (res) => {
+          this.list = res.value_list
+          this.showImg = !res.value_list.length
+          if (this.now > 1) return false
+          this.len = Math.ceil(res.total_num / 15)
+        })
+        fetchApiData(this, 'userCoin', {token: this.token, product_hash_type: nowHash.id}, (res) => {
+          this.data = res
         })
       },
       getData () {
-        if (this.token !== 0) {
-          var self = this
-          util.post('userCoin', {sign: api.serialize({token: this.token, product_hash_type: '1'})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.data = res
-            })
-          })
+        if (this.token !== 0 && this.hashType.length) {
           this.fetchData()
         } else {
           setTimeout(() => {

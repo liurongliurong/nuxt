@@ -50,7 +50,7 @@
 </template>
 
 <script>
-  import util from '@/util/index'
+  import util from '@/util'
   import api from '@/util/function'
   import city from '@/util/city'
   import { mapState } from 'vuex'
@@ -71,7 +71,20 @@
     data () {
       return {
         str: '获取验证码',
-        check: {tel: {code: '^1[34578][0-9]{9}$', tips: '请输入11位手机号'}, password: {code: '^[0-9a-zA-Z_]{6,16}$', tips: '密码应在6-16位之间的字母数字'}, imgCode: {code: '^[0-9a-zA-Z]{4}$', tips: '请输入4位字符', error: '图形验证码错误'}, telCode: {code: '^[0-9]{6}$', tips: '请输入6位数字', success: '发送成功'}, idCard: {code: '^([0-9]{15}$|^[0-9]{18}$|^[0-9]{17}([0-9]|X|x))$', tips: '身份证号应是18位'}, bankCard: {code: '^[0-9]{16,21}$', tips: '请输入16至21位的银行卡号'}, computeAddress: {code: '^[0-9a-zA-Z]{34,}$', tips: '请输入至少34位的字符'}, money: {code: '^[2-9][0-9]|[0-9]{3,}$', tips: '请输入至少20的整数'}, coin: {code: '^[1-9][0-9]*|[1-9][0-9]*[.][0-9]{1,8}|0[.][0-9]{2}[1-9][0-9]{0,5}|0[.][1-9]{1}[0-9]{0,7}|0[.]0[1-9]{1}[0-9]{0,6}$', tips: '请输入大于或者等于0.001的有效值'}, float: {code: '^[0-9]+(.[0-9]{1,2})?$', tips: '请输入整数或两位小数'}, int: {code: '^[0-9]+$', tips: '请输入整数'}, bigMoney: {code: '^[1-9][0-9]{2,}$', tips: '请输入至少100的整数'}},
+        check: {
+          tel: {code: '^1[34578][0-9]{9}$', tips: '请输入11位手机号'},
+          password: {code: '^[0-9a-zA-Z_]{6,16}$', tips: '密码应在6-16位之间的字母数字'},
+          imgCode: {code: '^[0-9a-zA-Z]{4}$', tips: '请输入4位字符', error: '图形验证码错误'},
+          telCode: {code: '^[0-9]{6}$', tips: '请输入6位数字', success: '发送成功'},
+          idCard: {code: '^([0-9]{15}$|^[0-9]{18}$|^[0-9]{17}([0-9]|X|x))$', tips: '身份证号应是18位'},
+          bankCard: {code: '^[0-9]{16,21}$', tips: '请输入16至21位的银行卡号'},
+          computeAddress: {code: '^[0-9a-zA-Z]{32,}$', tips: '请输入至少32位的字符'},
+          money: {code: '^[2-9][0-9]|[0-9]{3,}$', tips: '请输入至少20的整数'},
+          coin: {code: '^[1-9][0-9]*|[1-9][0-9]*[.][0-9]{1,8}|0[.][0-9]{2}[1-9][0-9]{0,5}|0[.][1-9]{1}[0-9]{0,7}|0[.]0[1-9]{1}[0-9]{0,6}$', tips: '请输入大于或者等于0.001的有效值'},
+          float: {code: '^[0-9]+(.[0-9]{1,2})?$', tips: '请输入整数或两位小数'},
+          int: {code: '^[0-9]+$', tips: '请输入整数'},
+          bigMoney: {code: '^[1-9][0-9]{2,}$', tips: '请输入至少100的整数'}
+        },
         data: {card_type: '中国大陆身份证'}
       }
     },
@@ -118,7 +131,7 @@
         if (ele.getAttribute('disabled') === 'true') return false
         api.countDown(e)
         ele.setAttribute('disabled', true)
-        util.post('send_code', {sign: api.serialize({token: this.token, mobile: form.dep_tel ? form.dep_tel.value : form.mobile.value})}).then(res => {
+        util.post('send_code', {token: this.token, mobile: form.dep_tel ? form.dep_tel.value : form.mobile.value}).then((res) => {
           if (!(this.isMobile || this.mode)) {
             api.setTips(form.code, 'success')
           } else {

@@ -17,7 +17,6 @@
 
 <script>
   import util from '@/util'
-  import api from '@/util/function'
   import { mapState } from 'vuex'
   export default {
     name: 'assetDetail',

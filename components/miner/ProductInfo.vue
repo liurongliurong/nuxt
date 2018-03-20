@@ -15,8 +15,8 @@
       </div>
       <div class="content_item" :id="d.name" v-for="d,m in params2!=='1'?cloudInfo:minerInfo">
         <h2 v-if="m!==0">{{d.title}}</h2>
-        <div class="content_con" v-if="d.name==='product_photos'">
-           <img :src="n" alt="" v-for="n,k in detail.product_photos">
+        <div class="content_con" v-if="d.name==='bdc_img'">
+           <img :src="detail.bdc_img" alt="" v-if="detail.bdc_img">
         </div>
         <div class="params_table" v-else-if="d.name==='machine_intro'||d.name==='MinerAdvantage'">
           <table border="1" cellspacing="0">

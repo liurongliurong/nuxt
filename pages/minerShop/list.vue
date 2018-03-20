@@ -18,12 +18,12 @@
         </div>
       </div>
       <div class="miner_pic pic3">
-        <router-link to="/minerShop/miner/1">
+        <router-link to="/minerShop/miner">
           <img :src="require('@/assets/images/miner_shop/miner.jpg')" alt="">
         </router-link>
       </div>
       <div class="miner_pic pic4">
-        <router-link to="/minerShop/miner/2">
+        <router-link to="/minerShop/cloudCompute">
           <img :src="require('@/assets/images/miner_shop/cloud_miner.jpg')" alt="">
         </router-link>
       </div>
@@ -34,7 +34,7 @@
           <span>算力服务器推荐</span>
           <span>保全网提供全流程区块链存证、保全服务</span>
         </div>
-        <router-link to="/minerShop/miner/1">更多算力服务器 ></router-link>
+        <router-link to="/minerShop/miner">更多算力服务器 ></router-link>
       </h2>
     </MinerList>
     <CloudMinerList :cloudMinerData="cloudMinerData">
@@ -43,7 +43,7 @@
           <span>云算力推荐</span>
           <span>国家电网 算力保证</span>
         </div>
-        <router-link to="/minerShop/miner/2">更多云算力 ></router-link>
+        <router-link to="/minerShop/cloudCompute">更多云算力 ></router-link>
       </h2>
     </CloudMinerList>
     <div class="miner_loan">
@@ -58,8 +58,6 @@
 
 <script>
   import util from '@/util'
-  import api from '@/util/function'
-  import { mapState } from 'vuex'
   import CloudMinerList from '@/components/miner/CloudMinerList'
   import MinerList from '@/components/miner/MinerList'
   export default {
@@ -86,19 +84,14 @@
     },
     methods: {
       fetchData () {
-        var self = this
-        var obj = {token: this.token}
+        var obj = {token: 0}
         var url = 'showMinerList'
         var url2 = 'showproductList'
-        util.post(url2, {sign: api.serialize(obj)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.cloudMinerData = res.data
-          })
+        util.post(url2, obj).then((res) => {
+          this.cloudMinerData = res.msg.data
         })
-        util.post(url, {sign: api.serialize(obj)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.minerData = res.data
-          })
+        util.post(url, obj).then((res) => {
+          this.minerData = res.msg.data
         })
       },
       swipe () {
@@ -114,18 +107,10 @@
     },
     mounted () {
       this.fetchData()
-      var self = this
-      util.post('banner', {sign: 'token=' + this.token}).then(function (res) {
-        api.checkAjax(self, res, () => {
-          self.pics = res
-        })
+      util.post('banner', {token: 0}).then((res) => {
+        this.pics = res.msg
       })
       this.swipe()
-    },
-    computed: {
-      ...mapState({
-        token: state => state.info.token
-      })
     }
   }
 </script>

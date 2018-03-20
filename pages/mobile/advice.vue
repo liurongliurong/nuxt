@@ -9,7 +9,7 @@
   </section>
 </template>
 <script>
-import util from '@/util'
+import { fetchApiData } from '@/util'
 import api from '@/util/function'
 import { mapState } from 'vuex'
 export default {
@@ -20,19 +20,15 @@ export default {
   },
   methods: {
     content () {
-      var self = this
       var contenthtml = document.getElementById('textarea').value
       if (!contenthtml) {
         document.getElementById('block').style = 'display:block'
         return false
       } else {
         document.getElementById('block').style = 'display:none'
-        util.post('collectAdvice', {sign: api.serialize({token: this.token, content: encodeURIComponent(contenthtml)})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            api.tips('提交成功 ！')
-            setTimeout(() => {
-              self.$router.push({name: 'mobile-administration'})
-            }, 3000)
+        fetchApiData(this, 'collectAdvice', {token: this.token, content: encodeURIComponent(contenthtml)}, (res) => {
+          api.tips('提交成功 ！', () => {
+            this.$router.push({name: 'mobile-administration'})
           })
         })
       }

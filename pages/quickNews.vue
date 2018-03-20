@@ -53,19 +53,17 @@
       getList (more) {
         let url = more ? 'showBrief_h5' : 'NewsBriefList'
         let data = more ? {token: 0, page: this.now} : {token: 0}
-        util.post(url, {sign: api.serialize(data)}).then((res) => {
-          api.checkAjax(this, res, () => {
-            if (more) {
-              for (let i = 0, len = res.list.length; i < len; i++) {
-                this.newslists.push(res.list[i])
-                this.times.push(api.pastTime(res.list[i].dateline))
-              }
-              if (this.now > 1) return false
-              this.total = res.total
-            } else {
-              this.newslists = res
+        util.post(url, data).then((res) => {
+          if (more) {
+            for (let i = 0, len = res.msg.list.length; i < len; i++) {
+              this.newslists.push(res.msg.list[i])
+              this.times.push(api.pastTime(res.msg.list[i].dateline))
             }
-          })
+            if (this.now > 1) return false
+            this.total = res.msg.total
+          } else {
+            this.newslists = res.msg
+          }
         })
       },
       loadMore () {

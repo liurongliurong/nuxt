@@ -25,6 +25,7 @@
     },
     methods: {
       goPage () {
+        document.body.style.overflow = 'auto'
         if (this.isMobile) {
           this.$store.commit('SET_URL', this.$route.path)
           if (this.no === 0) {

@@ -11,8 +11,7 @@
 </template>
 
 <script>
-  import util from '@/util'
-  import api from '@/util/function'
+  import { fetchApiData } from '@/util'
   import { mapState } from 'vuex'
   export default {
     data () {
@@ -24,11 +23,8 @@
     methods: {
       getData () {
         if (this.token !== 0 && this.messageId) {
-          var self = this
-          util.post('Messagecontent', {sign: api.serialize({token: this.token, message_id: this.messageId})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.data = res
-            })
+          fetchApiData(this, 'Messagecontent', {token: this.token, message_id: this.messageId}, (res) => {
+            this.data = res
           })
         } else {
           setTimeout(() => {

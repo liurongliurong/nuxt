@@ -5,8 +5,8 @@
         <div class="top_nav_box">
           <router-link to="/minerShop/list">算力服务器商城</router-link>
           <span>></span>
-          <router-link to="/minerShop/miner/1" v-if="params2==='1'">算力服务器</router-link>
-          <router-link to="/minerShop/miner/2" v-else>云算力</router-link>
+          <router-link to="/minerShop/miner" v-if="params2==='1'">算力服务器</router-link>
+          <router-link to="/minerShop/cloudCompute" v-else>云算力</router-link>
           <span>></span>
           <em>{{detail.name}}</em>
         </div>
@@ -38,8 +38,19 @@
             </div>
           </div>
           <div class="buy_text last">
-            <div class="item">总价</div>
-            <div class="item">{{(detail.one_amount_value*number)|format}}元</div>
+            <div>总价</div>
+            <div>{{(detail.one_amount_value*number)|format}}元</div>
+          </div>
+          <div class="buy_text" v-if="detail.status!==4&&params2==='2'&&detail.is_loan===1">
+            <div>分期购买</div>
+            <div class="icon_loan">
+              <label for="isLoan1">
+                <input id="isLoan1" type="radio" value="1" name="isLoan"> 是
+              </label>
+              <label for="isLoan2">
+                <input id="isLoan2" type="radio" value="0" name="isLoan" checked> 否
+              </label>
+            </div>
           </div>
           <div class="mobile_btn">
             <button @click="goPay(false)">确认购买</button>
@@ -54,7 +65,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import ProductInfo from '@/components/miner/ProductInfo'
@@ -70,7 +81,7 @@
     data () {
       return {
         detail: {incomeType: '每日结算，隔日发放', fee: '', product_name: '', name: '', status: 0},
-        cloudInfo: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'product_photos', title: 'BDC中心相册'}],
+        cloudInfo: [{name: 'machine_advantage', title: '产品优势'}, {name: 'machine_intro', title: '产品参数'}, {name: 'machine_agreement', title: '协议说明'}, {name: 'bdc_img', title: 'BDC中心相册'}],
         minerInfo: [{name: 'MInerBrief', title: '产品介绍'}, {name: 'MinerAdvantage', title: '产品参数'}, {name: 'prProtocolSpeciaification', title: '补充说明'}],
         params: {chips_num: '芯片数量', hash: '额定算力', voltage: '额定电压', minerSize: '服务器尺寸', minerOuterSize: '外箱尺寸', cooling: '冷却', temperature: '工作温度', humidity: '工作湿度', network: '网络连接', weight: '净重', wallPower: '墙上功耗'},
         status: {1: '热销', 2: '已售罄', 3: '产品撤销', 4: '预热'},
@@ -127,6 +138,10 @@
         this.mask = false
       },
       goPay (isLoan) {
+        let loanEle = document.querySelector('#isLoan1')
+        if (loanEle && loanEle.checked) {
+          isLoan = true
+        }
         if (this.number < 1) {
           api.tips('请输入或添加至少1台算力服务器')
           return false
@@ -136,7 +151,11 @@
         }
         var data = {name: this.detail.name ? this.detail.name : this.detail.product_name, one_amount_value: this.detail.one_amount_value || '', number: this.number || '', hash: this.detail.hash || '', hashType: this.detail.hashType || '', incomeType: this.detail.incomeType || '', output: this.detail.output || '', total_electric_fee: this.detail.total_electric_fee || '', batch_area: this.detail.batch_area || '', isLoan: isLoan, img: this.detail.product_img||this.detail.minerPicture, bdc_id: this.detail.bdc_message_id}
         api.setStorge('info', data)
-        this.$router.push({name: 'minerShop-pay'})
+        if (isLoan && this.isMobile) {
+          this.$router.push({name: 'minerShop-hirePurchase'})
+        } else {
+          this.$router.push({name: 'minerShop-pay'})
+        }
       },
       changeNum (n) {
         n = +n
@@ -161,7 +180,6 @@
       },
       getData () {
         if (this.params1) {
-          var self = this
           var url = ''
           var data = {token: this.token}
           if (this.params2 === '1') {
@@ -171,25 +189,24 @@
             url = 'productDetail'
             data = Object.assign({product_id: this.params1}, data)
           }
-          util.post(url, {sign: api.serialize(data)}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.detail.leftNum = res.amount - res.buyed_amount
-              self.detail = Object.assign(self.detail, res)
-              self.detail.single_limit_amount = parseInt(self.detail.single_limit_amount) || 1
-              self.detail.sellProgress = ((+self.detail.buyed_amount)/self.detail.amount*100).toFixed(0)+'%'
-              self.number = self.detail.single_limit_amount
-              if (self.params2 !== '1') {
-                self.detail = Object.assign(self.detail, res.has_product_miner_base)
-                self.detail.name = res.product_name
-                self.detail.hashType = (res.hashtype && res.hashtype.name) || ''
-                self.detail.statusStr = self.str[res.status]
-              } else {
-                self.detail.name = res.name
-                self.detail = Object.assign(self.detail, res.miner_list)
-                self.detail.weight = (res.miner_list && res.miner_list.weight) || ''
-                self.detail.statusStr = self.status[res.status]
-              }
-            })
+          fetchApiData(this, url, data, (res) => {
+            this.detail.leftNum = res.amount - res.buyed_amount
+            this.detail = Object.assign(this.detail, res)
+            this.detail.single_limit_amount = parseInt(this.detail.single_limit_amount) || 1
+            this.detail.sellProgress = ((+this.detail.buyed_amount)/this.detail.amount*100).toFixed(0)+'%'
+            this.number = this.detail.single_limit_amount
+            if (this.params2 !== '1') {
+              this.detail = Object.assign(this.detail, res.has_product_miner_base)
+              this.detail.name = res.product_name
+              this.detail.hashType = (res.hashtype && res.hashtype.name) || ''
+              this.detail.statusStr = this.str[res.status]
+              this.detail.bdc_img = res.bdctype.bdc_img
+            } else {
+              this.detail.name = res.name
+              this.detail = Object.assign(this.detail, res.miner_list)
+              this.detail.weight = (res.miner_list && res.miner_list.weight) || ''
+              this.detail.statusStr = this.status[res.status]
+            }
           })
         } else {
           setTimeout(() => {
@@ -284,6 +301,16 @@
             &.last{
               .item:last-child{
                 color: $orange;
+              }
+            }
+            .icon_loan {
+              label {
+                input {
+                  @include checkbox
+                }
+                & + label {
+                  margin-left: 0.5rem
+                }
               }
             }
           }

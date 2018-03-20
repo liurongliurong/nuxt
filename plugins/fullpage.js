@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import '~/assets/css/fullpage.scss'
-import 'animate.css'
+// import 'animate.css'
 
 var fullpage = {}
 var opt = {

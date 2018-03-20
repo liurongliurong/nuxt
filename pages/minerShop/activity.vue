@@ -191,7 +191,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import { auth, post_address } from '@/util/form'
@@ -234,7 +234,7 @@
         },
         activityType: {
           1: {dataRequest: 'showMiner', dataCommit: 'saveMiner', agreement: '《算力服务器销售协议》'},
-          2: {dataRequest: 'showProduct', dataCommit: 'productMall', agreement: '《云算力购买协议》和《算力服务器托管协议》'}
+          2: {dataRequest: 'showProduct', dataCommit: 'productMall', agreement: '《云算力购买协议》和《云算力托管协议》'}
         },
         totalHash: '0.00',
         totalPrice: '0.00',
@@ -330,32 +330,27 @@
         } else {
           data = Object.assign(inputData, data)
         }
-        var self = this
         if (api.checkWechat()) {
           api.tips('请在浏览器里打开')
           return false
         }
-        util.post(url, {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            localStorage.removeItem('activity')
-            if (self.payNo === 2) {
-              res.subject = encodeURIComponent(res.subject)
-              if (self.isMobile) {
-                res = Object.assign(res, {is_mobile: 1})
-              } else {
-                res = Object.assign(res, {is_mobile: 0})
-              }
-              util.post('alipay_wap', {sign: api.serialize(Object.assign({token: self.token}, res))}).then((resData) => {
-                api.checkAjax(self, data, () => {
-                  location.href = resData.url
-                })
-              })
+        fetchApiData(this, url, data, (res) => {
+          localStorage.removeItem('activity')
+          if (this.payNo === 2) {
+            res.subject = encodeURIComponent(res.subject)
+            if (this.isMobile) {
+              res = Object.assign(res, {is_mobile: 1})
             } else {
-              api.tips('恭喜您购买成功！', () => {
-                location.href =  callbackUrl
-              })
+              res = Object.assign(res, {is_mobile: 0})
             }
-          })
+            fetchApiData(this, 'alipay_wap', Object.assign({token: this.token}, res), (resData) => {
+              location.href = resData.url
+            })
+          } else {
+            api.tips('恭喜您购买成功！', () => {
+              location.href =  callbackUrl
+            })
+          }
         })
       },
       closeMask () {
@@ -385,48 +380,39 @@
           var tipsStr = '实名认证已提交，请您耐心等待几秒即可看到认证结果'
           var tipsStr2 = '恭喜您实名认证成功'
           // var tipsStr2 = '恭喜您实名认证成功，请填写收货地址'
-          var self = this
-          util.post('user_truename', {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              api.tips(tipsStr)
-              self.$store.commit('SET_INFO', {[val]: {status: 0}})
-              setTimeout(() => {
-                self.requestData('show_user_truename', sendData, val, () => {
-                  api.tips(tipsStr2)
-                  // self.openContract(3, self.isMobile)
-                })
-              }, 7000)
-              self.closeMask(self.isMobile)
-            })
+          fetchApiData(this, 'user_truename', Object.assign(data, sendData), (res) => {
+            api.tips(tipsStr)
+            this.$store.commit('SET_INFO', {[val]: {status: 0}})
+            setTimeout(() => {
+              this.requestData('show_user_truename', sendData, val, () => {
+                api.tips(tipsStr2)
+                // this.openContract(3, this.isMobile)
+              })
+            }, 7000)
+            this.closeMask(this.isMobile)
           })
         }
       },
       requestData (url, sendData, val, callback) {
-        var self = this
-        util.post(url, {sign: api.serialize(sendData)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.$store.commit('SET_INFO', {[val]: res})
-            if (callback) {
-              callback()
-            }
-          }, '', () => {
-            self.$store.commit('SET_INFO', {[val]: ''})
-          })
+        fetchApiData(this, url, sendData, (res) => {
+          this.$store.commit('SET_INFO', {[val]: res})
+          if (callback) {
+            callback()
+          }
+        }, '', () => {
+          this.$store.commit('SET_INFO', {[val]: ''})
         })
       },
       pageInit () {
-        var self = this
         // var url = 'showMiner'
         var url = 'showProduct'
-        util.post(url, {sign: 'token=0'}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.data = res
-            self.paramsData = res.product_info.has_product_miner_base
-            self.content = res.content + '<hr>' + res.content1
-            self.totalHash = (self.number * self.data.hash).toFixed(2)
-            self.totalPrice = self.number * self.data.one_amount_value
-            // self.content = res.content
-          })
+        fetchApiData(this, url, {token: 0}, (res) => {
+          this.data = res
+          this.paramsData = res.product_info.has_product_miner_base
+          this.content = res.content + '<hr>' + res.content1
+          this.totalHash = (this.number * this.data.hash).toFixed(2)
+          this.totalPrice = this.number * this.data.one_amount_value
+          // this.content = res.content
         })
       }
     },
@@ -443,6 +429,7 @@
       var p = api.getStorge('suanli')
       this.number = p.number || 1
       this.pageInit()
+      document.body.style.overflow = 'auto'
     },
     filters: {
       format: api.decimal
@@ -682,7 +669,7 @@
           text-align: center;
           margin-bottom: 0.5rem;
           position: absolute;
-          top: 3.8rem;
+          top: 4.7rem;
         }
       }
       .mobile_activity_form{
@@ -851,6 +838,7 @@
           span:nth-child(2){
             margin-left:0.1rem;
             font-size: 0.28rem;
+            width: calc(100% - 20px);
           }
         }
       }

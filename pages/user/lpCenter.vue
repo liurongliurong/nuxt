@@ -64,7 +64,7 @@
 
 <script>
   import api from '@/util/function'
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import MyMask from '@/components/common/Mask'
   import OprSelect from '@/components/common/OprSelect'
   import { mapState } from 'vuex'
@@ -89,16 +89,13 @@
       submit () {
         var form = document.querySelector('.form')
         var data = api.checkForm(form, this.isMobile)
-        var self = this
         if (!data) return false
-        util.post('ScodeVerify', {sign: api.serialize({token: this.token, s_code: form.scode.value})}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.edit = false
-            document.body.style.overflow = 'auto'
-            self.show = 3
-            self.content = res.content
-            self.contract = {contract_id: res.id, funds_id: res.funds_id, s_code: res.s_code}
-          })
+        fetchApiData(this, 'ScodeVerify', {token: this.token, s_code: form.scode.value}, (res) => {
+          this.edit = false
+          document.body.style.overflow = 'auto'
+          this.show = 3
+          this.content = res.content
+          this.contract = {contract_id: res.id, funds_id: res.funds_id, s_code: res.s_code}
         })
       },
       open () {
@@ -130,65 +127,54 @@
           this.goAuth()
           return false
         }
-        var self = this
         var sCodeData = {token: this.token, s_code: ele.value}
-        util.post('ScodeVerify', {sign: api.serialize(sCodeData)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            if (self.risk && self.risk.user_risk_score < 0) {
-              self.$router.push({name: 'user-accountEvaluate'})
-            } else {
-              self.show = 3
-              self.content = res.content
-              self.contract = {contract_id: res.id, funds_id: res.funds_id, s_code: res.s_code}
-            }
-          })
+        fetchApiData(this, 'ScodeVerify', sCodeData, (res) => {
+          if (this.risk && this.risk.user_risk_score < 0) {
+            this.$router.push({name: 'user-accountEvaluate'})
+          } else {
+            this.show = 3
+            this.content = res.content
+            this.contract = {contract_id: res.id, funds_id: res.funds_id, s_code: res.s_code}
+          }
         })
       },
       agree () {
-        var self = this
-        util.post('sign_contract', {sign: api.serialize(Object.assign({token: this.token}, self.contract))}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            api.tips(res)
-            self.show = 2
-            util.post('scode_info', {sign: 'token=' + self.token}).then(function (data) {
-              if (data && !data.code) {
-                self.scodeInfo = data
-              }
-            })
-            if (!self.scode) {
-              self.$store.commit('SET_INFO', {scode: 1})
+        fetchApiData(this, 'sign_contract', Object.assign({token: this.token}, this.contract), (res) => {
+          api.tips(res)
+          this.show = 2
+          util.post('scode_info', {token: this.token}).then(function (data) {
+            if (data && !data.code) {
+              this.scodeInfo = data
             }
           })
+          if (!this.scode) {
+            this.$store.commit('SET_INFO', {scode: 1})
+          }
         })
       },
       getData () {
         if (this.token !== 0) {
-          var self = this
-          util.post('scode_info', {sign: 'token=' + self.token}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.no = res.s_code
-              self.scodeInfo = res
-              if (!res.list) {
-                self.show = 1
-                return false
-              }
-              if (res.s_code && res.risk && res.risk.user_risk_score < 0) {
-                self.$router.push({name: 'user-accountEvaluate'})
-                return false
-              }
-              if (res.s_code && res.risk && res.risk.user_risk_score > 0 && !res.list[res.s_code].is_contract) {
-                var sCodeData = {token: self.token, s_code: res.s_code}
-                util.post('show_contract', {sign: api.serialize(sCodeData)}).then(function (r) {
-                  api.checkAjax(self, r, () => {
-                    self.show = 3
-                    self.content = r.content
-                    self.contract = {contract_id: r.id, funds_id: r.funds_id, s_code: r.s_code}
-                  })
-                })
-                return false
-              }
-              self.show = 2
-            })
+          fetchApiData(this, 'scode_info', {token: this.token}, (res) => {
+            this.no = res.s_code
+            this.scodeInfo = res
+            if (!res.list) {
+              this.show = 1
+              return false
+            }
+            if (res.s_code && res.risk && res.risk.user_risk_score < 0) {
+              this.$router.push({name: 'user-accountEvaluate'})
+              return false
+            }
+            if (res.s_code && res.risk && res.risk.user_risk_score > 0 && !res.list[res.s_code].is_contract) {
+              var sCodeData = {token: this.token, s_code: res.s_code}
+              fetchApiData(this, 'show_contract', sCodeData, (r) => {
+                this.show = 3
+                this.content = r.content
+                this.contract = {contract_id: r.id, funds_id: r.funds_id, s_code: r.s_code}
+              })
+              return false
+            }
+            this.show = 2
           })
         } else {
           setTimeout(() => {

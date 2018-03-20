@@ -17,7 +17,6 @@
 
 <script>
   import util from '@/util'
-  import api from '@/util/function'
   import { mapState } from 'vuex'
   import Vue from 'vue'
   import { InfiniteScroll } from 'mint-ui'
@@ -37,13 +36,13 @@
     },
     methods: {
       getData() {
-        util.post('fundOrder', {sign: api.serialize({token: this.token, type: 0, status: 1, page: this.page})}).then(
+        util.post('fundOrder', {token: this.token, type: 0, status: 1, page: this.page}).then(
           res => {
-            this.length = res.total_num
-            for (let i = 0, len = res.list.length; i < len; i ++) {
-              this.formData.push(res.list[i])
+            this.length = res.msg.total_num
+            for (let i = 0, len = res.msg.list.length; i < len; i ++) {
+              this.formData.push(res.msg.list[i])
             }
-            this.totalNumber = res.total_num
+            this.totalNumber = res.msg.total_num
         })
       },
       loadMore() {

@@ -2,21 +2,21 @@
   <pageFrame>
     <section class="right_content suanli_news" v-if="isMobile===0">
       <h1>算力资讯<span class="icon iconfont icon-jiantou"></span></h1>
-      <div :class="['item', 'img_text', {active: true}]" @click="goDetail(list.id)" v-for="list in lists" :key="lists.id">
-        <img v-if="list.image" :src="list.image"/>
+      <div :class="['item', 'img_text', {active: true}]" @click="goDetail(l.id)" v-for="l,k in list" :key="k">
+        <img v-if="l.image" :src="l.image"/>
         <img v-else :src="img1"/>
         <div class="right">
-          <p class="title">{{list.title}}</p>
-          <p class="time" v-if="list.source"><span>{{list.source}}</span>|<span>{{list.dateline}}</span></p>
-          <p class="time" v-else><span>《算力网》</span>|<span>{{list.dateline}}</span></p>
-          <p class="notice_content" v-if="list.resume">{{list.resume}}......</p>
+          <p class="title">{{l.title}}</p>
+          <p class="time" v-if="l.source"><span>{{l.source}}</span>|<span>{{l.dateline}}</span></p>
+          <p class="time" v-else><span>《算力网》</span>|<span>{{l.dateline}}</span></p>
+          <p class="notice_content" v-if="l.resume">{{l.resume}}......</p>
           <p class="notice_content" v-else>暂无简介</p>
         </div>
       </div>
       <Pager :len="len" :now="now" @setPage="setPage"></Pager>
     </section>
     <scroll-list :content="content" :loading="loading" :showContent="showContent" @loadMore="loadMore" @back="showContent=false" v-else-if="isMobile===1">
-      <div class="news_item" v-for="item, k in lists" :key="k" @click="clickcontent(item.id)">
+      <div class="news_item" v-for="item, k in list" :key="k" @click="getContent(item.id)">
         <div class="list_left">
           <h3>{{item.title}}</h3>
           <p>{{item.resume?item.resume: '暂无简介'}}</p>
@@ -36,7 +36,7 @@
 
 <script>
   import util from '@/util/index'
-  import api from '@/util/function'
+  import { getMobileList, loadMore, setPage, getContent } from '@/service/article'
   import pageFrame from '@/components/common/PageFrame'
   import Pager from '@/components/common/Pager'
   import { mapState } from 'vuex'
@@ -56,7 +56,7 @@
     },
     data () {
       return {
-        lists: [],
+        list: [],
         img1: require('@/assets/images/zx.jpg'),
         len: 0,
         now: 1,
@@ -68,59 +68,23 @@
     },
     methods: {
       getList (more) {
-        util.post('suanliMessage', {sign: api.serialize({token: 0, page: this.now})}).then((res) => {
-          api.checkAjax(this, res, () => {
-            if (more) {
-              for (let i = 0, len = res.list.length; i < len; i++) {
-                this.lists.push(res.list[i])
-              }
-            } else {
-              this.lists = res.list
-              this.allid = res.id_list
-              localStorage.setItem('all_id', JSON.stringify(this.allid))
-            }
-            if (this.now > 1) return false
-            this.len = Math.ceil(res.total / 7)
-          })
+        util.post('suanliMessage', {token: 0, page: this.now}).then((res) => {
+          getMobileList(this, more, res.msg, 7)
         })
       },
       goDetail (id) {
         localStorage.setItem('icon_id', JSON.stringify([id]))
         this.$router.push({path: '/computeNews/detail/'})
       },
-      setPage (n) {
-        this.now = n
-        if (!this.isMobile) {
-          this.getList()
-        }
-      },
-      loadMore () {
-        if (this.now < this.len) {
-          this.loading = true
-          this.now++
-          this.getList(1)
-          setTimeout(() => {
-            this.loading = false
-          }, 1000)
-        } else {
-          this.loading = false
-        }
-      },
-      clickcontent (id) {
-        this.showContent = true
-        util.post('content', {sign: 'token=0&news_id=' + id}).then((res) => {
-          api.checkAjax(this, res, () => {
-            this.content = res
-          })
-        })
-      }
+      setPage,
+      loadMore,
+      getContent
     },
     mounted () {
       this.getList()
     },
     computed: {
       ...mapState({
-        token: state => state.info.token,
         isMobile: state => state.isMobile
       })
     }

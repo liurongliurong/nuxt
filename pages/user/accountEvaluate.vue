@@ -19,7 +19,7 @@
 
 <script>
   import api from '@/util/function'
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import { mapState } from 'vuex'
   export default {
     data () {
@@ -60,18 +60,12 @@
         } else {
           rickType = '进取型'
         }
-        var self = this
-        var sendData = {token: this.token}
-        util.post('risk_score', {sign: api.serialize(Object.assign({user_risk_score: score, risk_type: encodeURIComponent(rickType)}, sendData))}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            util.post('show_risk_score', {sign: api.serialize(sendData)}).then(function (data) {
-              if (data && !data.code) {
-                self.$store.commit('SET_INFO', {risk: data})
-                api.tips('测评成功', () => {
-                  self.$router.push({name: 'user-lpCenter'})
-                })
-              }
-            })
+        let result = {user_risk_score: score, risk_type: rickType}
+        let sendData = {user_risk_score: score, risk_type: encodeURIComponent(rickType), token: this.token}
+        fetchApiData(this, 'risk_score', sendData, (res) => {
+          this.$store.commit('SET_INFO', {risk: result})
+          api.tips('测评成功', () => {
+            this.$router.push({name: 'user-lpCenter'})
           })
         })
       }

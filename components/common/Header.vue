@@ -22,7 +22,7 @@
       <div class="mobile_header_nav" v-if="showNav !== ''" @click="showNavlink">
         <div class="white_bg">
           <nuxt-link :to="i" v-for="i,k in navList" :key="k" class="item">
-            <span>{{pages[i]}}</span>
+            <span :class="{active:i==='/minerShop/activity'}">{{pages[i]}}</span>
             <em></em>
             <span class="unread_num" v-if="i==='/mobile/message'&&unread_num">您有{{unread_num}}条未读消息</span>
           </nuxt-link>
@@ -45,8 +45,8 @@
     data () {
       return {
         pages: {
-          '/minerShop/miner/2': '云算力',
-          '/minerShop/miner/1': '算力服务器',
+          '/minerShop/cloudCompute': '云算力',
+          '/minerShop/miner': '算力服务器',
           '/bdc': 'BDC托管',
           '/quickNews': '产业资讯',
           '/computeNews/listm': '产业资讯',
@@ -56,25 +56,30 @@
           '/mobile/property': '我的资产',
           '/mobile/order/0': '我的订单',
           '/mobile/order/3': '我的订单',
+          '/mobile/repayment/0': '我的分期',
+          '/mobile/repayment/1': '我的分期',
           '/mobile/message': '消息中心',
           '/mobile/moneyFlow': '账户流水',
           '/mobile/idVerfication': '个人认证',
           '/mobile/bankCard': '银行卡管理',
-          '/mobile/assetsAddress': '收益地址管理',
+          '/mobile/assetsAddress': '提币地址管理',
           '/mobile/administration': '账户设置',
           '/mobile/address': '邮寄地址',
           '/mobile/help': '常见问题',
           '/mobile/advice': '意见反馈',
           '/mobile/orderDetail': '订单详情',
           '/mobile/cloudProduct': '云算力列表',
-          '/mobile/recharge': '充值'
+          '/mobile/recharge': '充值',
+          '/minerShop/activity': '新春优惠购',
+          '/minerShop/hirePurchase': '分期',
+          '/mobile/repaymentDetail': '分期明细'
         },
         showNav: '',
         scroll: false,
         headerType: '',
         navList: [],
-        navLink: ['/minerShop/miner/2', '/minerShop/miner/1', '/bdc', '/quickNews'],
-        navPerson: ['/mobile/property', '/mobile/order/0', '/mobile/message', '/mobile/moneyFlow', '/mobile/idVerfication', '/mobile/bankCard', '/mobile/assetsAddress', '/mobile/administration'
+        navLink: ['/minerShop/miner', '/minerShop/cloudCompute', '/bdc', '/quickNews'],
+        navPerson: ['/mobile/property', '/mobile/order/0', '/mobile/repayment/0', '/mobile/message', '/mobile/moneyFlow', '/mobile/idVerfication', '/mobile/bankCard', '/mobile/assetsAddress', '/mobile/administration'
         ],
         isBlueHeader: ['bdc', 'mobile-assetDetail', 'mobile-property', 'mobile-personalCenter', 'mobileIndex'],
         noHeader: ['auth-login', 'auth-regist', 'auth-passwordRetrieval']
@@ -109,7 +114,7 @@
       logout () {
         this.$store.commit('LOGOUT')
         if (this.isMobile) {
-          this.$router.push({path: '/minerShop/miner/2'})
+          this.$router.push({path: '/minerShop/cloudCompute'})
         } else {
           this.$router.push({path: '/'})
         }
@@ -240,7 +245,9 @@
           text-align: center;
           line-height: 0.88rem;
           font-size: 0.32rem;
-          letter-spacing: 0.05rem;
+          span.active {
+            color: #fe5039
+          }
           em{
             @include block(5);
             @include arrow(right, #c7c7c9);
@@ -258,7 +265,6 @@
             line-height: 14px;
             padding: 0 3px;
             border-radius: 20px;
-            letter-spacing: initial;
           }
         }
       }

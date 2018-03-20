@@ -253,34 +253,6 @@ api.tips = (str, callback) => {
     }
   }, 2000)
 }
-api.checkAjax = (obj, res, callback, btn, failback) => {
-  if (res === 'repeatLogin') {
-    api.tips('您的账号在别处登录', () => {
-      obj.$router.push({name: 'auth-login'})
-      obj.$store.commit('LOGOUT')
-    })
-    return false
-  }
-  if (res === 'overtime') {
-    api.tips('账户登录超时，请重新登录', () => {
-      obj.$router.push({name: 'auth-login'})
-      obj.$store.commit('LOGOUT')
-    })
-    return false
-  }
-  if (res && res.code) {
-    api.tips(res.msg, () => {
-      if (btn) {
-        btn.removeAttribute('disabled')
-      }
-      if (failback) {
-        failback()
-      }
-    })
-  } else {
-    callback()
-  }
-}
 api.btoa = (input) => {
   var _keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
   var output = ''

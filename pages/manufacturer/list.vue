@@ -14,7 +14,7 @@
     </div>
     <scroll-list class="mobile_manufacture" :content="content" :loading="loading" :showContent="showContent" @loadMore="loadMore" @back="showContent=false" v-else-if="isMobile === 1">
       <h1 v-if="!showContent" slot="title">主流算力服务器制造商</h1>
-      <div class="item" v-for="item, k in list" :key="k" @click="clickcontent(item.id)">
+      <div class="item" v-for="item, k in list" :key="k" @click="getContent(item.id)">
         <img :src="item.image"/>
         <p>{{ item.title}}</p>
       </div>
@@ -24,8 +24,8 @@
 
 <script>
   import util from '@/util/index'
-  import api from '@/util/function'
   import { mapState } from 'vuex'
+  import { getMobileList, loadMore, setPage, getContent } from '@/service/article'
   import Pager from '@/components/common/Pager'
   import pageFrame from '@/components/common/PageFrame'
   import ScrollList from '@/components/common/ScrollList'
@@ -55,58 +55,17 @@
     },
     methods: {
       getList (more) {
-        util.post('NewsManfacturerList', {sign: api.serialize({token: 0, page: this.now})}).then((res) => {
-          api.checkAjax(this, res, () => {
-            if (more) {
-              for (let i = 0, len = res.list.length; i < len; i++) {
-                this.list.push(res.list[i])
-              }
-            } else {
-              this.list = res.list
-              this.allid = res.id_list
-              localStorage.setItem('all_id', JSON.stringify(this.allid))
-            }
-            if (this.now > 1) return false
-            this.len = Math.ceil(res.total_num / 6)
-          })
+        util.post('NewsManfacturerList', {token: 0, page: this.now}).then((res) => {
+          getMobileList(this, more, res.msg, 6)
         })
-      },
-      setPage (n) {
-        this.now = n
-        if (!this.isMobile) {
-          this.getList()
-        }
       },
       goDetail (id) {
         localStorage.setItem('icon_id', JSON.stringify([id]))
         this.$router.push({path: '/manufacturer/detail/'})
       },
-      setPage (n) {
-        this.now = n
-        if (!this.isMobile) {
-          this.getList()
-        }
-      },
-      loadMore () {
-        if (this.now < this.len) {
-          this.loading = true
-          this.now++
-          this.getList(1)
-          setTimeout(() => {
-            this.loading = false
-          }, 1000)
-        } else {
-          this.loading = false
-        }
-      },
-      clickcontent (id) {
-        this.showContent = true
-        util.post('content', {sign: 'token=0&news_id=' + id}).then((res) => {
-          api.checkAjax(this, res, () => {
-            this.content = res
-          })
-        })
-      }
+      setPage,
+      loadMore,
+      getContent
     },
     mounted () {
       this.getList()

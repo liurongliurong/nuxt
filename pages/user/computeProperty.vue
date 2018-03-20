@@ -39,7 +39,7 @@
             <div class="frozeeData" v-if="k==='today_hash'">
               <span>{{d}}</span>
               <span class="problem">?</span>
-              <div class="frozee_tips">派发一天前收益，如:3号派发1号收益</div>
+              <div class="frozee_tips">派发一天前收益，如:2号派发1号收益</div>
             </div>
             <p v-else>{{d}}</p>
             <span class="currency">{{computeData[k]|format(8)}}</span>
@@ -55,34 +55,34 @@
     </div>
     <div class="compute_box compute_account">
       <div class="data">
-        <template v-for="d,k in computeNav1">
-          <div class="item">
-            <div class="frozeeData" v-if="k==='freeze_coin_withdraw_account'">
-              <span>{{d}}</span>
-              <span class="problem">?</span>
-              <div class="frozee_tips">提币申请后，会暂时放入冻结数量中</div>
-            </div>
-            <div class="frozeeData" v-else-if="k==='today_hash'">
-              <span>{{d}}</span>
-              <span class="problem">?</span>
-              <div class="frozee_tips">币价:{{computeData.coin_price}}CNY</div>
-            </div>
-            <p v-else>{{d}}</p>
-            <template v-if="k==='today_hash'">
-              <span class="currency">{{(computeData.coin_price * computeData.balance_account)|format(1)}}</span>
-              <span class=""> CNY</span>
-            </template>
-            <template v-else-if="k==='total_hash'">
-              <span class="currency">{{computeData.output&&computeData.output.split(" ")[0]}}</span>
-              <span class="">{{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}} /T/天</span>
-            </template>
-            <template v-else>
-              <span class="currency">{{computeData[k]}}</span>
-              <span class=""> {{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}</span>
-            </template>
+        <div class="item">
+          <div class="frozeeData">
+            <span>冻结资产</span>
+            <span class="problem">?</span>
+            <div class="frozee_tips">提币申请后，会暂时放入冻结数量中</div>
           </div>
-          <div class="line"></div>
-        </template>
+          <span class="currency">{{computeData.freeze_coin_withdraw_account}}</span>
+          <span class=""> {{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}</span>
+        </div>
+        <div class="line"></div>
+        <div class="item">
+          <div class="frozeeData">
+            <span>现货资产</span>
+            <span class="problem">?</span>
+            <div class="frozee_tips">币价:{{computeData2.coin_price}}CNY</div>
+          </div>
+          <span>≈ </span>
+          <span class="currency">{{(computeData2.coin_price * computeData.balance_account)|format(1)}}</span>
+          <span class=""> CNY</span>
+        </div>
+        <div class="line"></div>
+        <div class="item">
+          <p>单位收益产出</p>
+          <span>≈ </span>
+          <span class="currency">{{computeData2.out_put&&computeData2.out_put.split(" ")[0]}}</span>
+          <span class=""> {{hashType[nowEdit]&&hashType[nowEdit].name&&hashType[nowEdit].name.toLowerCase()}}/T/天</span>
+        </div>
+        <div class="line"></div>
       </div>
     </div>
     <h3>算力资产</h3>
@@ -120,7 +120,7 @@
 </template>
 
 <script>
-  import util from '@/util'
+  import { fetchApiData } from '@/util'
   import api from '@/util/function'
   import { mapState } from 'vuex'
   import { getIncome, withdrawals } from '@/util/form'
@@ -136,8 +136,8 @@
         moneyNav: {account: '总资金', freeze_account: '冻结资金', balance_account: '账户余额'},
         moneyData: {account: 0, freeze_account: 0, balance_account: 0},
         computeNav: {today_hash: '今日收益', balance_account: '账户余额', total_hash: '累积已获得收益'},
-        computeNav1: {freeze_coin_withdraw_account: '冻结资产', today_hash: '现货资产', total_hash: '单位收益产出'},
-        computeData: {today_hash: 0, balance_account: 0, total_hash: 0},
+        computeData: {today_hash: 0, balance_account: 0, total_hash: 0, freeze_coin_withdraw_account: 0},
+        computeData2: {coin_price: 0, out_put: 0},
         computeProperty: {total_miner: ['已购入云算力', '台'], total_hash: ['算力总和', 'T'], selled_miner: ['已出售云算力', '台'], selling_miner: ['出售中云算力', '台']},
         dataProperty: {total_miner: 0, total_hash: 0, buy_transfer_hash: 0, selled_miner: 0, selling_miner: 0, selled_hash: 0, selling_hash: 0},
         computeFund: {total_miner: ['云算力', '台'], total_hash: ['云算力总和', 'T'], selled_miner: ['已出租云算力', 'T'], selling_miner: ['出租中云算力', 'T']},
@@ -189,21 +189,18 @@
           requestUrl = 'showWithdraw'
           data = {token: this.token}
         }
-        var self = this
-        util.post(requestUrl, {sign: api.serialize(data)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            if (str === 'withdrawals') {
-              self.fee = res.withdraw_fee
-              self.form.withdrawals[0].value2 = parseInt(res.balance_account)
-            } else if (str === 'getIncome') {
-              self.fee = res.withdraw_coin_fee
-              self.form.getIncome[1].value2 = res.coin_account
-            }
-            window.scroll(0, 0)
-            document.body.style.overflow = 'hidden'
-            self.editText = title
-            self.edit = str
-          })
+        fetchApiData(this, requestUrl, data, (res) => {
+          if (str === 'withdrawals') {
+            this.fee = res.withdraw_fee
+            this.form.withdrawals[0].value2 = parseInt(res.balance_account)
+          } else if (str === 'getIncome') {
+            this.fee = res.withdraw_coin_fee
+            this.form.getIncome[1].value2 = res.coin_account
+          }
+          window.scroll(0, 0)
+          document.body.style.overflow = 'hidden'
+          this.editText = title
+          this.edit = str
         })
       },
       closeMask () {
@@ -215,25 +212,21 @@
         this.getList()
       },
       getList () {
-        var self = this
         var nowHash = this.hashType[this.nowEdit]
         this.form.getIncome[0].value = nowHash.name
         this.form.getIncome[1].tipsUnit = nowHash.name.toLowerCase()
         var sendData = {token: this.token, product_hash_type: (nowHash && nowHash.id) || '1'}
-        util.post('myHashAccount', {sign: api.serialize(sendData)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.computeData = res
-          })
+        fetchApiData(this, 'myHashAccount', sendData, (res) => {
+          this.computeData = res
         })
-        util.post('hashAsset', {sign: api.serialize(sendData)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.dataProperty = res
-          })
+        fetchApiData(this, 'myHashAccountOut', sendData, (res) => {
+          this.computeData2 = res
         })
-        util.post('hashFund', {sign: api.serialize(sendData)}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.dataFund = res
-          })
+        fetchApiData(this, 'hashAsset', sendData, (res) => {
+          this.dataProperty = res
+        })
+        fetchApiData(this, 'hashFund', sendData, (res) => {
+          this.dataFund = res
         })
       },
       submit (e) {
@@ -254,15 +247,12 @@
         }
         if (!data) return false
         form.btn.setAttribute('disabled', true)
-        var self = this
-        util.post(url, {sign: api.serialize(Object.assign(data, sendData))}).then(function (res) {
-          api.checkAjax(self, res, () => {
-            self.closeMask()
-            api.tips(tipsStr, () => {
-              window.location.reload()
-            })
-          }, form.btn)
-        })
+        fetchApiData(this, url, Object.assign(data, sendData), (res) => {
+          this.closeMask()
+          api.tips(tipsStr, () => {
+            window.location.reload()
+          })
+        }, form.btn)
       },
       onChange (obj) {
         var value = obj.e.target.value
@@ -274,11 +264,8 @@
       },
       getData () {
         if (this.token !== 0 && this.hashType.length) {
-          var self = this
-          util.post('myAccount', {sign: api.serialize({token: this.token})}).then(function (res) {
-            api.checkAjax(self, res, () => {
-              self.moneyData = {...res, account: +res.freeze_account + (+res.balance_account)}
-            })
+          fetchApiData(this, 'myAccount', {token: this.token}, (res) => {
+            this.moneyData = {...res, account: +res.freeze_account + (+res.balance_account)}
           })
           this.getList()
         } else {
