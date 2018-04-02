@@ -30,13 +30,12 @@
         </div>
         <div class="coin_data" v-for="c,k in property.coin_list">
           <div class="val">
-            <span class="val_title" v-if="k!==0">LTC：</span>
-            <span class="val_title" v-else>BTC：</span>
+            <span class="val_title">{{c.product_hash_type_name}}：</span>
             <span class="val_num">{{(+c.balance_account).toFixed(8)}}</span>
             <!-- <span class="val_num">≈{{+c.hash_balance_account|currency}}元</span> -->
           </div>
           <div class="opr">
-            <span @click="openMask(1, k, c.balance_account)">提币</span>
+            <span @click="openMask(1, c.balance_account, c.product_hash_type, c.product_hash_type_name)">提币</span>
           </div>
         </div>
       </div>
@@ -49,7 +48,7 @@
     <form class="form" @submit.prevent="submit" novalidate v-else>
       <div class="bg"></div>
       <form-field :form="form" @onChange="onChange"></form-field>
-      <p class="fee" v-if="edit===1">手续费：{{fee + (hashType[nowEdit] && hashType[nowEdit].name).toLowerCase()}}</p>
+      <p class="fee" v-if="edit===1">手续费：{{fee + nowHashType.toLowerCase()}}</p>
       <p class="fee" v-if="edit===2">手续费：{{(+totalPrice * +fee).toFixed(2) + '元(' + (fee * 100) + '%)'}}</p>
       <button name="btn">确认提交</button>
       <div class="btn" @click="closeMask">取消</div>
@@ -77,7 +76,6 @@
     },
     data () {
       return {
-        nowEdit: 0,
         getIncome: getIncome,
         withdrawals: withdrawals,
         form: [],
@@ -87,7 +85,8 @@
         product_hash_type: '',
         maskNo: -1,
         showChart: false,
-        property: {total_money: 0, balance_account: 0, freeze_account: 0, coin_list: [], total_miner: 0, total_hash: 0}
+        property: {total_money: 0, balance_account: 0, freeze_account: 0, coin_list: [], total_miner: 0, total_hash: 0},
+        nowHashType: ''
       }
     },
     methods: {
@@ -112,7 +111,7 @@
           }, 5)
         }
       },
-      openMask (k, n ,balance) {
+      openMask (k ,balance, hashType, hashName) {
         this.form = []
         this.totalPrice = 0
         var requestUrl = ''
@@ -130,10 +129,10 @@
             api.tips('您的账户余额不足，不能提取收益')
             return false
           }
-          this.getIncome[0].value = this.hashType[n] && this.hashType[n].name
+          this.getIncome[0].value = hashName
           requestUrl = 'showWithdrawCoin'
-          data = {token: this.token, product_hash_type: this.hashType[n] && this.hashType[n].id}
-          this.nowEdit = n
+          data = {token: this.token, product_hash_type: hashType}
+          this.nowHashType = hashName
         } else if (k === 2) {
           if (!(this.bank_card && this.bank_card.status === 1)) {
             this.maskNo = 1

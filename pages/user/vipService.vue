@@ -20,8 +20,27 @@
         </thead>
         <tbody>
           <tr v-for="l in list[hashType[nowEdit]]">
-            <td v-for="v,k in nav">{{l[k]}}</td>
-            <td><a href="">查看保全</a></td>
+            <template v-for="v,k in nav">
+              <td v-if="k === 'price' || k === 'total'">￥{{l[k]}}</td>
+              <td v-else>{{l[k]}}</td>
+            </template>
+            <td><a :href="l.baoquan" target="_brank">查看保全</a></td>
+          </tr>
+          <tr>
+            <td colspan="2"></td>
+            <td>{{hashType[nowEdit]}}购买总计</td>
+            <td>￥{{list[hashType[nowEdit]].reduce((total, item) => total + item.total, 0)}}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="total_table">
+        <tbody>
+          <tr>
+            <td>总计购买</td>
+            <td colspan="2">￥{{list.total}}</td>
+            <td>账户余额</td>
+            <td>￥{{list.left}}</td>
           </tr>
         </tbody>
       </table>
@@ -63,6 +82,13 @@
     }
     .detail_table{
       @include data_table
+      .total_table {
+        margin-top: 20px;
+        background: #f0f7fd;
+        tr {
+          border-bottom: none
+        }
+      }
     }
   }
 </style>
