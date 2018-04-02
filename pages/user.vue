@@ -22,7 +22,7 @@
       <div class="box">
         <aside class="con" v-if="!$route.path.includes('accountEvaluate')">
           <router-link :class="['item', {active:$route.path.includes(n.name)}]" :to="n.path" v-for="n,k in nav" :key="k">{{n.title}}</router-link>
-          <router-link :class="['item', {active:$route.path.includes('vipService')}]" to="/user/vipService" v-if="mobile === '18506582339'">币服务</router-link>
+          <router-link :class="['item', {active:$route.path.includes('vipService')}]" to="/user/vipService" v-if="mobile === '17691074828'">币服务</router-link>
         </aside>
         <router-view class="main_content"></router-view>
       </div>

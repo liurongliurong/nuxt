@@ -72,14 +72,15 @@
           '/mobile/recharge': '充值',
           '/minerShop/activity': '新春优惠购',
           '/minerShop/hirePurchase': '分期',
-          '/mobile/repaymentDetail': '分期明细'
+          '/mobile/repaymentDetail': '分期明细',
+          '/mobile/vipService': '币服务'
         },
         showNav: '',
         scroll: false,
         headerType: '',
         navList: [],
         navLink: ['/minerShop/miner', '/minerShop/cloudCompute', '/bdc', '/quickNews'],
-        navPerson: ['/mobile/property', '/mobile/order/0', '/mobile/repayment/0', '/mobile/message', '/mobile/moneyFlow', '/mobile/idVerfication', '/mobile/bankCard', '/mobile/assetsAddress', '/mobile/administration'
+        navPerson: ['/mobile/property', '/mobile/order/0', '/mobile/repayment/0', '/mobile/message', '/mobile/moneyFlow', '/mobile/idVerfication', '/mobile/bankCard', '/mobile/assetsAddress', '/mobile/administration', '/mobile/vipService'
         ],
         isBlueHeader: ['bdc', 'mobile-assetDetail', 'mobile-property', 'mobile-personalCenter', 'mobileIndex'],
         noHeader: ['auth-login', 'auth-regist', 'auth-passwordRetrieval']
@@ -92,7 +93,8 @@
           return
         }
         this.showNav = this.showNav === type ? '' : type
-        this.navList = type === 'person'? [...this.navPerson] : [...this.navLink]
+        const isVip = this.mobile === '17691074828' ? 1 : 0
+        this.navList = type === 'person'? isVip ? this.navPerson : this.navPerson.slice(0, 9) : this.navLink
       },
       showTitle() {
         if (this.noHeader.indexOf(this.$route.name) > -1) {

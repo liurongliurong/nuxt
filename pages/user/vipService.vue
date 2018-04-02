@@ -3,9 +3,9 @@
     <div class="vcurrency_title">
       <span class="text_title">币详情</span>
       <div class="title_content">
-        <span class="title_now">{{hashType[nowEdit]}}</span>
+        <span class="title_now">{{nowEdit}}</span>
         <div class="title_list">
-          <a href="javascript:;" @click="fetchData(k)" v-for="n,k in hashType">{{n}}</a>
+          <a href="javascript:;" @click="fetchData(n)" v-for="n,k in hashType">{{n}}</a>
         </div>
       </div>
     </div>
@@ -19,7 +19,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="l in list[hashType[nowEdit]]">
+          <tr v-for="l in list[nowEdit]">
             <template v-for="v,k in nav">
               <td v-if="k === 'price' || k === 'total'">￥{{l[k]}}</td>
               <td v-else>{{l[k]}}</td>
@@ -28,9 +28,9 @@
           </tr>
           <tr>
             <td>{{hashType[nowEdit]}}合计</td>
-            <td>{{list[hashType[nowEdit]].reduce((total, item) => total + item.num, 0)}}</td>
+            <td>{{list[nowEdit+'Num']}}</td>
             <td></td>
-            <td>￥{{list[hashType[nowEdit]].reduce((total, item) => total + item.total, 0)}}</td>
+            <td>￥{{list[nowEdit+'Total']}}</td>
             <td></td>
           </tr>
           <tr class="total_table">
@@ -52,14 +52,14 @@
     data () {
       return {
         hashType: ['BTC', 'ETH'],
-        nowEdit: 0,
+        nowEdit: 'BTC',
         nav: {date: '日期', num: '数量', price: '单价', total: '总价'},
         list: data,
       }
     },
     methods: {
       fetchData (sort) {
-        this.nowEdit = sort || 0
+        this.nowEdit = sort || 'BTC'
       }
     },
     watch: {
