@@ -32,9 +32,9 @@
           <div class="val">
             <span class="val_title">{{c.product_hash_type_name}}：</span>
             <span class="val_num">{{(+c.balance_account).toFixed(8)}}</span>
-            <!-- <span class="val_num">≈{{+c.hash_balance_account|currency}}元</span> -->
+            <span class="val_num_tips" v-if="+c.freeze_withdraw_account>0">{{` (冻结：${(+c.freeze_withdraw_account).toFixed(8)})`}}</span>
           </div>
-          <div class="opr">
+          <div class="opr coin_list_opr">
             <span @click="openMask(1, c.balance_account, c.product_hash_type, c.product_hash_type_name)">提币</span>
           </div>
         </div>
@@ -264,8 +264,13 @@
           @include flex(space-between)
           padding-bottom: 0.2rem;
           .val {
+            flex:1;
             .val_title {
               color: $light_black;
+            }
+            .val_num_tips {
+              font-size: 0.24rem;
+              color: $light_black
             }
           }
           .opr {
@@ -280,6 +285,9 @@
               & + span {
                 margin-left: 0.2rem
               }
+            }
+            &.coin_list_opr {
+              width: 1.23rem;
             }
           }
         }
