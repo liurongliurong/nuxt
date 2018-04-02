@@ -6,7 +6,7 @@
           <div class="type">BTC</div>
           <div class="date">{{l.date}}</div>
         </div>
-        <a class="service_btn" :href="l.baoquan" target="_brank">查看保全</a>
+        <a class="service_btn" :href="'https://www.baoquan.com/mobile'+l.baoquan" target="_brank">查看保全</a>
       </div>
       <div class="service_data">
         <div class="item">
@@ -44,7 +44,7 @@
           <div class="type">ETH</div>
           <div class="date">{{l.date}}</div>
         </div>
-        <a class="service_btn" :href="l.baoquan" target="_brank">查看保全</a>
+        <a class="service_btn" :href="'https://www.baoquan.com/mobile'+l.baoquan" target="_brank">查看保全</a>
       </div>
       <div class="service_data">
         <div class="item">

@@ -24,7 +24,7 @@
               <td v-if="k === 'price' || k === 'total'">￥{{l[k]}}</td>
               <td v-else>{{l[k]}}</td>
             </template>
-            <td><a :href="l.baoquan" target="_brank">查看保全</a></td>
+            <td><a :href="'https://www.baoquan.com'+l.baoquan" target="_brank">查看保全</a></td>
           </tr>
           <tr>
             <td>{{hashType[nowEdit]}}合计</td>
