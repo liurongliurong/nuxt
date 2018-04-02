@@ -27,20 +27,17 @@
             <td><a :href="l.baoquan" target="_brank">查看保全</a></td>
           </tr>
           <tr>
-            <td colspan="2"></td>
-            <td>{{hashType[nowEdit]}}购买总计</td>
+            <td>{{hashType[nowEdit]}}合计</td>
+            <td>{{list[hashType[nowEdit]].reduce((total, item) => total + item.num, 0)}}</td>
+            <td></td>
             <td>￥{{list[hashType[nowEdit]].reduce((total, item) => total + item.total, 0)}}</td>
             <td></td>
           </tr>
-        </tbody>
-      </table>
-      <table class="total_table">
-        <tbody>
-          <tr>
+          <tr class="total_table">
+            <td colspan="2"></td>
             <td>总计购买</td>
-            <td colspan="2">￥{{list.total}}</td>
-            <td>账户余额</td>
-            <td>￥{{list.left}}</td>
+            <td>￥{{list.total}}</td>
+            <td></td>
           </tr>
         </tbody>
       </table>
@@ -83,11 +80,8 @@
     .detail_table{
       @include data_table
       .total_table {
-        margin-top: 20px;
         background: #f0f7fd;
-        tr {
-          border-bottom: none
-        }
+        border-bottom: none
       }
     }
   }
