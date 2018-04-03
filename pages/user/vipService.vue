@@ -21,7 +21,7 @@
         <tbody>
           <tr v-for="l in list[nowEdit]">
             <template v-for="v,k in nav">
-              <td v-if="k === 'price' || k === 'total'">￥{{l[k]}}</td>
+              <td v-if="k === 'price' || k === 'total'">￥{{l[k]|currency}}</td>
               <td v-else>{{l[k]}}</td>
             </template>
             <td><a :href="'https://www.baoquan.com'+l.baoquan" target="_brank">查看保全</a></td>
@@ -30,13 +30,13 @@
             <td>{{hashType[nowEdit]}}合计</td>
             <td>{{list[nowEdit+'Num']}}</td>
             <td></td>
-            <td>￥{{list[nowEdit+'Total']}}</td>
+            <td>￥{{list[nowEdit+'Total']|currency}}</td>
             <td></td>
           </tr>
           <tr class="total_table">
             <td colspan="2"></td>
             <td>总计购买</td>
-            <td>￥{{list.total}}</td>
+            <td>￥{{list.total|currency}}</td>
             <td></td>
           </tr>
         </tbody>
@@ -47,6 +47,7 @@
 
 <script>
   import data from '@/service/vipData'
+  import api from '@/util/function'
   import { mapState } from 'vuex'
   export default {
     data () {
@@ -64,6 +65,9 @@
     },
     watch: {
       '$route': 'fetchData'
+    },
+    filters: {
+      currency: api.currency
     }
   }
 </script>

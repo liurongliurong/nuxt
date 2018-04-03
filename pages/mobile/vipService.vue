@@ -15,11 +15,11 @@
         </div>
         <div class="item">
           <div class="item_title">单价</div>
-          <div>￥{{l.price}}</div>
+          <div>￥{{l.price|currency}}</div>
         </div>
         <div class="item">
           <div class="item_title">总价</div>
-          <div>￥{{l.total}}</div>
+          <div>￥{{l.total|currency}}</div>
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@
         </div>
         <div class="item">
           <div class="item_title">总价</div>
-          <div>￥{{list.BTCTotal}}</div>
+          <div>￥{{list.BTCTotal|currency}}</div>
         </div>
       </div>
     </div>
@@ -53,11 +53,11 @@
         </div>
         <div class="item">
           <div class="item_title">单价</div>
-          <div>￥{{l.price}}</div>
+          <div>￥{{l.price|currency}}</div>
         </div>
         <div class="item">
           <div class="item_title">总价</div>
-          <div>￥{{l.total}}</div>
+          <div>￥{{l.total|currency}}</div>
         </div>
       </div>
     </div>
@@ -72,14 +72,14 @@
         </div>
         <div class="item">
           <div class="item_title">总价</div>
-          <div>￥{{list.ETHTotal}}</div>
+          <div>￥{{list.ETHTotal|currency}}</div>
         </div>
       </div>
     </div>
     <div class="service_item">
       <div class="service_info">
         <div class="info_left">总计购买</div>
-        <div>￥{{list.total}}</div>
+        <div>￥{{list.total|currency}}</div>
       </div>
     </div>
   </section>
@@ -87,12 +87,16 @@
 
 <script>
   import data from '@/service/vipData'
+  import api from '@/util/function'
   export default {
     data () {
       return {
         nav: {num: '数量', price: '单价', total: '总价'},
         list: data,
       }
+    },
+    filters: {
+      currency: api.currency
     }
   }
 </script>
