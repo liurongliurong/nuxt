@@ -65,8 +65,6 @@
       onMouseover (e) {
         clearInterval(this.t)
         this.t = ''
-        var w = window.innerWidth
-        var h = window.innerHeight
         // this.offsetX = e.clientX / w * 40
         // this.offsetY = e.clientY / h * 20
         setTimeout(() => {
@@ -127,7 +125,7 @@
       setTranslate () {
         this.translate = this.currentPage * -this.offset
         if (this.effect === 'translate') {
-          this.boxStyle = Object.assign(this.boxStyle, {'transform':'translate('+this.translate+'px,0px)'})
+          this.boxStyle = Object.assign(this.boxStyle, {'transform': 'translate(' + this.translate + 'px,0px)'})
         }
         if (this.loop) {
           setTimeout(this.onTransitionEnd, this.speed + 500)
@@ -136,9 +134,9 @@
       onInit () {
         this.width = document.body.clientWidth || document.documentElement.clientWidth
         if (this.effect === 'fade') {
-          this.boxStyle = {'transition-duration':this.speed+'ms', width: this.width+'px'}
+          this.boxStyle = {'transition-duration':this.speed + 'ms', width: this.width + 'px'}
         } else if (this.effect === 'translate') {
-          this.boxStyle = {'transition-duration':this.speed+'ms', width: this.width*this.data.length+'px'}
+          this.boxStyle = {'transition-duration':this.speed + 'ms', width: this.width * this.data.length + 'px'}
         }
         clearInterval(this.t)
         this.offset = this.$refs['swiper-wrap']['offsetWidth']
