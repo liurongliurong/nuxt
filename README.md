@@ -3,7 +3,7 @@
 suanli.com
 
 // 项目目录
-|-- .nuxt                            // Nuxt自动生成，临时的用于编辑的文件，build
+|-- .nuxt                             // Nuxt自动生成，临时的用于编辑的文件，build
 |-- assets                           // 用于组织未编译的静态资源入LESS、SASS 或 JavaScript
 |-- components                       // 用于自己编写的Vue组件，比如滚动组件，日历组件，分页组件
 |-- layouts                          // 布局目录，用于组织应用的布局组件，不可更改。
